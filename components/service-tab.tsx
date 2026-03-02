@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Settings, Plus, Trash2, Clock, CalendarDays, Percent } from 'lucide-react'
+import { Settings, Plus, Trash2, Clock, CalendarDays, Percent, Shield, Eye, EyeOff, Coffee } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, daysBetween, toLocalDateString } from '@/lib/helpers'
-import type { ServiceConfig, LeaveEntry, LeaveType } from '@/lib/types'
-import { LEAVE_TYPE_LABELS, SERVICE_DURATION_PRESETS } from '@/lib/types'
+import type { ServiceConfig, LeaveEntry, LeaveType, DutyEntry } from '@/lib/types'
+import { LEAVE_TYPE_LABELS, SERVICE_DURATION_PRESETS, DUTY_TYPE_LABELS } from '@/lib/types'
 
 export function ServiceTab() {
   const [config, setConfig] = useLocalStorage<ServiceConfig>('fantaros-config', {
@@ -18,6 +18,10 @@ export function ServiceTab() {
   const [leaves, setLeaves] = useLocalStorage<LeaveEntry[]>('fantaros-leaves', [])
   const [showConfig, setShowConfig] = useState(false)
   const [showAddLeave, setShowAddLeave] = useState(false)
+  const [showPasswords, setShowPasswords] = useState(false)
+
+  // Read duties to show today's status
+  const [duties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
 
   const today = toLocalDateString()
   const daysServed = config.enlistmentDate ? Math.max(0, daysBetween(config.enlistmentDate, today)) : 0
@@ -26,6 +30,18 @@ export function ServiceTab() {
   const percentage = config.enlistmentDate
     ? Math.min(100, Math.max(0, (daysServed / config.totalDays) * 100))
     : 0
+
+  // Today's duties
+  const todaysDuties = duties.filter((d) => d.date === today)
+  const tomorrowDate = (() => {
+    const d = new Date()
+    d.setDate(d.getDate() + 1)
+    return toLocalDateString(d)
+  })()
+  const tomorrowsDuties = duties.filter((d) => d.date === tomorrowDate)
+
+  // Check if today is a leave day
+  const isOnLeave = leaves.some((l) => today >= l.startDate && today <= l.endDate)
 
   const dischargeDate = config.enlistmentDate
     ? (() => {
@@ -151,6 +167,141 @@ export function ServiceTab() {
           <div className="w-full text-center py-2 px-3 rounded-lg bg-secondary">
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Ημερομηνία απόλυσης</p>
             <p className="text-sm font-semibold text-primary mt-0.5">{formatGreekDate(dischargeDate)}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Today's Status */}
+      <div className="flex flex-col gap-2">
+        <h2 className="text-base font-semibold text-foreground">Σήμερα</h2>
+
+        {/* On Leave */}
+        {isOnLeave && (
+          <div className="glass-card rounded-xl p-3 flex items-center gap-3 ring-1 ring-green-500/30">
+            <div className="w-10 h-10 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
+              <Coffee className="h-5 w-5 text-green-500" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground">Σε Άδεια</p>
+              <p className="text-xs text-green-500 mt-0.5">Καλή ξεκούραση!</p>
+            </div>
+          </div>
+        )}
+
+        {/* Today's Duties */}
+        {todaysDuties.length > 0 ? (
+          todaysDuties.map((duty) => (
+            <div key={duty.id} className="glass-card rounded-xl p-3 flex items-start gap-3 ring-1 ring-primary/30">
+              <div className="w-1 h-full min-h-[40px] rounded-full bg-primary flex-shrink-0 self-stretch" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-foreground">
+                    {DUTY_TYPE_LABELS[duty.type]}
+                  </span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-primary/20 text-primary font-bold">
+                    ΕΝΕΡΓΗ
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {duty.startTime} - {duty.endTime}
+                </p>
+                {duty.notes && (
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{duty.notes}</p>
+                )}
+
+                {/* Guard Password / Countersign */}
+                {duty.type === 'guard' && (duty.password || duty.countersign) && (
+                  <div className="mt-2 p-2.5 rounded-lg bg-primary/5 border border-primary/15">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-1.5">
+                        <Shield className="h-3.5 w-3.5 text-primary" />
+                        <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">{'Σύνθημα / Παρασύνθημα'}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          hapticFeedback('light')
+                          setShowPasswords(!showPasswords)
+                        }}
+                        className="p-1 rounded min-h-[28px] min-w-[28px] flex items-center justify-center"
+                        aria-label={showPasswords ? 'Απόκρυψη' : 'Εμφάνιση'}
+                      >
+                        {showPasswords ? (
+                          <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
+                        ) : (
+                          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
+                        )}
+                      </button>
+                    </div>
+                    <div className="flex gap-3">
+                      {duty.password && (
+                        <div className="flex-1">
+                          <p className="text-[9px] text-muted-foreground mb-0.5">Σύνθημα</p>
+                          <p className={cn(
+                            'text-sm font-bold tracking-wider',
+                            showPasswords ? 'text-primary' : 'text-primary blur-sm select-none'
+                          )}>
+                            {duty.password}
+                          </p>
+                        </div>
+                      )}
+                      {duty.countersign && (
+                        <div className="flex-1">
+                          <p className="text-[9px] text-muted-foreground mb-0.5">Παρασύνθημα</p>
+                          <p className={cn(
+                            'text-sm font-bold tracking-wider',
+                            showPasswords ? 'text-accent' : 'text-accent blur-sm select-none'
+                          )}>
+                            {duty.countersign}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
+        ) : !isOnLeave ? (
+          <div className="glass-card rounded-xl p-3 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+              <Coffee className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground">Χωρίς υπηρεσία</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Δεν έχεις βάρδια σήμερα</p>
+            </div>
+          </div>
+        ) : null}
+
+        {/* Tomorrow's Preview */}
+        {tomorrowsDuties.length > 0 && (
+          <div className="glass-card rounded-xl p-3 flex items-start gap-3 opacity-75">
+            <div className="w-1 h-full min-h-[40px] rounded-full bg-muted-foreground/30 flex-shrink-0 self-stretch" />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Αύριο</span>
+              </div>
+              {tomorrowsDuties.map((duty) => (
+                <div key={duty.id} className="mt-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-foreground">
+                      {DUTY_TYPE_LABELS[duty.type]}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {duty.startTime} - {duty.endTime}
+                    </span>
+                  </div>
+                  {/* Show tomorrow's guard password blurred as a heads-up */}
+                  {duty.type === 'guard' && (duty.password || duty.countersign) && (
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <Shield className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-[10px] text-muted-foreground">{'Σύνθημα καταχωρημένο'}</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, Bell, BellOff, Clock } from 'lucide-react'
+import { Plus, Trash2, Bell, BellOff, Clock, Shield, Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
@@ -170,6 +170,22 @@ export function DutiesTab() {
                     <p className="text-xs text-muted-foreground mt-0.5">
                       {duty.startTime} - {duty.endTime}
                     </p>
+                    {duty.type === 'guard' && (duty.password || duty.countersign) && (
+                      <div className="mt-1.5 flex items-center gap-2">
+                        {duty.password && (
+                          <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-primary/15 text-primary font-medium">
+                            <Shield className="h-2.5 w-2.5" />
+                            {duty.password}
+                          </span>
+                        )}
+                        {duty.countersign && (
+                          <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-accent/15 text-accent font-medium">
+                            <Shield className="h-2.5 w-2.5" />
+                            {duty.countersign}
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {duty.notes && (
                       <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{duty.notes}</p>
                     )}
@@ -203,6 +219,9 @@ function AddDutyForm({ onAdd, onCancel }: {
   const [startTime, setStartTime] = useState('08:00')
   const [endTime, setEndTime] = useState('08:00')
   const [notes, setNotes] = useState('')
+  const [password, setPassword] = useState('')
+  const [countersign, setCountersign] = useState('')
+  const [showPasswords, setShowPasswords] = useState(false)
 
   const handleSubmit = () => {
     if (!date || !startTime || !endTime) return
@@ -214,6 +233,8 @@ function AddDutyForm({ onAdd, onCancel }: {
       startTime,
       endTime,
       notes,
+      ...(type === 'guard' && password ? { password } : {}),
+      ...(type === 'guard' && countersign ? { countersign } : {}),
     })
   }
 
@@ -265,6 +286,50 @@ function AddDutyForm({ onAdd, onCancel }: {
           />
         </div>
       </div>
+
+      {/* Password / Countersign for Guard Duty */}
+      {type === 'guard' && (
+        <div className="flex flex-col gap-3 p-3 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Shield className="h-4 w-4 text-primary" />
+              <span className="text-xs font-semibold text-foreground">{'Σύνθημα / Παρασύνθημα'}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowPasswords(!showPasswords)}
+              className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
+              aria-label={showPasswords ? 'Απόκρυψη' : 'Εμφάνιση'}
+            >
+              {showPasswords ? (
+                <EyeOff className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <Eye className="h-4 w-4 text-muted-foreground" />
+              )}
+            </button>
+          </div>
+          <div>
+            <label className="block text-[10px] text-muted-foreground mb-1">Σύνθημα</label>
+            <input
+              type={showPasswords ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Π.χ. ΑΕΤΟΣ"
+              className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground uppercase tracking-wider"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] text-muted-foreground mb-1">Παρασύνθημα</label>
+            <input
+              type={showPasswords ? 'text' : 'password'}
+              value={countersign}
+              onChange={(e) => setCountersign(e.target.value)}
+              placeholder="Π.χ. ΒΟΥΝΟ"
+              className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground uppercase tracking-wider"
+            />
+          </div>
+        </div>
+      )}
 
       <div>
         <label className="block text-xs text-muted-foreground mb-1.5">Σημειώσεις</label>

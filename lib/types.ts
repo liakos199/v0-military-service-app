@@ -38,6 +38,8 @@ export interface DutyEntry {
   startTime: string
   endTime: string
   notes: string
+  password?: string       // Σύνθημα (for guard duty)
+  countersign?: string    // Παρασύνθημα (for guard duty)
 }
 
 export type DutyType = 'guard' | 'barracks' | 'officer' | 'patrol' | 'kitchen' | 'other'
