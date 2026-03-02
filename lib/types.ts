@@ -1,0 +1,135 @@
+// Types for the Fantaros military service app
+
+export interface ServiceConfig {
+  enlistmentDate: string // ISO date string
+  totalDays: number
+}
+
+export interface LeaveEntry {
+  id: string
+  type: LeaveType
+  startDate: string
+  endDate: string
+  days: number
+  notes: string
+}
+
+export type LeaveType =
+  | 'regular'
+  | 'student'
+  | 'honorary'
+  | 'medical'
+  | 'emergency'
+  | 'other'
+
+export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {
+  regular: 'Κανονική',
+  student: 'Σπουδαστική',
+  honorary: 'Τιμητική',
+  medical: 'Αναρρωτική',
+  emergency: 'Έκτακτη',
+  other: 'Άλλη',
+}
+
+export interface DutyEntry {
+  id: string
+  type: DutyType
+  date: string
+  startTime: string
+  endTime: string
+  notes: string
+}
+
+export type DutyType = 'guard' | 'barracks' | 'officer' | 'patrol' | 'kitchen' | 'other'
+
+export const DUTY_TYPE_LABELS: Record<DutyType, string> = {
+  guard: 'Σκοπιά',
+  barracks: 'Θαλαμοφύλακας',
+  officer: 'Αξιωματικός Υπηρεσίας',
+  patrol: 'Περίπολος',
+  kitchen: 'Μαγειρείο',
+  other: 'Άλλη',
+}
+
+export interface NoteEntry {
+  id: string
+  date: string
+  content: string
+}
+
+export interface DailyPassword {
+  date: string
+  password: string
+  countersign: string
+}
+
+export interface ProfileData {
+  fullName: string
+  company: string  // Λόχος
+  barracks: string // Θάλαμος
+  bloodType: string
+  reportingPhrase: string
+  rank: string
+  serviceNumber: string
+}
+
+export interface SuperiorEntry {
+  id: string
+  name: string
+  rank: string
+  role: string
+}
+
+export const RANKS = [
+  'Στρατιώτης',
+  'Υποδεκανέας',
+  'Δεκανέας',
+  'Λοχίας',
+  'Επιλοχίας',
+  'Αρχιλοχίας',
+  'Ανθυπασπιστής',
+  'Ανθυπολοχαγός',
+  'Υπολοχαγός',
+  'Λοχαγός',
+  'Ταγματάρχης',
+  'Αντισυνταγματάρχης',
+  'Συνταγματάρχης',
+  'Ταξίαρχος',
+  'Υποστράτηγος',
+  'Αντιστράτηγος',
+  'Στρατηγός',
+]
+
+export const BLOOD_TYPES = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+
+export interface ExpenseEntry {
+  id: string
+  amount: number
+  date: string
+  description: string
+  category: 'canteen' | 'other'
+}
+
+export const EXPENSE_CATEGORY_LABELS: Record<'canteen' | 'other', string> = {
+  canteen: 'ΚΨΜ',
+  other: 'Γενικά',
+}
+
+// Greek month names
+export const GREEK_MONTHS = [
+  'Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος',
+  'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος',
+  'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος',
+]
+
+export const GREEK_MONTHS_SHORT = [
+  'Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μαι', 'Ιουν',
+  'Ιουλ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ',
+]
+
+export const GREEK_DAYS = [
+  'Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη',
+  'Πέμπτη', 'Παρασκευή', 'Σάββατο',
+]
+
+export const GREEK_DAYS_SHORT = ['Κυ', 'Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα']
