@@ -40,8 +40,9 @@ export function ServiceTab() {
   })()
   const tomorrowsDuties = duties.filter((d) => d.date === tomorrowDate)
 
-  // Check if today is a leave day
-  const isOnLeave = leaves.some((l) => today >= l.startDate && today <= l.endDate)
+  // Today's and tomorrow's leave
+  const todaysLeave = leaves.find((l) => today >= l.startDate && today <= l.endDate)
+  const tomorrowsLeave = leaves.find((l) => tomorrowDate >= l.startDate && tomorrowDate <= l.endDate)
 
   const dischargeDate = config.enlistmentDate
     ? (() => {
@@ -173,115 +174,134 @@ export function ServiceTab() {
 
       {/* Today's Status */}
       <div className="flex flex-col gap-2">
-        <h2 className="text-base font-semibold text-foreground">Σήμερα</h2>
+        <h2 className="text-base font-semibold text-foreground">{'Σήμερα'}</h2>
 
         {/* On Leave */}
-        {isOnLeave && (
+        {todaysLeave && (
           <div className="glass-card rounded-xl p-3 flex items-center gap-3 ring-1 ring-green-500/30">
-            <div className="w-10 h-10 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
-              <Coffee className="h-5 w-5 text-green-500" />
-            </div>
+            <div className="w-1 h-10 rounded-full bg-green-500 flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground">Σε Άδεια</p>
-              <p className="text-xs text-green-500 mt-0.5">Καλή ξεκούραση!</p>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-foreground">
+                  {LEAVE_TYPE_LABELS[todaysLeave.type]} Άδεια
+                </span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-green-500/20 text-green-500 font-bold">
+                  ΑΔΕΙΑ
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {formatGreekDate(todaysLeave.startDate)} - {formatGreekDate(todaysLeave.endDate)} ({todaysLeave.days} ημ.)
+              </p>
+              {todaysLeave.notes && (
+                <p className="text-[10px] text-muted-foreground mt-0.5">{todaysLeave.notes}</p>
+              )}
             </div>
           </div>
         )}
 
         {/* Today's Duties */}
-        {todaysDuties.length > 0 ? (
-          todaysDuties.map((duty) => (
-            <div key={duty.id} className="glass-card rounded-xl p-3 flex items-start gap-3 ring-1 ring-primary/30">
-              <div className="w-1 h-full min-h-[40px] rounded-full bg-primary flex-shrink-0 self-stretch" />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-foreground">
-                    {DUTY_TYPE_LABELS[duty.type]}
-                  </span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-primary/20 text-primary font-bold">
-                    ΕΝΕΡΓΗ
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {duty.startTime} - {duty.endTime}
-                </p>
-                {duty.notes && (
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{duty.notes}</p>
-                )}
-
-                {/* Guard Password / Countersign */}
-                {duty.type === 'guard' && (duty.password || duty.countersign) && (
-                  <div className="mt-2 p-2.5 rounded-lg bg-primary/5 border border-primary/15">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-1.5">
-                        <Shield className="h-3.5 w-3.5 text-primary" />
-                        <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">{'Σύνθημα / Παρασύνθημα'}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          hapticFeedback('light')
-                          setShowPasswords(!showPasswords)
-                        }}
-                        className="p-1 rounded min-h-[28px] min-w-[28px] flex items-center justify-center"
-                        aria-label={showPasswords ? 'Απόκρυψη' : 'Εμφάνιση'}
-                      >
-                        {showPasswords ? (
-                          <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
-                        )}
-                      </button>
-                    </div>
-                    <div className="flex gap-3">
-                      {duty.password && (
-                        <div className="flex-1">
-                          <p className="text-[9px] text-muted-foreground mb-0.5">Σύνθημα</p>
-                          <p className={cn(
-                            'text-sm font-bold tracking-wider',
-                            showPasswords ? 'text-primary' : 'text-primary blur-sm select-none'
-                          )}>
-                            {duty.password}
-                          </p>
-                        </div>
-                      )}
-                      {duty.countersign && (
-                        <div className="flex-1">
-                          <p className="text-[9px] text-muted-foreground mb-0.5">Παρασύνθημα</p>
-                          <p className={cn(
-                            'text-sm font-bold tracking-wider',
-                            showPasswords ? 'text-accent' : 'text-accent blur-sm select-none'
-                          )}>
-                            {duty.countersign}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
+        {todaysDuties.map((duty) => (
+          <div key={duty.id} className="glass-card rounded-xl p-3 flex items-start gap-3 ring-1 ring-primary/30">
+            <div className="w-1 h-full min-h-[40px] rounded-full bg-primary flex-shrink-0 self-stretch" />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-foreground">
+                  {DUTY_TYPE_LABELS[duty.type]}
+                </span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-primary/20 text-primary font-bold">
+                  ΕΝΕΡΓΗ
+                </span>
               </div>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {duty.startTime} - {duty.endTime}
+              </p>
+              {duty.notes && (
+                <p className="text-[10px] text-muted-foreground mt-0.5">{duty.notes}</p>
+              )}
+
+              {/* Guard Password / Countersign */}
+              {duty.type === 'guard' && (duty.password || duty.countersign) && (
+                <div className="mt-2 p-2.5 rounded-lg bg-primary/5 border border-primary/15">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-1.5">
+                      <Shield className="h-3.5 w-3.5 text-primary" />
+                      <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">{'Σύνθημα / Παρασύνθημα'}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        hapticFeedback('light')
+                        setShowPasswords(!showPasswords)
+                      }}
+                      className="p-1 rounded min-h-[28px] min-w-[28px] flex items-center justify-center"
+                      aria-label={showPasswords ? 'Απόκρυψη' : 'Εμφάνιση'}
+                    >
+                      {showPasswords ? (
+                        <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
+                      ) : (
+                        <Eye className="h-3.5 w-3.5 text-muted-foreground" />
+                      )}
+                    </button>
+                  </div>
+                  <div className="flex gap-3">
+                    {duty.password && (
+                      <div className="flex-1">
+                        <p className="text-[9px] text-muted-foreground mb-0.5">{'Σύνθημα'}</p>
+                        <p className={cn(
+                          'text-sm font-bold tracking-wider transition-all',
+                          showPasswords ? 'text-primary blur-0' : 'text-primary blur-sm select-none'
+                        )}>
+                          {duty.password}
+                        </p>
+                      </div>
+                    )}
+                    {duty.countersign && (
+                      <div className="flex-1">
+                        <p className="text-[9px] text-muted-foreground mb-0.5">{'Παρασύνθημα'}</p>
+                        <p className={cn(
+                          'text-sm font-bold tracking-wider transition-all',
+                          showPasswords ? 'text-accent blur-0' : 'text-accent blur-sm select-none'
+                        )}>
+                          {duty.countersign}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-          ))
-        ) : !isOnLeave ? (
+          </div>
+        ))}
+
+        {/* Empty state - no duties and no leave */}
+        {todaysDuties.length === 0 && !todaysLeave && (
           <div className="glass-card rounded-xl p-3 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
               <Coffee className="h-5 w-5 text-muted-foreground" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground">Χωρίς υπηρεσία</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Δεν έχεις βάρδια σήμερα</p>
+              <p className="text-sm font-semibold text-foreground">{'Ελεύθερος'}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{'Δεν έχεις υπηρεσία ή άδεια σήμερα'}</p>
             </div>
           </div>
-        ) : null}
+        )}
 
         {/* Tomorrow's Preview */}
-        {tomorrowsDuties.length > 0 && (
-          <div className="glass-card rounded-xl p-3 flex items-start gap-3 opacity-75">
+        {(tomorrowsDuties.length > 0 || tomorrowsLeave) && (
+          <div className="glass-card rounded-xl p-3 flex items-start gap-3 opacity-70">
             <div className="w-1 h-full min-h-[40px] rounded-full bg-muted-foreground/30 flex-shrink-0 self-stretch" />
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Αύριο</span>
-              </div>
+              <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{'Αύριο'}</span>
+
+              {tomorrowsLeave && (
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="text-sm font-medium text-foreground">
+                    {LEAVE_TYPE_LABELS[tomorrowsLeave.type]} Άδεια
+                  </span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                </div>
+              )}
+
               {tomorrowsDuties.map((duty) => (
                 <div key={duty.id} className="mt-1">
                   <div className="flex items-center gap-2">
@@ -292,9 +312,8 @@ export function ServiceTab() {
                       {duty.startTime} - {duty.endTime}
                     </span>
                   </div>
-                  {/* Show tomorrow's guard password blurred as a heads-up */}
                   {duty.type === 'guard' && (duty.password || duty.countersign) && (
-                    <div className="mt-1 flex items-center gap-1.5">
+                    <div className="mt-0.5 flex items-center gap-1.5">
                       <Shield className="h-3 w-3 text-muted-foreground" />
                       <span className="text-[10px] text-muted-foreground">{'Σύνθημα καταχωρημένο'}</span>
                     </div>
