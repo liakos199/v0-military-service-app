@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { GREEK_MONTHS } from '@/lib/types'
 import { hapticFeedback } from '@/lib/helpers'
-import { FullscreenModal } from '@/components/fullscreen-modal'
+import { BottomSheet } from '@/components/bottom-sheet'
 
 interface GreekDatePickerProps {
   value: string
@@ -25,22 +25,14 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
 
   const prevMonth = () => {
     hapticFeedback('light')
-    if (viewMonth === 0) {
-      setViewMonth(11)
-      setViewYear(viewYear - 1)
-    } else {
-      setViewMonth(viewMonth - 1)
-    }
+    if (viewMonth === 0) { setViewMonth(11); setViewYear(viewYear - 1) }
+    else setViewMonth(viewMonth - 1)
   }
 
   const nextMonth = () => {
     hapticFeedback('light')
-    if (viewMonth === 11) {
-      setViewMonth(0)
-      setViewYear(viewYear + 1)
-    } else {
-      setViewMonth(viewMonth + 1)
-    }
+    if (viewMonth === 11) { setViewMonth(0); setViewYear(viewYear + 1) }
+    else setViewMonth(viewMonth + 1)
   }
 
   const handleSelectDay = (day: number) => {
@@ -58,12 +50,12 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
   const today = new Date()
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
 
-  const greekDaysStartMonday = ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
+  const greekDays = ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
 
   return (
     <div>
       {label && (
-        <label className="block text-xs text-muted-foreground mb-1.5">{label}</label>
+        <label className="block text-[11px] text-muted-foreground font-medium mb-1.5 uppercase tracking-wider">{label}</label>
       )}
       <button
         type="button"
@@ -71,35 +63,35 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
           hapticFeedback('light')
           setIsOpen(true)
         }}
-        className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+        className="w-full flex items-center justify-between px-3 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border active:scale-[0.98] transition-transform"
       >
         <span className={cn(!value && 'text-muted-foreground')}>{displayText}</span>
         <CalendarIcon className="h-4 w-4 text-muted-foreground" />
       </button>
 
-      <FullscreenModal
+      <BottomSheet
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title="Επιλογή Ημερομηνίας"
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           {/* Month navigation */}
           <div className="flex items-center justify-between">
             <button
               type="button"
               onClick={prevMonth}
-              className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center"
+              className="p-2.5 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center active:scale-95 transition-transform"
               aria-label="Προηγούμενος μήνας"
             >
               <ChevronLeft className="h-5 w-5 text-foreground" />
             </button>
-            <span className="text-lg font-semibold text-foreground">
+            <span className="text-base font-bold text-foreground">
               {GREEK_MONTHS[viewMonth]} {viewYear}
             </span>
             <button
               type="button"
               onClick={nextMonth}
-              className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center"
+              className="p-2.5 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center active:scale-95 transition-transform"
               aria-label="Επόμενος μήνας"
             >
               <ChevronRight className="h-5 w-5 text-foreground" />
@@ -108,8 +100,11 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
 
           {/* Day names */}
           <div className="grid grid-cols-7 gap-1">
-            {greekDaysStartMonday.map((d) => (
-              <div key={d} className="text-center text-xs text-muted-foreground font-medium py-2">
+            {greekDays.map((d, i) => (
+              <div key={d} className={cn(
+                'text-center text-[10px] font-semibold py-1.5 uppercase tracking-wider',
+                i >= 5 ? 'text-muted-foreground/50' : 'text-muted-foreground'
+              )}>
                 {d}
               </div>
             ))}
@@ -132,11 +127,11 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
                   type="button"
                   onClick={() => handleSelectDay(day)}
                   className={cn(
-                    'aspect-square w-full rounded-xl text-sm flex items-center justify-center transition-colors min-h-[44px]',
+                    'aspect-square w-full rounded-2xl text-sm flex items-center justify-center transition-all min-h-[44px]',
                     isSelected
-                      ? 'bg-primary text-primary-foreground font-bold'
+                      ? 'bg-primary text-primary-foreground font-bold scale-105'
                       : isToday
-                        ? 'bg-secondary text-primary font-semibold ring-1 ring-primary'
+                        ? 'bg-primary/15 text-primary font-bold'
                         : 'text-foreground active:bg-secondary'
                   )}
                 >
@@ -156,12 +151,12 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
               setViewYear(now.getFullYear())
               handleSelectDay(now.getDate())
             }}
-            className="w-full py-3 rounded-xl bg-secondary text-foreground font-medium text-sm min-h-[48px]"
+            className="w-full py-3.5 rounded-xl bg-secondary text-foreground font-semibold text-sm min-h-[52px] active:scale-[0.97] transition-transform"
           >
             Σήμερα
           </button>
         </div>
-      </FullscreenModal>
+      </BottomSheet>
     </div>
   )
 }
