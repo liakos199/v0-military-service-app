@@ -8,7 +8,7 @@ import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, daysBetween, toLocalDateString } from '@/lib/helpers'
 import type { ServiceConfig, LeaveEntry, LeaveType } from '@/lib/types'
-import { LEAVE_TYPE_LABELS } from '@/lib/types'
+import { LEAVE_TYPE_LABELS, SERVICE_DURATION_PRESETS } from '@/lib/types'
 
 export function ServiceTab() {
   const [config, setConfig] = useLocalStorage<ServiceConfig>('fantaros-config', {
@@ -70,7 +70,28 @@ export function ServiceTab() {
             label="Ημερομηνία κατάταξης"
           />
           <div>
-            <label className="block text-xs text-muted-foreground mb-1.5">Συνολική διάρκεια (ημέρες)</label>
+            <label className="block text-xs text-muted-foreground mb-1.5">Διάρκεια θητείας</label>
+            <div className="flex gap-2 mb-3">
+              {SERVICE_DURATION_PRESETS.map((preset) => (
+                <button
+                  key={preset.days}
+                  type="button"
+                  onClick={() => {
+                    hapticFeedback('light')
+                    setConfig({ ...config, totalDays: preset.days })
+                  }}
+                  className={cn(
+                    'flex-1 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors border',
+                    config.totalDays === preset.days
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-secondary text-secondary-foreground border-border'
+                  )}
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+            <label className="block text-[10px] text-muted-foreground mb-1.5">{'Ή εισάγετε ημέρες χειροκίνητα'}</label>
             <input
               type="number"
               inputMode="numeric"

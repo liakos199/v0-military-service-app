@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Trash2, User, Users, ChevronDown, ChevronUp, Edit3, Check, X } from 'lucide-react'
+import { Plus, Trash2, User, Users, ChevronDown, ChevronUp, Edit3, Check, X, Phone, UserPlus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, generateId } from '@/lib/helpers'
-import type { ProfileData, SuperiorEntry } from '@/lib/types'
+import type { ProfileData, SuperiorEntry, FriendEntry } from '@/lib/types'
 import { RANKS, BLOOD_TYPES } from '@/lib/types'
 
 const DEFAULT_PROFILE: ProfileData = {
@@ -20,24 +20,24 @@ const DEFAULT_PROFILE: ProfileData = {
 }
 
 export function ProfileTab() {
-  const [activeSection, setActiveSection] = useState<'profile' | 'superiors'>('profile')
+  const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends'>('profile')
 
   return (
     <div className="flex flex-col gap-4 pb-4">
       <div>
         <h1 className="text-xl font-bold text-foreground">Προφίλ</h1>
-        <p className="text-xs text-muted-foreground">Στοιχεία & ιεραρχία</p>
+        <p className="text-xs text-muted-foreground">Στοιχεία, ιεραρχία & φίλοι</p>
       </div>
 
-      {/* Section Toggle */}
-      <div className="flex gap-2 p-1 rounded-xl bg-secondary">
+      {/* Section Toggle - 3 tabs */}
+      <div className="flex gap-1 p-1 rounded-xl bg-secondary">
         <button
           onClick={() => {
             hapticFeedback('light')
             setActiveSection('profile')
           }}
           className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
+            'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
             activeSection === 'profile'
               ? 'bg-primary text-primary-foreground'
               : 'text-muted-foreground'
@@ -52,7 +52,7 @@ export function ProfileTab() {
             setActiveSection('superiors')
           }}
           className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
+            'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
             activeSection === 'superiors'
               ? 'bg-primary text-primary-foreground'
               : 'text-muted-foreground'
@@ -61,9 +61,26 @@ export function ProfileTab() {
           <Users className="h-4 w-4" />
           Ιεραρχία
         </button>
+        <button
+          onClick={() => {
+            hapticFeedback('light')
+            setActiveSection('friends')
+          }}
+          className={cn(
+            'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
+            activeSection === 'friends'
+              ? 'bg-primary text-primary-foreground'
+              : 'text-muted-foreground'
+          )}
+        >
+          <UserPlus className="h-4 w-4" />
+          Φίλοι
+        </button>
       </div>
 
-      {activeSection === 'profile' ? <ProfileSection /> : <SuperiorsSection />}
+      {activeSection === 'profile' && <ProfileSection />}
+      {activeSection === 'superiors' && <SuperiorsSection />}
+      {activeSection === 'friends' && <FriendsSection />}
     </div>
   )
 }
@@ -90,7 +107,6 @@ function ProfileSection() {
   if (!isEditing) {
     return (
       <div className="glass-card rounded-2xl p-5 flex flex-col gap-4">
-        {/* Avatar placeholder */}
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
             <User className="h-8 w-8 text-primary" />
@@ -291,7 +307,6 @@ function SuperiorsSection() {
         </button>
       </div>
 
-      {/* Add Superior Modal */}
       <FullscreenModal
         isOpen={showAdd}
         onClose={() => setShowAdd(false)}
@@ -337,6 +352,167 @@ function SuperiorsSection() {
           </div>
         ))
       )}
+    </div>
+  )
+}
+
+function FriendsSection() {
+  const [friends, setFriends] = useLocalStorage<FriendEntry[]>('fantaros-friends', [])
+  const [showAdd, setShowAdd] = useState(false)
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-foreground">Φίλοι</h2>
+        <button
+          onClick={() => {
+            hapticFeedback('light')
+            setShowAdd(true)
+          }}
+          className="p-2 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+          aria-label="Προσθήκη φίλου"
+        >
+          <Plus className="h-5 w-5 text-primary" />
+        </button>
+      </div>
+
+      <FullscreenModal
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+        title="Νέος Φίλος"
+      >
+        <AddFriendForm
+          onAdd={(friend) => {
+            setFriends([...friends, friend])
+            setShowAdd(false)
+          }}
+          onCancel={() => setShowAdd(false)}
+        />
+      </FullscreenModal>
+
+      {friends.length === 0 ? (
+        <div className="glass-card rounded-xl p-6 text-center">
+          <UserPlus className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+          <p className="text-sm text-muted-foreground">Δεν έχεις προσθέσει φίλους</p>
+          <p className="text-xs text-muted-foreground mt-1">Πάτησε + για να προσθέσεις</p>
+        </div>
+      ) : (
+        friends.map((friend) => (
+          <div key={friend.id} className="glass-card rounded-xl p-3 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
+              <User className="h-5 w-5 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground truncate">{friend.name}</p>
+              {friend.unit && (
+                <p className="text-xs text-primary">{friend.unit}</p>
+              )}
+              {friend.phone && (
+                <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{friend.phone}</p>
+              )}
+              {friend.notes && (
+                <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{friend.notes}</p>
+              )}
+            </div>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {friend.phone && (
+                <a
+                  href={`tel:${friend.phone}`}
+                  onClick={() => hapticFeedback('medium')}
+                  className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center bg-primary/15"
+                  aria-label={`Κλήση ${friend.name}`}
+                >
+                  <Phone className="h-4.5 w-4.5 text-primary" />
+                </a>
+              )}
+              <button
+                onClick={() => {
+                  hapticFeedback('medium')
+                  setFriends(friends.filter((f) => f.id !== friend.id))
+                }}
+                className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive"
+                aria-label="Διαγραφή"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  )
+}
+
+function AddFriendForm({ onAdd, onCancel }: {
+  onAdd: (friend: FriendEntry) => void
+  onCancel: () => void
+}) {
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [unit, setUnit] = useState('')
+  const [notes, setNotes] = useState('')
+
+  const handleSubmit = () => {
+    if (!name.trim()) return
+    hapticFeedback('heavy')
+    onAdd({
+      id: generateId(),
+      name: name.trim(),
+      phone: phone.trim(),
+      unit: unit.trim(),
+      notes: notes.trim(),
+    })
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
+
+      <div>
+        <label className="block text-xs text-muted-foreground mb-1.5">Τηλέφωνο</label>
+        <input
+          type="tel"
+          inputMode="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="Π.χ. 69XXXXXXXX"
+          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground"
+        />
+      </div>
+
+      <FormField
+        label="Μονάδα / Λόχος"
+        value={unit}
+        onChange={setUnit}
+        placeholder="Π.χ. Α' Λόχος, 71 Ταξιαρχία"
+      />
+
+      <div>
+        <label className="block text-xs text-muted-foreground mb-1.5">Σημειώσεις</label>
+        <input
+          type="text"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Προαιρετικό..."
+          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground"
+        />
+      </div>
+
+      <div className="flex gap-2 pt-2">
+        <button
+          onClick={onCancel}
+          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+        >
+          Ακύρωση
+        </button>
+        <button
+          onClick={handleSubmit}
+          disabled={!name.trim()}
+          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
+        >
+          Προσθήκη
+        </button>
+      </div>
     </div>
   )
 }

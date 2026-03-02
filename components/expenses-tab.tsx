@@ -8,7 +8,7 @@ import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { ExpenseEntry } from '@/lib/types'
-import { EXPENSE_CATEGORY_LABELS } from '@/lib/types'
+import { EXPENSE_CATEGORY_LABELS, EXPENSE_PRESETS } from '@/lib/types'
 
 export function ExpensesTab() {
   const [expenses, setExpenses] = useLocalStorage<ExpenseEntry[]>('fantaros-expenses', [])
@@ -173,6 +173,32 @@ function AddExpenseForm({ onAdd, onCancel }: {
             >
               {c === 'canteen' ? <Store className="h-4 w-4" /> : <ShoppingCart className="h-4 w-4" />}
               {EXPENSE_CATEGORY_LABELS[c]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Quick Presets */}
+      <div>
+        <label className="block text-xs text-muted-foreground mb-1.5">Γρήγορη επιλογή</label>
+        <div className="flex flex-wrap gap-2">
+          {EXPENSE_PRESETS.map((preset) => (
+            <button
+              key={preset.label}
+              type="button"
+              onClick={() => {
+                hapticFeedback('light')
+                setAmount(preset.amount.toFixed(2))
+                setDescription(preset.label)
+              }}
+              className={cn(
+                'px-3 py-2 rounded-lg text-xs font-medium min-h-[40px] transition-colors border',
+                description === preset.label && amount === preset.amount.toFixed(2)
+                  ? 'bg-primary text-primary-foreground border-primary'
+                  : 'bg-secondary text-secondary-foreground border-border'
+              )}
+            >
+              {preset.label} {preset.amount.toFixed(2)}{'€'}
             </button>
           ))}
         </div>

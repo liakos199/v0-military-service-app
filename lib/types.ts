@@ -102,6 +102,28 @@ export const RANKS = [
 
 export const BLOOD_TYPES = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
 
+export interface FriendEntry {
+  id: string
+  name: string
+  phone: string
+  unit: string // Μονάδα
+  notes: string
+}
+
+export const EXPENSE_PRESETS = [
+  { label: 'Καφές', amount: 1.50 },
+  { label: 'Νερό', amount: 0.50 },
+  { label: 'Φαγητό', amount: 5.00 },
+  { label: 'Σνακ', amount: 2.00 },
+  { label: 'Αναψυκτικό', amount: 1.00 },
+]
+
+export const SERVICE_DURATION_PRESETS = [
+  { label: '6 μήνες', days: 183 },
+  { label: '9 μήνες', days: 274 },
+  { label: '12 μήνες', days: 365 },
+]
+
 export interface ExpenseEntry {
   id: string
   amount: number
