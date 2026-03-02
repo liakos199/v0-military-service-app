@@ -1,14 +1,14 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { Settings, Plus, Trash2, Clock, CalendarDays, Percent, Eye, EyeOff, Shield, Palmtree, ChevronRight } from 'lucide-react'
+import { useState } from 'react'
+import { Settings, Plus, Trash2, Clock, CalendarDays, Percent, Eye, EyeOff, Edit3, Check, X, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { BottomSheet } from '@/components/bottom-sheet'
 import { hapticFeedback, formatGreekDate, generateId, daysBetween, toLocalDateString } from '@/lib/helpers'
-import type { ServiceConfig, LeaveEntry, LeaveType, DutyEntry } from '@/lib/types'
-import { LEAVE_TYPE_LABELS, SERVICE_DURATION_PRESETS, DUTY_TYPE_LABELS } from '@/lib/types'
+import type { ServiceConfig, LeaveEntry, LeaveType, DailyPassword } from '@/lib/types'
+import { LEAVE_TYPE_LABELS, SERVICE_DURATION_PRESETS } from '@/lib/types'
 
 export function ServiceTab() {
   const [config, setConfig] = useLocalStorage<ServiceConfig>('fantaros-config', {
@@ -16,10 +16,8 @@ export function ServiceTab() {
     totalDays: 365,
   })
   const [leaves, setLeaves] = useLocalStorage<LeaveEntry[]>('fantaros-leaves', [])
-  const [duties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
   const [showConfig, setShowConfig] = useState(false)
   const [showAddLeave, setShowAddLeave] = useState(false)
-  const [showPasswordForDuty, setShowPasswordForDuty] = useState<string | null>(null)
 
   const today = toLocalDateString()
   const daysServed = config.enlistmentDate ? Math.max(0, daysBetween(config.enlistmentDate, today)) : 0
@@ -39,23 +37,13 @@ export function ServiceTab() {
 
   const circumference = 2 * Math.PI * 70
 
-  // Today's events
-  const todayDuties = useMemo(() => duties.filter((d) => d.date === today), [duties, today])
-  const todayLeaves = useMemo(() => {
-    return leaves.filter((l) => {
-      return l.startDate <= today && l.endDate >= today
-    })
-  }, [leaves, today])
-
-  const hasTodayEvents = todayDuties.length > 0 || todayLeaves.length > 0
-
   return (
     <div className="flex flex-col gap-5 pb-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-foreground text-balance">Θητεία</h1>
-          <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση</p>
+          <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση & σύνθημα</p>
         </div>
         <button
           onClick={() => {
@@ -125,6 +113,9 @@ export function ServiceTab() {
         </div>
       </BottomSheet>
 
+      {/* Daily Password Section */}
+      <PasswordSection />
+
       {/* Main Progress Ring */}
       <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-5">
         <div className="relative w-48 h-48">
@@ -165,69 +156,6 @@ export function ServiceTab() {
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Ημερομηνία απόλυσης</p>
             <p className="text-sm font-bold text-primary mt-1">{formatGreekDate(dischargeDate)}</p>
           </div>
-        )}
-      </div>
-
-      {/* Today's Status */}
-      <div className="flex flex-col gap-2.5">
-        <h2 className="text-base font-bold text-foreground">Σήμερα</h2>
-
-        {!hasTodayEvents ? (
-          <div className="glass-card rounded-2xl p-5 text-center">
-            <p className="text-sm text-muted-foreground/80 font-medium">Χωρίς υπηρεσία ή άδεια</p>
-            <p className="text-[11px] text-muted-foreground/50 mt-1">Καλή συνέχεια στρατιώτη</p>
-          </div>
-        ) : (
-          <>
-            {/* Today's duties */}
-            {todayDuties.map((duty) => (
-              <div key={duty.id} className="glass-card rounded-2xl overflow-hidden">
-                <div className="p-4 flex items-center gap-3">
-                  <div className={cn(
-                    'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
-                    duty.type === 'guard' ? 'bg-red-500/15' : 'bg-amber-500/15'
-                  )}>
-                    <Shield className={cn('h-5 w-5', duty.type === 'guard' ? 'text-red-400' : 'text-amber-400')} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-foreground">{DUTY_TYPE_LABELS[duty.type]}</p>
-                    <p className="text-[11px] text-muted-foreground">{duty.startTime} - {duty.endTime}</p>
-                    {duty.notes && (
-                      <p className="text-[10px] text-muted-foreground/70 mt-0.5 truncate">{duty.notes}</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Password section -- only for guard duty with password */}
-                {duty.type === 'guard' && (duty.password || duty.countersign) && (
-                  <PasswordDisplay
-                    password={duty.password || ''}
-                    countersign={duty.countersign || ''}
-                    isVisible={showPasswordForDuty === duty.id}
-                    onToggle={() => {
-                      hapticFeedback('light')
-                      setShowPasswordForDuty(showPasswordForDuty === duty.id ? null : duty.id)
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-
-            {/* Today's leaves */}
-            {todayLeaves.map((leave) => (
-              <div key={leave.id} className="glass-card rounded-2xl p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-teal-500/15 flex items-center justify-center flex-shrink-0">
-                  <Palmtree className="h-5 w-5 text-teal-400" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-foreground">{LEAVE_TYPE_LABELS[leave.type]}</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} ({leave.days} ημ.)
-                  </p>
-                </div>
-              </div>
-            ))}
-          </>
         )}
       </div>
 
@@ -304,50 +232,175 @@ export function ServiceTab() {
 }
 
 /* ────────────────────────────────────────────
-   Password Display (for guard duties)
+   Password / Σύνθημα Section (moved from notes)
    ──────────────────────────────────────────── */
 
-function PasswordDisplay({ password, countersign, isVisible, onToggle }: {
-  password: string
-  countersign: string
-  isVisible: boolean
-  onToggle: () => void
-}) {
+function PasswordSection() {
+  const today = toLocalDateString()
+  const [passwords, setPasswords] = useLocalStorage<DailyPassword[]>('fantaros-passwords', [])
+  const [showPassword, setShowPassword] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
+
+  const todayPassword = passwords.find((p) => p.date === today)
+  const [password, setPassword] = useState(todayPassword?.password || '')
+  const [countersign, setCountersign] = useState(todayPassword?.countersign || '')
+  const [isEditing, setIsEditing] = useState(!todayPassword)
+
+  const handleSave = () => {
+    hapticFeedback('heavy')
+    const updated = passwords.filter((p) => p.date !== today)
+    updated.push({ date: today, password, countersign })
+    setPasswords(updated)
+    setIsEditing(false)
+  }
+
+  const previousPasswords = passwords
+    .filter((p) => p.date !== today)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 7)
+
   return (
-    <div className="border-t border-border/50 bg-amber-500/[0.04]">
-      <button
-        onClick={onToggle}
-        className="w-full px-4 py-3 flex items-center justify-between min-h-[48px] active:bg-amber-500/10 transition-colors"
-      >
-        <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-md bg-amber-500/15 flex items-center justify-center">
-            {isVisible ? (
-              <EyeOff className="h-3 w-3 text-amber-500" />
-            ) : (
-              <Eye className="h-3 w-3 text-amber-500" />
+    <>
+      <div className="glass-card rounded-2xl p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center">
+              <Lock className="h-4 w-4 text-amber-500" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-foreground">Σύνθημα Ημέρας</h2>
+              <p className="text-[10px] text-muted-foreground">{formatGreekDate(today)}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-0.5">
+            <button
+              onClick={() => {
+                hapticFeedback('light')
+                setShowPassword(!showPassword)
+              }}
+              className="p-2.5 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center active:bg-secondary transition-colors"
+              aria-label={showPassword ? 'Απόκρυψη' : 'Εμφάνιση'}
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <Eye className="h-4 w-4 text-muted-foreground" />
+              )}
+            </button>
+            {!isEditing && (
+              <button
+                onClick={() => {
+                  hapticFeedback('light')
+                  setIsEditing(true)
+                }}
+                className="p-2.5 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center active:bg-secondary transition-colors"
+                aria-label="Επεξεργασία"
+              >
+                <Edit3 className="h-4 w-4 text-primary" />
+              </button>
             )}
           </div>
-          <span className="text-xs font-semibold text-amber-500">Σύνθημα / Παρασύνθημα</span>
         </div>
-        <ChevronRight className={cn(
-          'h-4 w-4 text-amber-500/60 transition-transform duration-200',
-          isVisible && 'rotate-90'
-        )} />
-      </button>
 
-      {isVisible && (
-        <div className="px-4 pb-3.5 flex gap-2.5">
-          <div className="flex-1 p-2.5 rounded-xl bg-secondary/80">
-            <p className="text-[9px] text-muted-foreground uppercase tracking-wider font-medium mb-0.5">Σύνθημα</p>
-            <p className="text-sm font-mono font-bold text-foreground">{password || '---'}</p>
+        {isEditing ? (
+          <div className="flex flex-col gap-3">
+            <div>
+              <label className="block text-[11px] text-muted-foreground font-medium mb-1.5 uppercase tracking-wider">Σύνθημα</label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Εισαγωγή συνθήματος..."
+                className="w-full px-3 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] text-muted-foreground font-medium mb-1.5 uppercase tracking-wider">Παρασύνθημα</label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={countersign}
+                onChange={(e) => setCountersign(e.target.value)}
+                placeholder="Εισαγωγή παρασυνθήματος..."
+                className="w-full px-3 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
+              />
+            </div>
+            <div className="flex gap-2.5 pt-1">
+              <button
+                onClick={() => {
+                  setIsEditing(false)
+                  setPassword(todayPassword?.password || '')
+                  setCountersign(todayPassword?.countersign || '')
+                }}
+                className="flex-1 py-3 rounded-xl bg-secondary text-secondary-foreground font-semibold text-sm min-h-[48px] flex items-center justify-center gap-1.5 active:scale-[0.97] transition-transform"
+              >
+                <X className="h-4 w-4" />
+                Ακύρωση
+              </button>
+              <button
+                onClick={handleSave}
+                className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm min-h-[48px] flex items-center justify-center gap-1.5 active:scale-[0.97] transition-transform"
+              >
+                <Check className="h-4 w-4" />
+                Αποθήκευση
+              </button>
+            </div>
           </div>
-          <div className="flex-1 p-2.5 rounded-xl bg-secondary/80">
-            <p className="text-[9px] text-muted-foreground uppercase tracking-wider font-medium mb-0.5">Παρασύνθημα</p>
-            <p className="text-sm font-mono font-bold text-foreground">{countersign || '---'}</p>
+        ) : (
+          <div className="flex gap-2.5">
+            <div className="flex-1 p-3 rounded-xl bg-secondary/80">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium mb-1">Σύνθημα</p>
+              <p className={cn('text-sm font-mono font-bold', showPassword ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
+                {password || '---'}
+              </p>
+            </div>
+            <div className="flex-1 p-3 rounded-xl bg-secondary/80">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium mb-1">Παρασύνθημα</p>
+              <p className={cn('text-sm font-mono font-bold', showPassword ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
+                {countersign || '---'}
+              </p>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {/* Show history toggle */}
+        {previousPasswords.length > 0 && !isEditing && (
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setShowHistory(!showHistory)
+            }}
+            className="w-full mt-3 py-2 text-[11px] text-muted-foreground font-medium active:text-foreground transition-colors text-center"
+          >
+            {showHistory ? 'Απόκρυψη ιστορικού' : `Ιστορικό (${previousPasswords.length})`}
+          </button>
+        )}
+
+        {showHistory && previousPasswords.length > 0 && (
+          <div className="flex flex-col gap-1.5 mt-2 pt-3 border-t border-border/50">
+            {previousPasswords.map((p) => (
+              <div key={p.date} className="flex items-center justify-between py-2 px-2.5 rounded-lg bg-secondary/40">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-muted-foreground">{formatGreekDate(p.date)}</p>
+                  <p className="text-xs font-mono font-semibold text-foreground mt-0.5 truncate">
+                    {showPassword ? p.password : '****'} / {showPassword ? p.countersign : '****'}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    hapticFeedback('medium')
+                    setPasswords(passwords.filter((pw) => pw.date !== p.date))
+                  }}
+                  className="p-2 rounded-xl min-h-[40px] min-w-[40px] flex items-center justify-center text-destructive/60 active:text-destructive transition-colors"
+                  aria-label="Διαγραφή"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 
