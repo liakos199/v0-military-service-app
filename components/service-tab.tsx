@@ -5,6 +5,7 @@ import { Settings, Plus, Trash2, Clock, CalendarDays, Percent } from 'lucide-rea
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
+import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, daysBetween, toLocalDateString } from '@/lib/helpers'
 import type { ServiceConfig, LeaveEntry, LeaveType } from '@/lib/types'
 import { LEAVE_TYPE_LABELS } from '@/lib/types'
@@ -34,6 +35,8 @@ export function ServiceTab() {
       })()
     : ''
 
+  const circumference = 2 * Math.PI * 70
+
   return (
     <div className="flex flex-col gap-4 pb-4">
       {/* Header */}
@@ -45,7 +48,7 @@ export function ServiceTab() {
         <button
           onClick={() => {
             hapticFeedback('light')
-            setShowConfig(!showConfig)
+            setShowConfig(true)
           }}
           className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Ρυθμίσεις θητείας"
@@ -54,10 +57,13 @@ export function ServiceTab() {
         </button>
       </div>
 
-      {/* Config Panel */}
-      {showConfig && (
-        <div className="glass-card rounded-xl p-4 flex flex-col gap-3">
-          <h2 className="text-sm font-semibold text-foreground">Ρυθμίσεις Θητείας</h2>
+      {/* Config Modal */}
+      <FullscreenModal
+        isOpen={showConfig}
+        onClose={() => setShowConfig(false)}
+        title="Ρυθμίσεις Θητείας"
+      >
+        <div className="flex flex-col gap-4">
           <GreekDatePicker
             value={config.enlistmentDate}
             onChange={(d) => setConfig({ ...config, enlistmentDate: d })}
@@ -83,7 +89,7 @@ export function ServiceTab() {
             Αποθήκευση
           </button>
         </div>
-      )}
+      </FullscreenModal>
 
       {/* Main Progress Ring */}
       <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-4">
@@ -92,19 +98,19 @@ export function ServiceTab() {
             <circle
               cx="80" cy="80" r="70"
               fill="none"
-              stroke="oklch(0.22 0.01 155)"
+              stroke="oklch(0.21 0.003 250)"
               strokeWidth="10"
             />
             <circle
               cx="80" cy="80" r="70"
               fill="none"
-              stroke="oklch(0.65 0.14 145)"
+              stroke="oklch(0.78 0.12 80)"
               strokeWidth="10"
               strokeLinecap="round"
-              strokeDasharray={`${(percentage / 100) * 2 * Math.PI * 70} ${2 * Math.PI * 70}`}
+              strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
               className="transition-all duration-1000 ease-out"
               style={{
-                filter: 'drop-shadow(0 0 6px oklch(0.65 0.14 145 / 0.5))',
+                filter: 'drop-shadow(0 0 8px oklch(0.78 0.12 80 / 0.5))',
               }}
             />
           </svg>
@@ -134,7 +140,7 @@ export function ServiceTab() {
         <button
           onClick={() => {
             hapticFeedback('light')
-            setShowAddLeave(!showAddLeave)
+            setShowAddLeave(true)
           }}
           className="p-2.5 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Προσθήκη άδειας"
@@ -143,7 +149,12 @@ export function ServiceTab() {
         </button>
       </div>
 
-      {showAddLeave && (
+      {/* Add Leave Modal */}
+      <FullscreenModal
+        isOpen={showAddLeave}
+        onClose={() => setShowAddLeave(false)}
+        title="Νέα Άδεια"
+      >
         <AddLeaveForm
           onAdd={(leave) => {
             setLeaves([leave, ...leaves])
@@ -151,7 +162,7 @@ export function ServiceTab() {
           }}
           onCancel={() => setShowAddLeave(false)}
         />
-      )}
+      </FullscreenModal>
 
       {leaves.length === 0 ? (
         <div className="glass-card rounded-xl p-6 text-center">
@@ -233,9 +244,7 @@ function AddLeaveForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="glass-card rounded-xl p-4 flex flex-col gap-3">
-      <h3 className="text-sm font-semibold text-foreground">Νέα Άδεια</h3>
-
+    <div className="flex flex-col gap-4">
       <div>
         <label className="block text-xs text-muted-foreground mb-1.5">Τύπος</label>
         <div className="flex flex-wrap gap-2">
@@ -264,7 +273,7 @@ function AddLeaveForm({ onAdd, onCancel }: {
       <GreekDatePicker value={endDate} onChange={setEndDate} label="Έως" />
 
       {days > 0 && (
-        <div className="text-center py-1.5 rounded-lg bg-primary/10">
+        <div className="text-center py-2 rounded-lg bg-primary/10">
           <span className="text-sm font-semibold text-primary">{days} ημέρες</span>
         </div>
       )}
@@ -280,7 +289,7 @@ function AddLeaveForm({ onAdd, onCancel }: {
         />
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
           className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"

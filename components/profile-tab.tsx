@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Plus, Trash2, User, Users, ChevronDown, ChevronUp, Edit3, Check, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
+import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, generateId } from '@/lib/helpers'
 import type { ProfileData, SuperiorEntry } from '@/lib/types'
 import { RANKS, BLOOD_TYPES } from '@/lib/types'
@@ -130,139 +131,143 @@ function ProfileSection() {
   }
 
   return (
-    <div className="glass-card rounded-2xl p-5 flex flex-col gap-3">
-      <h2 className="text-sm font-semibold text-foreground">Επεξεργασία Προφίλ</h2>
-
-      <FormField
-        label="Ονοματεπώνυμο"
-        value={form.fullName}
-        onChange={(v) => setForm({ ...form, fullName: v })}
-      />
-
-      <FormField
-        label="Αριθμός Μητρώου"
-        value={form.serviceNumber}
-        onChange={(v) => setForm({ ...form, serviceNumber: v })}
-      />
-
-      <div className="grid grid-cols-2 gap-3">
+    <FullscreenModal
+      isOpen={isEditing}
+      onClose={() => setIsEditing(false)}
+      title="Επεξεργασία Προφίλ"
+    >
+      <div className="flex flex-col gap-4">
         <FormField
-          label="Λόχος"
-          value={form.company}
-          onChange={(v) => setForm({ ...form, company: v })}
+          label="Ονοματεπώνυμο"
+          value={form.fullName}
+          onChange={(v) => setForm({ ...form, fullName: v })}
         />
+
         <FormField
-          label="Θάλαμος"
-          value={form.barracks}
-          onChange={(v) => setForm({ ...form, barracks: v })}
+          label="Αριθμός Μητρώου"
+          value={form.serviceNumber}
+          onChange={(v) => setForm({ ...form, serviceNumber: v })}
         />
-      </div>
 
-      {/* Rank Selector */}
-      <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Βαθμός</label>
-        <button
-          type="button"
-          onClick={() => {
-            hapticFeedback('light')
-            setShowRanks(!showRanks)
-          }}
-          className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
-        >
-          <span>{form.rank}</span>
-          {showRanks ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-        </button>
-        {showRanks && (
-          <div className="mt-1 max-h-48 overflow-y-auto rounded-lg bg-secondary border border-border">
-            {RANKS.map((r) => (
-              <button
-                key={r}
-                type="button"
-                onClick={() => {
-                  hapticFeedback('light')
-                  setForm({ ...form, rank: r })
-                  setShowRanks(false)
-                }}
-                className={cn(
-                  'w-full text-left px-3 py-2.5 text-sm min-h-[44px]',
-                  form.rank === r ? 'text-primary font-semibold bg-primary/10' : 'text-foreground'
-                )}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+        <div className="grid grid-cols-2 gap-3">
+          <FormField
+            label="Λόχος"
+            value={form.company}
+            onChange={(v) => setForm({ ...form, company: v })}
+          />
+          <FormField
+            label="Θάλαμος"
+            value={form.barracks}
+            onChange={(v) => setForm({ ...form, barracks: v })}
+          />
+        </div>
 
-      {/* Blood Type Selector */}
-      <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Ομάδα Αίματος</label>
-        <button
-          type="button"
-          onClick={() => {
-            hapticFeedback('light')
-            setShowBlood(!showBlood)
-          }}
-          className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
-        >
-          <span className={cn(!form.bloodType && 'text-muted-foreground')}>
-            {form.bloodType || 'Επίλεξε'}
-          </span>
-          {showBlood ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-        </button>
-        {showBlood && (
-          <div className="mt-1 grid grid-cols-4 gap-1 p-2 rounded-lg bg-secondary border border-border">
-            {BLOOD_TYPES.map((bt) => (
-              <button
-                key={bt}
-                type="button"
-                onClick={() => {
-                  hapticFeedback('light')
-                  setForm({ ...form, bloodType: bt })
-                  setShowBlood(false)
-                }}
-                className={cn(
-                  'py-2.5 rounded-lg text-sm font-medium min-h-[44px]',
-                  form.bloodType === bt
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground'
-                )}
-              >
-                {bt}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+        {/* Rank Selector */}
+        <div>
+          <label className="block text-xs text-muted-foreground mb-1.5">Βαθμός</label>
+          <button
+            type="button"
+            onClick={() => {
+              hapticFeedback('light')
+              setShowRanks(!showRanks)
+            }}
+            className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+          >
+            <span>{form.rank}</span>
+            {showRanks ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          </button>
+          {showRanks && (
+            <div className="mt-1 max-h-48 overflow-y-auto rounded-lg bg-secondary border border-border">
+              {RANKS.map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => {
+                    hapticFeedback('light')
+                    setForm({ ...form, rank: r })
+                    setShowRanks(false)
+                  }}
+                  className={cn(
+                    'w-full text-left px-3 py-2.5 text-sm min-h-[44px]',
+                    form.rank === r ? 'text-primary font-semibold bg-primary/10' : 'text-foreground'
+                  )}
+                >
+                  {r}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
-      <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Φράση Αναφοράς</label>
-        <textarea
-          value={form.reportingPhrase}
-          onChange={(e) => setForm({ ...form, reportingPhrase: e.target.value })}
-          placeholder="Π.χ. Στρατιώτης Παπαδόπουλος αναφέρομαι..."
-          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none placeholder:text-muted-foreground"
-        />
-      </div>
+        {/* Blood Type Selector */}
+        <div>
+          <label className="block text-xs text-muted-foreground mb-1.5">Ομάδα Αίματος</label>
+          <button
+            type="button"
+            onClick={() => {
+              hapticFeedback('light')
+              setShowBlood(!showBlood)
+            }}
+            className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+          >
+            <span className={cn(!form.bloodType && 'text-muted-foreground')}>
+              {form.bloodType || 'Επίλεξε'}
+            </span>
+            {showBlood ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          </button>
+          {showBlood && (
+            <div className="mt-1 grid grid-cols-4 gap-1 p-2 rounded-lg bg-secondary border border-border">
+              {BLOOD_TYPES.map((bt) => (
+                <button
+                  key={bt}
+                  type="button"
+                  onClick={() => {
+                    hapticFeedback('light')
+                    setForm({ ...form, bloodType: bt })
+                    setShowBlood(false)
+                  }}
+                  className={cn(
+                    'py-2.5 rounded-lg text-sm font-medium min-h-[44px]',
+                    form.bloodType === bt
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-foreground'
+                  )}
+                >
+                  {bt}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
-      <div className="flex gap-2">
-        <button
-          onClick={() => setIsEditing(false)}
-          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px] flex items-center justify-center gap-1"
-        >
-          <X className="h-4 w-4" />
-          Ακύρωση
-        </button>
-        <button
-          onClick={handleSave}
-          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] flex items-center justify-center gap-1"
-        >
-          <Check className="h-4 w-4" />
-          Αποθήκευση
-        </button>
+        <div>
+          <label className="block text-xs text-muted-foreground mb-1.5">Φράση Αναφοράς</label>
+          <textarea
+            value={form.reportingPhrase}
+            onChange={(e) => setForm({ ...form, reportingPhrase: e.target.value })}
+            placeholder="Π.χ. Στρατιώτης Παπαδόπουλος αναφέρομαι..."
+            className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none placeholder:text-muted-foreground"
+          />
+        </div>
+
+        <div className="flex gap-2 pt-2">
+          <button
+            onClick={() => setIsEditing(false)}
+            className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px] flex items-center justify-center gap-1"
+          >
+            <X className="h-4 w-4" />
+            Ακύρωση
+          </button>
+          <button
+            onClick={handleSave}
+            className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] flex items-center justify-center gap-1"
+          >
+            <Check className="h-4 w-4" />
+            Αποθήκευση
+          </button>
+        </div>
       </div>
-    </div>
+    </FullscreenModal>
   )
 }
 
@@ -277,7 +282,7 @@ function SuperiorsSection() {
         <button
           onClick={() => {
             hapticFeedback('light')
-            setShowAdd(!showAdd)
+            setShowAdd(true)
           }}
           className="p-2 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Προσθήκη ανωτέρου"
@@ -286,7 +291,12 @@ function SuperiorsSection() {
         </button>
       </div>
 
-      {showAdd && (
+      {/* Add Superior Modal */}
+      <FullscreenModal
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+        title="Νέος Ανώτερος"
+      >
         <AddSuperiorForm
           onAdd={(sup) => {
             setSuperiors([...superiors, sup])
@@ -294,7 +304,7 @@ function SuperiorsSection() {
           }}
           onCancel={() => setShowAdd(false)}
         />
-      )}
+      </FullscreenModal>
 
       {superiors.length === 0 ? (
         <div className="glass-card rounded-xl p-6 text-center">
@@ -347,9 +357,7 @@ function AddSuperiorForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="glass-card rounded-xl p-4 flex flex-col gap-3">
-      <h3 className="text-sm font-semibold text-foreground">Νέος Ανώτερος</h3>
-
+    <div className="flex flex-col gap-4">
       <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
 
       <div>
@@ -395,7 +403,7 @@ function AddSuperiorForm({ onAdd, onCancel }: {
         placeholder="Π.χ. Διοικητής Λόχου"
       />
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
           className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"

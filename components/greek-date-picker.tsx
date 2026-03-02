@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { GREEK_MONTHS, GREEK_DAYS_SHORT } from '@/lib/types'
+import { GREEK_MONTHS } from '@/lib/types'
 import { hapticFeedback } from '@/lib/helpers'
+import { FullscreenModal } from '@/components/fullscreen-modal'
 
 interface GreekDatePickerProps {
   value: string
@@ -20,7 +21,6 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
 
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
   const firstDayOfMonth = new Date(viewYear, viewMonth, 1).getDay()
-  // Adjust for Monday start: Monday=0, ..., Sunday=6
   const startDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1
 
   const prevMonth = () => {
@@ -57,12 +57,11 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
 
   const today = new Date()
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
-  
-  // Greek days start with Monday
+
   const greekDaysStartMonday = ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
 
   return (
-    <div className="relative">
+    <div>
       {label && (
         <label className="block text-xs text-muted-foreground mb-1.5">{label}</label>
       )}
@@ -70,46 +69,53 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
         type="button"
         onClick={() => {
           hapticFeedback('light')
-          setIsOpen(!isOpen)
+          setIsOpen(true)
         }}
         className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
       >
         <span className={cn(!value && 'text-muted-foreground')}>{displayText}</span>
-        <Calendar className="h-4 w-4 text-muted-foreground" />
+        <CalendarIcon className="h-4 w-4 text-muted-foreground" />
       </button>
 
-      {isOpen && (
-        <div className="absolute z-50 mt-1 left-0 right-0 glass-card rounded-xl p-3 shadow-xl border border-glass-border">
-          <div className="flex items-center justify-between mb-3">
+      <FullscreenModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Επιλογή Ημερομηνίας"
+      >
+        <div className="flex flex-col gap-4">
+          {/* Month navigation */}
+          <div className="flex items-center justify-between">
             <button
               type="button"
               onClick={prevMonth}
-              className="p-2 rounded-lg hover:bg-secondary min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center"
               aria-label="Προηγούμενος μήνας"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-5 w-5 text-foreground" />
             </button>
-            <span className="text-sm font-semibold">
+            <span className="text-lg font-semibold text-foreground">
               {GREEK_MONTHS[viewMonth]} {viewYear}
             </span>
             <button
               type="button"
               onClick={nextMonth}
-              className="p-2 rounded-lg hover:bg-secondary min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center"
               aria-label="Επόμενος μήνας"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-5 w-5 text-foreground" />
             </button>
           </div>
 
-          <div className="grid grid-cols-7 gap-1 mb-1">
+          {/* Day names */}
+          <div className="grid grid-cols-7 gap-1">
             {greekDaysStartMonday.map((d) => (
-              <div key={d} className="text-center text-[10px] text-muted-foreground font-medium py-1">
+              <div key={d} className="text-center text-xs text-muted-foreground font-medium py-2">
                 {d}
               </div>
             ))}
           </div>
 
+          {/* Calendar grid */}
           <div className="grid grid-cols-7 gap-1">
             {Array.from({ length: startDay }).map((_, i) => (
               <div key={`empty-${i}`} />
@@ -126,12 +132,12 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
                   type="button"
                   onClick={() => handleSelectDay(day)}
                   className={cn(
-                    'h-9 w-full rounded-lg text-xs flex items-center justify-center transition-colors',
+                    'aspect-square w-full rounded-xl text-sm flex items-center justify-center transition-colors min-h-[44px]',
                     isSelected
                       ? 'bg-primary text-primary-foreground font-bold'
                       : isToday
                         ? 'bg-secondary text-primary font-semibold ring-1 ring-primary'
-                        : 'hover:bg-secondary text-foreground'
+                        : 'text-foreground active:bg-secondary'
                   )}
                 >
                   {day}
@@ -139,13 +145,28 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
               )
             })}
           </div>
+
+          {/* Today shortcut */}
+          <button
+            type="button"
+            onClick={() => {
+              hapticFeedback('medium')
+              const now = new Date()
+              setViewMonth(now.getMonth())
+              setViewYear(now.getFullYear())
+              handleSelectDay(now.getDate())
+            }}
+            className="w-full py-3 rounded-xl bg-secondary text-foreground font-medium text-sm min-h-[48px]"
+          >
+            Σήμερα
+          </button>
         </div>
-      )}
+      </FullscreenModal>
     </div>
   )
 }
 
-function Calendar(props: React.SVGProps<SVGSVGElement> & { className?: string }) {
+function CalendarIcon(props: React.SVGProps<SVGSVGElement> & { className?: string }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
       <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />

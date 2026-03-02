@@ -47,7 +47,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                   : 'text-muted-foreground active:scale-95'
               )}
             >
-              <Icon className={cn('h-5 w-5', isActive && 'drop-shadow-[0_0_8px_oklch(0.65_0.14_145)]')} strokeWidth={isActive ? 2.5 : 1.5} />
+              <Icon className={cn('h-5 w-5', isActive && 'drop-shadow-[0_0_8px_oklch(0.78_0.12_80)]')} strokeWidth={isActive ? 2.5 : 1.5} />
               <span className={cn('text-[10px] leading-tight', isActive ? 'font-semibold' : 'font-normal')}>
                 {tab.label}
               </span>

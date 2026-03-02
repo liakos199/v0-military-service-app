@@ -5,6 +5,7 @@ import { Plus, Trash2, Bell, BellOff, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
+import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { DutyEntry, DutyType } from '@/lib/types'
 import { DUTY_TYPE_LABELS } from '@/lib/types'
@@ -30,7 +31,6 @@ export function DutiesTab() {
     }
   }
 
-  // Schedule notifications for upcoming duties
   useEffect(() => {
     if (!notificationsEnabled) return
 
@@ -38,7 +38,7 @@ export function DutiesTab() {
 
     duties.forEach((duty) => {
       const dutyTime = new Date(`${duty.date}T${duty.startTime}`)
-      const notifyTime = new Date(dutyTime.getTime() - 30 * 60 * 1000) // 30 min before
+      const notifyTime = new Date(dutyTime.getTime() - 30 * 60 * 1000)
       const now = new Date()
 
       if (notifyTime > now) {
@@ -55,7 +55,6 @@ export function DutiesTab() {
     return () => timers.forEach(clearTimeout)
   }, [duties, notificationsEnabled])
 
-  // Group duties by date
   const groupedDuties = duties
     .sort((a, b) => {
       const dateCompare = a.date.localeCompare(b.date)
@@ -96,7 +95,7 @@ export function DutiesTab() {
           <button
             onClick={() => {
               hapticFeedback('light')
-              setShowAdd(!showAdd)
+              setShowAdd(true)
             }}
             className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Προσθήκη υπηρεσίας"
@@ -106,8 +105,12 @@ export function DutiesTab() {
         </div>
       </div>
 
-      {/* Add Duty Form */}
-      {showAdd && (
+      {/* Add Duty Modal */}
+      <FullscreenModal
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+        title="Νέα Υπηρεσία"
+      >
         <AddDutyForm
           onAdd={(duty) => {
             setDuties([...duties, duty])
@@ -115,7 +118,7 @@ export function DutiesTab() {
           }}
           onCancel={() => setShowAdd(false)}
         />
-      )}
+      </FullscreenModal>
 
       {/* Duties List */}
       {sortedDates.length === 0 ? (
@@ -215,9 +218,7 @@ function AddDutyForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="glass-card rounded-xl p-4 flex flex-col gap-3">
-      <h3 className="text-sm font-semibold text-foreground">Νέα Υπηρεσία</h3>
-
+    <div className="flex flex-col gap-4">
       <div>
         <label className="block text-xs text-muted-foreground mb-1.5">Τύπος</label>
         <div className="flex flex-wrap gap-2">
@@ -276,7 +277,7 @@ function AddDutyForm({ onAdd, onCancel }: {
         />
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
           className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Plus, Trash2, Lock, FileText, Eye, EyeOff, Edit3, Check, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
+import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { NoteEntry, DailyPassword } from '@/lib/types'
 
@@ -237,7 +238,7 @@ function NotesSection() {
         <button
           onClick={() => {
             hapticFeedback('light')
-            setShowAdd(!showAdd)
+            setShowAdd(true)
           }}
           className="p-2 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Νέα σημείωση"
@@ -246,9 +247,14 @@ function NotesSection() {
         </button>
       </div>
 
-      {showAdd && (
+      {/* Add Note Modal */}
+      <FullscreenModal
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+        title="Νέα Σημείωση"
+      >
         <AddNoteForm onAdd={handleAdd} onCancel={() => setShowAdd(false)} />
-      )}
+      </FullscreenModal>
 
       {notes.length === 0 ? (
         <div className="glass-card rounded-xl p-6 text-center">
@@ -326,13 +332,12 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (content: string) => void; on
   const [content, setContent] = useState('')
 
   return (
-    <div className="glass-card rounded-xl p-4 flex flex-col gap-3">
-      <h3 className="text-sm font-semibold text-foreground">Νέα Σημείωση</h3>
+    <div className="flex flex-col gap-4">
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Γράψε εδώ..."
-        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[100px] border border-border resize-none placeholder:text-muted-foreground"
+        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[200px] border border-border resize-none placeholder:text-muted-foreground"
         autoFocus
       />
       <div className="flex gap-2">

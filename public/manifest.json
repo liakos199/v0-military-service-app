@@ -4,8 +4,8 @@
   "description": "Η πλήρης εφαρμογή για τη στρατιωτική σου θητεία",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a2e1a",
-  "theme_color": "#1a2e1a",
+  "background_color": "#1c1c22",
+  "theme_color": "#1c1c22",
   "orientation": "portrait",
   "icons": [
     {

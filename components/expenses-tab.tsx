@@ -5,6 +5,7 @@ import { Plus, Trash2, Receipt, ShoppingCart, Store } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
+import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { ExpenseEntry } from '@/lib/types'
 import { EXPENSE_CATEGORY_LABELS } from '@/lib/types'
@@ -31,7 +32,7 @@ export function ExpensesTab() {
         <button
           onClick={() => {
             hapticFeedback('light')
-            setShowAdd(!showAdd)
+            setShowAdd(true)
           }}
           className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Προσθήκη εξόδου"
@@ -59,8 +60,12 @@ export function ExpensesTab() {
         </div>
       </div>
 
-      {/* Add Form */}
-      {showAdd && (
+      {/* Add Expense Modal */}
+      <FullscreenModal
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+        title="Νέο Έξοδο"
+      >
         <AddExpenseForm
           onAdd={(expense) => {
             setExpenses([expense, ...expenses])
@@ -68,7 +73,7 @@ export function ExpensesTab() {
           }}
           onCancel={() => setShowAdd(false)}
         />
-      )}
+      </FullscreenModal>
 
       {/* Expense List */}
       {expenses.length === 0 ? (
@@ -147,9 +152,7 @@ function AddExpenseForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="glass-card rounded-xl p-4 flex flex-col gap-3">
-      <h3 className="text-sm font-semibold text-foreground">Νέο Έξοδο</h3>
-
+    <div className="flex flex-col gap-4">
       <div>
         <label className="block text-xs text-muted-foreground mb-1.5">Κατηγορία</label>
         <div className="flex gap-2">
@@ -201,7 +204,7 @@ function AddExpenseForm({ onAdd, onCancel }: {
         />
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
           className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
