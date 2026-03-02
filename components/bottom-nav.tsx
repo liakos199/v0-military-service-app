@@ -4,7 +4,7 @@ import { Shield, Calendar, FileText, User, Wallet } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { hapticFeedback } from '@/lib/helpers'
 
-export type TabId = 'service' | 'duties' | 'notes' | 'profile' | 'expenses'
+export type TabId = 'service' | 'calendar' | 'notes' | 'profile' | 'expenses'
 
 interface BottomNavProps {
   activeTab: TabId
@@ -13,7 +13,7 @@ interface BottomNavProps {
 
 const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
   { id: 'service', label: 'Θητεία', icon: Shield },
-  { id: 'duties', label: 'Υπηρεσίες', icon: Calendar },
+  { id: 'calendar', label: 'Ημερολόγιο', icon: Calendar },
   { id: 'notes', label: 'Σημειώσεις', icon: FileText },
   { id: 'profile', label: 'Προφίλ', icon: User },
   { id: 'expenses', label: 'Έξοδα', icon: Wallet },
