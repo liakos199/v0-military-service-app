@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Settings, Plus, Trash2, Clock, CalendarDays, Percent } from 'lucide-react'
+import { Settings, Plus, Trash2, Clock, CalendarDays, Percent, Eye, EyeOff, Edit3, Check, X, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { BottomSheet } from '@/components/bottom-sheet'
 import { hapticFeedback, formatGreekDate, generateId, daysBetween, toLocalDateString } from '@/lib/helpers'
-import type { ServiceConfig, LeaveEntry, LeaveType } from '@/lib/types'
+import type { ServiceConfig, LeaveEntry, LeaveType, DailyPassword } from '@/lib/types'
 import { LEAVE_TYPE_LABELS, SERVICE_DURATION_PRESETS } from '@/lib/types'
 
 export function ServiceTab() {
@@ -42,8 +42,8 @@ export function ServiceTab() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-foreground text-balance">Λελέμετρο</h1>
-          <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση θητείας</p>
+          <h1 className="text-xl font-bold text-foreground text-balance">Θητεία</h1>
+          <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση & σύνθημα</p>
         </div>
         <button
           onClick={() => {
@@ -112,6 +112,9 @@ export function ServiceTab() {
           </button>
         </div>
       </BottomSheet>
+
+      {/* Daily Password Section */}
+      <PasswordSection />
 
       {/* Main Progress Ring */}
       <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-5">
@@ -228,6 +231,183 @@ export function ServiceTab() {
   )
 }
 
+/* ────────────────────────────────────────────
+   Password / Σύνθημα Section (moved from notes)
+   ──────────────────────────────────────────── */
+
+function PasswordSection() {
+  const today = toLocalDateString()
+  const [passwords, setPasswords] = useLocalStorage<DailyPassword[]>('fantaros-passwords', [])
+  const [showPassword, setShowPassword] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
+
+  const todayPassword = passwords.find((p) => p.date === today)
+  const [password, setPassword] = useState(todayPassword?.password || '')
+  const [countersign, setCountersign] = useState(todayPassword?.countersign || '')
+  const [isEditing, setIsEditing] = useState(!todayPassword)
+
+  const handleSave = () => {
+    hapticFeedback('heavy')
+    const updated = passwords.filter((p) => p.date !== today)
+    updated.push({ date: today, password, countersign })
+    setPasswords(updated)
+    setIsEditing(false)
+  }
+
+  const previousPasswords = passwords
+    .filter((p) => p.date !== today)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 7)
+
+  return (
+    <>
+      <div className="glass-card rounded-2xl p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center">
+              <Lock className="h-4 w-4 text-amber-500" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-foreground">Σύνθημα Ημέρας</h2>
+              <p className="text-[10px] text-muted-foreground">{formatGreekDate(today)}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-0.5">
+            <button
+              onClick={() => {
+                hapticFeedback('light')
+                setShowPassword(!showPassword)
+              }}
+              className="p-2.5 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center active:bg-secondary transition-colors"
+              aria-label={showPassword ? 'Απόκρυψη' : 'Εμφάνιση'}
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <Eye className="h-4 w-4 text-muted-foreground" />
+              )}
+            </button>
+            {!isEditing && (
+              <button
+                onClick={() => {
+                  hapticFeedback('light')
+                  setIsEditing(true)
+                }}
+                className="p-2.5 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center active:bg-secondary transition-colors"
+                aria-label="Επεξεργασία"
+              >
+                <Edit3 className="h-4 w-4 text-primary" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {isEditing ? (
+          <div className="flex flex-col gap-3">
+            <div>
+              <label className="block text-[11px] text-muted-foreground font-medium mb-1.5 uppercase tracking-wider">Σύνθημα</label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Εισαγωγή συνθήματος..."
+                className="w-full px-3 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] text-muted-foreground font-medium mb-1.5 uppercase tracking-wider">Παρασύνθημα</label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={countersign}
+                onChange={(e) => setCountersign(e.target.value)}
+                placeholder="Εισαγωγή παρασυνθήματος..."
+                className="w-full px-3 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
+              />
+            </div>
+            <div className="flex gap-2.5 pt-1">
+              <button
+                onClick={() => {
+                  setIsEditing(false)
+                  setPassword(todayPassword?.password || '')
+                  setCountersign(todayPassword?.countersign || '')
+                }}
+                className="flex-1 py-3 rounded-xl bg-secondary text-secondary-foreground font-semibold text-sm min-h-[48px] flex items-center justify-center gap-1.5 active:scale-[0.97] transition-transform"
+              >
+                <X className="h-4 w-4" />
+                Ακύρωση
+              </button>
+              <button
+                onClick={handleSave}
+                className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm min-h-[48px] flex items-center justify-center gap-1.5 active:scale-[0.97] transition-transform"
+              >
+                <Check className="h-4 w-4" />
+                Αποθήκευση
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex gap-2.5">
+            <div className="flex-1 p-3 rounded-xl bg-secondary/80">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium mb-1">Σύνθημα</p>
+              <p className={cn('text-sm font-mono font-bold', showPassword ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
+                {password || '---'}
+              </p>
+            </div>
+            <div className="flex-1 p-3 rounded-xl bg-secondary/80">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium mb-1">Παρασύνθημα</p>
+              <p className={cn('text-sm font-mono font-bold', showPassword ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
+                {countersign || '---'}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Show history toggle */}
+        {previousPasswords.length > 0 && !isEditing && (
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setShowHistory(!showHistory)
+            }}
+            className="w-full mt-3 py-2 text-[11px] text-muted-foreground font-medium active:text-foreground transition-colors text-center"
+          >
+            {showHistory ? 'Απόκρυψη ιστορικού' : `Ιστορικό (${previousPasswords.length})`}
+          </button>
+        )}
+
+        {showHistory && previousPasswords.length > 0 && (
+          <div className="flex flex-col gap-1.5 mt-2 pt-3 border-t border-border/50">
+            {previousPasswords.map((p) => (
+              <div key={p.date} className="flex items-center justify-between py-2 px-2.5 rounded-lg bg-secondary/40">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-muted-foreground">{formatGreekDate(p.date)}</p>
+                  <p className="text-xs font-mono font-semibold text-foreground mt-0.5 truncate">
+                    {showPassword ? p.password : '****'} / {showPassword ? p.countersign : '****'}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    hapticFeedback('medium')
+                    setPasswords(passwords.filter((pw) => pw.date !== p.date))
+                  }}
+                  className="p-2 rounded-xl min-h-[40px] min-w-[40px] flex items-center justify-center text-destructive/60 active:text-destructive transition-colors"
+                  aria-label="Διαγραφή"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
+/* ────────────────────────────────────────────
+   Stat Card
+   ──────────────────────────────────────────── */
+
 function StatCard({ icon: Icon, label, value, unit, accent }: {
   icon: typeof Clock
   label: string
@@ -246,6 +426,10 @@ function StatCard({ icon: Icon, label, value, unit, accent }: {
     </div>
   )
 }
+
+/* ────────────────────────────────────────────
+   Add Leave Form
+   ──────────────────────────────────────────── */
 
 function AddLeaveForm({ onAdd, onCancel }: {
   onAdd: (leave: LeaveEntry) => void

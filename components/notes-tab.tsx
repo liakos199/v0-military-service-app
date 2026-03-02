@@ -1,40 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Trash2, Lock, FileText, Eye, EyeOff, Edit3, Check, X } from 'lucide-react'
+import { Plus, Trash2, FileText, Edit3, Check, X, BookOpen, ChevronDown, Star, Radio, Heart, Award } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { BottomSheet } from '@/components/bottom-sheet'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
-import type { NoteEntry, DailyPassword } from '@/lib/types'
+import type { NoteEntry } from '@/lib/types'
 
 export function NotesTab() {
-  const [activeSection, setActiveSection] = useState<'password' | 'notes'>('password')
+  const [activeSection, setActiveSection] = useState<'notes' | 'manuals'>('notes')
 
   return (
     <div className="flex flex-col gap-5 pb-4">
       <div>
         <h1 className="text-xl font-bold text-foreground text-balance">Σημειώσεις</h1>
-        <p className="text-xs text-muted-foreground">Κωδικοί & προσωπικά σημειώματα</p>
+        <p className="text-xs text-muted-foreground">Σημειώματα & στρατιωτικά εγχειρίδια</p>
       </div>
 
       {/* Section Toggle */}
       <div className="flex gap-1.5 p-1 rounded-2xl bg-secondary/80">
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setActiveSection('password')
-          }}
-          className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold min-h-[44px] transition-all',
-            activeSection === 'password'
-              ? 'bg-primary text-primary-foreground shadow-sm'
-              : 'text-muted-foreground active:bg-secondary'
-          )}
-        >
-          <Lock className="h-4 w-4" />
-          Σύνθημα
-        </button>
         <button
           onClick={() => {
             hapticFeedback('light')
@@ -50,165 +35,31 @@ export function NotesTab() {
           <FileText className="h-4 w-4" />
           Σημειώσεις
         </button>
+        <button
+          onClick={() => {
+            hapticFeedback('light')
+            setActiveSection('manuals')
+          }}
+          className={cn(
+            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold min-h-[44px] transition-all',
+            activeSection === 'manuals'
+              ? 'bg-primary text-primary-foreground shadow-sm'
+              : 'text-muted-foreground active:bg-secondary'
+          )}
+        >
+          <BookOpen className="h-4 w-4" />
+          Εγχειρίδια
+        </button>
       </div>
 
-      {activeSection === 'password' ? <PasswordSection /> : <NotesSection />}
+      {activeSection === 'notes' ? <NotesSection /> : <ManualsSection />}
     </div>
   )
 }
 
-function PasswordSection() {
-  const today = toLocalDateString()
-  const [passwords, setPasswords] = useLocalStorage<DailyPassword[]>('fantaros-passwords', [])
-  const [showPassword, setShowPassword] = useState(false)
-
-  const todayPassword = passwords.find((p) => p.date === today)
-  const [password, setPassword] = useState(todayPassword?.password || '')
-  const [countersign, setCountersign] = useState(todayPassword?.countersign || '')
-  const [isEditing, setIsEditing] = useState(!todayPassword)
-
-  const handleSave = () => {
-    hapticFeedback('heavy')
-    const updated = passwords.filter((p) => p.date !== today)
-    updated.push({ date: today, password, countersign })
-    setPasswords(updated)
-    setIsEditing(false)
-  }
-
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="glass-card rounded-2xl p-5">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-sm font-bold text-foreground">Σημερινός Κωδικός</h2>
-            <p className="text-[10px] text-muted-foreground mt-0.5">{formatGreekDate(today)}</p>
-          </div>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => {
-                hapticFeedback('light')
-                setShowPassword(!showPassword)
-              }}
-              className="p-2.5 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center active:bg-secondary transition-colors"
-              aria-label={showPassword ? 'Απόκρυψη' : 'Εμφάνιση'}
-            >
-              {showPassword ? (
-                <EyeOff className="h-4.5 w-4.5 text-muted-foreground" />
-              ) : (
-                <Eye className="h-4.5 w-4.5 text-muted-foreground" />
-              )}
-            </button>
-            {!isEditing && (
-              <button
-                onClick={() => {
-                  hapticFeedback('light')
-                  setIsEditing(true)
-                }}
-                className="p-2.5 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center active:bg-secondary transition-colors"
-                aria-label="Επεξεργασία"
-              >
-                <Edit3 className="h-4.5 w-4.5 text-primary" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {isEditing ? (
-          <div className="flex flex-col gap-3">
-            <div>
-              <label className="block text-[11px] text-muted-foreground font-medium mb-1.5 uppercase tracking-wider">Σύνθημα</label>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Εισαγωγή συνθήματος..."
-                className="w-full px-3 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
-              />
-            </div>
-            <div>
-              <label className="block text-[11px] text-muted-foreground font-medium mb-1.5 uppercase tracking-wider">Παρασύνθημα</label>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={countersign}
-                onChange={(e) => setCountersign(e.target.value)}
-                placeholder="Εισαγωγή παρασυνθήματος..."
-                className="w-full px-3 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
-              />
-            </div>
-            <div className="flex gap-2.5 pt-1">
-              <button
-                onClick={() => {
-                  setIsEditing(false)
-                  setPassword(todayPassword?.password || '')
-                  setCountersign(todayPassword?.countersign || '')
-                }}
-                className="flex-1 py-3 rounded-xl bg-secondary text-secondary-foreground font-semibold text-sm min-h-[48px] flex items-center justify-center gap-1.5 active:scale-[0.97] transition-transform"
-              >
-                <X className="h-4 w-4" />
-                Ακύρωση
-              </button>
-              <button
-                onClick={handleSave}
-                className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-sm min-h-[48px] flex items-center justify-center gap-1.5 active:scale-[0.97] transition-transform"
-              >
-                <Check className="h-4 w-4" />
-                Αποθήκευση
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2.5">
-            <div className="p-3.5 rounded-xl bg-secondary/80">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium mb-1.5">Σύνθημα</p>
-              <p className={cn('text-base font-mono font-bold', showPassword ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
-                {password || '---'}
-              </p>
-            </div>
-            <div className="p-3.5 rounded-xl bg-secondary/80">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium mb-1.5">Παρασύνθημα</p>
-              <p className={cn('text-base font-mono font-bold', showPassword ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
-                {countersign || '---'}
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Previous Passwords */}
-      {passwords.filter((p) => p.date !== today).length > 0 && (
-        <div>
-          <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2.5">Προηγούμενοι</h3>
-          <div className="flex flex-col gap-2">
-            {passwords
-              .filter((p) => p.date !== today)
-              .sort((a, b) => b.date.localeCompare(a.date))
-              .slice(0, 7)
-              .map((p) => (
-                <div key={p.date} className="glass-card rounded-2xl p-3.5 flex items-center justify-between">
-                  <div>
-                    <p className="text-[11px] text-muted-foreground">{formatGreekDate(p.date)}</p>
-                    <p className="text-sm font-mono font-semibold text-foreground mt-0.5">
-                      {showPassword ? p.password : '****'} / {showPassword ? p.countersign : '****'}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      hapticFeedback('medium')
-                      setPasswords(passwords.filter((pw) => pw.date !== p.date))
-                    }}
-                    className="p-2.5 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive/70 active:text-destructive active:bg-destructive/10 transition-colors"
-                    aria-label="Διαγραφή"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
+/* ────────────────────────────────────────────
+   Personal Notes Section
+   ──────────────────────────────────────────── */
 
 function NotesSection() {
   const [notes, setNotes] = useLocalStorage<NoteEntry[]>('fantaros-notes', [])
@@ -330,6 +181,10 @@ function NotesSection() {
   )
 }
 
+/* ────────────────────────────────────────────
+   Add Note Form
+   ──────────────────────────────────────────── */
+
 function AddNoteForm({ onAdd, onCancel }: { onAdd: (content: string) => void; onCancel: () => void }) {
   const [content, setContent] = useState('')
 
@@ -357,6 +212,243 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (content: string) => void; on
           Προσθήκη
         </button>
       </div>
+    </div>
+  )
+}
+
+/* ────────────────────────────────────────────
+   Military Manuals Section
+   ──────────────────────────────────────────── */
+
+interface ManualSection {
+  id: string
+  title: string
+  subtitle: string
+  icon: typeof Star
+  iconBg: string
+  iconColor: string
+  content: ManualContentBlock[]
+}
+
+interface ManualContentBlock {
+  heading?: string
+  note?: string
+  items: { label: string; detail: string }[]
+}
+
+const MANUALS: ManualSection[] = [
+  {
+    id: 'ranks',
+    title: 'Στρατιωτικοί Βαθμοί',
+    subtitle: 'Στρατός Ξηράς',
+    icon: Award,
+    iconBg: 'bg-amber-500/15',
+    iconColor: 'text-amber-500',
+    content: [
+      {
+        heading: 'Υπαξιωματικοί',
+        note: 'Δεν χαιρετάμε, στεκόμαστε προσοχή',
+        items: [
+          { label: 'Δεκανέας', detail: '1 γαλόνι (V)' },
+          { label: 'Λοχίας', detail: '2 γαλόνια' },
+          { label: 'Επιλοχίας', detail: '3 γαλόνια' },
+          { label: 'Αρχιλοχίας', detail: '4 γαλόνια' },
+        ],
+      },
+      {
+        heading: 'Κατώτεροι Αξιωματικοί',
+        note: 'Χαιρετάμε',
+        items: [
+          { label: 'Ανθυπολοχαγός', detail: '1 ασημένιο αστέρι' },
+          { label: 'Υπολοχαγός', detail: '2 ασημένια αστέρια' },
+          { label: 'Λοχαγός', detail: '3 ασημένια αστέρια (Διοικητής Λόχου)' },
+        ],
+      },
+      {
+        heading: 'Ανώτεροι Αξιωματικοί',
+        note: 'Χαιρετάμε',
+        items: [
+          { label: 'Ταγματάρχης', detail: '1 χρυσή φλογοφόρος ροιά' },
+          { label: 'Αντισυνταγματάρχης', detail: '2 χρυσές φλογοφόρες' },
+          { label: 'Συνταγματάρχης', detail: '3 χρυσές φλογοφόρες (Διοικητής Μονάδας)' },
+        ],
+      },
+      {
+        heading: 'Ανώτατοι Αξιωματικοί',
+        note: 'Χαιρετάμε',
+        items: [
+          { label: 'Ταξίαρχος', detail: '1 χρυσό αστέρι + 1 φλογοφόρος' },
+          { label: 'Υποστράτηγος', detail: '2 χρυσά αστέρια + 1 φλογοφόρος' },
+          { label: 'Αντιστράτηγος', detail: '3 χρυσά αστέρια + 1 φλογοφόρος' },
+          { label: 'Στρατηγός', detail: '4 χρυσά αστέρια + 1 φλογοφόρος' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'phonetic',
+    title: 'Φωνητικό Αλφάβητο',
+    subtitle: 'Αλφάβητο & ασύρματος',
+    icon: Radio,
+    iconBg: 'bg-blue-500/15',
+    iconColor: 'text-blue-500',
+    content: [
+      {
+        heading: 'Ελληνικό Τυποποιημένο Φωνητικό Αλφάβητο',
+        items: [
+          { label: 'Α', detail: 'Αστήρ' },
+          { label: 'Β', detail: 'Βύρων' },
+          { label: 'Γ', detail: 'Γαλή' },
+          { label: 'Δ', detail: 'Δόξα' },
+          { label: 'Ε', detail: 'Ερμής' },
+          { label: 'Ζ', detail: 'Ζεύς' },
+          { label: 'Η', detail: 'Ηρώ' },
+          { label: 'Θ', detail: 'Θεά' },
+          { label: 'Ι', detail: 'Ίσκιος' },
+          { label: 'Κ', detail: 'Κενόν' },
+          { label: 'Λ', detail: 'Λάμα' },
+          { label: 'Μ', detail: 'Μέλι' },
+          { label: 'Ν', detail: 'Ναός' },
+          { label: 'Ξ', detail: 'Ξέρξης' },
+          { label: 'Ο', detail: 'Οσμή' },
+          { label: 'Π', detail: 'Πέτρος' },
+          { label: 'Ρ', detail: 'Ρήγας' },
+          { label: 'Σ', detail: 'Σοφός' },
+          { label: 'Τ', detail: 'Τίγρης' },
+          { label: 'Υ', detail: 'Ύμνος' },
+          { label: 'Φ', detail: 'Φωφώ' },
+          { label: 'Χ', detail: 'Χαρά' },
+          { label: 'Ψ', detail: 'Ψυχή' },
+          { label: 'Ω', detail: 'Ωμέγα' },
+        ],
+      },
+      {
+        heading: 'Βασική Ορολογία Ασυρμάτου',
+        items: [
+          { label: 'Λήψη;', detail: 'Με ακούς;' },
+          { label: 'Ορθόν', detail: 'Σωστά / Κατανοητό' },
+          { label: 'Άκυρον', detail: 'Λάθος / Αγνόησε το προηγούμενο' },
+          { label: 'Ομιλείτε', detail: 'Ξεκίνα να μιλάς / Έχεις τον λόγο' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'firstaid',
+    title: 'Πρώτες Βοήθειες',
+    subtitle: 'Βασικές οδηγίες πεδίου',
+    icon: Heart,
+    iconBg: 'bg-red-500/15',
+    iconColor: 'text-red-500',
+    content: [
+      {
+        heading: 'Θερμική Εξάντληση / Θερμοπληξία',
+        items: [
+          { label: '1.', detail: 'Μεταφορά άμεσα σε σκιερό και δροσερό μέρος.' },
+          { label: '2.', detail: 'Αφαίρεση εξάρτυσης, κράνους και χιτωνίου.' },
+          { label: '3.', detail: 'Ενυδάτωση με μικρές, συχνές γουλιές νερού (όχι απότομα).' },
+          { label: '4.', detail: 'Δροσισμός με βρεγμένο πανί στον αυχένα, το μέτωπο και τις μασχάλες.' },
+        ],
+      },
+      {
+        heading: 'Αιμορραγία (Κόψιμο/Τραύμα)',
+        items: [
+          { label: '1.', detail: 'Άσκηση άμεσης και σταθερής πίεσης στο τραύμα με καθαρή γάζα ή επίδεσμο.' },
+          { label: '2.', detail: 'Διατήρηση πίεσης συνεχόμενα για τουλάχιστον 5-10 λεπτά.' },
+          { label: '3.', detail: 'Ανύψωση τραυματισμένου μέλους πάνω από το επίπεδο της καρδιάς (εφόσον δεν υπάρχει κάταγμα).' },
+        ],
+      },
+      {
+        heading: 'Διάστρεμμα (Στραμπούληγμα)',
+        note: 'Μέθοδος Κ.Π.Α.Α.',
+        items: [
+          { label: 'Κ', detail: 'Κατάκλιση - Ακινησία του μέλους.' },
+          { label: 'Π', detail: 'Πάγος - Κρύο νερό/βρεγμένο πανί για 15-20 λεπτά.' },
+          { label: 'Α', detail: 'Ανύψωση - Τοποθέτηση ποδιού ψηλά.' },
+          { label: 'Α', detail: 'Ανάπαυση.' },
+        ],
+      },
+      {
+        heading: 'Τσίμπημα Εντόμου/Μέλισσας/Σφήκας',
+        items: [
+          { label: '1.', detail: 'Αφαίρεση κεντριού ξύνοντας απαλά (π.χ. με κάρτα), όχι με τα δάχτυλα.' },
+          { label: '2.', detail: 'Πλύσιμο με άφθονο νερό (και σαπούνι αν υπάρχει).' },
+          { label: '3.', detail: 'Κρύο επίθεμα/πάγος για μείωση πρηξίματος και πόνου.' },
+          { label: '4.', detail: 'Παρακολούθηση για αλλεργική αντίδραση (δυσκολία αναπνοής, πρήξιμο προσώπου). Αν εμφανιστούν, άμεση ιατρική βοήθεια.' },
+        ],
+      },
+    ],
+  },
+]
+
+function ManualsSection() {
+  const [openManualId, setOpenManualId] = useState<string | null>(null)
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="text-xs text-muted-foreground leading-relaxed">
+        Γενικές πληροφορίες και εγχειρίδια για τον στρατιώτη. Πάτησε σε ένα εγχειρίδιο για να δεις τα περιεχόμενα.
+      </p>
+
+      {MANUALS.map((manual) => {
+        const isOpen = openManualId === manual.id
+        const Icon = manual.icon
+
+        return (
+          <div key={manual.id} className="glass-card rounded-2xl overflow-hidden">
+            {/* Header - always visible */}
+            <button
+              onClick={() => {
+                hapticFeedback('light')
+                setOpenManualId(isOpen ? null : manual.id)
+              }}
+              className="w-full flex items-center gap-3 p-4 active:bg-secondary/60 transition-colors min-h-[60px]"
+            >
+              <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center shrink-0', manual.iconBg)}>
+                <Icon className={cn('h-5 w-5', manual.iconColor)} />
+              </div>
+              <div className="flex-1 text-left min-w-0">
+                <h3 className="text-sm font-bold text-foreground">{manual.title}</h3>
+                <p className="text-[11px] text-muted-foreground">{manual.subtitle}</p>
+              </div>
+              <ChevronDown
+                className={cn(
+                  'h-4.5 w-4.5 text-muted-foreground shrink-0 transition-transform duration-200',
+                  isOpen && 'rotate-180'
+                )}
+              />
+            </button>
+
+            {/* Expandable content */}
+            {isOpen && (
+              <div className="px-4 pb-4 pt-0">
+                <div className="border-t border-border/50 pt-4 flex flex-col gap-5">
+                  {manual.content.map((block, blockIdx) => (
+                    <div key={blockIdx}>
+                      {block.heading && (
+                        <div className="mb-2.5">
+                          <h4 className="text-xs font-bold text-foreground">{block.heading}</h4>
+                          {block.note && (
+                            <p className="text-[10px] text-primary font-medium mt-0.5">{block.note}</p>
+                          )}
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-1.5">
+                        {block.items.map((item, itemIdx) => (
+                          <div key={itemIdx} className="flex gap-2.5 py-1.5 px-3 rounded-lg bg-secondary/50">
+                            <span className="text-xs font-bold text-primary shrink-0 min-w-[24px]">{item.label}</span>
+                            <span className="text-xs text-foreground leading-relaxed">{item.detail}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }
