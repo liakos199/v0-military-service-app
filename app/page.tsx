@@ -12,8 +12,8 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('service')
 
   return (
-    <main className="min-h-dvh bg-background safe-top" style={{ background: 'linear-gradient(180deg, oklch(0.14 0.002 250) 0%, oklch(0.0 0.0 0) 30%, oklch(0.0 0.0 0) 100%)' }}>
-      <div className="max-w-lg mx-auto px-4 pt-4 pb-28">
+    <main className="h-dvh flex flex-col bg-background safe-top overflow-hidden" style={{ background: 'linear-gradient(180deg, oklch(0.14 0.002 250) 0%, oklch(0.0 0.0 0) 30%, oklch(0.0 0.0 0) 100%)' }}>
+      <div className="flex-1 overflow-hidden max-w-lg mx-auto w-full">
         {activeTab === 'service' && <ServiceTab />}
         {activeTab === 'duties' && <CalendarTab />}
         {activeTab === 'notes' && <NotesTab />}

@@ -156,25 +156,31 @@ export function CalendarTab() {
   const selectedEvents = selectedDate ? dateEventsMap[selectedDate] : null
 
   return (
-    <div className="flex flex-col gap-4 pb-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">Ημερολόγιο</h1>
-          <p className="text-xs text-muted-foreground">Βάρδιες, άδειες & υπηρεσίες</p>
+    <div className="flex flex-col h-full">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-10 px-4 pt-4 pb-3" style={{ background: 'linear-gradient(180deg, oklch(0.14 0.002 250) 0%, oklch(0.06 0.001 250) 100%)' }}>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">Ημερολόγιο</h1>
+            <p className="text-xs text-muted-foreground">Βάρδιες, άδειες & υπηρεσίες</p>
+          </div>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setSelectedDate(today)
+              setShowActionSheet(true)
+            }}
+            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Προσθήκη"
+          >
+            <Plus className="h-5 w-5 text-primary" />
+          </button>
         </div>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setSelectedDate(today)
-            setShowActionSheet(true)
-          }}
-          className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label="Προσθήκη"
-        >
-          <Plus className="h-5 w-5 text-primary" />
-        </button>
       </div>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-4 pb-28">
+      <div className="flex flex-col gap-4 pb-4">
 
       {/* Calendar Card */}
       <div className="glass-card rounded-2xl p-4">
@@ -412,6 +418,8 @@ export function CalendarTab() {
         )}
       </FullscreenModal>
     </div>
+    </div>
+    </div>
   )
 }
 
@@ -447,7 +455,7 @@ function UpcomingEvents({
       <div className="glass-card rounded-xl p-6 text-center">
         <Clock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
         <p className="text-sm text-muted-foreground">Δεν υπάρχουν προσεχή γεγονότα</p>
-        <p className="text-xs text-muted-foreground mt-1">Πάτησε μια ημερομηνία για να προσθέσεις</p>
+        <p className="text-xs text-muted-foreground mt-1">Πάτησε μια ημερομηνία γι�� να προσθέσεις</p>
       </div>
     )
   }
