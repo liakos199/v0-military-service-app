@@ -38,7 +38,14 @@ export interface DutyEntry {
   startTime: string
   endTime: string
   notes: string
+  password?: string      // Σύνθημα (for guard duty)
+  countersign?: string   // Παρασύνθημα (for guard duty)
 }
+
+// Calendar event - union of duties and leaves for calendar display
+export type CalendarEvent =
+  | { kind: 'duty'; entry: DutyEntry }
+  | { kind: 'leave'; entry: LeaveEntry }
 
 export type DutyType = 'guard' | 'barracks' | 'officer' | 'patrol' | 'kitchen' | 'other'
 
@@ -61,6 +68,14 @@ export interface DailyPassword {
   date: string
   password: string
   countersign: string
+}
+
+// Military guide/manual category
+export interface GuideSection {
+  id: string
+  title: string
+  icon: string
+  content: string
 }
 
 export interface ProfileData {
