@@ -28,10 +28,10 @@ export function FullscreenModal({ isOpen, onClose, title, children }: Fullscreen
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100]" style={{ background: 'linear-gradient(180deg, oklch(0.08 0.002 250), oklch(0.0 0.0 0) 40%)' }}>
+    <div className="fixed inset-0 z-[100]" style={{ background: 'linear-gradient(180deg, oklch(0.16 0.002 250), oklch(0.0 0.0 0) 40%)' }}>
       <div className="flex flex-col h-full safe-top">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border" style={{ background: 'linear-gradient(90deg, oklch(0.12 0.003 250 / 0.5), oklch(0.08 0.002 250 / 0.3))' }}>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-border" style={{ background: 'linear-gradient(90deg, oklch(0.20 0.003 250 / 0.5), oklch(0.16 0.002 250 / 0.3))' }}>
           <h2 className="text-base font-semibold text-foreground">{title}</h2>
           <button
             onClick={() => {
