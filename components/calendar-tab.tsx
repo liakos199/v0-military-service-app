@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { ChevronLeft, ChevronRight, Plus, Shield, Palmtree, Lock, Trash2, Eye, EyeOff, Edit3, Check, X, Clock } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Shield, Palmtree, Lock, Trash2, Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
-import { hapticFeedback, formatGreekDate, formatGreekDateFull, generateId, toLocalDateString } from '@/lib/helpers'
+import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { DutyEntry, DutyType, LeaveEntry, LeaveType, DailyPassword } from '@/lib/types'
 import { DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS, GREEK_MONTHS } from '@/lib/types'
 
@@ -22,7 +22,6 @@ export function CalendarTab() {
   const [selectedDate, setSelectedDate] = useState<string>(todayStr)
   const [showAddDuty, setShowAddDuty] = useState(false)
   const [showAddLeave, setShowAddLeave] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
 
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
   const firstDayOfMonth = new Date(viewYear, viewMonth, 1).getDay()
@@ -229,7 +228,7 @@ export function CalendarTab() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => {
               hapticFeedback('light')
@@ -250,16 +249,6 @@ export function CalendarTab() {
             <Palmtree className="h-5 w-5 text-chart-2" />
             <span className="text-[10px] text-muted-foreground font-medium leading-tight text-center">Άδεια</span>
           </button>
-          <button
-            onClick={() => {
-              hapticFeedback('light')
-              setShowPassword(true)
-            }}
-            className="flex flex-col items-center gap-1.5 p-3 rounded-xl glass-card min-h-[72px]"
-          >
-            <Lock className="h-5 w-5 text-chart-4" />
-            <span className="text-[10px] text-muted-foreground font-medium leading-tight text-center">Σύνθημα</span>
-          </button>
         </div>
 
         {/* Duty/Leave/Password entries for selected date */}
@@ -268,7 +257,6 @@ export function CalendarTab() {
           leaves={selectedLeaves}
           password={selectedPassword}
           hasGuardDuty={hasGuardDuty}
-          date={selectedDate}
         />
       </div>
 
@@ -297,19 +285,6 @@ export function CalendarTab() {
           onCancel={() => setShowAddLeave(false)}
         />
       </FullscreenModal>
-
-      {/* Set Password Modal */}
-      <FullscreenModal
-        isOpen={showPassword}
-        onClose={() => setShowPassword(false)}
-        title="Σύνθημα / Παρασύνθημα"
-      >
-        <PasswordForm
-          date={selectedDate}
-          onSave={() => setShowPassword(false)}
-          onCancel={() => setShowPassword(false)}
-        />
-      </FullscreenModal>
     </div>
   )
 }
@@ -319,32 +294,29 @@ function SelectedDateEvents({
   leaves,
   password,
   hasGuardDuty,
-  date,
 }: {
   duties: DutyEntry[]
   leaves: LeaveEntry[]
   password: DailyPassword | undefined
   hasGuardDuty: boolean
-  date: string
 }) {
   const [allDuties, setDuties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
   const [allLeaves, setLeaves] = useLocalStorage<LeaveEntry[]>('fantaros-leaves', [])
   const [showPw, setShowPw] = useState(false)
 
-  const hasEvents = duties.length > 0 || leaves.length > 0 || password
+  const hasEvents = duties.length > 0 || leaves.length > 0 || (hasGuardDuty && password)
 
   if (!hasEvents) {
     return (
       <div className="glass-card rounded-xl p-5 text-center">
         <p className="text-sm text-muted-foreground">Καμία καταχώρηση</p>
-        <p className="text-[10px] text-muted-foreground mt-1">Πρόσθεσε βάρδια, άδεια ή σύνθημα</p>
+        <p className="text-[10px] text-muted-foreground mt-1">Πρόσθεσε βάρδια ή άδεια</p>
       </div>
     )
   }
 
   return (
     <div className="flex flex-col gap-2">
-      {/* Duties */}
       {duties.map((duty) => (
         <div key={duty.id} className="glass-card rounded-xl p-3 flex items-center gap-3">
           <div className="w-1 h-10 rounded-full bg-chart-3 flex-shrink-0" />
@@ -374,7 +346,6 @@ function SelectedDateEvents({
         </div>
       ))}
 
-      {/* Leaves */}
       {leaves.map((leave) => (
         <div key={leave.id} className="glass-card rounded-xl p-3 flex items-center gap-3">
           <div className="w-1 h-10 rounded-full bg-chart-2 flex-shrink-0" />
@@ -402,8 +373,7 @@ function SelectedDateEvents({
         </div>
       ))}
 
-      {/* Password (show if guard duty or if password exists) */}
-      {(hasGuardDuty || password) && password && (
+      {hasGuardDuty && password && (
         <div className="glass-card rounded-xl p-3">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
@@ -451,11 +421,17 @@ function AddDutyForm({ initialDate, onAdd, onCancel }: {
   onCancel: () => void
 }) {
   const [duties, setDuties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
+  const [passwords, setPasswords] = useLocalStorage<DailyPassword[]>('fantaros-passwords', [])
   const [type, setType] = useState<DutyType>('guard')
   const [date, setDate] = useState(initialDate)
   const [startTime, setStartTime] = useState('08:00')
   const [endTime, setEndTime] = useState('08:00')
   const [notes, setNotes] = useState('')
+  const [password, setPassword] = useState('')
+  const [countersign, setCountersign] = useState('')
+  const [showPw, setShowPw] = useState(true)
+
+  const isGuard = type === 'guard'
 
   const handleSubmit = () => {
     if (!date || !startTime || !endTime) return
@@ -468,6 +444,12 @@ function AddDutyForm({ initialDate, onAdd, onCancel }: {
       endTime,
       notes,
     }])
+    // Save password only when guard duty
+    if (isGuard && (password.trim() || countersign.trim())) {
+      const updated = passwords.filter((p) => p.date !== date)
+      updated.push({ date, password: password.trim(), countersign: countersign.trim() })
+      setPasswords(updated)
+    }
     onAdd()
   }
 
@@ -530,6 +512,46 @@ function AddDutyForm({ initialDate, onAdd, onCancel }: {
           className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground"
         />
       </div>
+
+      {/* Password fields - only shown for Σκοπιά */}
+      {isGuard && (
+        <div className="flex flex-col gap-3 p-3 rounded-xl bg-chart-4/5 ring-1 ring-chart-4/20">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Lock className="h-4 w-4 text-chart-4" />
+              <span className="text-xs font-semibold text-foreground">Σύνθημα / Παρασύνθημα</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowPw(!showPw)}
+              className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label={showPw ? 'Απόκρυψη' : 'Εμφάνιση'}
+            >
+              {showPw ? <EyeOff className="h-3.5 w-3.5 text-muted-foreground" /> : <Eye className="h-3.5 w-3.5 text-muted-foreground" />}
+            </button>
+          </div>
+          <div>
+            <label className="block text-[10px] text-muted-foreground mb-1">Σύνθημα</label>
+            <input
+              type={showPw ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Εισαγωγή συνθήματος..."
+              className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] text-muted-foreground mb-1">Παρασύνθημα</label>
+            <input
+              type={showPw ? 'text' : 'password'}
+              value={countersign}
+              onChange={(e) => setCountersign(e.target.value)}
+              placeholder="Εισαγωγή παρασυνθήματος..."
+              className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
+            />
+          </div>
+        </div>
+      )}
 
       <div className="flex gap-2 pt-2">
         <button
@@ -638,82 +660,6 @@ function AddLeaveForm({ initialDate, onAdd, onCancel }: {
           className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
         >
           Προσθήκη
-        </button>
-      </div>
-    </div>
-  )
-}
-
-function PasswordForm({ date, onSave, onCancel }: {
-  date: string
-  onSave: () => void
-  onCancel: () => void
-}) {
-  const [passwords, setPasswords] = useLocalStorage<DailyPassword[]>('fantaros-passwords', [])
-  const existing = passwords.find((p) => p.date === date)
-  const [password, setPassword] = useState(existing?.password || '')
-  const [countersign, setCountersign] = useState(existing?.countersign || '')
-  const [showPw, setShowPw] = useState(true)
-
-  const handleSave = () => {
-    hapticFeedback('heavy')
-    const updated = passwords.filter((p) => p.date !== date)
-    if (password.trim() || countersign.trim()) {
-      updated.push({ date, password: password.trim(), countersign: countersign.trim() })
-    }
-    setPasswords(updated)
-    onSave()
-  }
-
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="text-center py-2 rounded-lg bg-secondary">
-        <p className="text-xs text-muted-foreground">{formatGreekDate(date)}</p>
-      </div>
-
-      <div>
-        <div className="flex items-center justify-between mb-1.5">
-          <label className="block text-xs text-muted-foreground">Σύνθημα</label>
-          <button
-            onClick={() => setShowPw(!showPw)}
-            className="p-1 rounded"
-            aria-label={showPw ? 'Απόκρυψη' : 'Εμφάνιση'}
-          >
-            {showPw ? <EyeOff className="h-3.5 w-3.5 text-muted-foreground" /> : <Eye className="h-3.5 w-3.5 text-muted-foreground" />}
-          </button>
-        </div>
-        <input
-          type={showPw ? 'text' : 'password'}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Εισαγωγή συνθήματος..."
-          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
-        />
-      </div>
-
-      <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Παρασύνθημα</label>
-        <input
-          type={showPw ? 'text' : 'password'}
-          value={countersign}
-          onChange={(e) => setCountersign(e.target.value)}
-          placeholder="Εισαγωγή παρασυνθήματος..."
-          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border font-mono placeholder:text-muted-foreground placeholder:font-sans"
-        />
-      </div>
-
-      <div className="flex gap-2 pt-2">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={handleSave}
-          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px]"
-        >
-          Αποθήκευση
         </button>
       </div>
     </div>

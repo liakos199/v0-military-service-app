@@ -210,8 +210,8 @@ export function ServiceTab() {
           )
         )}
 
-        {/* Today's Password */}
-        {(hasGuardDutyToday || todaysPassword) && todaysPassword && (
+        {/* Today's Password - only when guard duty exists */}
+        {hasGuardDutyToday && todaysPassword && (
           <div className="glass-card rounded-xl p-3 ring-1 ring-chart-4/30">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
