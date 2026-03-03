@@ -23,7 +23,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-50 safe-bottom border-t border-glass-border"
-      style={{ background: 'linear-gradient(180deg, oklch(0.18 0.004 250 / 0.85), oklch(0.10 0.002 250 / 0.95))', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+      style={{ background: 'linear-gradient(180deg, oklch(0.22 0.004 250 / 0.85), oklch(0.14 0.002 250 / 0.95))', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
       role="tablist"
       aria-label="Κύρια πλοήγηση"
     >
