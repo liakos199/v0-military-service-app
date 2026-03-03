@@ -83,24 +83,30 @@ export function ServiceTab() {
   )
 
   return (
-    <div className="flex flex-col gap-4 pb-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">Θητεία</h1>
-          <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση & σήμερα</p>
+    <div className="flex flex-col h-full">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">Θητεία</h1>
+            <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση & σήμερα</p>
+          </div>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setShowConfig(true)
+            }}
+            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Ρυθμίσεις θητείας"
+          >
+            <Settings className="h-5 w-5 text-muted-foreground" />
+          </button>
         </div>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setShowConfig(true)
-          }}
-          className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label="Ρυθμίσεις θητείας"
-        >
-          <Settings className="h-5 w-5 text-muted-foreground" />
-        </button>
       </div>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-4 pb-28">
+      <div className="flex flex-col gap-4 pt-4">
 
       {/* Config Modal */}
       <FullscreenModal
@@ -236,6 +242,8 @@ export function ServiceTab() {
 
       {/* Today's Status Section */}
       <TodayStatus duties={todayDuties} leave={todayLeave} />
+    </div>
+    </div>
     </div>
   )
 }

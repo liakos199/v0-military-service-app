@@ -11,9 +11,10 @@ interface GreekDatePickerProps {
   value: string
   onChange: (date: string) => void
   label?: string
+  minDate?: string
 }
 
-export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps) {
+export function GreekDatePicker({ value, onChange, label, minDate }: GreekDatePickerProps) {
   const selectedDate = value ? new Date(value) : new Date()
   const [viewMonth, setViewMonth] = useState(selectedDate.getMonth())
   const [viewYear, setViewYear] = useState(selectedDate.getFullYear())
@@ -125,19 +126,23 @@ export function GreekDatePicker({ value, onChange, label }: GreekDatePickerProps
               const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
               const isSelected = dateStr === value
               const isToday = dateStr === todayStr
+              const isDisabled = minDate ? dateStr < minDate : false
 
               return (
                 <button
                   key={day}
                   type="button"
-                  onClick={() => handleSelectDay(day)}
+                  onClick={() => !isDisabled && handleSelectDay(day)}
+                  disabled={isDisabled}
                   className={cn(
                     'aspect-square w-full rounded-xl text-sm flex items-center justify-center transition-colors min-h-[44px]',
-                    isSelected
-                      ? 'bg-primary text-primary-foreground font-bold'
-                      : isToday
-                        ? 'bg-secondary text-primary font-semibold ring-1 ring-primary'
-                        : 'text-foreground active:bg-secondary'
+                    isDisabled
+                      ? 'text-muted-foreground/30 cursor-not-allowed'
+                      : isSelected
+                        ? 'bg-primary text-primary-foreground font-bold'
+                        : isToday
+                          ? 'bg-secondary text-primary font-semibold ring-1 ring-primary'
+                          : 'text-foreground active:bg-secondary'
                   )}
                 >
                   {day}
