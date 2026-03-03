@@ -23,23 +23,30 @@ export function ExpensesTab() {
   const grandTotal = canteenTotal + otherTotal
 
   return (
-    <div className="flex flex-col gap-4 pb-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">Έξοδα</h1>
-          <p className="text-xs text-muted-foreground">Παρακολούθηση δαπανών</p>
+    <div className="flex flex-col h-full">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">Έξοδα</h1>
+            <p className="text-xs text-muted-foreground">Παρακολούθηση δαπανών</p>
+          </div>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setShowAdd(true)
+            }}
+            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Προσθήκη εξόδου"
+          >
+            <Plus className="h-5 w-5 text-primary" />
+          </button>
         </div>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setShowAdd(true)
-          }}
-          className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label="Προσθήκη εξόδου"
-        >
-          <Plus className="h-5 w-5 text-primary" />
-        </button>
       </div>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-4 pb-28">
+      <div className="flex flex-col gap-4 pt-4">
 
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-3">
@@ -125,6 +132,8 @@ export function ExpensesTab() {
             ))}
         </div>
       )}
+    </div>
+    </div>
     </div>
   )
 }

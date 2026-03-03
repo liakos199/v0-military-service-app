@@ -156,25 +156,31 @@ export function CalendarTab() {
   const selectedEvents = selectedDate ? dateEventsMap[selectedDate] : null
 
   return (
-    <div className="flex flex-col gap-4 pb-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">Ημερολόγιο</h1>
-          <p className="text-xs text-muted-foreground">Βάρδιες, άδειες & υπηρεσίες</p>
+    <div className="flex flex-col h-full">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">Ημερολόγιο</h1>
+            <p className="text-xs text-muted-foreground">Βάρδιες, άδειες & υπηρεσίες</p>
+          </div>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setSelectedDate(today)
+              setShowActionSheet(true)
+            }}
+            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Προσθήκη"
+          >
+            <Plus className="h-5 w-5 text-primary" />
+          </button>
         </div>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setSelectedDate(today)
-            setShowActionSheet(true)
-          }}
-          className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label="Προσθήκη"
-        >
-          <Plus className="h-5 w-5 text-primary" />
-        </button>
       </div>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-4 pb-28">
+      <div className="flex flex-col gap-4 pt-4">
 
       {/* Calendar Card */}
       <div className="glass-card rounded-2xl p-4">
@@ -292,9 +298,11 @@ export function CalendarTab() {
       />
 
       {/* Action Sheet - Choose what to add */}
+      </div>
+      </div>
       {showActionSheet && selectedDate && (
         <div
-          className="fixed inset-0 z-[90] flex items-end justify-center bg-background/80 backdrop-blur-sm"
+          className="fixed inset-0 z-[90] flex items-end justify-center bg-black/85 backdrop-blur-md"
           onClick={() => setShowActionSheet(false)}
         >
           <div
@@ -815,6 +823,13 @@ function AddLeaveForm({
   const [endDate, setEndDate] = useState('')
   const [notes, setNotes] = useState('')
 
+  const handleStartDateChange = (date: string) => {
+    setStartDate(date)
+    if (endDate && endDate < date) {
+      setEndDate('')
+    }
+  }
+
   const days = startDate && endDate ? Math.max(0, daysBetween(startDate, endDate) + 1) : 0
 
   const handleSubmit = () => {
@@ -856,8 +871,8 @@ function AddLeaveForm({
         </div>
       </div>
 
-      <GreekDatePicker value={startDate} onChange={setStartDate} label="Από" />
-      <GreekDatePicker value={endDate} onChange={setEndDate} label="Έως" />
+      <GreekDatePicker value={startDate} onChange={handleStartDateChange} label="Από" />
+      <GreekDatePicker value={endDate} onChange={setEndDate} label="Έως" minDate={startDate} />
 
       {days > 0 && (
         <div className="text-center py-2 rounded-lg bg-primary/10">

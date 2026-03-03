@@ -165,47 +165,53 @@ export function NotesTab() {
   const [activeSection, setActiveSection] = useState<'notes' | 'guides'>('notes')
 
   return (
-    <div className="flex flex-col gap-4 pb-4">
-      <div>
-        <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
-        <p className="text-xs text-muted-foreground">Προσωπικές σημειώσεις & εγχειρίδια</p>
+    <div className="flex flex-col h-full">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+        <div>
+          <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
+          <p className="text-xs text-muted-foreground">Προσωπικές σημειώσεις & εγχειρίδια</p>
+        </div>
+
+        {/* Section Toggle */}
+        <div className="flex gap-2 p-1 rounded-xl bg-secondary mt-3">
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setActiveSection('notes')
+            }}
+            className={cn(
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
+              activeSection === 'notes'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground'
+            )}
+          >
+            <FileText className="h-4 w-4" />
+            Σημειώσεις
+          </button>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setActiveSection('guides')
+            }}
+            className={cn(
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
+              activeSection === 'guides'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground'
+            )}
+          >
+            <BookOpen className="h-4 w-4" />
+            Εγχειρίδια
+          </button>
+        </div>
       </div>
 
-      {/* Section Toggle */}
-      <div className="flex gap-2 p-1 rounded-xl bg-secondary">
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setActiveSection('notes')
-          }}
-          className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
-            activeSection === 'notes'
-              ? 'bg-primary text-primary-foreground'
-              : 'text-muted-foreground'
-          )}
-        >
-          <FileText className="h-4 w-4" />
-          Σημειώσεις
-        </button>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setActiveSection('guides')
-          }}
-          className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
-            activeSection === 'guides'
-              ? 'bg-primary text-primary-foreground'
-              : 'text-muted-foreground'
-          )}
-        >
-          <BookOpen className="h-4 w-4" />
-          Εγχειρίδια
-        </button>
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-4 pb-28 pt-4">
+        {activeSection === 'notes' ? <NotesSection /> : <GuidesSection />}
       </div>
-
-      {activeSection === 'notes' ? <NotesSection /> : <GuidesSection />}
     </div>
   )
 }

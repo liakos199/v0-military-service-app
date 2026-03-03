@@ -23,64 +23,70 @@ export function ProfileTab() {
   const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends'>('profile')
 
   return (
-    <div className="flex flex-col gap-4 pb-4">
-      <div>
-        <h1 className="text-xl font-bold text-foreground">Προφίλ</h1>
-        <p className="text-xs text-muted-foreground">Στοιχεία, ιεραρχία & φίλοι</p>
+    <div className="flex flex-col h-full">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+        <div>
+          <h1 className="text-xl font-bold text-foreground">Προφίλ</h1>
+          <p className="text-xs text-muted-foreground">Στοιχεία, ιεραρχία & φίλοι</p>
+        </div>
+
+        {/* Section Toggle - 3 tabs */}
+        <div className="flex gap-1 p-1 rounded-xl bg-secondary mt-3">
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setActiveSection('profile')
+            }}
+            className={cn(
+              'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
+              activeSection === 'profile'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground'
+            )}
+          >
+            <User className="h-4 w-4" />
+            Στοιχεία
+          </button>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setActiveSection('superiors')
+            }}
+            className={cn(
+              'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
+              activeSection === 'superiors'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground'
+            )}
+          >
+            <Users className="h-4 w-4" />
+            Ιεραρχία
+          </button>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setActiveSection('friends')
+            }}
+            className={cn(
+              'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
+              activeSection === 'friends'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground'
+            )}
+          >
+            <UserPlus className="h-4 w-4" />
+            Φίλοι
+          </button>
+        </div>
       </div>
 
-      {/* Section Toggle - 3 tabs */}
-      <div className="flex gap-1 p-1 rounded-xl bg-secondary">
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setActiveSection('profile')
-          }}
-          className={cn(
-            'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
-            activeSection === 'profile'
-              ? 'bg-primary text-primary-foreground'
-              : 'text-muted-foreground'
-          )}
-        >
-          <User className="h-4 w-4" />
-          Στοιχεία
-        </button>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setActiveSection('superiors')
-          }}
-          className={cn(
-            'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
-            activeSection === 'superiors'
-              ? 'bg-primary text-primary-foreground'
-              : 'text-muted-foreground'
-          )}
-        >
-          <Users className="h-4 w-4" />
-          Ιεραρχία
-        </button>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setActiveSection('friends')
-          }}
-          className={cn(
-            'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
-            activeSection === 'friends'
-              ? 'bg-primary text-primary-foreground'
-              : 'text-muted-foreground'
-          )}
-        >
-          <UserPlus className="h-4 w-4" />
-          Φίλοι
-        </button>
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-4 pb-28 pt-4">
+        {activeSection === 'profile' && <ProfileSection />}
+        {activeSection === 'superiors' && <SuperiorsSection />}
+        {activeSection === 'friends' && <FriendsSection />}
       </div>
-
-      {activeSection === 'profile' && <ProfileSection />}
-      {activeSection === 'superiors' && <SuperiorsSection />}
-      {activeSection === 'friends' && <FriendsSection />}
     </div>
   )
 }

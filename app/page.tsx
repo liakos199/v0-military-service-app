@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <main className="min-h-dvh bg-background safe-top" style={{ background: 'linear-gradient(180deg, oklch(0.06 0.002 250) 0%, oklch(0.0 0.0 0) 30%, oklch(0.0 0.0 0) 100%)' }}>
-      <div className="max-w-lg mx-auto px-4 pt-4 pb-28">
+      <div className="max-w-lg mx-auto h-dvh flex flex-col overflow-hidden">
         {activeTab === 'service' && <ServiceTab />}
         {activeTab === 'duties' && <CalendarTab />}
         {activeTab === 'notes' && <NotesTab />}
