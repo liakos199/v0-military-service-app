@@ -4,52 +4,42 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Core palette: Deep navy base, warm amber primary, cool slate neutrals */
-  --background: oklch(0.10 0.012 260);
-  --foreground: oklch(0.96 0.004 260);
-  --card: oklch(0.14 0.010 260);
-  --card-foreground: oklch(0.96 0.004 260);
-  --popover: oklch(0.14 0.010 260);
-  --popover-foreground: oklch(0.96 0.004 260);
-  --primary: oklch(0.80 0.14 75);
-  --primary-foreground: oklch(0.12 0.02 75);
-  --secondary: oklch(0.18 0.008 260);
-  --secondary-foreground: oklch(0.88 0.006 260);
-  --muted: oklch(0.16 0.006 260);
-  --muted-foreground: oklch(0.56 0.012 260);
-  --accent: oklch(0.80 0.14 75);
-  --accent-foreground: oklch(0.12 0.02 75);
-  --destructive: oklch(0.58 0.22 25);
-  --destructive-foreground: oklch(0.96 0.004 260);
-  --border: oklch(0.22 0.008 260);
-  --input: oklch(0.18 0.008 260);
-  --ring: oklch(0.80 0.14 75);
-  /* Chart accents */
-  --chart-1: oklch(0.80 0.14 75);
-  --chart-2: oklch(0.72 0.12 175);
-  --chart-3: oklch(0.68 0.14 40);
-  --chart-4: oklch(0.74 0.10 60);
-  --chart-5: oklch(0.58 0.08 280);
-  --radius: 1rem;
-  /* Sidebar */
-  --sidebar: oklch(0.12 0.010 260);
-  --sidebar-foreground: oklch(0.96 0.004 260);
-  --sidebar-primary: oklch(0.80 0.14 75);
-  --sidebar-primary-foreground: oklch(0.12 0.02 75);
-  --sidebar-accent: oklch(0.18 0.008 260);
-  --sidebar-accent-foreground: oklch(0.88 0.006 260);
-  --sidebar-border: oklch(0.22 0.008 260);
-  --sidebar-ring: oklch(0.80 0.14 75);
-  /* Glass */
-  --glass: oklch(0.16 0.008 260 / 0.65);
-  --glass-border: oklch(0.32 0.012 260 / 0.25);
-  --glass-highlight: oklch(0.96 0.004 260 / 0.04);
-  /* Gradient tokens */
-  --gradient-primary: linear-gradient(135deg, oklch(0.80 0.14 75), oklch(0.72 0.16 55));
-  --gradient-card: linear-gradient(145deg, oklch(0.16 0.012 260), oklch(0.13 0.008 270));
-  --gradient-surface: linear-gradient(180deg, oklch(0.12 0.012 260), oklch(0.09 0.008 265));
-  --gradient-accent-teal: linear-gradient(135deg, oklch(0.72 0.12 175), oklch(0.64 0.10 195));
-  --gradient-accent-warm: linear-gradient(135deg, oklch(0.68 0.14 40), oklch(0.60 0.12 25));
+  --background: oklch(0.12 0.002 250);
+  --foreground: oklch(0.95 0.005 80);
+  --card: oklch(0.16 0.003 250);
+  --card-foreground: oklch(0.95 0.005 80);
+  --popover: oklch(0.16 0.003 250);
+  --popover-foreground: oklch(0.95 0.005 80);
+  --primary: oklch(0.78 0.12 80);
+  --primary-foreground: oklch(0.14 0.01 80);
+  --secondary: oklch(0.21 0.003 250);
+  --secondary-foreground: oklch(0.85 0.01 80);
+  --muted: oklch(0.19 0.003 250);
+  --muted-foreground: oklch(0.60 0.01 250);
+  --accent: oklch(0.78 0.12 80);
+  --accent-foreground: oklch(0.14 0.01 80);
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.95 0.005 80);
+  --border: oklch(0.26 0.005 250);
+  --input: oklch(0.21 0.003 250);
+  --ring: oklch(0.78 0.12 80);
+  --chart-1: oklch(0.78 0.12 80);
+  --chart-2: oklch(0.65 0.08 200);
+  --chart-3: oklch(0.60 0.12 40);
+  --chart-4: oklch(0.72 0.10 60);
+  --chart-5: oklch(0.55 0.06 280);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.14 0.002 250);
+  --sidebar-foreground: oklch(0.95 0.005 80);
+  --sidebar-primary: oklch(0.78 0.12 80);
+  --sidebar-primary-foreground: oklch(0.14 0.01 80);
+  --sidebar-accent: oklch(0.21 0.003 250);
+  --sidebar-accent-foreground: oklch(0.85 0.01 80);
+  --sidebar-border: oklch(0.26 0.005 250);
+  --sidebar-ring: oklch(0.78 0.12 80);
+  --glass: oklch(0.19 0.004 250 / 0.6);
+  --glass-border: oklch(0.38 0.01 250 / 0.3);
+  --glass-highlight: oklch(0.95 0.005 80 / 0.05);
 }
 
 @theme inline {
@@ -96,58 +86,15 @@
   --color-glass-highlight: var(--glass-highlight);
 }
 
-/* Gradient card */
 .glass-card {
-  background: var(--gradient-card);
+  background: var(--glass);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .glass-card-highlight {
   background: var(--glass-highlight);
-}
-
-/* Gradient accent button */
-.btn-gradient {
-  background: var(--gradient-primary);
-  color: var(--primary-foreground);
-}
-
-.btn-gradient-teal {
-  background: var(--gradient-accent-teal);
-  color: oklch(0.12 0.02 175);
-}
-
-/* Gradient ring for progress */
-.gradient-ring {
-  --ring-start: oklch(0.80 0.14 75);
-  --ring-mid: oklch(0.75 0.16 55);
-  --ring-end: oklch(0.68 0.14 40);
-}
-
-/* Subtle shimmer on cards */
-.card-shimmer {
-  position: relative;
-  overflow: hidden;
-}
-.card-shimmer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, oklch(0.96 0.004 260 / 0.03), transparent);
-  pointer-events: none;
-}
-
-/* Gradient text utility */
-.text-gradient {
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 /* Hide scrollbar for mobile */
@@ -175,7 +122,5 @@
   }
   body {
     @apply bg-background text-foreground;
-    background: var(--gradient-surface);
-    min-height: 100dvh;
   }
 }

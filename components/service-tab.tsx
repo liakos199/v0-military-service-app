@@ -70,30 +70,32 @@ export function ServiceTab() {
 
   const circumference = 2 * Math.PI * 70
 
+  // Today's duties
   const todayDuties = useMemo(
     () => duties.filter((d) => d.date === today).sort((a, b) => a.startTime.localeCompare(b.startTime)),
     [duties, today]
   )
 
+  // Active leave today
   const todayLeave = useMemo(
     () => leaves.find((l) => l.startDate <= today && l.endDate >= today),
     [leaves, today]
   )
 
   return (
-    <div className="flex flex-col gap-5 pb-4">
+    <div className="flex flex-col gap-4 pb-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gradient">Θητεία</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">Αντίστροφη μέτρηση & σήμερα</p>
+          <h1 className="text-xl font-bold text-foreground">Θητεία</h1>
+          <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση & σήμερα</p>
         </div>
         <button
           onClick={() => {
             hapticFeedback('light')
             setShowConfig(true)
           }}
-          className="p-3 rounded-2xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-transform"
+          className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Ρυθμίσεις θητείας"
         >
           <Settings className="h-5 w-5 text-muted-foreground" />
@@ -113,7 +115,7 @@ export function ServiceTab() {
             label="Ημερομηνία κατάταξης"
           />
           <div>
-            <label className="block text-xs text-muted-foreground mb-2">
+            <label className="block text-xs text-muted-foreground mb-1.5">
               Διάρκεια θητείας
             </label>
             <div className="flex gap-2 mb-3">
@@ -126,10 +128,10 @@ export function ServiceTab() {
                     setConfig({ ...config, totalDays: preset.days })
                   }}
                   className={cn(
-                    'flex-1 py-2.5 rounded-xl text-xs font-semibold min-h-[44px] transition-all active:scale-95',
+                    'flex-1 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors border',
                     config.totalDays === preset.days
-                      ? 'btn-gradient shadow-[0_4px_16px_oklch(0.80_0.14_75/0.3)]'
-                      : 'bg-secondary text-secondary-foreground border border-border'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-secondary text-secondary-foreground border-border'
                   )}
                 >
                   {preset.label}
@@ -146,7 +148,7 @@ export function ServiceTab() {
               onChange={(e) =>
                 setConfig({ ...config, totalDays: parseInt(e.target.value) || 0 })
               }
-              className="w-full px-4 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
+              className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
             />
           </div>
           <button
@@ -154,7 +156,7 @@ export function ServiceTab() {
               hapticFeedback('medium')
               setShowConfig(false)
             }}
-            className="w-full py-3.5 rounded-xl btn-gradient font-bold text-sm min-h-[48px] shadow-[0_4px_16px_oklch(0.80_0.14_75/0.3)] active:scale-[0.98] transition-transform"
+            className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px]"
           >
             Αποθήκευση
           </button>
@@ -162,67 +164,70 @@ export function ServiceTab() {
       </FullscreenModal>
 
       {/* Main Progress Ring - LELEmeter */}
-      <div className="glass-card rounded-3xl p-6 flex flex-col items-center gap-5">
-        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+      <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-4">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           Λελέμετρο
         </p>
-        <div className="relative w-48 h-48">
-          {/* Outer glow ring */}
-          <div className="absolute inset-[-8px] rounded-full opacity-20" style={{ background: 'radial-gradient(circle, oklch(0.80 0.14 75 / 0.4), transparent 70%)' }} />
+        <div className="relative w-44 h-44">
           <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
-            {/* Track */}
             <circle
               cx="80"
               cy="80"
               r="70"
               fill="none"
-              stroke="oklch(0.18 0.008 260)"
-              strokeWidth="8"
+              stroke="oklch(0.21 0.003 250)"
+              strokeWidth="10"
             />
-            {/* Gradient progress - using stops */}
-            <defs>
-              <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="oklch(0.80 0.14 75)" />
-                <stop offset="50%" stopColor="oklch(0.75 0.16 55)" />
-                <stop offset="100%" stopColor="oklch(0.68 0.14 40)" />
-              </linearGradient>
-            </defs>
             <circle
               cx="80"
               cy="80"
               r="70"
               fill="none"
-              stroke="url(#ringGradient)"
-              strokeWidth="8"
+              stroke="oklch(0.78 0.12 80)"
+              strokeWidth="10"
               strokeLinecap="round"
               strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
               className="transition-all duration-1000 ease-out"
               style={{
-                filter: 'drop-shadow(0 0 12px oklch(0.80 0.14 75 / 0.5))',
+                filter: 'drop-shadow(0 0 8px oklch(0.78 0.12 80 / 0.5))',
               }}
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-black text-gradient leading-none">
+            <span className="text-3xl font-bold text-foreground">
               {percentage.toFixed(1)}%
             </span>
-            <span className="text-[10px] text-muted-foreground mt-1.5 font-medium">ολοκληρώθηκε</span>
+            <span className="text-xs text-muted-foreground mt-1">ολοκληρώθηκε</span>
           </div>
         </div>
 
-        {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-2.5 w-full">
-          <StatCard icon={Clock} label="Υπηρέτησες" value={`${daysServed}`} unit="ημέρες" />
-          <StatCard icon={CalendarDays} label="Απομένουν" value={`${effectiveDaysRemaining}`} unit="ημέρες" />
-          <StatCard icon={Percent} label="Άδειες" value={`${totalLeaveDays}`} unit="ημέρες" />
+        <div className="grid grid-cols-3 gap-3 w-full">
+          <StatCard
+            icon={Clock}
+            label="Υπηρέτησες"
+            value={`${daysServed}`}
+            unit="ημέρες"
+          />
+          <StatCard
+            icon={CalendarDays}
+            label="Απομένουν"
+            value={`${effectiveDaysRemaining}`}
+            unit="ημέρες"
+          />
+          <StatCard
+            icon={Percent}
+            label="Άδειες"
+            value={`${totalLeaveDays}`}
+            unit="ημέρες"
+          />
         </div>
 
         {dischargeDate && (
-          <div className="w-full text-center py-2.5 px-4 rounded-xl bg-secondary/80 border border-border/50">
-            <p className="text-[9px] text-muted-foreground uppercase tracking-[0.15em] font-semibold">
+          <div className="w-full text-center py-2 px-3 rounded-lg bg-secondary">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
               Ημερομηνία απόλυσης
             </p>
-            <p className="text-sm font-bold text-gradient mt-0.5">
+            <p className="text-sm font-semibold text-primary mt-0.5">
               {formatGreekDate(dischargeDate)}
             </p>
           </div>
@@ -248,10 +253,10 @@ function StatCard({
   unit: string
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 p-2.5 rounded-xl bg-secondary/60 border border-border/30">
+    <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-secondary/50">
       <Icon className="h-3.5 w-3.5 text-primary" />
-      <span className="text-xl font-black text-foreground leading-none">{value}</span>
-      <span className="text-[8px] text-muted-foreground leading-none uppercase tracking-wider font-semibold">{unit}</span>
+      <span className="text-lg font-bold text-foreground leading-none">{value}</span>
+      <span className="text-[9px] text-muted-foreground leading-none">{unit}</span>
     </div>
   )
 }
@@ -273,21 +278,21 @@ function TodayStatus({
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-sm font-bold text-foreground">Σήμερα</h2>
+      <h2 className="text-sm font-semibold text-foreground">Σήμερα</h2>
 
       {/* Active Leave */}
       {leave && (
-        <div className="rounded-2xl p-4 flex items-center gap-3 border border-chart-2/20" style={{ background: 'linear-gradient(145deg, oklch(0.72 0.12 175 / 0.08), oklch(0.64 0.10 195 / 0.04))' }}>
-          <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--gradient-accent-teal)' }}>
-            <Palmtree className="h-5 w-5 text-foreground" />
+        <div className="glass-card rounded-xl p-4 flex items-center gap-3 ring-1 ring-chart-2/30">
+          <div className="w-10 h-10 rounded-lg bg-chart-2/20 flex items-center justify-center flex-shrink-0">
+            <Palmtree className="h-5 w-5 text-chart-2" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-foreground">
+              <span className="text-sm font-semibold text-foreground">
                 {LEAVE_TYPE_LABELS[leave.type]}
               </span>
-              <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider" style={{ background: 'var(--gradient-accent-teal)', color: 'oklch(0.12 0.02 175)' }}>
-                Άδεια
+              <span className="px-1.5 py-0.5 rounded-md bg-chart-2/20 text-chart-2 text-[10px] font-bold">
+                ΑΔΕΙΑ
               </span>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -309,20 +314,19 @@ function TodayStatus({
           return (
             <div
               key={duty.id}
-              className="rounded-2xl p-4 border border-primary/15"
-              style={{ background: 'linear-gradient(145deg, oklch(0.80 0.14 75 / 0.06), oklch(0.68 0.14 40 / 0.03))' }}
+              className="glass-card rounded-xl p-4 ring-1 ring-primary/30"
             >
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--gradient-accent-warm)' }}>
-                  <Icon className="h-5 w-5 text-foreground" />
+                <div className="w-10 h-10 rounded-lg bg-chart-3/20 flex items-center justify-center flex-shrink-0">
+                  <Icon className="h-5 w-5 text-chart-3" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-foreground">
+                    <span className="text-sm font-semibold text-foreground">
                       {DUTY_TYPE_LABELS[duty.type]}
                     </span>
-                    <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider btn-gradient">
-                      Ενεργή
+                    <span className="px-1.5 py-0.5 rounded-md bg-primary/20 text-primary text-[10px] font-bold">
+                      ΕΝΕΡΓΗ
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">
@@ -338,14 +342,14 @@ function TodayStatus({
 
               {/* Guard duty password */}
               {isGuard && hasPassword && (
-                <div className="mt-3 pt-3 border-t border-border/50">
+                <div className="mt-3 pt-3 border-t border-border">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-[9px] text-muted-foreground uppercase tracking-[0.15em] font-bold">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
                       Σύνθημα / Παρασύνθημα
                     </p>
                     <button
                       onClick={() => togglePassword(duty.id)}
-                      className="p-1.5 rounded-xl bg-secondary/80 min-h-[36px] min-w-[36px] flex items-center justify-center"
+                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
                       aria-label={visible ? 'Απόκρυψη' : 'Εμφάνιση'}
                     >
                       {visible ? (
@@ -356,8 +360,8 @@ function TodayStatus({
                     </button>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="p-2.5 rounded-xl bg-secondary/80 border border-border/30">
-                      <p className="text-[8px] text-muted-foreground uppercase tracking-wider font-semibold mb-0.5">
+                    <div className="p-2 rounded-lg bg-secondary">
+                      <p className="text-[9px] text-muted-foreground uppercase mb-0.5">
                         Σύνθημα
                       </p>
                       <p
@@ -371,8 +375,8 @@ function TodayStatus({
                         {duty.password || '---'}
                       </p>
                     </div>
-                    <div className="p-2.5 rounded-xl bg-secondary/80 border border-border/30">
-                      <p className="text-[8px] text-muted-foreground uppercase tracking-wider font-semibold mb-0.5">
+                    <div className="p-2 rounded-lg bg-secondary">
+                      <p className="text-[9px] text-muted-foreground uppercase mb-0.5">
                         Παρασύνθημα
                       </p>
                       <p
@@ -394,7 +398,7 @@ function TodayStatus({
         })
       ) : (
         !leave && (
-          <div className="glass-card rounded-2xl p-5 text-center">
+          <div className="glass-card rounded-xl p-4 text-center">
             <p className="text-sm text-muted-foreground">
               Δεν έχεις υπηρεσία ή άδεια σήμερα
             </p>

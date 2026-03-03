@@ -72,12 +72,30 @@ const MILITARY_GUIDES = [
       {
         heading: 'Ελληνικό Τυποποιημένο Φωνητικό Αλφάβητο',
         items: [
-          'Α - Αστήρ', 'Β - Βύρων', 'Γ - Γαλή', 'Δ - Δόξα',
-          'Ε - Ερμής', 'Ζ - Ζεύς', 'Η - Ηρώ', 'Θ - Θεά',
-          'Ι - Ίσκιος', 'Κ - Κενόν', 'Λ - Λάμα', 'Μ - Μέλι',
-          'Ν - Ναός', 'Ξ - Ξέρξης', 'Ο - Οσμή', 'Π - Πέτρος',
-          'Ρ - Ρήγας', 'Σ - Σοφός', 'Τ - Τίγρης', 'Υ - Ύμνος',
-          'Φ - Φωφώ', 'Χ - Χαρά', 'Ψ - Ψυχή', 'Ω - Ωμέγα',
+          'Α - Αστήρ',
+          'Β - Βύρων',
+          'Γ - Γαλή',
+          'Δ - Δόξα',
+          'Ε - Ερμής',
+          'Ζ - Ζεύς',
+          'Η - Ηρώ',
+          'Θ - Θεά',
+          'Ι - Ίσκιος',
+          'Κ - Κενόν',
+          'Λ - Λάμα',
+          'Μ - Μέλι',
+          'Ν - Ναός',
+          'Ξ - Ξέρξης',
+          'Ο - Οσμή',
+          'Π - Πέτρος',
+          'Ρ - Ρήγας',
+          'Σ - Σοφός',
+          'Τ - Τίγρης',
+          'Υ - Ύμνος',
+          'Φ - Φωφώ',
+          'Χ - Χαρά',
+          'Ψ - Ψυχή',
+          'Ω - Ωμέγα',
         ],
       },
       {
@@ -108,9 +126,9 @@ const MILITARY_GUIDES = [
       {
         heading: 'Αιμορραγία (Από κόψιμο/τραύμα)',
         items: [
-          'Άσκηση άμεσης και σταθερής πίεσης στο τραύμα με καθαρή γάζα.',
+          'Άσκηση άμεσης και σταθερής πίεσης στο τραύμα με καθαρή γάζα, επίδεσμο ή καθαρό ύφασμα.',
           'Διατήρηση της πίεσης συνεχόμενα για τουλάχιστον 5-10 λεπτά.',
-          'Ανύψωση του τραυματισμένου μέλους πάνω από το επίπεδο της καρδιάς.',
+          'Ανύψωση του τραυματισμένου μέλους πάνω από το επίπεδο της καρδιάς (εφόσον δεν υπάρχει κάταγμα).',
         ],
       },
       {
@@ -121,6 +139,7 @@ const MILITARY_GUIDES = [
           '  Πάγος (ή κρύο νερό παγουριού/βρεγμένο πανί για 15-20 λεπτά).',
           '  Ανύψωση (Τοποθέτηση του ποδιού ψηλά).',
           '  Ανάπαυση.',
+          'Μην βγάλεις το άρβυλο αμέσως αν πρέπει να περπατήσει ο τραυματίας, καθώς το πόδι θα πρηστεί.',
         ],
       },
       {
@@ -129,7 +148,7 @@ const MILITARY_GUIDES = [
           'Αφαίρεση του κεντριού ξύνοντας απαλά (π.χ. με ταυτότητα), όχι ζουλώντας.',
           'Πλύσιμο της περιοχής με άφθονο νερό (και σαπούνι αν υπάρχει).',
           'Τοποθέτηση κρύου επιθέματος/πάγου για μείωση του πρηξίματος.',
-          'Παρακολούθηση για αλλεργική αντίδραση.',
+          'Παρακολούθηση για αλλεργική αντίδραση. Αν εμφανιστούν συμπτώματα, άμεση ιατρική βοήθεια.',
         ],
       },
     ],
@@ -142,30 +161,27 @@ const GUIDE_ICONS: Record<string, typeof Star> = {
   health: HeartPulse,
 }
 
-const GUIDE_GRADIENTS: Record<string, string> = {
-  star: 'var(--gradient-primary)',
-  radio: 'var(--gradient-accent-teal)',
-  health: 'var(--gradient-accent-warm)',
-}
-
 export function NotesTab() {
   const [activeSection, setActiveSection] = useState<'notes' | 'guides'>('notes')
 
   return (
-    <div className="flex flex-col gap-5 pb-4">
+    <div className="flex flex-col gap-4 pb-4">
       <div>
-        <h1 className="text-2xl font-bold text-gradient">Σημειώσεις</h1>
-        <p className="text-xs text-muted-foreground mt-0.5">Προσωπικές σημειώσεις & εγχειρίδια</p>
+        <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
+        <p className="text-xs text-muted-foreground">Προσωπικές σημειώσεις & εγχειρίδια</p>
       </div>
 
       {/* Section Toggle */}
-      <div className="flex gap-1.5 p-1 rounded-2xl bg-secondary/80 border border-border/30">
+      <div className="flex gap-2 p-1 rounded-xl bg-secondary">
         <button
-          onClick={() => { hapticFeedback('light'); setActiveSection('notes') }}
+          onClick={() => {
+            hapticFeedback('light')
+            setActiveSection('notes')
+          }}
           className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold min-h-[44px] transition-all active:scale-[0.98]',
+            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
             activeSection === 'notes'
-              ? 'btn-gradient shadow-[0_2px_10px_oklch(0.80_0.14_75/0.3)]'
+              ? 'bg-primary text-primary-foreground'
               : 'text-muted-foreground'
           )}
         >
@@ -173,11 +189,14 @@ export function NotesTab() {
           Σημειώσεις
         </button>
         <button
-          onClick={() => { hapticFeedback('light'); setActiveSection('guides') }}
+          onClick={() => {
+            hapticFeedback('light')
+            setActiveSection('guides')
+          }}
           className={cn(
-            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold min-h-[44px] transition-all active:scale-[0.98]',
+            'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
             activeSection === 'guides'
-              ? 'btn-gradient shadow-[0_2px_10px_oklch(0.80_0.14_75/0.3)]'
+              ? 'bg-primary text-primary-foreground'
               : 'text-muted-foreground'
           )}
         >
@@ -200,7 +219,10 @@ function NotesSection() {
 
   const handleAdd = (content: string) => {
     hapticFeedback('heavy')
-    setNotes([{ id: generateId(), date: toLocalDateString(), content }, ...notes])
+    setNotes([
+      { id: generateId(), date: toLocalDateString(), content },
+      ...notes,
+    ])
     setShowAdd(false)
   }
 
@@ -213,52 +235,75 @@ function NotesSection() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-bold text-foreground">Προσωπικές Σημειώσεις</h2>
+        <h2 className="text-sm font-semibold text-foreground">Προσωπικές Σημειώσεις</h2>
         <button
-          onClick={() => { hapticFeedback('light'); setShowAdd(true) }}
-          className="p-2.5 rounded-2xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-transform"
+          onClick={() => {
+            hapticFeedback('light')
+            setShowAdd(true)
+          }}
+          className="p-2 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Νέα σημείωση"
         >
           <Plus className="h-5 w-5 text-primary" />
         </button>
       </div>
 
-      <FullscreenModal isOpen={showAdd} onClose={() => setShowAdd(false)} title="Νέα Σημείωση">
+      {/* Add Note Modal */}
+      <FullscreenModal
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+        title="Νέα Σημείωση"
+      >
         <AddNoteForm onAdd={handleAdd} onCancel={() => setShowAdd(false)} />
       </FullscreenModal>
 
       {notes.length === 0 ? (
-        <div className="glass-card rounded-2xl p-6 text-center">
-          <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
+        <div className="glass-card rounded-xl p-6 text-center">
+          <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
           <p className="text-sm text-muted-foreground">Δεν υπάρχουν σημειώσεις</p>
         </div>
       ) : (
         notes.map((note) => (
-          <div key={note.id} className="glass-card rounded-2xl p-3.5">
+          <div key={note.id} className="glass-card rounded-xl p-3">
             <div className="flex items-start justify-between">
-              <p className="text-[10px] text-muted-foreground font-medium">{formatGreekDate(note.date)}</p>
-              <div className="flex items-center gap-0.5">
+              <p className="text-[10px] text-muted-foreground">{formatGreekDate(note.date)}</p>
+              <div className="flex items-center gap-1">
                 {editingId === note.id ? (
                   <>
-                    <button onClick={() => setEditingId(null)} className="p-1.5 rounded-xl min-h-[36px] min-w-[36px] flex items-center justify-center" aria-label="Ακύρωση">
+                    <button
+                      onClick={() => setEditingId(null)}
+                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
+                      aria-label="Ακύρωση"
+                    >
                       <X className="h-3.5 w-3.5 text-muted-foreground" />
                     </button>
-                    <button onClick={() => handleUpdate(note.id)} className="p-1.5 rounded-xl min-h-[36px] min-w-[36px] flex items-center justify-center" aria-label="Αποθήκευση">
+                    <button
+                      onClick={() => handleUpdate(note.id)}
+                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
+                      aria-label="Αποθήκευση"
+                    >
                       <Check className="h-3.5 w-3.5 text-primary" />
                     </button>
                   </>
                 ) : (
                   <>
                     <button
-                      onClick={() => { hapticFeedback('light'); setEditingId(note.id); setEditContent(note.content) }}
-                      className="p-1.5 rounded-xl min-h-[36px] min-w-[36px] flex items-center justify-center"
+                      onClick={() => {
+                        hapticFeedback('light')
+                        setEditingId(note.id)
+                        setEditContent(note.content)
+                      }}
+                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
                       aria-label="Επεξεργασία"
                     >
                       <Edit3 className="h-3.5 w-3.5 text-muted-foreground" />
                     </button>
                     <button
-                      onClick={() => { hapticFeedback('medium'); setNotes(notes.filter((n) => n.id !== note.id)) }}
-                      className="p-1.5 rounded-xl min-h-[36px] min-w-[36px] flex items-center justify-center"
+                      onClick={() => {
+                        hapticFeedback('medium')
+                        setNotes(notes.filter((n) => n.id !== note.id))
+                      }}
+                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
                       aria-label="Διαγραφή"
                     >
                       <Trash2 className="h-3.5 w-3.5 text-destructive" />
@@ -271,11 +316,11 @@ function NotesSection() {
               <textarea
                 value={editContent}
                 onChange={(e) => setEditContent(e.target.value)}
-                className="w-full mt-2 px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border/50 resize-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
+                className="w-full mt-2 px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none"
                 autoFocus
               />
             ) : (
-              <p className="text-sm text-foreground mt-1.5 whitespace-pre-wrap leading-relaxed">{note.content}</p>
+              <p className="text-sm text-foreground mt-1.5 whitespace-pre-wrap">{note.content}</p>
             )}
           </div>
         ))
@@ -296,19 +341,21 @@ function GuidesSection() {
 
       {MILITARY_GUIDES.map((guide) => {
         const Icon = GUIDE_ICONS[guide.icon] || BookOpen
-        const gradient = GUIDE_GRADIENTS[guide.icon] || 'var(--gradient-primary)'
         const isExpanded = expandedGuide === guide.id
 
         return (
-          <div key={guide.id} className="glass-card rounded-2xl overflow-hidden">
+          <div key={guide.id} className="glass-card rounded-xl overflow-hidden">
             <button
-              onClick={() => { hapticFeedback('light'); setExpandedGuide(isExpanded ? null : guide.id) }}
-              className="w-full flex items-center gap-3 p-4 min-h-[56px] text-left active:scale-[0.99] transition-transform"
+              onClick={() => {
+                hapticFeedback('light')
+                setExpandedGuide(isExpanded ? null : guide.id)
+              }}
+              className="w-full flex items-center gap-3 p-4 min-h-[56px] text-left"
             >
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: gradient }}>
-                <Icon className="h-5 w-5 text-foreground" />
+              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <Icon className="h-5 w-5 text-primary" />
               </div>
-              <span className="flex-1 text-sm font-bold text-foreground">{guide.title}</span>
+              <span className="flex-1 text-sm font-semibold text-foreground">{guide.title}</span>
               {isExpanded ? (
                 <ChevronUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
               ) : (
@@ -320,11 +367,14 @@ function GuidesSection() {
               <div className="px-4 pb-4 flex flex-col gap-4">
                 {guide.sections.map((section, sIdx) => (
                   <div key={sIdx}>
-                    <h4 className="text-xs font-bold text-primary mb-2">{section.heading}</h4>
+                    <h4 className="text-xs font-semibold text-primary mb-2">{section.heading}</h4>
                     <div className="flex flex-col gap-1.5">
                       {section.items.map((item, iIdx) => (
-                        <div key={iIdx} className="flex items-start gap-2 py-2 px-3 rounded-xl bg-secondary/60 border border-border/20">
-                          <span className="w-1 h-1 rounded-full bg-primary mt-1.5 flex-shrink-0" />
+                        <div
+                          key={iIdx}
+                          className="flex items-start gap-2 py-1.5 px-3 rounded-lg bg-secondary"
+                        >
+                          <span className="w-1 h-1 rounded-full bg-muted-foreground mt-1.5 flex-shrink-0" />
                           <p className="text-xs text-secondary-foreground leading-relaxed">{item}</p>
                         </div>
                       ))}
@@ -350,17 +400,20 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (content: string) => void; on
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Γράψε εδώ..."
-        className="w-full px-4 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[200px] border border-border/50 resize-none placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
+        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[200px] border border-border resize-none placeholder:text-muted-foreground"
         autoFocus
       />
-      <div className="flex gap-2.5">
-        <button onClick={onCancel} className="flex-1 py-3 rounded-xl bg-secondary text-secondary-foreground font-semibold text-sm min-h-[48px] active:scale-[0.98] transition-transform">
+      <div className="flex gap-2">
+        <button
+          onClick={onCancel}
+          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+        >
           Ακύρωση
         </button>
         <button
           onClick={() => content.trim() && onAdd(content.trim())}
           disabled={!content.trim()}
-          className="flex-1 py-3 rounded-xl btn-gradient font-bold text-sm min-h-[48px] disabled:opacity-40 shadow-[0_4px_16px_oklch(0.80_0.14_75/0.3)] active:scale-[0.98] transition-transform"
+          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
         >
           Προσθήκη
         </button>
