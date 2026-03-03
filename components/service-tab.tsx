@@ -175,7 +175,7 @@ export function ServiceTab() {
               cy="80"
               r="70"
               fill="none"
-              stroke="oklch(0.28 0.003 250)"
+              stroke="oklch(0.32 0.003 250)"
               strokeWidth="10"
             />
             <circle

@@ -12,7 +12,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('service')
 
   return (
-    <main className="min-h-dvh bg-background safe-top" style={{ background: 'linear-gradient(180deg, oklch(0.10 0.002 250) 0%, oklch(0.0 0.0 0) 30%, oklch(0.0 0.0 0) 100%)' }}>
+    <main className="min-h-dvh bg-background safe-top" style={{ background: 'linear-gradient(180deg, oklch(0.14 0.002 250) 0%, oklch(0.0 0.0 0) 30%, oklch(0.0 0.0 0) 100%)' }}>
       <div className="max-w-lg mx-auto px-4 pt-4 pb-28">
         {activeTab === 'service' && <ServiceTab />}
         {activeTab === 'duties' && <CalendarTab />}
