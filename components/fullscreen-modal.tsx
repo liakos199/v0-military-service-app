@@ -28,21 +28,24 @@ export function FullscreenModal({ isOpen, onClose, title, children }: Fullscreen
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100] bg-background">
+    <div className="fixed inset-0 z-[100]" style={{ background: 'var(--gradient-surface)' }}>
       <div className="flex flex-col h-full safe-top">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-          <h2 className="text-base font-semibold text-foreground">{title}</h2>
-          <button
-            onClick={() => {
-              hapticFeedback('light')
-              onClose()
-            }}
-            className="p-2 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Κλείσιμο"
-          >
-            <X className="h-5 w-5" />
-          </button>
+        {/* Header with gradient border */}
+        <div className="relative px-4 py-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-bold text-foreground">{title}</h2>
+            <button
+              onClick={() => {
+                hapticFeedback('light')
+                onClose()
+              }}
+              className="p-2 rounded-2xl bg-secondary/80 min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground transition-colors active:scale-95"
+              aria-label="Κλείσιμο"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="absolute bottom-0 left-4 right-4 h-px" style={{ background: 'linear-gradient(90deg, transparent, oklch(0.80 0.14 75 / 0.2), transparent)' }} />
         </div>
 
         {/* Content */}
