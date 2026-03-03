@@ -1,23 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import { Settings, Plus, Trash2, Clock, CalendarDays, Percent } from 'lucide-react'
+import { Settings, Clock, CalendarDays, Percent, Shield, Palmtree, Lock, Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
-import { hapticFeedback, formatGreekDate, generateId, daysBetween, toLocalDateString } from '@/lib/helpers'
-import type { ServiceConfig, LeaveEntry, LeaveType } from '@/lib/types'
-import { LEAVE_TYPE_LABELS, SERVICE_DURATION_PRESETS } from '@/lib/types'
+import { hapticFeedback, formatGreekDate, daysBetween, toLocalDateString } from '@/lib/helpers'
+import type { ServiceConfig, LeaveEntry, DutyEntry, DailyPassword } from '@/lib/types'
+import { DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS, SERVICE_DURATION_PRESETS } from '@/lib/types'
 
 export function ServiceTab() {
   const [config, setConfig] = useLocalStorage<ServiceConfig>('fantaros-config', {
     enlistmentDate: '',
     totalDays: 365,
   })
-  const [leaves, setLeaves] = useLocalStorage<LeaveEntry[]>('fantaros-leaves', [])
+  const [leaves] = useLocalStorage<LeaveEntry[]>('fantaros-leaves', [])
+  const [duties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
+  const [passwords] = useLocalStorage<DailyPassword[]>('fantaros-passwords', [])
   const [showConfig, setShowConfig] = useState(false)
-  const [showAddLeave, setShowAddLeave] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const today = toLocalDateString()
   const daysServed = config.enlistmentDate ? Math.max(0, daysBetween(config.enlistmentDate, today)) : 0
@@ -34,6 +36,14 @@ export function ServiceTab() {
         return toLocalDateString(d)
       })()
     : ''
+
+  // Today's duties and leaves
+  const todaysDuties = duties.filter((d) => d.date === today)
+    .sort((a, b) => a.startTime.localeCompare(b.startTime))
+  const todaysLeaves = leaves.filter((l) => today >= l.startDate && today <= l.endDate)
+  const todaysPassword = passwords.find((p) => p.date === today)
+  const hasGuardDutyToday = todaysDuties.some((d) => d.type === 'guard')
+  const isOnLeaveToday = todaysLeaves.length > 0
 
   const circumference = 2 * Math.PI * 70
 
@@ -155,72 +165,93 @@ export function ServiceTab() {
         )}
       </div>
 
-      {/* Leave Section */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold text-foreground">Άδειες</h2>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setShowAddLeave(true)
-          }}
-          className="p-2.5 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label="Προσθήκη άδειας"
-        >
-          <Plus className="h-5 w-5 text-primary" />
-        </button>
-      </div>
+      {/* Today's Status */}
+      <div className="flex flex-col gap-2">
+        <h2 className="text-sm font-semibold text-foreground">Σήμερα</h2>
 
-      {/* Add Leave Modal */}
-      <FullscreenModal
-        isOpen={showAddLeave}
-        onClose={() => setShowAddLeave(false)}
-        title="Νέα Άδεια"
-      >
-        <AddLeaveForm
-          onAdd={(leave) => {
-            setLeaves([leave, ...leaves])
-            setShowAddLeave(false)
-          }}
-          onCancel={() => setShowAddLeave(false)}
-        />
-      </FullscreenModal>
-
-      {leaves.length === 0 ? (
-        <div className="glass-card rounded-xl p-6 text-center">
-          <p className="text-sm text-muted-foreground">Δεν έχεις καταχωρήσει άδειες</p>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-2">
-          {leaves.map((leave) => (
-            <div key={leave.id} className="glass-card rounded-xl p-3 flex items-center justify-between">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs px-2 py-0.5 rounded-md bg-primary/20 text-primary font-medium">
-                    {LEAVE_TYPE_LABELS[leave.type]}
-                  </span>
-                  <span className="text-xs font-semibold text-foreground">{leave.days} ημ.</span>
-                </div>
-                <p className="text-[11px] text-muted-foreground mt-1 truncate">
-                  {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}
+        {/* Leave status */}
+        {isOnLeaveToday && (
+          <div className="glass-card rounded-xl p-3 flex items-center gap-3 ring-1 ring-chart-2/30">
+            <div className="w-10 h-10 rounded-xl bg-chart-2/10 flex items-center justify-center flex-shrink-0">
+              <Palmtree className="h-5 w-5 text-chart-2" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground">Σε Άδεια</p>
+              {todaysLeaves.map((leave) => (
+                <p key={leave.id} className="text-xs text-muted-foreground">
+                  {LEAVE_TYPE_LABELS[leave.type]} ({formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)})
                 </p>
-                {leave.notes && (
-                  <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{leave.notes}</p>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Duties */}
+        {todaysDuties.length > 0 ? (
+          todaysDuties.map((duty) => (
+            <div key={duty.id} className="glass-card rounded-xl p-3 flex items-center gap-3 ring-1 ring-chart-3/30">
+              <div className="w-10 h-10 rounded-xl bg-chart-3/10 flex items-center justify-center flex-shrink-0">
+                <Shield className="h-5 w-5 text-chart-3" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground">{DUTY_TYPE_LABELS[duty.type]}</p>
+                <p className="text-xs text-muted-foreground">{duty.startTime} - {duty.endTime}</p>
+                {duty.notes && (
+                  <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{duty.notes}</p>
                 )}
+              </div>
+            </div>
+          ))
+        ) : (
+          !isOnLeaveToday && (
+            <div className="glass-card rounded-xl p-3 text-center">
+              <p className="text-xs text-muted-foreground">Καμία βάρδια σήμερα</p>
+            </div>
+          )
+        )}
+
+        {/* Today's Password */}
+        {(hasGuardDutyToday || todaysPassword) && todaysPassword && (
+          <div className="glass-card rounded-xl p-3 ring-1 ring-chart-4/30">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-xl bg-chart-4/10 flex items-center justify-center flex-shrink-0">
+                  <Lock className="h-5 w-5 text-chart-4" />
+                </div>
+                <span className="text-sm font-semibold text-foreground">Σύνθημα Ημέρας</span>
               </div>
               <button
                 onClick={() => {
-                  hapticFeedback('medium')
-                  setLeaves(leaves.filter((l) => l.id !== leave.id))
+                  hapticFeedback('light')
+                  setShowPassword(!showPassword)
                 }}
-                className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive"
-                aria-label="Διαγραφή άδειας"
+                className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label={showPassword ? 'Απόκρυψη' : 'Εμφάνιση'}
               >
-                <Trash2 className="h-4 w-4" />
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                )}
               </button>
             </div>
-          ))}
-        </div>
-      )}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-2.5 rounded-lg bg-secondary">
+                <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Σύνθημα</p>
+                <p className={cn('text-sm font-mono font-bold mt-0.5', showPassword ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
+                  {todaysPassword.password || '---'}
+                </p>
+              </div>
+              <div className="p-2.5 rounded-lg bg-secondary">
+                <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Παρασύνθημα</p>
+                <p className={cn('text-sm font-mono font-bold mt-0.5', showPassword ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
+                  {todaysPassword.countersign || '---'}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -236,95 +267,6 @@ function StatCard({ icon: Icon, label, value, unit }: {
       <Icon className="h-3.5 w-3.5 text-primary" />
       <span className="text-lg font-bold text-foreground leading-none">{value}</span>
       <span className="text-[9px] text-muted-foreground leading-none">{unit}</span>
-    </div>
-  )
-}
-
-function AddLeaveForm({ onAdd, onCancel }: {
-  onAdd: (leave: LeaveEntry) => void
-  onCancel: () => void
-}) {
-  const [type, setType] = useState<LeaveType>('regular')
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [notes, setNotes] = useState('')
-
-  const days = startDate && endDate ? Math.max(0, daysBetween(startDate, endDate) + 1) : 0
-
-  const handleSubmit = () => {
-    if (!startDate || !endDate) return
-    hapticFeedback('heavy')
-    onAdd({
-      id: generateId(),
-      type,
-      startDate,
-      endDate,
-      days,
-      notes,
-    })
-  }
-
-  return (
-    <div className="flex flex-col gap-4">
-      <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Τύπος</label>
-        <div className="flex flex-wrap gap-2">
-          {(Object.keys(LEAVE_TYPE_LABELS) as LeaveType[]).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => {
-                hapticFeedback('light')
-                setType(t)
-              }}
-              className={cn(
-                'px-3 py-2 rounded-lg text-xs font-medium min-h-[40px] transition-colors',
-                type === t
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-secondary-foreground'
-              )}
-            >
-              {LEAVE_TYPE_LABELS[t]}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <GreekDatePicker value={startDate} onChange={setStartDate} label="Από" />
-      <GreekDatePicker value={endDate} onChange={setEndDate} label="Έως" />
-
-      {days > 0 && (
-        <div className="text-center py-2 rounded-lg bg-primary/10">
-          <span className="text-sm font-semibold text-primary">{days} ημέρες</span>
-        </div>
-      )}
-
-      <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Σημειώσεις</label>
-        <input
-          type="text"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Προαιρετικό..."
-          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground"
-        />
-      </div>
-
-      <div className="flex gap-2 pt-2">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          disabled={!startDate || !endDate}
-          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
-        >
-          Προσθήκη
-        </button>
-      </div>
     </div>
   )
 }
