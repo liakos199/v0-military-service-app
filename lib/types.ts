@@ -86,6 +86,8 @@ export interface ProfileData {
   reportingPhrase: string
   rank: string
   serviceNumber: string
+  weaponCode: string   // Κωδικός Όπλου
+  weaponCell: string   // Κελί Όπλου
 }
 
 export interface SuperiorEntry {

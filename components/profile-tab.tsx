@@ -17,6 +17,8 @@ const DEFAULT_PROFILE: ProfileData = {
   reportingPhrase: '',
   rank: 'Στρατιώτης',
   serviceNumber: '',
+  weaponCode: '',
+  weaponCell: '',
 }
 
 export function ProfileTab() {
