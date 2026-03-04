@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import {
   Plus,
   Trash2,
@@ -14,6 +14,11 @@ import {
   Star,
   Radio,
   HeartPulse,
+  GraduationCap,
+  RotateCcw,
+  ChevronRight,
+  CircleCheck,
+  CircleX,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -159,6 +164,146 @@ const GUIDE_ICONS: Record<string, typeof Star> = {
   star: Star,
   radio: Radio,
   health: HeartPulse,
+}
+
+/* ========== QUIZ DATA ========== */
+interface QuizQuestion {
+  question: string
+  options: string[]
+  correctIndex: number
+}
+
+const GUIDE_QUIZZES: Record<string, QuizQuestion[]> = {
+  ranks: [
+    {
+      question: 'Πόσα γαλόνια έχει ο Λοχίας;',
+      options: ['1 γαλόνι', '2 γαλόνια', '3 γαλόνια', '4 γαλόνια'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Τι διακριτικό φέρει ο Λοχαγός;',
+      options: ['2 ασημένια αστέρια', '1 ασημένιο αστέρι', '3 ασημένια αστέρια', '1 χρυσή φλογοφόρος'],
+      correctIndex: 2,
+    },
+    {
+      question: 'Ποιος βαθμός έχει 1 χρυσή φλογοφόρο ροιά;',
+      options: ['Λοχαγός', 'Ταγματάρχης', 'Συνταγματάρχης', 'Αντισυνταγματάρχης'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Τι κάνουμε όταν συναντάμε Υπαξιωματικό;',
+      options: ['Χαιρετάμε', 'Στεκόμαστε προσοχή', 'Χαιρετάμε & προσοχή', 'Τίποτα'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Ποιος βαθμός είναι συνήθως Διοικητής Μονάδας;',
+      options: ['Ταγματάρχης', 'Λοχαγός', 'Συνταγματάρχης', 'Ταξίαρχος'],
+      correctIndex: 2,
+    },
+    {
+      question: 'Πόσα γαλόνια έχει ο Αρχιλοχίας;',
+      options: ['2 γαλόνια', '3 γαλόνια', '4 γαλόνια', '5 γαλόνια'],
+      correctIndex: 2,
+    },
+    {
+      question: 'Τι διακριτικό φέρει ο Ανθυπολοχαγός;',
+      options: ['1 ασημένιο αστέρι', '2 ασημένια αστέρια', '1 γαλόνι', '1 χρυσό αστέρι'],
+      correctIndex: 0,
+    },
+    {
+      question: 'Πόσα χρυσά αστέρια έχει ο Αντιστράτηγος;',
+      options: ['1', '2', '3', '4'],
+      correctIndex: 2,
+    },
+  ],
+  phonetic: [
+    {
+      question: 'Ποιο γράμμα αντιστοιχεί στο «Ερμής»;',
+      options: ['Η', 'Ε', 'Ι', 'Α'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Πώς λέμε το Κ στο φωνητικό αλφάβητο;',
+      options: ['Κλειώ', 'Κενόν', 'Κόσμος', 'Κάρμα'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Τι σημαίνει «Ορθόν» στον ασύρματο;',
+      options: ['Με ακούς;', 'Σωστά / Κατανοητό', 'Ξεκίνα να μιλάς', 'Αγνόησε το μήνυμα'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Πώς λέμε το Ψ στο φωνητικό αλφάβητο;',
+      options: ['Ψαράς', 'Ψήφος', 'Ψυχή', 'Ψίθυρος'],
+      correctIndex: 2,
+    },
+    {
+      question: 'Τι σημαίνει «Άκυρον» στον ασύρματο;',
+      options: ['Σωστά', 'Αγνόησε το μήνυμα', 'Ξεκίνα να μιλάς', 'Με ακούς;'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Ποιο γράμμα αντιστοιχεί στο «Τίγρης»;',
+      options: ['Θ', 'Ρ', 'Τ', 'Σ'],
+      correctIndex: 2,
+    },
+    {
+      question: 'Πώς λέμε το Ξ στο φωνητικό αλφάβητο;',
+      options: ['Ξένος', 'Ξέρξης', 'Ξύλο', 'Ξενοφών'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Τι σημαίνει «Λήψη;» στον ασύρματο;',
+      options: ['Σωστά', 'Ξεκίνα', 'Με ακούς;', 'Τέλος'],
+      correctIndex: 2,
+    },
+  ],
+  'first-aid': [
+    {
+      question: 'Τι κάνεις ΠΡΩΤΑ σε θερμική εξάντληση;',
+      options: ['Ενυδάτωση με πολύ νερό', 'Μεταφορά σε σκιερό μέρος', 'Αφαίρεση ρούχων', 'Κλήση ασθενοφόρου'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Πόση ώρα ασκούμε πίεση σε αιμορραγία;',
+      options: ['1-2 λεπτά', '5-10 λεπτά', '15-20 λεπτά', '30 δευτερόλεπτα'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Τι σημαίνει Κ.Π.Α.Α.;',
+      options: [
+        'Κατάκλιση, Πάγος, Ανύψωση, Ανάπαυση',
+        'Κράτημα, Πίεση, Αφαίρεση, Αντιμετώπιση',
+        'Κρύο, Πανί, Αναμονή, Ακινησία',
+        'Κατάκλιση, Πίεση, Αντιβιοτικά, Αναμονή',
+      ],
+      correctIndex: 0,
+    },
+    {
+      question: 'Πώς αφαιρούμε κεντρί μέλισσας;',
+      options: ['Τραβώντας με δάχτυλα', 'Ζουλώντας', 'Ξύνοντας απαλά (π.χ. ταυτότητα)', 'Με λαβίδα'],
+      correctIndex: 2,
+    },
+    {
+      question: 'Γιατί ΔΕΝ βγάζουμε άρβυλο σε διάστρεμμα;',
+      options: ['Θα αιμορραγήσει', 'Θα πρηστεί το πόδι', 'Θα σπάσει', 'Θα κρυώσει'],
+      correctIndex: 1,
+    },
+    {
+      question: 'Πώς ενυδατώνουμε σε θερμοπληξία;',
+      options: ['Μεγάλες γουλιές γρήγορα', 'Μικρές, συχνές γουλιές', 'Μόνο αναψυκτικά', 'Δεν δίνουμε νερό'],
+      correctIndex: 1,
+    },
+  ],
+}
+
+function shuffleArray<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
 }
 
 export function NotesTab() {
@@ -338,6 +483,7 @@ function NotesSection() {
 /* ========== GUIDES SECTION ========== */
 function GuidesSection() {
   const [expandedGuide, setExpandedGuide] = useState<string | null>(null)
+  const [activeQuiz, setActiveQuiz] = useState<string | null>(null)
 
   return (
     <div className="flex flex-col gap-3">
@@ -348,6 +494,7 @@ function GuidesSection() {
       {MILITARY_GUIDES.map((guide) => {
         const Icon = GUIDE_ICONS[guide.icon] || BookOpen
         const isExpanded = expandedGuide === guide.id
+        const hasQuiz = !!GUIDE_QUIZZES[guide.id]
 
         return (
           <div key={guide.id} className="glass-card rounded-xl overflow-hidden">
@@ -387,11 +534,220 @@ function GuidesSection() {
                     </div>
                   </div>
                 ))}
+
+                {/* Quiz button */}
+                {hasQuiz && (
+                  <button
+                    onClick={() => {
+                      hapticFeedback('medium')
+                      setActiveQuiz(guide.id)
+                    }}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary/10 text-primary font-semibold text-sm min-h-[48px] transition-colors active:bg-primary/20"
+                  >
+                    <GraduationCap className="h-4 w-4" />
+                    Εξέτασε με
+                  </button>
+                )}
               </div>
             )}
           </div>
         )
       })}
+
+      {/* Quiz Modal */}
+      {activeQuiz && (
+        <FullscreenModal
+          isOpen={true}
+          onClose={() => setActiveQuiz(null)}
+          title={MILITARY_GUIDES.find((g) => g.id === activeQuiz)?.title || 'Τεστ'}
+        >
+          <QuizView
+            guideId={activeQuiz}
+            onClose={() => setActiveQuiz(null)}
+          />
+        </FullscreenModal>
+      )}
+    </div>
+  )
+}
+
+/* ========== QUIZ VIEW ========== */
+function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }) {
+  const allQuestions = GUIDE_QUIZZES[guideId] || []
+
+  const shuffledQuestions = useMemo(() => {
+    const picked = shuffleArray(allQuestions).slice(0, 5)
+    return picked.map((q) => {
+      const indexed = q.options.map((opt, i) => ({ opt, wasCorrect: i === q.correctIndex }))
+      const shuffled = shuffleArray(indexed)
+      return {
+        question: q.question,
+        options: shuffled.map((s) => s.opt),
+        correctIndex: shuffled.findIndex((s) => s.wasCorrect),
+      }
+    })
+  }, [guideId]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [currentIdx, setCurrentIdx] = useState(0)
+  const [selectedOption, setSelectedOption] = useState<number | null>(null)
+  const [score, setScore] = useState(0)
+  const [finished, setFinished] = useState(false)
+  const [answered, setAnswered] = useState(false)
+
+  const total = shuffledQuestions.length
+  const current = shuffledQuestions[currentIdx]
+
+  const handleSelect = useCallback(
+    (optIdx: number) => {
+      if (answered) return
+      hapticFeedback('light')
+      setSelectedOption(optIdx)
+      setAnswered(true)
+      if (optIdx === current.correctIndex) {
+        setScore((s) => s + 1)
+        hapticFeedback('heavy')
+      } else {
+        hapticFeedback('medium')
+      }
+    },
+    [answered, current]
+  )
+
+  const handleNext = useCallback(() => {
+    if (currentIdx + 1 >= total) {
+      setFinished(true)
+      hapticFeedback('heavy')
+    } else {
+      setCurrentIdx((i) => i + 1)
+      setSelectedOption(null)
+      setAnswered(false)
+      hapticFeedback('light')
+    }
+  }, [currentIdx, total])
+
+  const handleRetry = useCallback(() => {
+    setCurrentIdx(0)
+    setSelectedOption(null)
+    setScore(0)
+    setFinished(false)
+    setAnswered(false)
+    hapticFeedback('medium')
+  }, [])
+
+  if (total === 0) return null
+
+  // Results screen
+  if (finished) {
+    const pct = Math.round((score / total) * 100)
+    const isGreat = pct >= 80
+    const isOk = pct >= 50 && pct < 80
+
+    return (
+      <div className="flex flex-col items-center justify-center gap-6 py-8">
+        <div
+          className={cn(
+            'w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold',
+            isGreat
+              ? 'bg-chart-2/15 text-chart-2'
+              : isOk
+                ? 'bg-chart-4/15 text-chart-4'
+                : 'bg-destructive/15 text-destructive'
+          )}
+        >
+          {score}/{total}
+        </div>
+
+        <div className="text-center">
+          <p className="text-lg font-bold text-foreground">
+            {isGreat ? 'Εξαιρετικά!' : isOk ? 'Καλή προσπάθεια!' : 'Χρειάζεται διάβασμα'}
+          </p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Σωστές απαντήσεις: {score} / {total} ({pct}%)
+          </p>
+        </div>
+
+        <div className="flex gap-3 w-full max-w-xs">
+          <button
+            onClick={handleRetry}
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Ξανά
+          </button>
+          <button
+            onClick={onClose}
+            className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px]"
+          >
+            Κλείσιμο
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Question screen
+  return (
+    <div className="flex flex-col gap-5">
+      {/* Progress */}
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
+          <div
+            className="h-full rounded-full bg-primary transition-all duration-300"
+            style={{ width: `${((currentIdx + (answered ? 1 : 0)) / total) * 100}%` }}
+          />
+        </div>
+        <span className="text-xs font-medium text-muted-foreground tabular-nums">
+          {currentIdx + 1}/{total}
+        </span>
+      </div>
+
+      {/* Question */}
+      <p className="text-base font-semibold text-foreground leading-snug">{current.question}</p>
+
+      {/* Options */}
+      <div className="flex flex-col gap-2.5">
+        {current.options.map((opt, optIdx) => {
+          const isCorrect = optIdx === current.correctIndex
+          const isSelected = optIdx === selectedOption
+          const showCorrect = answered && isCorrect
+          const showWrong = answered && isSelected && !isCorrect
+
+          return (
+            <button
+              key={optIdx}
+              onClick={() => handleSelect(optIdx)}
+              disabled={answered}
+              className={cn(
+                'flex items-center gap-3 w-full text-left px-4 py-3.5 rounded-xl text-sm transition-all min-h-[52px] border',
+                answered
+                  ? showCorrect
+                    ? 'bg-chart-2/10 border-chart-2/40 text-chart-2'
+                    : showWrong
+                      ? 'bg-destructive/10 border-destructive/40 text-destructive'
+                      : 'bg-secondary/50 border-border/50 text-muted-foreground'
+                  : isSelected
+                    ? 'bg-primary/10 border-primary/40 text-foreground'
+                    : 'bg-secondary border-border text-foreground active:bg-secondary/80'
+              )}
+            >
+              <span className="flex-1 font-medium">{opt}</span>
+              {showCorrect && <CircleCheck className="h-5 w-5 flex-shrink-0" />}
+              {showWrong && <CircleX className="h-5 w-5 flex-shrink-0" />}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Next button */}
+      {answered && (
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] transition-all"
+        >
+          {currentIdx + 1 >= total ? 'Αποτελέσματα' : 'Επόμενη'}
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      )}
     </div>
   )
 }
