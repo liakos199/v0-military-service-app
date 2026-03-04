@@ -127,13 +127,22 @@ export interface FriendEntry {
   notes: string
 }
 
-export const EXPENSE_PRESETS = [
-  { label: 'Καφές', amount: 1.50 },
-  { label: 'Νερό', amount: 0.50 },
-  { label: 'Φαγητό', amount: 5.00 },
-  { label: 'Σνακ', amount: 2.00 },
-  { label: 'Αναψυκτικό', amount: 1.00 },
+export interface ExpensePreset {
+  id: string
+  label: string
+  amount: number
+}
+
+export const DEFAULT_EXPENSE_PRESETS: ExpensePreset[] = [
+  { id: 'default-1', label: 'Καφές', amount: 1.50 },
+  { id: 'default-2', label: 'Νερό', amount: 0.50 },
+  { id: 'default-3', label: 'Φαγητό', amount: 5.00 },
+  { id: 'default-4', label: 'Σνακ', amount: 2.00 },
+  { id: 'default-5', label: 'Αναψυκτικό', amount: 1.00 },
 ]
+
+/** @deprecated Use DEFAULT_EXPENSE_PRESETS instead */
+export const EXPENSE_PRESETS = DEFAULT_EXPENSE_PRESETS
 
 export const SERVICE_DURATION_PRESETS = [
   { label: '6 μήνες', days: 183 },
