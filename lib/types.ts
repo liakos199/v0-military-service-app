@@ -61,6 +61,7 @@ export const DUTY_TYPE_LABELS: Record<DutyType, string> = {
 export interface NoteEntry {
   id: string
   date: string
+  title: string
   content: string
 }
 
