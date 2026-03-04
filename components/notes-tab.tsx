@@ -366,12 +366,13 @@ function NotesSection() {
   const [notes, setNotes] = useLocalStorage<NoteEntry[]>('fantaros-notes', [])
   const [showAdd, setShowAdd] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
+  const [editTitle, setEditTitle] = useState('')
   const [editContent, setEditContent] = useState('')
 
-  const handleAdd = (content: string) => {
+  const handleAdd = (title: string, content: string) => {
     hapticFeedback('heavy')
     setNotes([
-      { id: generateId(), date: toLocalDateString(), content },
+      { id: generateId(), date: toLocalDateString(), title, content },
       ...notes,
     ])
     setShowAdd(false)
@@ -379,7 +380,7 @@ function NotesSection() {
 
   const handleUpdate = (id: string) => {
     hapticFeedback('medium')
-    setNotes(notes.map((n) => (n.id === id ? { ...n, content: editContent } : n)))
+    setNotes(notes.map((n) => (n.id === id ? { ...n, title: editTitle, content: editContent } : n)))
     setEditingId(null)
   }
 
@@ -442,6 +443,7 @@ function NotesSection() {
                       onClick={() => {
                         hapticFeedback('light')
                         setEditingId(note.id)
+                        setEditTitle(note.title || '')
                         setEditContent(note.content)
                       }}
                       className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
@@ -464,14 +466,26 @@ function NotesSection() {
               </div>
             </div>
             {editingId === note.id ? (
-              <textarea
-                value={editContent}
-                onChange={(e) => setEditContent(e.target.value)}
-                className="w-full mt-2 px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none"
-                autoFocus
-              />
+              <div className="flex flex-col gap-2 mt-2">
+                <input
+                  type="text"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  placeholder="Τίτλος"
+                  className="w-full px-3 py-2.5 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[44px] border border-border placeholder:text-muted-foreground"
+                  autoFocus
+                />
+                <textarea
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none"
+                />
+              </div>
             ) : (
-              <p className="text-sm text-foreground mt-1.5 whitespace-pre-wrap">{note.content}</p>
+              <div className="mt-1.5">
+                {note.title && <p className="text-sm font-semibold text-foreground">{note.title}</p>}
+                <p className="text-sm text-foreground whitespace-pre-wrap">{note.content}</p>
+              </div>
             )}
           </div>
         ))
@@ -753,17 +767,25 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
 }
 
 /* ========== ADD NOTE FORM ========== */
-function AddNoteForm({ onAdd, onCancel }: { onAdd: (content: string) => void; onCancel: () => void }) {
+function AddNoteForm({ onAdd, onCancel }: { onAdd: (title: string, content: string) => void; onCancel: () => void }) {
+  const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
   return (
     <div className="flex flex-col gap-4">
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Τίτλος (προαιρετικό)"
+        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[48px] border border-border placeholder:text-muted-foreground placeholder:font-normal"
+        autoFocus
+      />
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Γράψε εδώ..."
         className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[200px] border border-border resize-none placeholder:text-muted-foreground"
-        autoFocus
       />
       <div className="flex gap-2">
         <button
@@ -773,7 +795,7 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (content: string) => void; on
           Ακύρωση
         </button>
         <button
-          onClick={() => content.trim() && onAdd(content.trim())}
+          onClick={() => content.trim() && onAdd(title.trim(), content.trim())}
           disabled={!content.trim()}
           className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
         >
