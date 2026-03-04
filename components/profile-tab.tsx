@@ -17,6 +17,8 @@ const DEFAULT_PROFILE: ProfileData = {
   reportingPhrase: '',
   rank: 'Στρατιώτης',
   serviceNumber: '',
+  weaponCode: '',
+  weaponCell: '',
 }
 
 export function ProfileTab() {
@@ -140,6 +142,8 @@ function ProfileSection() {
           <InfoField label="Θάλαμος" value={profile.barracks} />
           <InfoField label="Ομάδα Αίματος" value={profile.bloodType} />
           <InfoField label="Βαθμός" value={profile.rank} />
+          <InfoField label="Κωδικός Όπλου" value={profile.weaponCode} />
+          <InfoField label="Κελί Όπλου" value={profile.weaponCell} />
         </div>
 
         {profile.reportingPhrase && (
@@ -181,6 +185,19 @@ function ProfileSection() {
             label="Θάλαμος"
             value={form.barracks}
             onChange={(v) => setForm({ ...form, barracks: v })}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <FormField
+            label="Κωδικός Όπλου"
+            value={form.weaponCode}
+            onChange={(v) => setForm({ ...form, weaponCode: v })}
+          />
+          <FormField
+            label="Κελί Όπλου"
+            value={form.weaponCell}
+            onChange={(v) => setForm({ ...form, weaponCell: v })}
           />
         </div>
 
