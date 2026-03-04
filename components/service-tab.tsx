@@ -181,7 +181,7 @@ export function ServiceTab() {
               cy="80"
               r="70"
               fill="none"
-              stroke="oklch(0.24 0.003 250)"
+              stroke="oklch(0.26 0.004 260)"
               strokeWidth="10"
             />
             <circle
@@ -189,13 +189,13 @@ export function ServiceTab() {
               cy="80"
               r="70"
               fill="none"
-              stroke="oklch(0.78 0.12 80)"
+              stroke="oklch(0.70 0.16 8)"
               strokeWidth="10"
               strokeLinecap="round"
               strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
               className="transition-all duration-1000 ease-out"
               style={{
-                filter: 'drop-shadow(0 0 8px oklch(0.78 0.12 80 / 0.5))',
+                filter: 'drop-shadow(0 0 8px oklch(0.70 0.16 8 / 0.5))',
               }}
             />
           </svg>
