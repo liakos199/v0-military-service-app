@@ -1,4 +1,4 @@
-// Types for the Fantaros military service app
+// Types for the ΑΠΟΛΕΛΕ PRO military service app
 
 export interface ServiceConfig {
   enlistmentDate: string // ISO date string
