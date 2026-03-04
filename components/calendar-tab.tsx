@@ -284,6 +284,14 @@ export function CalendarTab() {
         </div>
       </div>
 
+      {/* Monthly Summary */}
+      <MonthlySummary
+        duties={duties}
+        leaves={leaves}
+        viewMonth={viewMonth}
+        viewYear={viewYear}
+      />
+
       {/* Upcoming Events */}
       <UpcomingEvents
         duties={duties}
@@ -424,6 +432,118 @@ export function CalendarTab() {
 }
 
 /* ---------- Upcoming Events ---------- */
+/* ---------- Monthly Summary ---------- */
+function MonthlySummary({
+  duties,
+  leaves,
+  viewMonth,
+  viewYear,
+}: {
+  duties: DutyEntry[]
+  leaves: LeaveEntry[]
+  viewMonth: number
+  viewYear: number
+}) {
+  const stats = useMemo(() => {
+    const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
+    const monthStart = `${monthPrefix}-01`
+    const monthEnd = `${monthPrefix}-${String(daysInMonth).padStart(2, '0')}`
+
+    // Count duties by type for this month
+    const monthDuties = duties.filter((d) => d.date.startsWith(monthPrefix))
+    const dutyCountByType: Partial<Record<DutyType, number>> = {}
+    monthDuties.forEach((d) => {
+      dutyCountByType[d.type] = (dutyCountByType[d.type] || 0) + 1
+    })
+
+    // Count leave days that fall within this month
+    let leaveDays = 0
+    const leaveCountByType: Partial<Record<LeaveType, number>> = {}
+    leaves.forEach((l) => {
+      const lStart = l.startDate < monthStart ? monthStart : l.startDate
+      const lEnd = l.endDate > monthEnd ? monthEnd : l.endDate
+      if (lStart <= lEnd) {
+        const days = daysBetween(lStart, lEnd) + 1
+        leaveDays += days
+        leaveCountByType[l.type] = (leaveCountByType[l.type] || 0) + days
+      }
+    })
+
+    return {
+      totalDuties: monthDuties.length,
+      dutyCountByType,
+      leaveDays,
+      leaveCountByType,
+    }
+  }, [duties, leaves, viewMonth, viewYear])
+
+  const hasDuties = stats.totalDuties > 0
+  const hasLeaves = stats.leaveDays > 0
+
+  if (!hasDuties && !hasLeaves) return null
+
+  return (
+    <div className="glass-card rounded-2xl p-4">
+      <h2 className="text-sm font-semibold text-foreground mb-3">
+        {GREEK_MONTHS[viewMonth]} - Σύνοψη
+      </h2>
+
+      <div className="flex gap-3">
+        {/* Duties summary */}
+        {hasDuties && (
+          <div className="flex-1 rounded-xl bg-chart-3/10 p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <Shield className="h-4 w-4 text-chart-3" />
+              <span className="text-xs font-semibold text-chart-3">
+                {stats.totalDuties} υπηρεσ{stats.totalDuties === 1 ? 'ία' : 'ίες'}
+              </span>
+            </div>
+            <div className="flex flex-col gap-1">
+              {(Object.entries(stats.dutyCountByType) as [DutyType, number][]).map(
+                ([type, count]) => (
+                  <div key={type} className="flex items-center justify-between">
+                    <span className="text-[11px] text-muted-foreground">
+                      {DUTY_TYPE_LABELS[type]}
+                    </span>
+                    <span className="text-[11px] font-medium text-foreground">{count}</span>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Leave summary */}
+        {hasLeaves && (
+          <div className="flex-1 rounded-xl bg-chart-2/10 p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <Palmtree className="h-4 w-4 text-chart-2" />
+              <span className="text-xs font-semibold text-chart-2">
+                {stats.leaveDays} ημέρ{stats.leaveDays === 1 ? 'α' : 'ες'} άδειας
+              </span>
+            </div>
+            <div className="flex flex-col gap-1">
+              {(Object.entries(stats.leaveCountByType) as [LeaveType, number][]).map(
+                ([type, count]) => (
+                  <div key={type} className="flex items-center justify-between">
+                    <span className="text-[11px] text-muted-foreground">
+                      {LEAVE_TYPE_LABELS[type]}
+                    </span>
+                    <span className="text-[11px] font-medium text-foreground">
+                      {count} ημ.
+                    </span>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function UpcomingEvents({
   duties,
   leaves,
