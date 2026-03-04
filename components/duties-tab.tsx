@@ -43,7 +43,7 @@ export function DutiesTab() {
 
       if (notifyTime > now) {
         const timeout = setTimeout(() => {
-          new Notification('Fantaros - Υπηρεσία', {
+          new Notification('ΑΠΟΛΕΛΕ PRO - Υπηρεσία', {
             body: `${DUTY_TYPE_LABELS[duty.type]} σε 30 λεπτά (${duty.startTime})`,
             icon: '/icon-192.png',
           })

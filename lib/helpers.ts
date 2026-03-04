@@ -77,12 +77,12 @@ export function generateIcsFile(options: {
   const dtEnd = formatIcsDate(endDate, endTime)
   const now = new Date()
   const dtStamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`
-  const uid = `fantaros-${Date.now()}-${Math.random().toString(36).substring(2, 9)}@app`
+  const uid = `apolele-pro-${Date.now()}-${Math.random().toString(36).substring(2, 9)}@app`
 
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Fantaros//Military Service App//EL',
+    'PRODID:-//ΑΠΟΛΕΛΕ PRO//Military Service App//EL',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
