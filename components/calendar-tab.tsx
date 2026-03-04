@@ -315,7 +315,7 @@ export function CalendarTab() {
         >
           <div
             className="w-full max-w-lg rounded-t-2xl p-4 pb-8 border-t border-glass-border safe-bottom"
-            style={{ background: 'linear-gradient(180deg, oklch(0.20 0.004 250), oklch(0.12 0.002 250))' }}
+            style={{ background: 'linear-gradient(180deg, oklch(0.26 0.008 250), oklch(0.20 0.006 250))' }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-10 h-1 rounded-full bg-muted-foreground/30 mx-auto mb-4" />

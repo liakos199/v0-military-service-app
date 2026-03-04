@@ -189,13 +189,13 @@ export function ServiceTab() {
               cy="80"
               r="70"
               fill="none"
-              stroke="oklch(0.70 0.16 8)"
+              stroke="oklch(0.62 0.17 145)"
               strokeWidth="10"
               strokeLinecap="round"
               strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
               className="transition-all duration-1000 ease-out"
               style={{
-                filter: 'drop-shadow(0 0 8px oklch(0.70 0.16 8 / 0.5))',
+                filter: 'drop-shadow(0 0 8px oklch(0.62 0.17 145 / 0.5))',
               }}
             />
           </svg>
@@ -216,7 +216,7 @@ export function ServiceTab() {
           />
           <StatCard
             icon={CalendarDays}
-            label="Απομένουν"
+            label="Απ��μένουν"
             value={`${effectiveDaysRemaining}`}
             unit="ημέρες"
           />
