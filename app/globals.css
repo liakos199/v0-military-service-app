@@ -116,6 +116,22 @@
   }
 }
 
+/* Splash screen animations */
+@keyframes splash-fade-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes splash-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.splash-icon {
+  animation: splash-fade-in 0.6s ease-out forwards;
+}
+.splash-out {
+  animation: splash-fade-out 0.4s ease-in forwards;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
