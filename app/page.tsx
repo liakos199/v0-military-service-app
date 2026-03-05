@@ -8,6 +8,7 @@ import { CalendarTab } from '@/components/calendar-tab'
 import { NotesTab } from '@/components/notes-tab'
 import { ProfileTab } from '@/components/profile-tab'
 import { ExpensesTab } from '@/components/expenses-tab'
+import { CanteenCatalogTab } from '@/components/canteen-catalog-tab'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('service')
@@ -52,11 +53,12 @@ export default function Home() {
   return (
     <main className="min-h-dvh bg-background safe-top" style={{ background: 'linear-gradient(180deg, oklch(0.22 0.008 250) 0%, oklch(0.18 0.005 250) 30%, oklch(0.16 0.004 250) 100%)' }}>
       <div className="max-w-lg mx-auto h-dvh flex flex-col overflow-hidden">
-        {activeTab === 'service' && <ServiceTab />}
-        {activeTab === 'duties' && <CalendarTab />}
-        {activeTab === 'notes' && <NotesTab />}
-        {activeTab === 'profile' && <ProfileTab />}
-        {activeTab === 'expenses' && <ExpensesTab />}
+      {activeTab === 'service' && <ServiceTab />}
+      {activeTab === 'duties' && <CalendarTab />}
+      {activeTab === 'notes' && <NotesTab />}
+      {activeTab === 'profile' && <ProfileTab />}
+      {activeTab === 'canteen-catalog' && <CanteenCatalogTab />}
+      {activeTab === 'expenses' && <ExpensesTab />}
       </div>
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </main>

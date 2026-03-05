@@ -182,3 +182,20 @@ export const GREEK_DAYS = [
 ]
 
 export const GREEK_DAYS_SHORT = ['Κυ', 'Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα']
+
+// Canteen Catalog (Κ.Ψ.Μ. Κατάλογος)
+export interface CanteenCatalogItem {
+  id: string
+  name: string
+  price: number
+  category: 'food' | 'beverage' | 'snack' | 'other'
+  description?: string
+  available: boolean
+}
+
+export const CANTEEN_CATEGORY_LABELS: Record<'food' | 'beverage' | 'snack' | 'other', string> = {
+  food: 'Φαγητό',
+  beverage: 'Ποτό',
+  snack: 'Σνακ',
+  other: 'Άλλο',
+}
