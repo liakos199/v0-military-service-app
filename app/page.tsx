@@ -50,7 +50,7 @@ export default function Home() {
   }
 
   return (
-    <main className="h-dvh bg-background safe-top flex flex-col overflow-hidden" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
+    <main className="h-dvh bg-background safe-top flex flex-col overflow-hidden relative" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
       <div className="flex-1 max-w-lg mx-auto w-full flex flex-col overflow-hidden relative">
         {activeTab === 'service' && <ServiceTab />}
         {activeTab === 'duties' && <CalendarTab />}
@@ -58,9 +58,7 @@ export default function Home() {
         {activeTab === 'profile' && <ProfileTab />}
         {activeTab === 'expenses' && <ExpensesTab />}
       </div>
-      <div className="h-20 flex-shrink-0">
-        <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
-      </div>
+      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </main>
   )
 }

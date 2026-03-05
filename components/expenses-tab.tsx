@@ -60,7 +60,7 @@ export function ExpensesTab() {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
+      <div className="flex-1 overflow-y-auto px-4 pb-24">
         <div className="flex flex-col gap-3 pt-4">
 
           {/* Summary Cards - Compact Layout */}

@@ -105,7 +105,7 @@ export function ServiceTab() {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
+      <div className="flex-1 overflow-y-auto px-4 pb-24">
       <div className="flex flex-col gap-4 pt-4">
 
       {/* Config Modal */}
