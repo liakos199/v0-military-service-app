@@ -1,10 +1,10 @@
 'use client'
 
-import { Shield, Calendar, FileText, User, Wallet, Coffee } from 'lucide-react'
+import { Shield, Calendar, FileText, User, Wallet } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { hapticFeedback } from '@/lib/helpers'
 
-export type TabId = 'service' | 'duties' | 'notes' | 'profile' | 'expenses' | 'canteen-catalog'
+export type TabId = 'service' | 'duties' | 'notes' | 'profile' | 'expenses'
 
 interface BottomNavProps {
   activeTab: TabId
@@ -16,7 +16,6 @@ const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
   { id: 'duties', label: 'Ημερολόγιο', icon: Calendar },
   { id: 'notes', label: 'Σημειώσεις', icon: FileText },
   { id: 'profile', label: 'Προφίλ', icon: User },
-  { id: 'canteen-catalog', label: 'Κ.Ψ.Μ.', icon: Coffee },
   { id: 'expenses', label: 'Έξοδα', icon: Wallet },
 ]
 

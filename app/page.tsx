@@ -8,7 +8,6 @@ import { CalendarTab } from '@/components/calendar-tab'
 import { NotesTab } from '@/components/notes-tab'
 import { ProfileTab } from '@/components/profile-tab'
 import { ExpensesTab } from '@/components/expenses-tab'
-import { CanteenCatalogTab } from '@/components/canteen-catalog-tab'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('service')
@@ -57,7 +56,6 @@ export default function Home() {
       {activeTab === 'duties' && <CalendarTab />}
       {activeTab === 'notes' && <NotesTab />}
       {activeTab === 'profile' && <ProfileTab />}
-      {activeTab === 'canteen-catalog' && <CanteenCatalogTab />}
       {activeTab === 'expenses' && <ExpensesTab />}
       </div>
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
