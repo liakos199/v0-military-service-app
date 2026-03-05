@@ -49,15 +49,20 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
 
   const handleAdd = () => {
     const parsedPrice = parseFloat(newPrice)
-    if (!newLabel.trim() || !parsedPrice || parsedPrice <= 0) return
+    // Validate both name and price are provided and valid
+    if (!newLabel.trim() || isNaN(parsedPrice) || parsedPrice <= 0) {
+      hapticFeedback('medium')
+      return
+    }
     hapticFeedback('light')
-    setCatalogItems([...catalogItems, {
+    const newItem: CanteenCatalogItem = {
       id: generateId(),
       name: newLabel.trim(),
       price: parsedPrice,
       category: newCategory,
       available: true,
-    }])
+    }
+    setCatalogItems([...catalogItems, newItem])
     setNewLabel('')
     setNewPrice('')
     setNewCategory('food')
@@ -195,7 +200,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
             </div>
             <button
               onClick={handleAdd}
-              disabled={!newLabel.trim() || !newPrice || parseFloat(newPrice) <= 0}
+              disabled={!newLabel.trim() || !newPrice || isNaN(parseFloat(newPrice)) || parseFloat(newPrice) <= 0}
               className="p-2.5 rounded-lg bg-primary text-primary-foreground min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-40"
               aria-label="Προσθήκη"
             >
