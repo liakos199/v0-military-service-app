@@ -50,8 +50,8 @@ export default function Home() {
   }
 
   return (
-    <main className="h-dvh bg-background safe-top flex flex-col overflow-hidden relative" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
-      <div className="flex-1 max-w-lg mx-auto w-full flex flex-col overflow-hidden relative">
+    <main className="h-dvh bg-background flex flex-col overflow-hidden relative" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
+      <div className="flex-1 max-w-lg mx-auto w-full flex flex-col overflow-hidden relative safe-top">
         {activeTab === 'service' && <ServiceTab />}
         {activeTab === 'duties' && <CalendarTab />}
         {activeTab === 'notes' && <NotesTab />}
