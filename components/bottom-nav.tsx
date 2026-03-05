@@ -22,8 +22,8 @@ const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 safe-bottom border-t border-glass-border"
-      style={{ background: 'linear-gradient(180deg, oklch(0.24 0.008 250 / 0.90), oklch(0.18 0.006 250 / 0.95))', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+      className="fixed bottom-0 left-0 right-0 z-50 safe-bottom border-t border-border"
+      style={{ background: 'linear-gradient(180deg, rgba(15, 18, 16, 0.95), rgba(10, 12, 10, 0.98))', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
       role="tablist"
       aria-label="Κύρια πλοήγηση"
     >
@@ -48,7 +48,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                   : 'text-muted-foreground active:scale-95'
               )}
             >
-              <Icon className={cn('h-5 w-5', isActive && 'drop-shadow-[0_0_8px_oklch(0.62_0.17_145)]')} strokeWidth={isActive ? 2.5 : 1.5} />
+              <Icon className={cn('h-5 w-5', isActive && 'drop-shadow-[0_0_10px_rgba(74,222,128,0.6)]')} strokeWidth={isActive ? 2.5 : 1.5} />
               <span className={cn('text-[10px] leading-tight', isActive ? 'font-semibold' : 'font-normal')}>
                 {tab.label}
               </span>

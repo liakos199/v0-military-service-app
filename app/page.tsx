@@ -27,7 +27,7 @@ export default function Home() {
     return (
       <div
         className={`fixed inset-0 flex flex-col items-center justify-center bg-background z-50 ${splashFading ? 'splash-out' : ''}`}
-        style={{ background: 'linear-gradient(180deg, oklch(0.22 0.008 250) 0%, oklch(0.18 0.005 250) 50%, oklch(0.16 0.004 250) 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 50%, #161A16 100%)' }}
       >
         <div className="splash-icon flex flex-col items-center gap-5">
           <Image
@@ -50,7 +50,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-dvh bg-background safe-top" style={{ background: 'linear-gradient(180deg, oklch(0.22 0.008 250) 0%, oklch(0.18 0.005 250) 30%, oklch(0.16 0.004 250) 100%)' }}>
+    <main className="min-h-dvh bg-background safe-top" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
       <div className="max-w-lg mx-auto h-dvh flex flex-col overflow-hidden">
       {activeTab === 'service' && <ServiceTab />}
       {activeTab === 'duties' && <CalendarTab />}
