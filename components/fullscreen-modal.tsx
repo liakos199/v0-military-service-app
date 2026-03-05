@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { X } from 'lucide-react'
+import { X, ChevronLeft } from 'lucide-react'
 import { hapticFeedback } from '@/lib/helpers'
 
 interface FullscreenModalProps {
@@ -9,9 +9,11 @@ interface FullscreenModalProps {
   onClose: () => void
   title: string
   children: React.ReactNode
+  showBackButton?: boolean
+  onBack?: () => void
 }
 
-export function FullscreenModal({ isOpen, onClose, title, children }: FullscreenModalProps) {
+export function FullscreenModal({ isOpen, onClose, title, children, showBackButton = false, onBack }: FullscreenModalProps) {
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -32,7 +34,21 @@ export function FullscreenModal({ isOpen, onClose, title, children }: Fullscreen
       <div className="flex flex-col h-full safe-top">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border" style={{ background: 'linear-gradient(90deg, rgba(22, 26, 22, 0.5), rgba(15, 18, 16, 0.3))' }}>
-          <h2 className="text-base font-semibold text-foreground">{title}</h2>
+          <div className="flex items-center gap-2">
+            {showBackButton && onBack && (
+              <button
+                onClick={() => {
+                  hapticFeedback('light')
+                  onBack()
+                }}
+                className="p-2 rounded-lg min-h-[40px] min-w-[40px] flex items-center justify-center bg-white text-foreground hover:bg-white/90 transition-colors"
+                aria-label="Πίσω"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+            )}
+            <h2 className="text-base font-semibold text-foreground">{title}</h2>
+          </div>
           <button
             onClick={() => {
               hapticFeedback('light')

@@ -100,6 +100,8 @@ export function ExpensesTab() {
             isOpen={showAdd}
             onClose={() => setShowAdd(false)}
             title="Νέο Έξοδο"
+            showBackButton={true}
+            onBack={() => setShowAdd(false)}
           >
             <AddExpenseForm
               canteenCatalog={canteenCatalog}
@@ -277,7 +279,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                 }}
                 className="text-primary text-sm font-medium hover:text-primary/80 transition-colors py-1"
               >
-                ← Επιστροφή
+                ← Πίσω
               </button>
               <div className="flex flex-col gap-2">
                 {catalogItemsInCategory.map((item) => (

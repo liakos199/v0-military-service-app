@@ -70,13 +70,14 @@ export function DutiesTab() {
   const sortedDates = Object.keys(groupedDuties).sort()
 
   return (
-    <div className="flex flex-col gap-4 pb-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">Πρόγραμμα</h1>
-          <p className="text-xs text-muted-foreground">Καταγραφή υπηρεσιών</p>
-        </div>
+    <div className="flex flex-col h-full">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">Πρόγραμμα</h1>
+            <p className="text-xs text-muted-foreground">Καταγραφή υπηρεσιών</p>
+          </div>
         <div className="flex items-center gap-2">
           <button
             onClick={requestNotifications}
@@ -104,6 +105,10 @@ export function DutiesTab() {
           </button>
         </div>
       </div>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-4 pb-28">
+      <div className="flex flex-col gap-4 pt-4">
 
       {/* Add Duty Modal */}
       <FullscreenModal
@@ -190,6 +195,8 @@ export function DutiesTab() {
           )
         })
       )}
+    </div>
+    </div>
     </div>
   )
 }
