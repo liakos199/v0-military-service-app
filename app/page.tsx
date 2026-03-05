@@ -26,37 +26,51 @@ export default function Home() {
   if (showSplash) {
     return (
       <div
-        className={`fixed inset-0 flex flex-col items-center justify-center bg-background z-50 ${splashFading ? 'splash-out' : ''}`}
-        style={{ background: 'linear-gradient(180deg, oklch(0.22 0.008 250) 0%, oklch(0.18 0.005 250) 50%, oklch(0.16 0.004 250) 100%)' }}
+        className={`fixed inset-0 flex flex-col items-center justify-center z-50 bg-background ${splashFading ? 'splash-out' : ''}`}
       >
-        <div className="splash-icon flex flex-col items-center gap-5">
-          <Image
-            src="/icon-512.png"
-            alt="ΑΠΟΛΕΛΕ PRO"
-            width={140}
-            height={140}
-            className="rounded-3xl"
-            priority
-          />
-          <h1 className="text-2xl font-bold tracking-wide text-foreground font-sans">
-            {'ΑΠΟΛΕΛΕ PRO'}
-          </h1>
-          <p className="text-xs text-muted-foreground tracking-widest uppercase font-sans">
-            {'Στρατιωτική Εφαρμογή'}
-          </p>
+        {/* Subtle radial glow */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(circle at 50% 45%, oklch(0.75 0.15 75 / 0.08) 0%, transparent 60%)',
+          }}
+        />
+        <div className="splash-icon flex flex-col items-center gap-6 relative z-10">
+          <div className="glow-primary rounded-3xl">
+            <Image
+              src="/icon-512.png"
+              alt="APOLELE PRO"
+              width={120}
+              height={120}
+              className="rounded-3xl"
+              priority
+            />
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground font-sans">
+              APOLELE PRO
+            </h1>
+            <div className="h-px w-12 bg-primary/40" />
+            <p className="text-xs text-muted-foreground tracking-[0.2em] uppercase font-sans">
+              {'Military Service App'}
+            </p>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <main className="min-h-dvh bg-background safe-top" style={{ background: 'linear-gradient(180deg, oklch(0.22 0.008 250) 0%, oklch(0.18 0.005 250) 30%, oklch(0.16 0.004 250) 100%)' }}>
+    <main className="min-h-dvh bg-background safe-top">
       <div className="max-w-lg mx-auto h-dvh flex flex-col overflow-hidden">
-        {activeTab === 'service' && <ServiceTab />}
-        {activeTab === 'duties' && <CalendarTab />}
-        {activeTab === 'notes' && <NotesTab />}
-        {activeTab === 'profile' && <ProfileTab />}
-        {activeTab === 'expenses' && <ExpensesTab />}
+        <div className="tab-content flex-1 flex flex-col overflow-hidden" key={activeTab}>
+          {activeTab === 'service' && <ServiceTab />}
+          {activeTab === 'duties' && <CalendarTab />}
+          {activeTab === 'notes' && <NotesTab />}
+          {activeTab === 'profile' && <ProfileTab />}
+          {activeTab === 'expenses' && <ExpensesTab />}
+        </div>
       </div>
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </main>

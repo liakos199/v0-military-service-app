@@ -14,6 +14,7 @@ import {
   Palmtree,
   Eye,
   EyeOff,
+  TrendingUp,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -68,15 +69,16 @@ export function ServiceTab() {
       })()
     : ''
 
-  const circumference = 2 * Math.PI * 70
+  const circumference = 2 * Math.PI * 62
 
-  // Today's duties
   const todayDuties = useMemo(
-    () => duties.filter((d) => d.date === today).sort((a, b) => a.startTime.localeCompare(b.startTime)),
+    () =>
+      duties
+        .filter((d) => d.date === today)
+        .sort((a, b) => a.startTime.localeCompare(b.startTime)),
     [duties, today]
   )
 
-  // Active leave today
   const todayLeave = useMemo(
     () => leaves.find((l) => l.startDate <= today && l.endDate >= today),
     [leaves, today]
@@ -84,192 +86,225 @@ export function ServiceTab() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+      {/* Header */}
+      <header className="sticky top-0 z-20 px-5 pt-4 pb-3 border-b border-border/40 bg-background">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-foreground">Θητεία</h1>
-            <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση & σήμερα</p>
+            <h1 className="text-lg font-bold text-foreground tracking-tight">
+              {'Θητεία'}
+            </h1>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {'Αντίστροφη μέτρηση & σήμερα'}
+            </p>
           </div>
           <button
             onClick={() => {
               hapticFeedback('light')
               setShowConfig(true)
             }}
-            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-3 rounded-2xl bg-secondary/80 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors active:bg-secondary"
             aria-label="Ρυθμίσεις θητείας"
           >
             <Settings className="h-5 w-5 text-muted-foreground" />
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-28">
-      <div className="flex flex-col gap-4 pt-4">
-
-      {/* Config Modal */}
-      <FullscreenModal
-        isOpen={showConfig}
-        onClose={() => setShowConfig(false)}
-        title="Ρυθμίσεις Θητείας"
-      >
-        <div className="flex flex-col gap-4">
-          <GreekDatePicker
-            value={config.enlistmentDate}
-            onChange={(d) => setConfig({ ...config, enlistmentDate: d })}
-            label="Ημερομηνία κατάταξης"
-          />
-          <div>
-            <label className="block text-xs text-muted-foreground mb-1.5">
-              Διάρκεια θητείας
-            </label>
-            <div className="flex gap-2 mb-3">
-              {SERVICE_DURATION_PRESETS.map((preset) => (
-                <button
-                  key={preset.days}
-                  type="button"
-                  onClick={() => {
-                    hapticFeedback('light')
-                    setConfig({ ...config, totalDays: preset.days })
-                  }}
-                  className={cn(
-                    'flex-1 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors border',
-                    config.totalDays === preset.days
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'bg-secondary text-secondary-foreground border-border'
-                  )}
-                >
-                  {preset.label}
-                </button>
-              ))}
-            </div>
-            <label className="block text-[10px] text-muted-foreground mb-1.5">
-              {'Ή εισάγετε ημέρες χειροκίνητα'}
-            </label>
-            <input
-              type="number"
-              inputMode="numeric"
-              value={config.totalDays}
-              onChange={(e) =>
-                setConfig({ ...config, totalDays: parseInt(e.target.value) || 0 })
-              }
-              className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
-            />
-          </div>
-          <button
-            onClick={() => {
-              hapticFeedback('medium')
-              setShowConfig(false)
-            }}
-            className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px]"
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto no-scrollbar">
+        <div className="flex flex-col gap-5 px-5 pt-5 pb-28">
+          {/* Config Modal */}
+          <FullscreenModal
+            isOpen={showConfig}
+            onClose={() => setShowConfig(false)}
+            title="Ρυθμίσεις Θητείας"
           >
-            Αποθήκευση
-          </button>
-        </div>
-      </FullscreenModal>
+            <div className="flex flex-col gap-5">
+              <GreekDatePicker
+                value={config.enlistmentDate}
+                onChange={(d) => setConfig({ ...config, enlistmentDate: d })}
+                label="Ημερομηνία κατάταξης"
+              />
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-2">
+                  Διάρκεια θητείας
+                </label>
+                <div className="flex gap-2 mb-3">
+                  {SERVICE_DURATION_PRESETS.map((preset) => (
+                    <button
+                      key={preset.days}
+                      type="button"
+                      onClick={() => {
+                        hapticFeedback('light')
+                        setConfig({ ...config, totalDays: preset.days })
+                      }}
+                      className={cn(
+                        'flex-1 py-3 rounded-xl text-xs font-semibold min-h-[44px] transition-all border',
+                        config.totalDays === preset.days
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-secondary text-secondary-foreground border-border hover:border-primary/30'
+                      )}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+                <label className="block text-[10px] text-muted-foreground mb-1.5">
+                  {'Ή εισάγετε ημέρες χειροκίνητα'}
+                </label>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  value={config.totalDays}
+                  onChange={(e) =>
+                    setConfig({ ...config, totalDays: parseInt(e.target.value) || 0 })
+                  }
+                  className="w-full px-4 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border focus:border-primary/50 focus:outline-none transition-colors"
+                />
+              </div>
+              <button
+                onClick={() => {
+                  hapticFeedback('medium')
+                  setShowConfig(false)
+                }}
+                className="w-full py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] transition-all active:scale-[0.98]"
+              >
+                Αποθήκευση
+              </button>
+            </div>
+          </FullscreenModal>
 
-      {/* Main Progress Ring - LELEmeter */}
-      <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-4">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          Λελέμετρο
-        </p>
-        <div className="relative w-44 h-44">
-          <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
-            <circle
-              cx="80"
-              cy="80"
-              r="70"
-              fill="none"
-              stroke="oklch(0.26 0.004 260)"
-              strokeWidth="10"
-            />
-            <circle
-              cx="80"
-              cy="80"
-              r="70"
-              fill="none"
-              stroke="oklch(0.62 0.17 145)"
-              strokeWidth="10"
-              strokeLinecap="round"
-              strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
-              className="transition-all duration-1000 ease-out"
-              style={{
-                filter: 'drop-shadow(0 0 8px oklch(0.62 0.17 145 / 0.5))',
-              }}
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-3xl font-bold text-foreground">
-              {percentage.toFixed(1)}%
-            </span>
-            <span className="text-xs text-muted-foreground mt-1">ολοκληρώθηκε</span>
+          {/* Progress Ring Card */}
+          <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-5">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-3.5 w-3.5 text-primary" />
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.15em]">
+                Λελέμετρο
+              </p>
+            </div>
+
+            <div className="relative w-40 h-40">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 140 140">
+                {/* Background track */}
+                <circle
+                  cx="70"
+                  cy="70"
+                  r="62"
+                  fill="none"
+                  stroke="oklch(0.22 0.004 260)"
+                  strokeWidth="8"
+                />
+                {/* Progress arc */}
+                <circle
+                  cx="70"
+                  cy="70"
+                  r="62"
+                  fill="none"
+                  stroke="url(#progressGradient)"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
+                  className="transition-all duration-1000 ease-out"
+                  style={{
+                    filter: 'drop-shadow(0 0 6px oklch(0.75 0.15 75 / 0.35))',
+                  }}
+                />
+                <defs>
+                  <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="oklch(0.80 0.14 75)" />
+                    <stop offset="100%" stopColor="oklch(0.65 0.16 50)" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-3xl font-bold text-foreground tracking-tight">
+                  {percentage.toFixed(1)}%
+                </span>
+                <span className="text-[10px] text-muted-foreground mt-1">
+                  {'ολοκληρώθηκε'}
+                </span>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-3 w-full">
+              <StatCard
+                icon={Clock}
+                label="Υπηρέτησες"
+                value={`${daysServed}`}
+                unit="ημέρες"
+              />
+              <StatCard
+                icon={CalendarDays}
+                label="Απομένουν"
+                value={`${effectiveDaysRemaining}`}
+                unit="ημέρες"
+                highlight
+              />
+              <StatCard
+                icon={Percent}
+                label="Άδειες"
+                value={`${totalLeaveDays}`}
+                unit="ημέρες"
+              />
+            </div>
+
+            {dischargeDate && (
+              <div className="w-full text-center py-3 px-4 rounded-xl bg-secondary/80">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-[0.15em] mb-1">
+                  Ημερομηνία απόλυσης
+                </p>
+                <p className="text-sm font-bold text-primary">
+                  {formatGreekDate(dischargeDate)}
+                </p>
+              </div>
+            )}
           </div>
-        </div>
 
-        <div className="grid grid-cols-3 gap-3 w-full">
-          <StatCard
-            icon={Clock}
-            label="Υπηρέτησες"
-            value={`${daysServed}`}
-            unit="ημέρες"
-          />
-          <StatCard
-            icon={CalendarDays}
-            label="Απ��μένουν"
-            value={`${effectiveDaysRemaining}`}
-            unit="ημέρες"
-          />
-          <StatCard
-            icon={Percent}
-            label="Άδειες"
-            value={`${totalLeaveDays}`}
-            unit="ημέρες"
-          />
+          {/* Today's Status */}
+          <TodayStatus duties={todayDuties} leave={todayLeave} />
         </div>
-
-        {dischargeDate && (
-          <div className="w-full text-center py-2 px-3 rounded-lg bg-secondary">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
-              Ημερομηνία απόλυσης
-            </p>
-            <p className="text-sm font-semibold text-primary mt-0.5">
-              {formatGreekDate(dischargeDate)}
-            </p>
-          </div>
-        )}
       </div>
-
-      {/* Today's Status Section */}
-      <TodayStatus duties={todayDuties} leave={todayLeave} />
-    </div>
-    </div>
     </div>
   )
 }
 
-/* ---------- Stat Card ---------- */
 function StatCard({
   icon: Icon,
   label,
   value,
   unit,
+  highlight,
 }: {
   icon: typeof Clock
   label: string
   value: string
   unit: string
+  highlight?: boolean
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-secondary/50">
-      <Icon className="h-3.5 w-3.5 text-primary" />
-      <span className="text-lg font-bold text-foreground leading-none">{value}</span>
+    <div
+      className={cn(
+        'flex flex-col items-center gap-1.5 p-3 rounded-xl transition-colors',
+        highlight ? 'bg-primary/10' : 'bg-secondary/60'
+      )}
+    >
+      <Icon
+        className={cn('h-3.5 w-3.5', highlight ? 'text-primary' : 'text-muted-foreground')}
+      />
+      <span
+        className={cn(
+          'text-lg font-bold leading-none tracking-tight',
+          highlight ? 'text-primary' : 'text-foreground'
+        )}
+      >
+        {value}
+      </span>
       <span className="text-[9px] text-muted-foreground leading-none">{unit}</span>
     </div>
   )
 }
 
-/* ---------- Today's Status ---------- */
 function TodayStatus({
   duties,
   leave,
@@ -286,32 +321,32 @@ function TodayStatus({
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-sm font-semibold text-foreground">Σήμερα</h2>
+      <h2 className="text-sm font-semibold text-foreground tracking-tight">
+        Σήμερα
+      </h2>
 
-      {/* Active Leave */}
       {leave && (
-        <div className="glass-card rounded-xl p-4 flex items-center gap-3 ring-1 ring-chart-2/30">
-          <div className="w-10 h-10 rounded-lg bg-chart-2/20 flex items-center justify-center flex-shrink-0">
-            <Palmtree className="h-5 w-5 text-chart-2" />
+        <div className="glass-card rounded-2xl p-4 flex items-center gap-3 ring-1 ring-success/20">
+          <div className="w-10 h-10 rounded-xl bg-success/15 flex items-center justify-center flex-shrink-0">
+            <Palmtree className="h-5 w-5 text-success" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold text-foreground">
                 {LEAVE_TYPE_LABELS[leave.type]}
               </span>
-              <span className="px-1.5 py-0.5 rounded-md bg-chart-2/20 text-chart-2 text-[10px] font-bold">
+              <span className="px-2 py-0.5 rounded-lg bg-success/15 text-success text-[10px] font-bold tracking-wide">
                 ΑΔΕΙΑ
               </span>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} &middot;{' '}
-              {leave.days} ημ.
+              {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}{' '}
+              &middot; {leave.days} ημ.
             </p>
           </div>
         </div>
       )}
 
-      {/* Today's Duties */}
       {duties.length > 0 ? (
         duties.map((duty) => {
           const Icon = DUTY_ICONS[duty.type]
@@ -322,10 +357,10 @@ function TodayStatus({
           return (
             <div
               key={duty.id}
-              className="glass-card rounded-xl p-4 ring-1 ring-primary/30"
+              className="glass-card rounded-2xl p-4 ring-1 ring-primary/15"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-chart-3/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-chart-3/15 flex items-center justify-center flex-shrink-0">
                   <Icon className="h-5 w-5 text-chart-3" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -333,7 +368,7 @@ function TodayStatus({
                     <span className="text-sm font-semibold text-foreground">
                       {DUTY_TYPE_LABELS[duty.type]}
                     </span>
-                    <span className="px-1.5 py-0.5 rounded-md bg-primary/20 text-primary text-[10px] font-bold">
+                    <span className="px-2 py-0.5 rounded-lg bg-primary/15 text-primary text-[10px] font-bold tracking-wide">
                       ΕΝΕΡΓΗ
                     </span>
                   </div>
@@ -348,11 +383,10 @@ function TodayStatus({
                 </div>
               </div>
 
-              {/* Guard duty password */}
               {isGuard && hasPassword && (
-                <div className="mt-3 pt-3 border-t border-border">
+                <div className="mt-3 pt-3 border-t border-border/50">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-[0.1em] font-semibold">
                       Σύνθημα / Παρασύνθημα
                     </p>
                     <button
@@ -368,8 +402,8 @@ function TodayStatus({
                     </button>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="p-2 rounded-lg bg-secondary">
-                      <p className="text-[9px] text-muted-foreground uppercase mb-0.5">
+                    <div className="p-2.5 rounded-xl bg-secondary/80">
+                      <p className="text-[9px] text-muted-foreground uppercase mb-1">
                         Σύνθημα
                       </p>
                       <p
@@ -383,8 +417,8 @@ function TodayStatus({
                         {duty.password || '---'}
                       </p>
                     </div>
-                    <div className="p-2 rounded-lg bg-secondary">
-                      <p className="text-[9px] text-muted-foreground uppercase mb-0.5">
+                    <div className="p-2.5 rounded-xl bg-secondary/80">
+                      <p className="text-[9px] text-muted-foreground uppercase mb-1">
                         Παρασύνθημα
                       </p>
                       <p
@@ -406,7 +440,10 @@ function TodayStatus({
         })
       ) : (
         !leave && (
-          <div className="glass-card rounded-xl p-4 text-center">
+          <div className="glass-card rounded-2xl p-6 text-center">
+            <div className="w-10 h-10 rounded-xl bg-secondary mx-auto mb-3 flex items-center justify-center">
+              <Shield className="h-5 w-5 text-muted-foreground" />
+            </div>
             <p className="text-sm text-muted-foreground">
               Δεν έχεις υπηρεσία ή άδεια σήμερα
             </p>

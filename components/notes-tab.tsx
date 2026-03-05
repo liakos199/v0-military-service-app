@@ -77,30 +77,12 @@ const MILITARY_GUIDES = [
       {
         heading: 'Ελληνικό Τυποποιημένο Φωνητικό Αλφάβητο',
         items: [
-          'Α - Αστήρ',
-          'Β - Βύρων',
-          'Γ - Γαλή',
-          'Δ - Δόξα',
-          'Ε - Ερμής',
-          'Ζ - Ζεύς',
-          'Η - Ηρώ',
-          'Θ - Θεά',
-          'Ι - Ίσκιος',
-          'Κ - Κενόν',
-          'Λ - Λάμα',
-          'Μ - Μέλι',
-          'Ν - Ναός',
-          'Ξ - Ξέρξης',
-          'Ο - Οσμή',
-          'Π - Πέτρος',
-          'Ρ - Ρήγας',
-          'Σ - Σοφός',
-          'Τ - Τίγρης',
-          'Υ - Ύμνος',
-          'Φ - Φωφώ',
-          'Χ - Χαρά',
-          'Ψ - Ψυχή',
-          'Ω - Ωμέγα',
+          'Α - Αστήρ', 'Β - Βύρων', 'Γ - Γαλή', 'Δ - Δόξα',
+          'Ε - Ερμής', 'Ζ - Ζεύς', 'Η - Ηρώ', 'Θ - Θεά',
+          'Ι - Ίσκιος', 'Κ - Κενόν', 'Λ - Λάμα', 'Μ - Μέλι',
+          'Ν - Ναός', 'Ξ - Ξέρξης', 'Ο - Οσμή', 'Π - Πέτρος',
+          'Ρ - Ρήγας', 'Σ - Σοφός', 'Τ - Τίγρης', 'Υ - Ύμνος',
+          'Φ - Φωφώ', 'Χ - Χαρά', 'Ψ - Ψυχή', 'Ω - Ωμέγα',
         ],
       },
       {
@@ -175,125 +157,32 @@ interface QuizQuestion {
 
 const GUIDE_QUIZZES: Record<string, QuizQuestion[]> = {
   ranks: [
-    {
-      question: 'Πόσα γαλόνια έχει ο Λοχίας;',
-      options: ['1 γαλόνι', '2 γαλόνια', '3 γαλόνια', '4 γαλόνια'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Τι διακριτικό φέρει ο Λοχαγός;',
-      options: ['2 ασημένια αστέρια', '1 ασημένιο αστέρι', '3 ασημένια αστέρια', '1 χρυσή φλογοφόρος'],
-      correctIndex: 2,
-    },
-    {
-      question: 'Ποιος βαθμός έχει 1 χρυσή φλογοφόρο ροιά;',
-      options: ['Λοχαγός', 'Ταγματάρχης', 'Συνταγματάρχης', 'Αντισυνταγματάρχης'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Τι κάνουμε όταν συναντάμε Υπαξιωματικό;',
-      options: ['Χαιρετάμε', 'Στεκόμαστε προσοχή', 'Χαιρετάμε & προσοχή', 'Τίποτα'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Ποιος βαθμός είναι συνήθως Διοικητής Μονάδας;',
-      options: ['Ταγματάρχης', 'Λοχαγός', 'Συνταγματάρχης', 'Ταξίαρχος'],
-      correctIndex: 2,
-    },
-    {
-      question: 'Πόσα γαλόνια έχει ο Αρχιλοχίας;',
-      options: ['2 γαλόνια', '3 γαλόνια', '4 γαλόνια', '5 γαλόνια'],
-      correctIndex: 2,
-    },
-    {
-      question: 'Τι διακριτικό φέρει ο Ανθυπολοχαγός;',
-      options: ['1 ασημένιο αστέρι', '2 ασημένια αστέρια', '1 γαλόνι', '1 χρυσό αστέρι'],
-      correctIndex: 0,
-    },
-    {
-      question: 'Πόσα χρυσά αστέρια έχει ο Αντιστράτηγος;',
-      options: ['1', '2', '3', '4'],
-      correctIndex: 2,
-    },
+    { question: 'Πόσα γαλόνια έχει ο Λοχίας;', options: ['1 γαλόνι', '2 γαλόνια', '3 γαλόνια', '4 γαλόνια'], correctIndex: 1 },
+    { question: 'Τι διακριτικό φέρει ο Λοχαγός;', options: ['2 ασημένια αστέρια', '1 ασημένιο αστέρι', '3 ασημένια αστέρια', '1 χρυσή φλογοφόρος'], correctIndex: 2 },
+    { question: 'Ποιος βαθμός έχει 1 χρυσή φλογοφόρο ροιά;', options: ['Λοχαγός', 'Ταγματάρχης', 'Συνταγματάρχης', 'Αντισυνταγματάρχης'], correctIndex: 1 },
+    { question: 'Τι κάνουμε όταν συναντάμε Υπαξιωματικό;', options: ['Χαιρετάμε', 'Στεκόμαστε προσοχή', 'Χαιρετάμε & προσοχή', 'Τίποτα'], correctIndex: 1 },
+    { question: 'Ποιος βαθμός είναι συνήθως Διοικητής Μονάδας;', options: ['Ταγματάρχης', 'Λοχαγός', 'Συνταγματάρχης', 'Ταξίαρχος'], correctIndex: 2 },
+    { question: 'Πόσα γαλόνια έχει ο Αρχιλοχίας;', options: ['2 γαλόνια', '3 γαλόνια', '4 γαλόνια', '5 γαλόνια'], correctIndex: 2 },
+    { question: 'Τι διακριτικό φέρει ο Ανθυπολοχαγός;', options: ['1 ασημένιο αστέρι', '2 ασημένια αστέρια', '1 γαλόνι', '1 χρυσό αστέρι'], correctIndex: 0 },
+    { question: 'Πόσα χρυσά αστέρια έχει ο Αντιστράτηγος;', options: ['1', '2', '3', '4'], correctIndex: 2 },
   ],
   phonetic: [
-    {
-      question: 'Ποιο γράμμα αντιστοιχεί στο «Ερμής»;',
-      options: ['Η', 'Ε', 'Ι', 'Α'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Πώς λέμε το Κ στο φωνητικό αλφάβητο;',
-      options: ['Κλειώ', 'Κενόν', 'Κόσμος', 'Κάρμα'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Τι σημαίνει «Ορθόν» στον ασύρματο;',
-      options: ['Με ακούς;', 'Σωστά / Κατανοητό', 'Ξεκίνα να μιλάς', 'Αγνόησε το μήνυμα'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Πώς λέμε το Ψ στο φωνητικό αλφάβητο;',
-      options: ['Ψαράς', 'Ψήφος', 'Ψυχή', 'Ψίθυρος'],
-      correctIndex: 2,
-    },
-    {
-      question: 'Τι σημαίνει «Άκυρον» στον ασύρματο;',
-      options: ['Σωστά', 'Αγνόησε το μήνυμα', 'Ξεκίνα να μιλάς', 'Με ακούς;'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Ποιο γράμμα αντιστοιχεί στο «Τίγρης»;',
-      options: ['Θ', 'Ρ', 'Τ', 'Σ'],
-      correctIndex: 2,
-    },
-    {
-      question: 'Πώς λέμε το Ξ στο φωνητικό αλφάβητο;',
-      options: ['Ξένος', 'Ξέρξης', 'Ξύλο', 'Ξενοφών'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Τι σημαίνει «Λήψη;» στον ασύρματο;',
-      options: ['Σωστά', 'Ξεκίνα', 'Με ακούς;', 'Τέλος'],
-      correctIndex: 2,
-    },
+    { question: 'Ποιο γράμμα αντιστοιχεί στο «Ερμής»;', options: ['Η', 'Ε', 'Ι', 'Α'], correctIndex: 1 },
+    { question: 'Πώς λέμε το Κ στο φωνητικό αλφάβητο;', options: ['Κλειώ', 'Κενόν', 'Κόσμος', 'Κάρμα'], correctIndex: 1 },
+    { question: 'Τι σημαίνει «Ορθόν» στον ασύρματο;', options: ['Με ακούς;', 'Σωστά / Κατανοητό', 'Ξεκίνα να μιλάς', 'Αγνόησε το μήνυμα'], correctIndex: 1 },
+    { question: 'Πώς λέμε το Ψ στο φωνητικό αλφάβητο;', options: ['Ψαράς', 'Ψήφος', 'Ψυχή', 'Ψίθυρος'], correctIndex: 2 },
+    { question: 'Τι σημαίνει «Άκυρον» στον ασύρματο;', options: ['Σωστά', 'Αγνόησε το μήνυμα', 'Ξεκίνα να μιλάς', 'Με ακούς;'], correctIndex: 1 },
+    { question: 'Ποιο γράμμα αντιστοιχεί στο «Τίγρης»;', options: ['Θ', 'Ρ', 'Τ', 'Σ'], correctIndex: 2 },
+    { question: 'Πώς λέμε το Ξ στο φωνητικό αλφάβητο;', options: ['Ξένος', 'Ξέρξης', 'Ξύλο', 'Ξενοφών'], correctIndex: 1 },
+    { question: 'Τι σημαίνει «Λήψη;» στον ασύρματο;', options: ['Σωστά', 'Ξεκίνα', 'Με ακούς;', 'Τέλος'], correctIndex: 2 },
   ],
   'first-aid': [
-    {
-      question: 'Τι κάνεις ΠΡΩΤΑ σε θερμική εξάντληση;',
-      options: ['Ενυδάτωση με πολύ νερό', 'Μεταφορά σε σκιερό μέρος', 'Αφαίρεση ρούχων', 'Κλήση ασθενοφόρου'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Πόση ώρα ασκούμε πίεση σε αιμορραγία;',
-      options: ['1-2 λεπτά', '5-10 λεπτά', '15-20 λεπτά', '30 δευτερόλεπτα'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Τι σημαίνει Κ.Π.Α.Α.;',
-      options: [
-        'Κατάκλιση, Πάγος, Ανύψωση, Ανάπαυση',
-        'Κράτημα, Πίεση, Αφαίρεση, Αντιμετώπιση',
-        'Κρύο, Πανί, Αναμονή, Ακινησία',
-        'Κατάκλιση, Πίεση, Αντιβιοτικά, Αναμονή',
-      ],
-      correctIndex: 0,
-    },
-    {
-      question: 'Πώς αφαιρούμε κεντρί μέλισσας;',
-      options: ['Τραβώντας με δάχτυλα', 'Ζουλώντας', 'Ξύνοντας απαλά (π.χ. ταυτότητα)', 'Με λαβίδα'],
-      correctIndex: 2,
-    },
-    {
-      question: 'Γιατί ΔΕΝ βγάζουμε άρβυλο σε διάστρεμμα;',
-      options: ['Θα αιμορραγήσει', 'Θα πρηστεί το πόδι', 'Θα σπάσει', 'Θα κρυώσει'],
-      correctIndex: 1,
-    },
-    {
-      question: 'Πώς ενυδατώνουμε σε θερμοπληξία;',
-      options: ['Μεγάλες γουλιές γρήγορα', 'Μικρές, συχνές γουλιές', 'Μόνο αναψυκτικά', 'Δεν δίνουμε νερό'],
-      correctIndex: 1,
-    },
+    { question: 'Τι κάνεις ΠΡΩΤΑ σε θερμική εξάντληση;', options: ['Ενυδάτωση με πολύ νερό', 'Μεταφορά σε σκιερό μέρος', 'Αφαίρεση ρούχων', 'Κλήση ασθενοφόρου'], correctIndex: 1 },
+    { question: 'Πόση ώρα ασκούμε πίεση σε αιμορραγία;', options: ['1-2 λεπτά', '5-10 λεπτά', '15-20 λεπτά', '30 δευτερόλεπτα'], correctIndex: 1 },
+    { question: 'Τι σημαίνει Κ.Π.Α.Α.;', options: ['Κατάκλιση, Πάγος, Ανύψωση, Ανάπαυση', 'Κράτημα, Πίεση, Αφαίρεση, Αντιμετώπιση', 'Κρύο, Πανί, Αναμονή, Ακινησία', 'Κατάκλιση, Πίεση, Αντιβιοτικά, Αναμονή'], correctIndex: 0 },
+    { question: 'Πώς αφαιρούμε κεντρί μέλισσας;', options: ['Τραβώντας με δάχτυλα', 'Ζουλώντας', 'Ξύνοντας απαλά (π.χ. ταυτότητα)', 'Με λαβίδα'], correctIndex: 2 },
+    { question: 'Γιατί ΔΕΝ βγάζουμε άρβυλο σε διάστρεμμα;', options: ['Θα αιμορραγήσει', 'Θα πρηστεί το πόδι', 'Θα σπάσει', 'Θα κρυώσει'], correctIndex: 1 },
+    { question: 'Πώς ενυδατώνουμε σε θερμοπληξία;', options: ['Μεγάλες γουλιές γρήγορα', 'Μικρές, συχνές γουλιές', 'Μόνο αναψυκτικά', 'Δεν δίνουμε νερό'], correctIndex: 1 },
   ],
 }
 
@@ -311,24 +200,28 @@ export function NotesTab() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+      {/* Header */}
+      <header className="sticky top-0 z-20 px-5 pt-4 pb-3 border-b border-border/40 bg-background">
         <div>
-          <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
-          <p className="text-xs text-muted-foreground">Προσωπικές σημειώσεις & εγχειρίδια</p>
+          <h1 className="text-lg font-bold text-foreground tracking-tight">
+            {'Σημειώσεις'}
+          </h1>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {'Προσωπικές σημειώσεις & εγχειρίδια'}
+          </p>
         </div>
 
         {/* Section Toggle */}
-        <div className="flex gap-2 p-1 rounded-xl bg-secondary mt-3">
+        <div className="flex gap-1 p-1 rounded-2xl bg-secondary/80 mt-3">
           <button
             onClick={() => {
               hapticFeedback('light')
               setActiveSection('notes')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium min-h-[44px] transition-all',
               activeSection === 'notes'
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-primary text-primary-foreground shadow-sm'
                 : 'text-muted-foreground'
             )}
           >
@@ -341,9 +234,9 @@ export function NotesTab() {
               setActiveSection('guides')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium min-h-[44px] transition-colors',
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium min-h-[44px] transition-all',
               activeSection === 'guides'
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-primary text-primary-foreground shadow-sm'
                 : 'text-muted-foreground'
             )}
           >
@@ -351,11 +244,13 @@ export function NotesTab() {
             Εγχειρίδια
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-28 pt-4">
-        {activeSection === 'notes' ? <NotesSection /> : <GuidesSection />}
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto no-scrollbar px-5 pb-28 pt-5">
+        <div className="tab-content" key={activeSection}>
+          {activeSection === 'notes' ? <NotesSection /> : <GuidesSection />}
+        </div>
       </div>
     </div>
   )
@@ -387,20 +282,21 @@ function NotesSection() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-foreground">Προσωπικές Σημειώσεις</h2>
+        <h2 className="text-sm font-semibold text-foreground tracking-tight">
+          Προσωπικές Σημειώσεις
+        </h2>
         <button
           onClick={() => {
             hapticFeedback('light')
             setShowAdd(true)
           }}
-          className="p-2 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="p-2.5 rounded-xl bg-primary/15 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors active:bg-primary/25"
           aria-label="Νέα σημείωση"
         >
           <Plus className="h-5 w-5 text-primary" />
         </button>
       </div>
 
-      {/* Add Note Modal */}
       <FullscreenModal
         isOpen={showAdd}
         onClose={() => setShowAdd(false)}
@@ -410,16 +306,20 @@ function NotesSection() {
       </FullscreenModal>
 
       {notes.length === 0 ? (
-        <div className="glass-card rounded-xl p-6 text-center">
-          <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+        <div className="glass-card rounded-2xl p-6 text-center">
+          <div className="w-10 h-10 rounded-xl bg-secondary mx-auto mb-3 flex items-center justify-center">
+            <FileText className="h-5 w-5 text-muted-foreground" />
+          </div>
           <p className="text-sm text-muted-foreground">Δεν υπάρχουν σημειώσεις</p>
         </div>
       ) : (
         notes.map((note) => (
-          <div key={note.id} className="glass-card rounded-xl p-3">
+          <div key={note.id} className="glass-card rounded-2xl p-4">
             <div className="flex items-start justify-between">
-              <p className="text-[10px] text-muted-foreground">{formatGreekDate(note.date)}</p>
-              <div className="flex items-center gap-1">
+              <p className="text-[10px] text-muted-foreground font-medium">
+                {formatGreekDate(note.date)}
+              </p>
+              <div className="flex items-center gap-0.5">
                 {editingId === note.id ? (
                   <>
                     <button
@@ -472,19 +372,23 @@ function NotesSection() {
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
                   placeholder="Τίτλος"
-                  className="w-full px-3 py-2.5 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[44px] border border-border placeholder:text-muted-foreground"
+                  className="w-full px-4 py-2.5 rounded-xl bg-secondary text-secondary-foreground text-sm font-semibold min-h-[44px] border border-border placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none transition-colors"
                   autoFocus
                 />
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none"
+                  className="w-full px-4 py-2.5 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none focus:border-primary/50 focus:outline-none transition-colors"
                 />
               </div>
             ) : (
-              <div className="mt-1.5">
-                {note.title && <p className="text-sm font-semibold text-foreground">{note.title}</p>}
-                <p className="text-sm text-foreground whitespace-pre-wrap">{note.content}</p>
+              <div className="mt-2">
+                {note.title && (
+                  <p className="text-sm font-semibold text-foreground">{note.title}</p>
+                )}
+                <p className="text-sm text-foreground/80 whitespace-pre-wrap leading-relaxed mt-0.5">
+                  {note.content}
+                </p>
               </div>
             )}
           </div>
@@ -511,7 +415,7 @@ function GuidesSection() {
         const hasQuiz = !!GUIDE_QUIZZES[guide.id]
 
         return (
-          <div key={guide.id} className="glass-card rounded-xl overflow-hidden">
+          <div key={guide.id} className="glass-card rounded-2xl overflow-hidden">
             <button
               onClick={() => {
                 hapticFeedback('light')
@@ -519,10 +423,12 @@ function GuidesSection() {
               }}
               className="w-full flex items-center gap-3 p-4 min-h-[56px] text-left"
             >
-              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-primary/12 flex items-center justify-center flex-shrink-0">
                 <Icon className="h-5 w-5 text-primary" />
               </div>
-              <span className="flex-1 text-sm font-semibold text-foreground">{guide.title}</span>
+              <span className="flex-1 text-sm font-semibold text-foreground">
+                {guide.title}
+              </span>
               {isExpanded ? (
                 <ChevronUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
               ) : (
@@ -534,29 +440,32 @@ function GuidesSection() {
               <div className="px-4 pb-4 flex flex-col gap-4">
                 {guide.sections.map((section, sIdx) => (
                   <div key={sIdx}>
-                    <h4 className="text-xs font-semibold text-primary mb-2">{section.heading}</h4>
+                    <h4 className="text-xs font-semibold text-primary mb-2">
+                      {section.heading}
+                    </h4>
                     <div className="flex flex-col gap-1.5">
                       {section.items.map((item, iIdx) => (
                         <div
                           key={iIdx}
-                          className="flex items-start gap-2 py-1.5 px-3 rounded-lg bg-secondary"
+                          className="flex items-start gap-2.5 py-2 px-3 rounded-xl bg-secondary/60"
                         >
-                          <span className="w-1 h-1 rounded-full bg-muted-foreground mt-1.5 flex-shrink-0" />
-                          <p className="text-xs text-secondary-foreground leading-relaxed">{item}</p>
+                          <span className="w-1 h-1 rounded-full bg-primary/50 mt-2 flex-shrink-0" />
+                          <p className="text-xs text-secondary-foreground leading-relaxed">
+                            {item}
+                          </p>
                         </div>
                       ))}
                     </div>
                   </div>
                 ))}
 
-                {/* Quiz button */}
                 {hasQuiz && (
                   <button
                     onClick={() => {
                       hapticFeedback('medium')
                       setActiveQuiz(guide.id)
                     }}
-                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary/10 text-primary font-semibold text-sm min-h-[48px] transition-colors active:bg-primary/20"
+                    className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary/10 text-primary font-semibold text-sm min-h-[48px] transition-all active:bg-primary/20 border border-primary/15"
                   >
                     <GraduationCap className="h-4 w-4" />
                     Εξέτασε με
@@ -568,17 +477,13 @@ function GuidesSection() {
         )
       })}
 
-      {/* Quiz Modal */}
       {activeQuiz && (
         <FullscreenModal
           isOpen={true}
           onClose={() => setActiveQuiz(null)}
           title={MILITARY_GUIDES.find((g) => g.id === activeQuiz)?.title || 'Τεστ'}
         >
-          <QuizView
-            guideId={activeQuiz}
-            onClose={() => setActiveQuiz(null)}
-          />
+          <QuizView guideId={activeQuiz} onClose={() => setActiveQuiz(null)} />
         </FullscreenModal>
       )}
     </div>
@@ -650,7 +555,6 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
 
   if (total === 0) return null
 
-  // Results screen
   if (finished) {
     const pct = Math.round((score / total) * 100)
     const isGreat = pct >= 80
@@ -660,9 +564,9 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
       <div className="flex flex-col items-center justify-center gap-6 py-8">
         <div
           className={cn(
-            'w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold',
+            'w-24 h-24 rounded-2xl flex items-center justify-center text-3xl font-bold',
             isGreat
-              ? 'bg-chart-2/15 text-chart-2'
+              ? 'bg-success/15 text-success'
               : isOk
                 ? 'bg-chart-4/15 text-chart-4'
                 : 'bg-destructive/15 text-destructive'
@@ -673,7 +577,11 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
 
         <div className="text-center">
           <p className="text-lg font-bold text-foreground">
-            {isGreat ? 'Εξαιρετικά!' : isOk ? 'Καλή προσπάθεια!' : 'Χρειάζεται διάβασμα'}
+            {isGreat
+              ? 'Εξαιρετικά!'
+              : isOk
+                ? 'Καλή προσπάθεια!'
+                : 'Χρειάζεται διάβασμα'}
           </p>
           <p className="text-sm text-muted-foreground mt-1">
             Σωστές απαντήσεις: {score} / {total} ({pct}%)
@@ -683,14 +591,14 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
         <div className="flex gap-3 w-full max-w-xs">
           <button
             onClick={handleRetry}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px] transition-all active:scale-[0.98]"
           >
             <RotateCcw className="h-4 w-4" />
             Ξανά
           </button>
           <button
             onClick={onClose}
-            className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px]"
+            className="flex-1 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] transition-all active:scale-[0.98]"
           >
             Κλείσιμο
           </button>
@@ -699,7 +607,6 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
     )
   }
 
-  // Question screen
   return (
     <div className="flex flex-col gap-5">
       {/* Progress */}
@@ -707,7 +614,9 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
         <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
           <div
             className="h-full rounded-full bg-primary transition-all duration-300"
-            style={{ width: `${((currentIdx + (answered ? 1 : 0)) / total) * 100}%` }}
+            style={{
+              width: `${((currentIdx + (answered ? 1 : 0)) / total) * 100}%`,
+            }}
           />
         </div>
         <span className="text-xs font-medium text-muted-foreground tabular-nums">
@@ -716,7 +625,9 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
       </div>
 
       {/* Question */}
-      <p className="text-base font-semibold text-foreground leading-snug">{current.question}</p>
+      <p className="text-base font-semibold text-foreground leading-snug">
+        {current.question}
+      </p>
 
       {/* Options */}
       <div className="flex flex-col gap-2.5">
@@ -735,12 +646,12 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
                 'flex items-center gap-3 w-full text-left px-4 py-3.5 rounded-xl text-sm transition-all min-h-[52px] border',
                 answered
                   ? showCorrect
-                    ? 'bg-chart-2/10 border-chart-2/40 text-chart-2'
+                    ? 'bg-success/10 border-success/30 text-success'
                     : showWrong
-                      ? 'bg-destructive/10 border-destructive/40 text-destructive'
+                      ? 'bg-destructive/10 border-destructive/30 text-destructive'
                       : 'bg-secondary/50 border-border/50 text-muted-foreground'
                   : isSelected
-                    ? 'bg-primary/10 border-primary/40 text-foreground'
+                    ? 'bg-primary/10 border-primary/30 text-foreground'
                     : 'bg-secondary border-border text-foreground active:bg-secondary/80'
               )}
             >
@@ -752,11 +663,10 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
         })}
       </div>
 
-      {/* Next button */}
       {answered && (
         <button
           onClick={handleNext}
-          className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] transition-all"
+          className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] transition-all active:scale-[0.98]"
         >
           {currentIdx + 1 >= total ? 'Αποτελέσματα' : 'Επόμενη'}
           <ChevronRight className="h-4 w-4" />
@@ -767,7 +677,13 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
 }
 
 /* ========== ADD NOTE FORM ========== */
-function AddNoteForm({ onAdd, onCancel }: { onAdd: (title: string, content: string) => void; onCancel: () => void }) {
+function AddNoteForm({
+  onAdd,
+  onCancel,
+}: {
+  onAdd: (title: string, content: string) => void
+  onCancel: () => void
+}) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
@@ -778,26 +694,26 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (title: string, content: stri
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Τίτλος (προαιρετικό)"
-        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[48px] border border-border placeholder:text-muted-foreground placeholder:font-normal"
+        className="w-full px-4 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm font-semibold min-h-[48px] border border-border placeholder:text-muted-foreground placeholder:font-normal focus:border-primary/50 focus:outline-none transition-colors"
         autoFocus
       />
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Γράψε εδώ..."
-        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[200px] border border-border resize-none placeholder:text-muted-foreground"
+        className="w-full px-4 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[200px] border border-border resize-none placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none transition-colors"
       />
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <button
           onClick={onCancel}
-          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+          className="flex-1 py-3.5 rounded-xl bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px] transition-all active:scale-[0.98]"
         >
           Ακύρωση
         </button>
         <button
           onClick={() => content.trim() && onAdd(title.trim(), content.trim())}
           disabled={!content.trim()}
-          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
+          className="flex-1 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40 transition-all active:scale-[0.98]"
         >
           Προσθήκη
         </button>

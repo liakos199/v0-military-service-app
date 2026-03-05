@@ -1,20 +1,21 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin", "latin-ext"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const _inter = Inter({ subsets: ['latin', 'latin-ext', 'greek'] })
+const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'ΑΠΟΛΕΛΕ PRO - Στρατιωτική Εφαρμογή',
-  description: 'Η πλήρης εφαρμογή για τη στρατιωτική σου θητεία. Λελέμετρο, Ημερολόγιο, Σημειώσεις & Εγχειρίδια, Προφίλ & Έξοδα.',
+  title: 'APOLELE PRO',
+  description:
+    'Η πλήρης εφαρμογή για τη στρατιωτική σου θητεία. Λελέμετρο, Ημερολόγιο, Σημειώσεις & Εγχειρίδια, Προφίλ & Έξοδα.',
   generator: 'v0.app',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'ΑΠΟΛΕΛΕ PRO',
+    title: 'APOLELE PRO',
   },
   icons: {
     icon: [
@@ -30,7 +31,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#27272a',
+  themeColor: '#1a1a24',
   viewportFit: 'cover',
 }
 
@@ -41,10 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="el" className="bg-background">
-      <body className="font-sans antialiased">
-        {children}
-        <Analytics />
-      </body>
+      <body className="font-sans antialiased">{children}<Analytics /></body>
     </html>
   )
 }
