@@ -26,14 +26,22 @@ export function GreekDatePicker({ value, onChange, label, minDate }: GreekDatePi
 
   const prevMonth = () => {
     hapticFeedback('light')
-    if (viewMonth === 0) { setViewMonth(11); setViewYear(viewYear - 1) }
-    else setViewMonth(viewMonth - 1)
+    if (viewMonth === 0) {
+      setViewMonth(11)
+      setViewYear(viewYear - 1)
+    } else {
+      setViewMonth(viewMonth - 1)
+    }
   }
 
   const nextMonth = () => {
     hapticFeedback('light')
-    if (viewMonth === 11) { setViewMonth(0); setViewYear(viewYear + 1) }
-    else setViewMonth(viewMonth + 1)
+    if (viewMonth === 11) {
+      setViewMonth(0)
+      setViewYear(viewYear + 1)
+    } else {
+      setViewMonth(viewMonth + 1)
+    }
   }
 
   const handleSelectDay = (day: number) => {
@@ -50,40 +58,69 @@ export function GreekDatePicker({ value, onChange, label, minDate }: GreekDatePi
 
   const today = new Date()
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+
   const greekDaysStartMonday = ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
 
   return (
     <div>
-      {label && <label className="block text-xs text-muted-foreground mb-1.5">{label}</label>}
+      {label && (
+        <label className="block text-xs text-muted-foreground mb-1.5">{label}</label>
+      )}
       <button
         type="button"
-        onClick={() => { hapticFeedback('light'); setIsOpen(true) }}
-        className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+        onClick={() => {
+          hapticFeedback('light')
+          setIsOpen(true)
+        }}
+        className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
       >
         <span className={cn(!value && 'text-muted-foreground')}>{displayText}</span>
         <CalendarIcon className="h-4 w-4 text-muted-foreground" />
       </button>
 
-      <FullscreenModal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Επιλογή Ημερομηνίας">
+      <FullscreenModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Επιλογή Ημερομηνίας"
+      >
         <div className="flex flex-col gap-4">
+          {/* Month navigation */}
           <div className="flex items-center justify-between">
-            <button type="button" onClick={prevMonth} className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center" aria-label="Προηγούμενος μήνας">
+            <button
+              type="button"
+              onClick={prevMonth}
+              className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center"
+              aria-label="Προηγούμενος μήνας"
+            >
               <ChevronLeft className="h-5 w-5 text-foreground" />
             </button>
-            <span className="text-base font-semibold text-foreground">{GREEK_MONTHS[viewMonth]} {viewYear}</span>
-            <button type="button" onClick={nextMonth} className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center" aria-label="Επόμενος μήνας">
+            <span className="text-lg font-semibold text-foreground">
+              {GREEK_MONTHS[viewMonth]} {viewYear}
+            </span>
+            <button
+              type="button"
+              onClick={nextMonth}
+              className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center"
+              aria-label="Επόμενος μήνας"
+            >
               <ChevronRight className="h-5 w-5 text-foreground" />
             </button>
           </div>
 
+          {/* Day names */}
           <div className="grid grid-cols-7 gap-1">
             {greekDaysStartMonday.map((d) => (
-              <div key={d} className="text-center text-[11px] text-muted-foreground font-medium py-2">{d}</div>
+              <div key={d} className="text-center text-xs text-muted-foreground font-medium py-2">
+                {d}
+              </div>
             ))}
           </div>
 
+          {/* Calendar grid */}
           <div className="grid grid-cols-7 gap-1">
-            {Array.from({ length: startDay }).map((_, i) => <div key={`empty-${i}`} />)}
+            {Array.from({ length: startDay }).map((_, i) => (
+              <div key={`empty-${i}`} />
+            ))}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1
               const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
@@ -99,10 +136,13 @@ export function GreekDatePicker({ value, onChange, label, minDate }: GreekDatePi
                   disabled={isDisabled}
                   className={cn(
                     'aspect-square w-full rounded-xl text-sm flex items-center justify-center transition-colors min-h-[44px]',
-                    isDisabled ? 'text-muted-foreground/30 cursor-not-allowed'
-                      : isSelected ? 'bg-primary text-primary-foreground font-bold'
-                      : isToday ? 'bg-primary/15 text-primary font-semibold'
-                      : 'text-foreground active:bg-secondary'
+                    isDisabled
+                      ? 'text-muted-foreground/30 cursor-not-allowed'
+                      : isSelected
+                        ? 'bg-primary text-primary-foreground font-bold'
+                        : isToday
+                          ? 'bg-secondary text-primary font-semibold ring-1 ring-primary'
+                          : 'text-foreground active:bg-secondary'
                   )}
                 >
                   {day}
@@ -111,6 +151,7 @@ export function GreekDatePicker({ value, onChange, label, minDate }: GreekDatePi
             })}
           </div>
 
+          {/* Today shortcut */}
           <button
             type="button"
             onClick={() => {
