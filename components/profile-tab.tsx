@@ -84,7 +84,7 @@ export function ProfileTab() {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-28 pt-4">
+      <div className="flex-1 overflow-y-auto px-4 pb-4 pt-4">
         {activeSection === 'profile' && <ProfileSection />}
         {activeSection === 'superiors' && <SuperiorsSection />}
         {activeSection === 'friends' && <FriendsSection />}

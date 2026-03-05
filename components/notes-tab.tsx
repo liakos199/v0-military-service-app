@@ -354,8 +354,9 @@ export function NotesTab() {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-28 pt-4">
-        {activeSection === 'notes' ? <NotesSection /> : <GuidesSection />}
+      <div className="flex-1 overflow-y-auto px-4 pb-4 pt-4">
+        {activeSection === 'notes' && <NotesSection />}
+        {activeSection === 'guides' && <GuidesSection />}
       </div>
     </div>
   )
