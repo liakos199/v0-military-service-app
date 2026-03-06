@@ -171,7 +171,7 @@ export function CalendarTab() {
               setSelectedDate(today)
               setShowActionSheet(true)
             }}
-            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center border border-white/5 hover:border-primary/30 transition-colors"
+            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center border border-white/5 hover:border-primary transition-colors"
             aria-label="Προσθήκη"
           >
             <Plus className="h-5 w-5 text-primary" />
@@ -241,7 +241,7 @@ export function CalendarTab() {
                   isSelected
                     ? 'bg-primary text-primary-foreground font-black shadow-[0_0_15px_rgba(163,230,53,0.4)]'
                     : isToday
-                      ? 'bg-primary/10 text-primary font-black border border-primary/30'
+                      ? 'bg-primary text-primary-foreground font-black border border-primary'
                       : 'text-foreground/80 hover:bg-secondary/50'
                 )}
               >
@@ -556,8 +556,8 @@ function UpcomingEvents({
               key={duty.id}
               onClick={() => onSelectDate(duty.date)}
               className={cn(
-                'glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5 hover:border-primary/20 transition-colors',
-                isToday && 'ring-1 ring-primary/30'
+                'glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5 hover:border-primary transition-colors',
+                isToday && 'ring-1 ring-primary'
               )}
             >
               <div className={cn('w-1 h-10 rounded-full flex-shrink-0', isToday ? 'bg-primary' : 'bg-chart-3')} />
@@ -568,7 +568,7 @@ function UpcomingEvents({
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-foreground">{DUTY_TYPE_LABELS[duty.type]}</span>
                   {isToday && (
-                    <span className="px-1.5 py-0.5 rounded-md bg-primary/20 text-primary text-[10px] font-bold">
+                     <span className="px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-bold">
                       ΣΗΜΕΡΑ
                     </span>
                   )}
@@ -741,7 +741,7 @@ function DayDetailView({
       {/* Add New Button */}
       <button
         onClick={onAddNew}
-        className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] hover:bg-primary/90 transition-colors"
+        className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] hover:bg-primary transition-colors"
       >
         <Plus className="h-4 w-4" />
         Προσθήκη
@@ -819,7 +819,7 @@ function AddDutyForm({
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary/50"
+            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
         <div className="min-w-0">
@@ -828,7 +828,7 @@ function AddDutyForm({
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary/50"
+            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
@@ -872,7 +872,7 @@ function AddDutyForm({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προαιρετικό..."
-          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
+          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
 
@@ -964,8 +964,8 @@ function AddLeaveForm({
       </div>
 
       {days > 0 && (
-        <div className="text-center py-1.5 rounded-md bg-primary/10 border border-primary/20">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{days} ημέρες</span>
+        <div className="text-center py-1.5 rounded-md bg-primary border border-primary">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-primary-foreground">{days} ημέρες</span>
         </div>
       )}
 
@@ -976,7 +976,7 @@ function AddLeaveForm({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προαιρετικό..."
-          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
+          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
 
@@ -990,7 +990,7 @@ function AddLeaveForm({
         <button
           onClick={handleSubmit}
           disabled={!startDate || !endDate}
-          className="flex-1 py-2 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[36px] disabled:opacity-40 hover:bg-primary/90 transition-colors"
+          className="flex-1 py-2 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[36px] disabled:opacity-40 hover:bg-primary transition-colors"
         >
           Προσθήκη
         </button>

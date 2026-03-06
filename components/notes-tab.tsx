@@ -519,8 +519,8 @@ function GuidesSection() {
               }}
               className="w-full flex items-center gap-3 p-4 min-h-[56px] text-left hover:bg-white/5 transition-colors"
             >
-              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                <Icon className="h-5 w-5 text-primary" />
+              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+                <Icon className="h-5 w-5 text-primary-foreground" />
               </div>
               <span className="flex-1 text-sm font-black text-foreground tracking-tight">{guide.title}</span>
               {isExpanded ? (
@@ -534,7 +534,7 @@ function GuidesSection() {
               <div className="px-4 pb-4 flex flex-col gap-4">
                 {guide.sections.map((section, sIdx) => (
                   <div key={sIdx}>
-                    <h4 className="text-xs font-black text-primary uppercase tracking-wider mb-2">{section.heading}</h4>
+                    <h4 className="text-xs font-black text-primary-foreground uppercase tracking-wider mb-2">{section.heading}</h4>
                     <div className="flex flex-col gap-1.5">
                       {section.items.map((item, iIdx) => (
                         <div
@@ -556,7 +556,7 @@ function GuidesSection() {
                       hapticFeedback('medium')
                       setActiveQuiz(guide.id)
                     }}
-                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary/10 border border-primary/20 text-primary font-black text-sm min-h-[48px] uppercase tracking-wider transition-colors hover:bg-primary/15 active:bg-primary/20"
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary border border-primary text-primary-foreground font-black text-sm min-h-[48px] uppercase tracking-wider transition-colors hover:bg-primary active:bg-primary"
                   >
                     <GraduationCap className="h-4 w-4" />
                     Εξέτασε με
@@ -690,7 +690,7 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
           </button>
           <button
             onClick={onClose}
-            className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-black text-sm min-h-[48px] uppercase tracking-wider hover:bg-primary/90 transition-colors"
+            className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-black text-sm min-h-[48px] uppercase tracking-wider hover:bg-primary transition-colors"
           >
             Κλείσιμο
           </button>
@@ -740,8 +740,8 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
                       ? 'bg-destructive/10 border-destructive/40 text-destructive font-black'
                       : 'bg-secondary/50 border-border/50 text-muted-foreground'
                   : isSelected
-                    ? 'bg-primary/10 border-primary/40 text-foreground font-black'
-                    : 'bg-secondary border-border text-foreground hover:border-primary/30 active:bg-secondary/80'
+                    ? 'bg-primary border-primary text-primary-foreground font-black'
+                    : 'bg-secondary border-border text-foreground hover:border-primary active:bg-secondary/80'
               )}
             >
               <span className="flex-1">{opt}</span>

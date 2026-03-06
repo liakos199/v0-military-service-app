@@ -39,7 +39,7 @@ export function ExpensesTab() {
                 hapticFeedback('light')
                 setShowCatalogManager(true)
               }}
-              className="px-3 py-2 rounded-lg glass-card border border-white/5 text-foreground text-xs font-black min-h-[44px] uppercase tracking-wider hover:border-primary/30 transition-colors"
+              className="px-3 py-2 rounded-lg glass-card border border-white/5 text-foreground text-xs font-black min-h-[44px] uppercase tracking-wider hover:border-primary transition-colors"
               aria-label="Διαχείριση καταλόγου Κ.Ψ.Μ."
               title="Διαχείριση καταλόγου Κ.Ψ.Μ."
             >
@@ -50,7 +50,7 @@ export function ExpensesTab() {
                 hapticFeedback('light')
                 setShowAdd(true)
               }}
-              className="px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-black min-h-[44px] uppercase tracking-wider hover:bg-primary/90 transition-colors"
+              className="px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-black min-h-[44px] uppercase tracking-wider hover:bg-primary transition-colors"
               aria-label="Προσθήκη εξόδου"
               title="Προσθήκη νέου εξόδου"
             >
@@ -74,9 +74,9 @@ export function ExpensesTab() {
               <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Γενικά</span>
               <span className="text-lg font-black text-foreground">{otherTotal.toFixed(2)}€</span>
             </div>
-            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-primary/30 bg-primary/5">
-              <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Σύνολο</span>
-              <span className="text-lg font-black text-primary">{grandTotal.toFixed(2)}€</span>
+            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-primary bg-primary">
+              <span className="text-[10px] font-black text-primary-foreground uppercase tracking-wider">Σύνολο</span>
+              <span className="text-lg font-black text-primary-foreground">{grandTotal.toFixed(2)}€</span>
             </div>
           </div>
 
@@ -128,13 +128,13 @@ export function ExpensesTab() {
               {expenses
                 .sort((a, b) => b.date.localeCompare(a.date))
                 .map((expense) => (
-                  <div key={expense.id} className="glass-card rounded-xl p-3 flex items-center justify-between border border-white/5 hover:border-primary/20 transition-colors group">
+                  <div key={expense.id} className="glass-card rounded-xl p-3 flex items-center justify-between border border-white/5 hover:border-primary transition-colors group">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className={cn(
                           'text-[9px] font-black px-2 py-1 rounded uppercase tracking-wider',
                           expense.category === 'canteen' 
-                            ? 'bg-primary/20 text-primary border border-primary/30' 
+                            ? 'bg-primary text-primary-foreground border border-primary' 
                             : 'bg-chart-2/20 text-chart-2 border border-chart-2/30'
                         )}>
                           {EXPENSE_CATEGORY_LABELS[expense.category]}
@@ -231,7 +231,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                 'flex-1 px-3 py-2.5 rounded-lg text-sm font-black min-h-[44px] uppercase tracking-wider transition-all border',
                 category === c
                   ? 'bg-primary text-primary-foreground border-primary shadow-[0_0_12px_rgba(163,230,53,0.2)]'
-                  : 'bg-secondary/50 text-foreground border-white/5 hover:border-primary/30'
+                  : 'bg-secondary/50 text-foreground border-white/5 hover:border-primary'
               )}
             >
               {EXPENSE_CATEGORY_LABELS[c]}
@@ -242,8 +242,8 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
 
       {/* Canteen Catalog Selection */}
       {category === 'canteen' && canteenCatalog.length > 0 && (
-        <div className="glass-card rounded-xl p-3 border border-primary/20 flex flex-col gap-2">
-          <h3 className="text-xs font-black text-primary uppercase tracking-wider">Κατάλογος Κ.Ψ.Μ.</h3>
+        <div className="glass-card rounded-xl p-3 border border-primary flex flex-col gap-2">
+          <h3 className="text-xs font-black text-primary-foreground uppercase tracking-wider">Κατάλογος Κ.Ψ.Μ.</h3>
           
           {selectedCatalogCategory === null ? (
             // Show categories
@@ -259,10 +259,10 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                       hapticFeedback('light')
                       setSelectedCatalogCategory(cat)
                     }}
-                    className="bg-secondary/50 border border-white/5 rounded-lg p-2.5 flex items-center justify-between hover:border-primary/30 transition-colors text-sm"
+                    className="bg-secondary/50 border border-white/5 rounded-lg p-2.5 flex items-center justify-between hover:border-primary transition-colors text-sm"
                   >
                     <span className="font-black text-foreground tracking-tight">{CANTEEN_CATEGORY_LABELS[cat]}</span>
-                    <span className="text-xs font-black text-muted-foreground bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+                    <span className="text-xs font-black text-primary-foreground bg-primary px-2 py-0.5 rounded border border-primary">
                       {itemsInCat.length}
                     </span>
                   </button>
@@ -278,7 +278,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                   hapticFeedback('light')
                   setSelectedCatalogCategory(null)
                 }}
-                className="text-primary text-sm font-black uppercase tracking-wider hover:text-primary/80 transition-colors py-1"
+                className="text-primary-foreground text-sm font-black uppercase tracking-wider hover:text-primary-foreground/80 transition-colors py-1"
               >
                 ← Πίσω
               </button>
@@ -289,14 +289,14 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                     type="button"
                     onClick={() => handleSelectCatalogItem(item)}
                     className={cn(
-                      'bg-secondary/50 border rounded-lg p-2.5 flex items-center justify-between hover:border-primary/30 transition-all text-sm',
+                      'bg-secondary/50 border rounded-lg p-2.5 flex items-center justify-between hover:border-primary transition-all text-sm',
                       description === item.name && amount === item.price.toFixed(2)
-                        ? 'border-primary bg-primary/10 ring-1 ring-primary/30'
+                        ? 'border-primary bg-primary ring-1 ring-primary'
                         : 'border-white/5'
                     )}
                   >
                     <span className="font-black text-foreground tracking-tight">{item.name}</span>
-                    <span className="font-black text-primary">{item.price.toFixed(2)}€</span>
+                    <span className="font-black text-primary-foreground">{item.price.toFixed(2)}€</span>
                   </button>
                 ))}
               </div>
@@ -345,7 +345,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
         <button
           onClick={handleSubmit}
           disabled={!amount || !date}
-          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-black text-sm min-h-[44px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-black text-sm min-h-[44px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
         >
           Προσθήκη
         </button>

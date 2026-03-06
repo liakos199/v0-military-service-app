@@ -148,7 +148,7 @@ export function DutiesTab() {
                   {isToday ? 'Σήμερα' : formatGreekDate(date)}
                 </h3>
                 {isToday && (
-                  <span className="px-1.5 py-0.5 rounded-md bg-primary/20 text-primary text-[10px] font-bold">
+                  <span className="px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-bold">
                     ΕΝΕΡΓΗ
                   </span>
                 )}
@@ -159,12 +159,12 @@ export function DutiesTab() {
                   key={duty.id}
                   className={cn(
                     'glass-card rounded-xl p-3 flex items-center gap-3',
-                    isToday && 'ring-1 ring-primary/30'
+                    isToday && 'ring-1 ring-primary'
                   )}
                 >
                   <div className={cn(
                     'w-1 h-10 rounded-full flex-shrink-0',
-                    isToday ? 'bg-primary' : isPast ? 'bg-muted-foreground/30' : 'bg-primary/50'
+                    isToday ? 'bg-primary' : isPast ? 'bg-muted-foreground/30' : 'bg-primary'
                   )} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
@@ -261,7 +261,7 @@ function AddDutyForm({ onAdd, onCancel }: {
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary/50"
+            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
         <div className="min-w-0">
@@ -270,7 +270,7 @@ function AddDutyForm({ onAdd, onCancel }: {
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary/50"
+            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
@@ -282,7 +282,7 @@ function AddDutyForm({ onAdd, onCancel }: {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προαιρετικό..."
-          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
+          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
 
@@ -296,7 +296,7 @@ function AddDutyForm({ onAdd, onCancel }: {
         <button
           onClick={handleSubmit}
           disabled={!date}
-          className="flex-1 py-3 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40 hover:bg-primary/90 transition-colors"
+          className="flex-1 py-3 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40 hover:bg-primary transition-colors"
         >
           Προσθήκη
         </button>

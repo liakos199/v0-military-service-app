@@ -47,11 +47,11 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             >
               <div className={cn(
                 "p-2 rounded-xl transition-colors duration-300",
-                isActive ? "bg-primary/10" : "bg-transparent"
+                isActive ? "bg-primary" : "bg-transparent"
               )}>
                 <Icon className={cn(
                   'h-5 w-5 transition-all duration-300',
-                  isActive ? 'text-primary drop-shadow-[0_0_8px_var(--primary)]' : 'text-muted-foreground/60',
+                  isActive ? 'text-primary-foreground drop-shadow-[0_0_8px_var(--primary)]' : 'text-muted-foreground/60',
                   isActive ? 'stroke-[2.5]' : 'stroke-[2]'
                 )} />
               </div>

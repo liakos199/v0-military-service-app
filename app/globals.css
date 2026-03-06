@@ -107,8 +107,8 @@
 }
 
 .glass-card-highlight {
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.12), rgba(234, 179, 8, 0.06));
-  border: 1px solid rgba(234, 179, 8, 0.2);
+  background: linear-gradient(135deg, #eab308, #eab308);
+  border: 1px solid #eab308;
 }
 
 /* Hide scrollbar for mobile */

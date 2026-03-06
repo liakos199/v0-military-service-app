@@ -116,15 +116,15 @@ function ProfileSection() {
     return (
       <div className="glass-card rounded-2xl p-5 flex flex-col gap-6 border border-white/5">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(163,230,53,0.1)]">
-            <User className="h-7 w-7 text-primary" />
+          <div className="w-14 h-14 rounded-2xl bg-primary border border-primary flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(163,230,53,0.1)]">
+            <User className="h-7 w-7 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0">
             <h2 className="text-lg font-black text-foreground truncate tracking-tight">
               {profile.fullName || 'Ονοματεπώνυμο'}
             </h2>
             <div className="flex items-center gap-2 mt-0.5">
-              <span className="px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[9px] font-black uppercase tracking-wider">
+              <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-wider">
                 {profile.rank}
               </span>
               {profile.serviceNumber && (
@@ -154,7 +154,7 @@ function ProfileSection() {
 
         {profile.reportingPhrase && (
           <div className="p-4 rounded-xl bg-secondary/30 border border-white/5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-primary/50" />
+            <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
             <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">Φράση Αναφοράς</p>
             <p className="text-sm text-foreground/90 italic font-medium leading-relaxed">{`"${profile.reportingPhrase}"`}</p>
           </div>
@@ -235,7 +235,7 @@ function ProfileSection() {
                   }}
                   className={cn(
                     'w-full text-left px-3 py-2.5 text-sm min-h-[44px]',
-                    form.rank === r ? 'text-primary font-semibold bg-primary/10' : 'text-foreground'
+                    form.rank === r ? 'text-primary-foreground font-semibold bg-primary' : 'text-foreground'
                   )}
                 >
                   {r}
@@ -429,13 +429,13 @@ function FriendsSection() {
       ) : (
         friends.map((friend) => (
           <div key={friend.id} className="glass-card rounded-xl p-3 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
-              <User className="h-5 w-5 text-primary" />
+            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+              <User className="h-5 w-5 text-primary-foreground" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground truncate">{friend.name}</p>
               {friend.unit && (
-                <p className="text-xs text-primary">{friend.unit}</p>
+                <p className="text-xs text-primary-foreground">{friend.unit}</p>
               )}
               {friend.phone && (
                 <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{friend.phone}</p>
@@ -449,10 +449,10 @@ function FriendsSection() {
                 <a
                   href={`tel:${friend.phone}`}
                   onClick={() => hapticFeedback('medium')}
-                  className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center bg-primary/15"
+                  className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center bg-primary"
                   aria-label={`Κλήση ${friend.name}`}
                 >
-                  <Phone className="h-4.5 w-4.5 text-primary" />
+                  <Phone className="h-4.5 w-4.5 text-primary-foreground" />
                 </a>
               )}
               <button
@@ -592,7 +592,7 @@ function AddSuperiorForm({ onAdd, onCancel }: {
                 }}
                 className={cn(
                   'w-full text-left px-3 py-2.5 text-sm min-h-[44px]',
-                  rank === r ? 'text-primary font-semibold bg-primary/10' : 'text-foreground'
+                  rank === r ? 'text-primary-foreground font-semibold bg-primary' : 'text-foreground'
                 )}
               >
                 {r}

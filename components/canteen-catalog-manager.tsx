@@ -87,7 +87,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
       </p>
 
       {/* Add new item - Compact section */}
-      <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 flex flex-col gap-2">
+      <div className="bg-primary border border-primary rounded-lg p-3 flex flex-col gap-2">
         <h3 className="text-sm font-semibold text-foreground">Προσθήκη προϊόντος</h3>
         
         <div className="flex gap-2">
@@ -261,7 +261,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         </button>
         <button
           onClick={handleSave}
-          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[44px] hover:bg-primary/90 transition-colors"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[44px] hover:bg-primary transition-colors"
         >
           Αποθήκευση
         </button>

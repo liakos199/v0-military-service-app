@@ -175,9 +175,9 @@ export function ServiceTab() {
                 Λελέμετρο
               </p>
               {dischargeDate && (
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary/10 border border-primary/20">
-                  <CalendarDays className="h-3 w-3 text-primary" />
-                  <span className="text-[10px] font-bold text-primary uppercase">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary border border-primary">
+                  <CalendarDays className="h-3 w-3 text-primary-foreground" />
+                  <span className="text-[10px] font-bold text-primary-foreground uppercase">
                     {formatGreekDate(dischargeDate)}
                   </span>
                 </div>
@@ -261,7 +261,7 @@ function StatCard({
 }) {
   return (
     <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-secondary/40 border border-white/5">
-      <Icon className="h-4 w-4 text-primary/80" />
+      <Icon className="h-4 w-4 text-primary-foreground" />
       <div className="flex flex-col items-center">
         <span className="text-xl font-black text-foreground leading-none tracking-tight">{value}</span>
         <span className="text-[8px] font-bold text-muted-foreground leading-none mt-1 tracking-widest">{unit}</span>
@@ -323,7 +323,7 @@ function TodayStatus({
           return (
             <div
               key={duty.id}
-              className="glass-card rounded-xl p-4 ring-1 ring-primary/30"
+              className="glass-card rounded-xl p-4 ring-1 ring-primary"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-chart-3/20 flex items-center justify-center flex-shrink-0">
@@ -334,7 +334,7 @@ function TodayStatus({
                     <span className="text-sm font-semibold text-foreground">
                       {DUTY_TYPE_LABELS[duty.type]}
                     </span>
-                    <span className="px-1.5 py-0.5 rounded-md bg-primary/20 text-primary text-[10px] font-bold">
+                    <span className="px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-bold">
                       ΕΝΕΡΓΗ
                     </span>
                   </div>
