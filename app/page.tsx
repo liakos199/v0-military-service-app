@@ -50,14 +50,17 @@ export default function Home() {
   }
 
   return (
-    <main className="h-dvh bg-background flex flex-col overflow-hidden relative" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
-      <div className="flex-1 max-w-lg mx-auto w-full flex flex-col overflow-hidden relative safe-top">
+    <main className="h-dvh bg-background flex flex-col overflow-hidden" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
+      {/* Content Area - Header + Scrollable Content */}
+      <div className="flex-1 max-w-lg mx-auto w-full flex flex-col overflow-hidden">
         {activeTab === 'service' && <ServiceTab />}
         {activeTab === 'duties' && <CalendarTab />}
         {activeTab === 'notes' && <NotesTab />}
         {activeTab === 'profile' && <ProfileTab />}
         {activeTab === 'expenses' && <ExpensesTab />}
       </div>
+
+      {/* Bottom Navigation - Always Visible */}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </main>
   )

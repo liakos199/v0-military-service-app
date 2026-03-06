@@ -157,8 +157,8 @@ export function CalendarTab() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+      {/* HEADER - Always Visible */}
+      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground">Ημερολόγιο</h1>
@@ -178,9 +178,9 @@ export function CalendarTab() {
         </div>
       </div>
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
-      <div className="flex flex-col gap-4 pt-4">
+      {/* CONTENT - Scrollable */}
+      <div className="flex-1 overflow-y-auto px-4 py-4">
+      <div className="flex flex-col gap-4">
 
       {/* Calendar Card */}
       <div className="glass-card rounded-2xl p-4">

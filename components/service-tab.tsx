@@ -84,8 +84,8 @@ export function ServiceTab() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+      {/* HEADER - Always Visible */}
+      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground">Θητεία</h1>
@@ -104,146 +104,145 @@ export function ServiceTab() {
         </div>
       </div>
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
-      <div className="flex flex-col gap-4 pt-4">
-
-      {/* Config Modal */}
-      <FullscreenModal
-        isOpen={showConfig}
-        onClose={() => setShowConfig(false)}
-        title="Ρυθμίσεις Θητείας"
-      >
+      {/* CONTENT - Scrollable */}
+      <div className="flex-1 overflow-y-auto px-4 py-4">
         <div className="flex flex-col gap-4">
-          <GreekDatePicker
-            value={config.enlistmentDate}
-            onChange={(d) => setConfig({ ...config, enlistmentDate: d })}
-            label="Ημερομηνία κατάταξης"
-          />
-          <div>
-            <label className="block text-xs text-muted-foreground mb-1.5">
-              Διάρκεια θητείας
-            </label>
-            <div className="flex gap-2 mb-3">
-              {SERVICE_DURATION_PRESETS.map((preset) => (
-                <button
-                  key={preset.days}
-                  type="button"
-                  onClick={() => {
-                    hapticFeedback('light')
-                    setConfig({ ...config, totalDays: preset.days })
-                  }}
-                  className={cn(
-                    'flex-1 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors border',
-                    config.totalDays === preset.days
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'bg-secondary text-secondary-foreground border-border'
-                  )}
-                >
-                  {preset.label}
-                </button>
-              ))}
-            </div>
-            <label className="block text-[10px] text-muted-foreground mb-1.5">
-              {'Ή εισάγετε ημέρες χειροκίνητα'}
-            </label>
-            <input
-              type="number"
-              inputMode="numeric"
-              value={config.totalDays}
-              onChange={(e) =>
-                setConfig({ ...config, totalDays: parseInt(e.target.value) || 0 })
-              }
-              className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
-            />
-          </div>
-          <button
-            onClick={() => {
-              hapticFeedback('medium')
-              setShowConfig(false)
-            }}
-            className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px]"
+          {/* Config Modal */}
+          <FullscreenModal
+            isOpen={showConfig}
+            onClose={() => setShowConfig(false)}
+            title="Ρυθμίσεις Θητείας"
           >
-            Αποθήκευση
-          </button>
-        </div>
-      </FullscreenModal>
+            <div className="flex flex-col gap-4">
+              <GreekDatePicker
+                value={config.enlistmentDate}
+                onChange={(d) => setConfig({ ...config, enlistmentDate: d })}
+                label="Ημερομηνία κατάταξης"
+              />
+              <div>
+                <label className="block text-xs text-muted-foreground mb-1.5">
+                  Διάρκεια θητείας
+                </label>
+                <div className="flex gap-2 mb-3">
+                  {SERVICE_DURATION_PRESETS.map((preset) => (
+                    <button
+                      key={preset.days}
+                      type="button"
+                      onClick={() => {
+                        hapticFeedback('light')
+                        setConfig({ ...config, totalDays: preset.days })
+                      }}
+                      className={cn(
+                        'flex-1 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors border',
+                        config.totalDays === preset.days
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-secondary text-secondary-foreground border-border'
+                      )}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+                <label className="block text-[10px] text-muted-foreground mb-1.5">
+                  {'Ή εισάγετε ημέρες χειροκίνητα'}
+                </label>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  value={config.totalDays}
+                  onChange={(e) =>
+                    setConfig({ ...config, totalDays: parseInt(e.target.value) || 0 })
+                  }
+                  className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+                />
+              </div>
+              <button
+                onClick={() => {
+                  hapticFeedback('medium')
+                  setShowConfig(false)
+                }}
+                className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px]"
+              >
+                Αποθήκευση
+              </button>
+            </div>
+          </FullscreenModal>
 
-      {/* Main Progress Ring - LELEmeter */}
-      <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-4">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          Λελέμετρο
-        </p>
-        <div className="relative w-44 h-44">
-          <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
-            <circle
-              cx="80"
-              cy="80"
-              r="70"
-              fill="none"
-              stroke="#1E293B"
-              strokeWidth="10"
-            />
-            <circle
-              cx="80"
-              cy="80"
-              r="70"
-              fill="none"
-              stroke="var(--primary)"
-              strokeWidth="10"
-              strokeLinecap="round"
-              strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
-              className="transition-all duration-1000 ease-out"
-              style={{
-                filter: 'drop-shadow(0 0 12px rgba(74, 222, 128, 0.5))',
-              }}
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-3xl font-bold text-foreground">
-              {percentage.toFixed(1)}%
-            </span>
-            <span className="text-xs text-muted-foreground mt-1">ολοκληρώθηκε</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3 w-full">
-          <StatCard
-            icon={Clock}
-            label="Υπηρέτησες"
-            value={`${daysServed}`}
-            unit="ημέρες"
-          />
-          <StatCard
-            icon={CalendarDays}
-            label="Απ��μένουν"
-            value={`${effectiveDaysRemaining}`}
-            unit="ημέρες"
-          />
-          <StatCard
-            icon={Percent}
-            label="Άδειες"
-            value={`${totalLeaveDays}`}
-            unit="ημέρες"
-          />
-        </div>
-
-        {dischargeDate && (
-          <div className="w-full text-center py-2 px-3 rounded-lg bg-secondary">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
-              Ημερομηνία απόλυσης
+          {/* Main Progress Ring - LELEmeter */}
+          <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-4">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Λελέμετρο
             </p>
-            <p className="text-sm font-semibold text-primary mt-0.5">
-              {formatGreekDate(dischargeDate)}
-            </p>
+            <div className="relative w-44 h-44">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="70"
+                  fill="none"
+                  stroke="#1E293B"
+                  strokeWidth="10"
+                />
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="70"
+                  fill="none"
+                  stroke="var(--primary)"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
+                  className="transition-all duration-1000 ease-out"
+                  style={{
+                    filter: 'drop-shadow(0 0 12px rgba(74, 222, 128, 0.5))',
+                  }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-3xl font-bold text-foreground">
+                  {percentage.toFixed(1)}%
+                </span>
+                <span className="text-xs text-muted-foreground mt-1">ολοκληρώθηκε</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 w-full">
+              <StatCard
+                icon={Clock}
+                label="Υπηρέτησες"
+                value={`${daysServed}`}
+                unit="ημέρες"
+              />
+              <StatCard
+                icon={CalendarDays}
+                label="Απομένουν"
+                value={`${effectiveDaysRemaining}`}
+                unit="ημέρες"
+              />
+              <StatCard
+                icon={Percent}
+                label="Άδειες"
+                value={`${totalLeaveDays}`}
+                unit="ημέρες"
+              />
+            </div>
+
+            {dischargeDate && (
+              <div className="w-full text-center py-2 px-3 rounded-lg bg-secondary">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                  Ημερομηνία απόλυσης
+                </p>
+                <p className="text-sm font-semibold text-primary mt-0.5">
+                  {formatGreekDate(dischargeDate)}
+                </p>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Today's Status Section */}
+          <TodayStatus duties={todayDuties} leave={todayLeave} />
+        </div>
       </div>
-
-      {/* Today's Status Section */}
-      <TodayStatus duties={todayDuties} leave={todayLeave} />
-    </div>
-    </div>
     </div>
   )
 }
