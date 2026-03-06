@@ -4,43 +4,55 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Deep Forest Tactical - Redesigned Palette */
-  --background: #050705;
-  --foreground: #F8FAFC;
-  --card: #0D110D;
-  --card-foreground: #F8FAFC;
-  --popover: #0D110D;
-  --popover-foreground: #F8FAFC;
-  --primary: #A3E635;
-  --primary-foreground: #050705;
-  --secondary: #1A201A;
-  --secondary-foreground: #CBD5E1;
-  --muted: #1A201A;
-  --muted-foreground: #94A3B8;
-  --accent: #38BDF8;
-  --accent-foreground: #050705;
-  --destructive: #F87171;
-  --destructive-foreground: #FAFAFA;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: #1A201A;
-  --ring: #A3E635;
-  --chart-1: #A3E635;
-  --chart-2: #38BDF8;
-  --chart-3: #FBBF24;
-  --chart-4: #F87171;
-  --chart-5: #A78BFA;
+  /* Gold - Zinc Tactical Theme */
+  --background: #09090b; /* Zinc 950 */
+  --foreground: #fafafa; /* Zinc 50 */
+  --card: #18181b; /* Zinc 900 */
+  --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
+  
+  /* Gold Accents */
+  --primary: #eab308; /* Gold/Yellow 500 */
+  --primary-foreground: #09090b;
+  
+  --secondary: #27272a; /* Zinc 800 */
+  --secondary-foreground: #e4e4e7; /* Zinc 200 */
+  
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa; /* Zinc 400 */
+  
+  --accent: #ca8a04; /* Gold/Yellow 600 */
+  --accent-foreground: #fafafa;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  
+  --border: rgba(255, 255, 255, 0.06);
+  --input: #27272a;
+  --ring: #eab308;
+  
+  /* Chart Colors - Gold/Zinc focused */
+  --chart-1: #eab308; /* Gold */
+  --chart-2: #ca8a04; /* Dark Gold */
+  --chart-3: #71717a; /* Zinc 500 */
+  --chart-4: #a1a1aa; /* Zinc 400 */
+  --chart-5: #d4d4d8; /* Zinc 300 */
+  
   --radius: 0.75rem;
-  --sidebar: #0D110D;
-  --sidebar-foreground: #F8FAFC;
-  --sidebar-primary: #A3E635;
-  --sidebar-primary-foreground: #050705;
-  --sidebar-accent: #1A201A;
-  --sidebar-accent-foreground: #CBD5E1;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: #A3E635;
-  --glass: rgba(13, 17, 13, 0.75);
+  
+  --sidebar: #09090b;
+  --sidebar-foreground: #f4f4f5;
+  --sidebar-primary: #eab308;
+  --sidebar-primary-foreground: #09090b;
+  --sidebar-accent: #27272a;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-ring: #eab308;
+  
+  --glass: rgba(24, 24, 27, 0.8);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(248, 250, 252, 0.05);
+  --glass-highlight: rgba(234, 179, 8, 0.05);
 }
 
 @theme inline {
@@ -88,14 +100,15 @@
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(22, 26, 22, 0.85), rgba(15, 18, 16, 0.65));
+  background: linear-gradient(135deg, rgba(39, 39, 42, 0.9), rgba(24, 24, 27, 0.7));
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 .glass-card-highlight {
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.12), rgba(74, 222, 128, 0.06));
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.12), rgba(234, 179, 8, 0.06));
+  border: 1px solid rgba(234, 179, 8, 0.2);
 }
 
 /* Hide scrollbar for mobile */
@@ -129,25 +142,25 @@
 .splash-icon {
   animation: splash-fade-in 0.6s ease-out forwards;
 }
-	.splash-out {
-	  animation: splash-fade-out 0.4s ease-in forwards;
-	}
-	
-	/* Modal animations */
-	@keyframes modal-slide-up {
-	  from { transform: translateY(100%); }
-	  to { transform: translateY(0); }
-	}
-	@keyframes modal-fade-in {
-	  from { opacity: 0; }
-	  to { opacity: 1; }
-	}
-	.animate-modal-slide-up {
-	  animation: modal-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-	}
-	.animate-modal-fade-in {
-	  animation: modal-fade-in 0.2s ease-out forwards;
-	}
+.splash-out {
+  animation: splash-fade-out 0.4s ease-in forwards;
+}
+
+/* Modal animations */
+@keyframes modal-slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-modal-slide-up {
+  animation: modal-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-modal-fade-in {
+  animation: modal-fade-in 0.2s ease-out forwards;
+}
 
 @layer base {
   * {
