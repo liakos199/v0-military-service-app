@@ -85,7 +85,7 @@ export function ServiceTab() {
   return (
     <div className="flex flex-col h-full">
       {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground">Θητεία</h1>

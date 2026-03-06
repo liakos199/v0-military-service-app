@@ -312,7 +312,7 @@ export function NotesTab() {
   return (
     <div className="flex flex-col h-full">
       {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
         <div>
           <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
           <p className="text-xs text-muted-foreground">Προσωπικές σημειώσεις & εγχειρίδια</p>

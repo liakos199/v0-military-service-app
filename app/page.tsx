@@ -50,9 +50,9 @@ export default function Home() {
   }
 
   return (
-    <main className="fixed inset-0 bg-background flex flex-col overflow-hidden" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
+    <main className="h-screen w-full bg-background flex flex-col overflow-hidden" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
       {/* Content Area - Header + Scrollable Content */}
-      <div className="flex-1 max-w-lg mx-auto w-full flex flex-col overflow-hidden safe-top">
+      <div className="flex-1 w-full max-w-lg mx-auto flex flex-col overflow-hidden">
         {activeTab === 'service' && <ServiceTab />}
         {activeTab === 'duties' && <CalendarTab />}
         {activeTab === 'notes' && <NotesTab />}
