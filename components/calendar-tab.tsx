@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
+import { ActionSheet, ActionSheetItem, ActionSheetCancel } from '@/components/action-sheet'
 import {
   hapticFeedback,
   formatGreekDate,
@@ -311,67 +312,26 @@ export function CalendarTab() {
       {/* Action Sheet - Choose what to add */}
       </div>
       </div>
-      {showActionSheet && selectedDate && (
-        <div
-          className="fixed inset-0 z-[90] flex items-end justify-center bg-black/85 backdrop-blur-md"
-          onClick={() => setShowActionSheet(false)}
-        >
-          <div
-            className="w-full max-w-lg rounded-t-2xl p-4 pb-8 border-t border-glass-border safe-bottom"
-            style={{ background: 'linear-gradient(180deg, #1F2937, #161A16)' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="w-10 h-1 rounded-full bg-muted-foreground/30 mx-auto mb-4" />
-            <p className="text-sm font-semibold text-foreground text-center mb-1">
-              {formatGreekDate(selectedDate)}
-            </p>
-            <p className="text-xs text-muted-foreground text-center mb-4">
-              Τι θέλεις να προσθέσεις;
-            </p>
-
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => {
-                  hapticFeedback('light')
-                  setShowAddDuty(true)
-                }}
-                className="flex items-center gap-3 p-4 rounded-xl bg-secondary min-h-[56px] active:scale-[0.98] transition-transform"
-              >
-                <div className="w-10 h-10 rounded-lg bg-chart-3/20 flex items-center justify-center">
-                  <Shield className="h-5 w-5 text-chart-3" />
-                </div>
-                <div className="flex-1 text-left">
-                  <p className="text-sm font-semibold text-foreground">Προσθήκη Υπηρεσίας</p>
-                  <p className="text-[10px] text-muted-foreground">Σκοπιά, Θαλαμοφύλακας, κ.ά.</p>
-                </div>
-              </button>
-
-              <button
-                onClick={() => {
-                  hapticFeedback('light')
-                  setShowAddLeave(true)
-                }}
-                className="flex items-center gap-3 p-4 rounded-xl bg-secondary min-h-[56px] active:scale-[0.98] transition-transform"
-              >
-                <div className="w-10 h-10 rounded-lg bg-chart-2/20 flex items-center justify-center">
-                  <Palmtree className="h-5 w-5 text-chart-2" />
-                </div>
-                <div className="flex-1 text-left">
-                  <p className="text-sm font-semibold text-foreground">Προσθήκη Άδειας</p>
-                  <p className="text-[10px] text-muted-foreground">Κανονική, Σπουδαστική, κ.ά.</p>
-                </div>
-              </button>
-
-              <button
-                onClick={() => setShowActionSheet(false)}
-                className="py-3 rounded-xl bg-secondary text-muted-foreground font-medium text-sm min-h-[48px] mt-1"
-              >
-                Ακύρωση
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ActionSheet
+        isOpen={showActionSheet}
+        onClose={() => setShowActionSheet(false)}
+        title={selectedDate ? formatGreekDate(selectedDate) : ''}
+        subtitle="Τι θέλεις να προσθέσεις;"
+      >
+        <ActionSheetItem
+          icon={<Shield className="h-5 w-5" />}
+          title="Προσθήκη Υπηρεσίας"
+          subtitle="Σκοπιά, Θαλαμοφύλακας, κ.ά."
+          onClick={() => setShowAddDuty(true)}
+        />
+        <ActionSheetItem
+          icon={<Palmtree className="h-5 w-5" />}
+          title="Προσθήκη Άδειας"
+          subtitle="Κανονική, Σπουδαστική, κ.ά."
+          onClick={() => setShowAddLeave(true)}
+        />
+        <ActionSheetCancel onClick={() => setShowActionSheet(false)} />
+      </ActionSheet>
 
       {/* Add Duty Modal */}
       <FullscreenModal
