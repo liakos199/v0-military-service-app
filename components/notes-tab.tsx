@@ -472,10 +472,9 @@ function NotesSection() {
                   type="text"
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  placeholder="Τίτλος"
-                  className="w-full px-3 py-2.5 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[44px] border border-border placeholder:text-muted-foreground"
-                  autoFocus
-                />
+	                  placeholder="Τίτλος"
+	                  className="w-full px-3 py-2.5 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[44px] border border-border placeholder:text-muted-foreground"
+	                />
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
@@ -778,10 +777,9 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (title: string, content: stri
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Τίτλος (προαιρετικό)"
-        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[48px] border border-border placeholder:text-muted-foreground placeholder:font-normal"
-        autoFocus
-      />
+	        placeholder="Τίτλος (προαιρετικό)"
+	        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[48px] border border-border placeholder:text-muted-foreground placeholder:font-normal"
+	      />
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
