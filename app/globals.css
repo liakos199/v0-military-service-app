@@ -129,9 +129,25 @@
 .splash-icon {
   animation: splash-fade-in 0.6s ease-out forwards;
 }
-.splash-out {
-  animation: splash-fade-out 0.4s ease-in forwards;
-}
+	.splash-out {
+	  animation: splash-fade-out 0.4s ease-in forwards;
+	}
+	
+	/* Modal animations */
+	@keyframes modal-slide-up {
+	  from { transform: translateY(100%); }
+	  to { transform: translateY(0); }
+	}
+	@keyframes modal-fade-in {
+	  from { opacity: 0; }
+	  to { opacity: 1; }
+	}
+	.animate-modal-slide-up {
+	  animation: modal-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	}
+	.animate-modal-fade-in {
+	  animation: modal-fade-in 0.2s ease-out forwards;
+	}
 
 @layer base {
   * {

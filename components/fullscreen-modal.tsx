@@ -28,8 +28,8 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm">
-      <div className="flex flex-col h-full safe-top">
+    <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm animate-modal-fade-in">
+      <div className="flex flex-col h-full safe-top animate-modal-slide-up">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <div className="flex items-center gap-2 flex-1">
