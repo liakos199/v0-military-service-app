@@ -52,7 +52,7 @@
   
   --glass: rgba(24, 24, 27, 0.8);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(234, 179, 8, 0.05);
+  --glass-highlight: #eab308;
 }
 
 @theme inline {
@@ -107,8 +107,9 @@
 }
 
 .glass-card-highlight {
-  background: linear-gradient(135deg, #eab308, #eab308);
+  background: #eab308;
   border: 1px solid #eab308;
+  color: #09090b;
 }
 
 /* Hide scrollbar for mobile */
