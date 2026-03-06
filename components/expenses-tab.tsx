@@ -243,7 +243,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
       {/* Canteen Catalog Selection */}
       {category === 'canteen' && canteenCatalog.length > 0 && (
         <div className="glass-card rounded-xl p-3 border border-primary flex flex-col gap-2">
-          <h3 className="text-xs font-black text-primary-foreground uppercase tracking-wider">Κατάλογος Κ.Ψ.Μ.</h3>
+          <h3 className="text-xs font-black text-primary-foreground uppercase tracking-tight">Κατάλογος Κ.Ψ.Μ.</h3>
           
           {selectedCatalogCategory === null ? (
             // Show categories
@@ -278,7 +278,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                   hapticFeedback('light')
                   setSelectedCatalogCategory(null)
                 }}
-                className="text-primary-foreground text-sm font-black uppercase tracking-wider hover:text-primary-foreground/80 transition-colors py-1"
+                className="text-primary-foreground text-sm font-black uppercase tracking-tight hover:text-primary-foreground/80 transition-colors py-1"
               >
                 ← Πίσω
               </button>

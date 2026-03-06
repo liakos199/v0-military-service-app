@@ -177,7 +177,7 @@ export function ServiceTab() {
               {dischargeDate && (
                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary border border-primary">
                   <CalendarDays className="h-3 w-3 text-primary-foreground" />
-                  <span className="text-[10px] font-bold text-primary-foreground uppercase">
+                  <span className="text-[10px] font-black text-primary-foreground uppercase tracking-tight">
                     {formatGreekDate(dischargeDate)}
                   </span>
                 </div>
@@ -261,7 +261,7 @@ function StatCard({
 }) {
   return (
     <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-secondary/40 border border-white/5">
-      <Icon className="h-4 w-4 text-primary-foreground" />
+      <Icon className="h-4 w-4 text-primary" />
       <div className="flex flex-col items-center">
         <span className="text-xl font-black text-foreground leading-none tracking-tight">{value}</span>
         <span className="text-[8px] font-bold text-muted-foreground leading-none mt-1 tracking-widest">{unit}</span>
@@ -334,7 +334,7 @@ function TodayStatus({
                     <span className="text-sm font-semibold text-foreground">
                       {DUTY_TYPE_LABELS[duty.type]}
                     </span>
-                    <span className="px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-bold">
+                    <span className="px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-tight">
                       ΕΝΕΡΓΗ
                     </span>
                   </div>

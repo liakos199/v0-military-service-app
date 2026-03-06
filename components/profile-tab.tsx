@@ -44,7 +44,7 @@ export function ProfileTab() {
               'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'profile'
                 ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
-                : 'text-muted-foreground/60'
+                : 'text-muted-foreground'
             )}
           >
             <User className="h-3.5 w-3.5" />
@@ -59,7 +59,7 @@ export function ProfileTab() {
               'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'superiors'
                 ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
-                : 'text-muted-foreground/60'
+                : 'text-muted-foreground'
             )}
           >
             <Users className="h-3.5 w-3.5" />
@@ -74,7 +74,7 @@ export function ProfileTab() {
               'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'friends'
                 ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
-                : 'text-muted-foreground/60'
+                : 'text-muted-foreground'
             )}
           >
             <UserPlus className="h-3.5 w-3.5" />
@@ -124,7 +124,7 @@ function ProfileSection() {
               {profile.fullName || 'Ονοματεπώνυμο'}
             </h2>
             <div className="flex items-center gap-2 mt-0.5">
-              <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-wider">
+              <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-tight">
                 {profile.rank}
               </span>
               {profile.serviceNumber && (
@@ -435,7 +435,7 @@ function FriendsSection() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground truncate">{friend.name}</p>
               {friend.unit && (
-                <p className="text-xs text-primary-foreground">{friend.unit}</p>
+                <p className="text-xs text-primary">{friend.unit}</p>
               )}
               {friend.phone && (
                 <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{friend.phone}</p>
