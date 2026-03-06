@@ -191,7 +191,7 @@ export function ServiceTab() {
                   cy="80"
                   r="74"
                   fill="none"
-                  stroke="rgba(255,255,255,0.03)"
+                  stroke="rgba(255,255,255,0.01)"
                   strokeWidth="6"
                 />
                 <circle
@@ -213,7 +213,7 @@ export function ServiceTab() {
                 <span className="text-4xl font-black text-foreground tracking-tighter">
                   {percentage.toFixed(1)}<span className="text-lg text-muted-foreground ml-0.5">%</span>
                 </span>
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Status</span>
+                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-1">ΠΡΟΟΔΟΣ</span>
               </div>
             </div>
 
