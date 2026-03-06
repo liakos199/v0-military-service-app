@@ -34,20 +34,20 @@ export function ProfileTab() {
         </div>
 
         {/* Section Toggle - 3 tabs */}
-        <div className="flex gap-1 p-1 rounded-xl bg-secondary mt-3">
+        <div className="flex gap-1 p-1 rounded-xl bg-secondary/50 border border-white/5 mt-3">
           <button
             onClick={() => {
               hapticFeedback('light')
               setActiveSection('profile')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
+              'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'profile'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground'
+                ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
+                : 'text-muted-foreground/60'
             )}
           >
-            <User className="h-4 w-4" />
+            <User className="h-3.5 w-3.5" />
             Στοιχεία
           </button>
           <button
@@ -56,13 +56,13 @@ export function ProfileTab() {
               setActiveSection('superiors')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
+              'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'superiors'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground'
+                ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
+                : 'text-muted-foreground/60'
             )}
           >
-            <Users className="h-4 w-4" />
+            <Users className="h-3.5 w-3.5" />
             Ιεραρχία
           </button>
           <button
@@ -71,13 +71,13 @@ export function ProfileTab() {
               setActiveSection('friends')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-medium min-h-[44px] transition-colors',
+              'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'friends'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground'
+                ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
+                : 'text-muted-foreground/60'
             )}
           >
-            <UserPlus className="h-4 w-4" />
+            <UserPlus className="h-3.5 w-3.5" />
             Φίλοι
           </button>
         </div>
@@ -114,42 +114,49 @@ function ProfileSection() {
 
   if (!isEditing) {
     return (
-      <div className="glass-card rounded-2xl p-5 flex flex-col gap-4">
+      <div className="glass-card rounded-2xl p-5 flex flex-col gap-6 border border-white/5">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-            <User className="h-8 w-8 text-primary" />
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(163,230,53,0.1)]">
+            <User className="h-7 w-7 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="text-base font-bold text-foreground truncate">
+            <h2 className="text-lg font-black text-foreground truncate tracking-tight">
               {profile.fullName || 'Ονοματεπώνυμο'}
             </h2>
-            <p className="text-xs text-primary">{profile.rank}</p>
-            {profile.serviceNumber && (
-              <p className="text-[10px] text-muted-foreground font-mono mt-0.5">ΑΜ: {profile.serviceNumber}</p>
-            )}
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[9px] font-black uppercase tracking-wider">
+                {profile.rank}
+              </span>
+              {profile.serviceNumber && (
+                <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest">
+                  ID: {profile.serviceNumber}
+                </span>
+              )}
+            </div>
           </div>
           <button
             onClick={startEdit}
-            className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2 rounded-xl bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
             aria-label="Επεξεργασία"
           >
-            <Edit3 className="h-5 w-5 text-primary" />
+            <Edit3 className="h-4 w-4 text-primary" />
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <InfoField label="Λόχος" value={profile.company} />
           <InfoField label="Θάλαμος" value={profile.barracks} />
-          <InfoField label="Ομάδα Αίματος" value={profile.bloodType} />
+          <InfoField label="Αίμα" value={profile.bloodType} />
           <InfoField label="Βαθμός" value={profile.rank} />
-          <InfoField label="Κωδικός Όπλου" value={profile.weaponCode} />
+          <InfoField label="Κωδ. Όπλου" value={profile.weaponCode} />
           <InfoField label="Κελί Όπλου" value={profile.weaponCell} />
         </div>
 
         {profile.reportingPhrase && (
-          <div className="p-3 rounded-lg bg-secondary">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Φράση Αναφοράς</p>
-            <p className="text-sm text-foreground italic">{`"${profile.reportingPhrase}"`}</p>
+          <div className="p-4 rounded-xl bg-secondary/30 border border-white/5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-primary/50" />
+            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">Φράση Αναφοράς</p>
+            <p className="text-sm text-foreground/90 italic font-medium leading-relaxed">{`"${profile.reportingPhrase}"`}</p>
           </div>
         )}
       </div>
@@ -623,9 +630,9 @@ function AddSuperiorForm({ onAdd, onCancel }: {
 
 function InfoField({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-2.5 rounded-lg bg-secondary">
-      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{label}</p>
-      <p className="text-sm font-medium text-foreground mt-0.5">{value || '---'}</p>
+    <div className="p-3 rounded-xl bg-secondary/30 border border-white/5 flex flex-col gap-1">
+      <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.15em] leading-none">{label}</p>
+      <p className="text-xs font-bold text-foreground/90 truncate leading-none">{value || '—'}</p>
     </div>
   )
 }

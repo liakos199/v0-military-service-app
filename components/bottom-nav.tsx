@@ -22,12 +22,12 @@ const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
     <nav
-      className="w-full flex-shrink-0 border-t border-border safe-bottom"
-      style={{ background: 'linear-gradient(180deg, rgba(15, 18, 16, 0.95), rgba(10, 12, 10, 0.98))', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
+      className="w-full flex-shrink-0 border-t border-white/5 safe-bottom"
+      style={{ background: 'rgba(5, 7, 5, 0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
       role="tablist"
       aria-label="Κύρια πλοήγηση"
     >
-      <div className="flex items-center justify-around px-2 py-3">
+      <div className="flex items-center justify-around px-4 py-2">
         {tabs.map((tab) => {
           const Icon = tab.icon
           const isActive = activeTab === tab.id
@@ -42,19 +42,24 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 onTabChange(tab.id)
               }}
               className={cn(
-                'flex flex-col items-center justify-center gap-0.5 py-1.5 px-3 rounded-xl min-h-[48px] min-w-[48px] transition-all duration-200',
+                'flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-xl transition-all duration-300 relative',
                 isActive
                   ? 'text-primary'
-                  : 'text-muted-foreground active:scale-95'
+                  : 'text-muted-foreground/60 active:scale-90'
               )}
             >
-              <Icon className={cn('h-5 w-5', isActive && 'drop-shadow-[0_0_10px_rgba(74,222,128,0.6)]')} strokeWidth={isActive ? 2.5 : 1.5} />
-              <span className={cn('text-[10px] leading-tight', isActive ? 'font-semibold' : 'font-normal')}>
+              <div className={cn(
+                "p-2 rounded-xl transition-all duration-300",
+                isActive ? "bg-primary/10" : "bg-transparent"
+              )}>
+                <Icon className={cn('h-5 w-5', isActive && 'drop-shadow-[0_0_8px_var(--primary)]')} strokeWidth={isActive ? 2.5 : 2} />
+              </div>
+              <span className={cn(
+                'text-[9px] font-bold uppercase tracking-tighter transition-all duration-300',
+                isActive ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'
+              )}>
                 {tab.label}
               </span>
-              {isActive && (
-                <div className="h-0.5 w-4 rounded-full bg-primary mt-0.5" />
-              )}
             </button>
           )
         })}

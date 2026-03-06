@@ -4,43 +4,43 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Tactical Dark Theme - High Contrast & Professional */
-  --background: #0A0C0A;
+  /* Deep Forest Tactical - Redesigned Palette */
+  --background: #050705;
   --foreground: #F8FAFC;
-  --card: #161A16;
+  --card: #0D110D;
   --card-foreground: #F8FAFC;
-  --popover: #161A16;
+  --popover: #0D110D;
   --popover-foreground: #F8FAFC;
-  --primary: #4ADE80;
-  --primary-foreground: #0A0C0A;
-  --secondary: #2D362D;
-  --secondary-foreground: #E2E8F0;
-  --muted: #1E293B;
+  --primary: #A3E635;
+  --primary-foreground: #050705;
+  --secondary: #1A201A;
+  --secondary-foreground: #CBD5E1;
+  --muted: #1A201A;
   --muted-foreground: #94A3B8;
-  --accent: #4ADE80;
-  --accent-foreground: #0A0C0A;
-  --destructive: #EF4444;
+  --accent: #38BDF8;
+  --accent-foreground: #050705;
+  --destructive: #F87171;
   --destructive-foreground: #FAFAFA;
-  --border: #1E293B;
-  --input: #1F2937;
-  --ring: #4ADE80;
-  --chart-1: #4ADE80;
-  --chart-2: #60A5FA;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: #1A201A;
+  --ring: #A3E635;
+  --chart-1: #A3E635;
+  --chart-2: #38BDF8;
   --chart-3: #FBBF24;
   --chart-4: #F87171;
   --chart-5: #A78BFA;
   --radius: 0.75rem;
-  --sidebar: #0F1210;
+  --sidebar: #0D110D;
   --sidebar-foreground: #F8FAFC;
-  --sidebar-primary: #4ADE80;
-  --sidebar-primary-foreground: #0A0C0A;
-  --sidebar-accent: #2D362D;
-  --sidebar-accent-foreground: #E2E8F0;
-  --sidebar-border: #1E293B;
-  --sidebar-ring: #4ADE80;
-  --glass: rgba(22, 26, 22, 0.65);
-  --glass-border: rgba(30, 41, 59, 0.4);
-  --glass-highlight: rgba(248, 250, 252, 0.08);
+  --sidebar-primary: #A3E635;
+  --sidebar-primary-foreground: #050705;
+  --sidebar-accent: #1A201A;
+  --sidebar-accent-foreground: #CBD5E1;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #A3E635;
+  --glass: rgba(13, 17, 13, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(248, 250, 252, 0.05);
 }
 
 @theme inline {

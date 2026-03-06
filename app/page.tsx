@@ -27,7 +27,7 @@ export default function Home() {
     return (
       <div
         className={`fixed inset-0 flex flex-col items-center justify-center bg-background z-50 ${splashFading ? 'splash-out' : ''}`}
-        style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 50%, #161A16 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #050705 0%, #0D110D 100%)' }}
       >
         <div className="splash-icon flex flex-col items-center gap-5">
           <Image
@@ -50,7 +50,7 @@ export default function Home() {
   }
 
   return (
-    <main className="h-screen w-full bg-background flex flex-col overflow-hidden" style={{ background: 'linear-gradient(180deg, #0A0C0A 0%, #0F1210 30%, #161A16 100%)' }}>
+    <main className="h-screen w-full bg-background flex flex-col overflow-hidden" style={{ background: 'linear-gradient(180deg, #050705 0%, #0D110D 100%)' }}>
       {/* Content Area - Header + Scrollable Content */}
       <div className="flex-1 w-full max-w-lg mx-auto flex flex-col overflow-hidden">
         {activeTab === 'service' && <ServiceTab />}

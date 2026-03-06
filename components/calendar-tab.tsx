@@ -183,34 +183,34 @@ export function CalendarTab() {
       <div className="flex flex-col gap-4">
 
       {/* Calendar Card */}
-      <div className="glass-card rounded-2xl p-4">
+      <div className="glass-card rounded-2xl p-4 border border-white/5">
         {/* Month Navigation */}
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-4">
           <button
             onClick={prevMonth}
-            className="p-2 rounded-xl bg-secondary min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2 rounded-xl bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
             aria-label="Προηγούμενος μήνας"
           >
-            <ChevronLeft className="h-5 w-5 text-foreground" />
+            <ChevronLeft className="h-4 w-4 text-foreground" />
           </button>
-          <span className="text-base font-semibold text-foreground">
+          <span className="text-sm font-black text-foreground uppercase tracking-widest">
             {GREEK_MONTHS[viewMonth]} {viewYear}
           </span>
           <button
             onClick={nextMonth}
-            className="p-2 rounded-xl bg-secondary min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2 rounded-xl bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
             aria-label="Επόμενος μήνας"
           >
-            <ChevronRight className="h-5 w-5 text-foreground" />
+            <ChevronRight className="h-4 w-4 text-foreground" />
           </button>
         </div>
 
         {/* Day Names */}
-        <div className="grid grid-cols-7 gap-1 mb-1">
+        <div className="grid grid-cols-7 gap-1 mb-2">
           {greekDaysStartMonday.map((d) => (
             <div
               key={d}
-              className="text-center text-[10px] text-muted-foreground font-medium py-1"
+              className="text-center text-[9px] text-muted-foreground font-black uppercase tracking-tighter py-1"
             >
               {d}
             </div>
@@ -236,22 +236,22 @@ export function CalendarTab() {
                 key={day}
                 onClick={() => handleDayPress(day)}
                 className={cn(
-                  'relative aspect-square w-full rounded-xl text-sm flex flex-col items-center justify-center transition-colors min-h-[44px]',
+                  'relative aspect-square w-full rounded-xl text-xs flex flex-col items-center justify-center transition-all duration-300',
                   isSelected
-                    ? 'bg-primary text-primary-foreground font-bold'
+                    ? 'bg-primary text-primary-foreground font-black shadow-[0_0_15px_rgba(163,230,53,0.4)]'
                     : isToday
-                      ? 'bg-secondary text-primary font-semibold ring-1 ring-primary'
-                      : 'text-foreground active:bg-secondary'
+                      ? 'bg-primary/10 text-primary font-black border border-primary/30'
+                      : 'text-foreground/80 hover:bg-secondary/50'
                 )}
               >
-                <span className="text-xs leading-none">{day}</span>
+                <span className="leading-none">{day}</span>
                 {/* Event dots */}
                 {(hasDuty || hasLeave) && (
-                  <div className="flex gap-0.5 mt-0.5">
+                  <div className="flex gap-0.5 mt-1">
                     {hasDuty && (
                       <span
                         className={cn(
-                          'w-1.5 h-1.5 rounded-full',
+                          'w-1 h-1 rounded-full',
                           isSelected ? 'bg-primary-foreground' : 'bg-chart-3'
                         )}
                       />
@@ -259,8 +259,8 @@ export function CalendarTab() {
                     {hasLeave && (
                       <span
                         className={cn(
-                          'w-1.5 h-1.5 rounded-full',
-                          isSelected ? 'bg-primary-foreground' : 'bg-chart-2'
+                          'w-1 h-1 rounded-full',
+                          isSelected ? 'bg-primary-foreground' : 'bg-accent'
                         )}
                       />
                     )}
@@ -272,14 +272,14 @@ export function CalendarTab() {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t border-border">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-chart-3" />
-            <span className="text-[10px] text-muted-foreground">Υπηρεσία</span>
+        <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-white/5">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-chart-3 shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Υπηρεσία</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-chart-2" />
-            <span className="text-[10px] text-muted-foreground">Άδεια</span>
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(56,189,248,0.5)]" />
+            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Άδεια</span>
           </div>
         </div>
       </div>

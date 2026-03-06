@@ -169,74 +169,74 @@ export function ServiceTab() {
           </FullscreenModal>
 
           {/* Main Progress Ring - LELEmeter */}
-          <div className="glass-card rounded-2xl p-6 flex flex-col items-center gap-4">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Λελέμετρο
-            </p>
-            <div className="relative w-44 h-44">
+          <div className="glass-card rounded-2xl p-5 flex flex-col items-center gap-5">
+            <div className="flex items-center justify-between w-full">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+                Λελέμετρο
+              </p>
+              {dischargeDate && (
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary/10 border border-primary/20">
+                  <CalendarDays className="h-3 w-3 text-primary" />
+                  <span className="text-[10px] font-bold text-primary uppercase">
+                    {formatGreekDate(dischargeDate)}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="relative w-40 h-40">
               <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
                 <circle
                   cx="80"
                   cy="80"
-                  r="70"
+                  r="74"
                   fill="none"
-                  stroke="#1E293B"
-                  strokeWidth="10"
+                  stroke="rgba(255,255,255,0.03)"
+                  strokeWidth="6"
                 />
                 <circle
                   cx="80"
                   cy="80"
-                  r="70"
+                  r="74"
                   fill="none"
                   stroke="var(--primary)"
-                  strokeWidth="10"
+                  strokeWidth="6"
                   strokeLinecap="round"
-                  strokeDasharray={`${(percentage / 100) * circumference} ${circumference}`}
+                  strokeDasharray={`${(percentage / 100) * (2 * Math.PI * 74)} ${(2 * Math.PI * 74)}`}
                   className="transition-all duration-1000 ease-out"
                   style={{
-                    filter: 'drop-shadow(0 0 12px rgba(74, 222, 128, 0.5))',
+                    filter: 'drop-shadow(0 0 8px var(--primary))',
                   }}
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-bold text-foreground">
-                  {percentage.toFixed(1)}%
+                <span className="text-4xl font-black text-foreground tracking-tighter">
+                  {percentage.toFixed(1)}<span className="text-lg text-muted-foreground ml-0.5">%</span>
                 </span>
-                <span className="text-xs text-muted-foreground mt-1">ολοκληρώθηκε</span>
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Status</span>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 w-full">
+            <div className="grid grid-cols-3 gap-2 w-full">
               <StatCard
                 icon={Clock}
                 label="Υπηρέτησες"
                 value={`${daysServed}`}
-                unit="ημέρες"
+                unit="ΗΜΕΡΕΣ"
               />
               <StatCard
                 icon={CalendarDays}
                 label="Απομένουν"
                 value={`${effectiveDaysRemaining}`}
-                unit="ημέρες"
+                unit="ΗΜΕΡΕΣ"
               />
               <StatCard
                 icon={Percent}
                 label="Άδειες"
                 value={`${totalLeaveDays}`}
-                unit="ημέρες"
+                unit="ΗΜΕΡΕΣ"
               />
             </div>
-
-            {dischargeDate && (
-              <div className="w-full text-center py-2 px-3 rounded-lg bg-secondary">
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
-                  Ημερομηνία απόλυσης
-                </p>
-                <p className="text-sm font-semibold text-primary mt-0.5">
-                  {formatGreekDate(dischargeDate)}
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Today's Status Section */}
@@ -260,10 +260,12 @@ function StatCard({
   unit: string
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-secondary/50">
-      <Icon className="h-3.5 w-3.5 text-primary" />
-      <span className="text-lg font-bold text-foreground leading-none">{value}</span>
-      <span className="text-[9px] text-muted-foreground leading-none">{unit}</span>
+    <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-secondary/40 border border-white/5">
+      <Icon className="h-4 w-4 text-primary/80" />
+      <div className="flex flex-col items-center">
+        <span className="text-xl font-black text-foreground leading-none tracking-tight">{value}</span>
+        <span className="text-[8px] font-bold text-muted-foreground leading-none mt-1 tracking-widest">{unit}</span>
+      </div>
     </div>
   )
 }
@@ -289,22 +291,22 @@ function TodayStatus({
 
       {/* Active Leave */}
       {leave && (
-        <div className="glass-card rounded-xl p-4 flex items-center gap-3 ring-1 ring-chart-2/30">
-          <div className="w-10 h-10 rounded-lg bg-chart-2/20 flex items-center justify-center flex-shrink-0">
-            <Palmtree className="h-5 w-5 text-chart-2" />
+        <div className="glass-card rounded-2xl p-4 flex items-center gap-4 border border-accent/20 bg-accent/5 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-accent" />
+          <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(56,189,248,0.15)]">
+            <Palmtree className="h-6 w-6 text-accent" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-foreground">
+              <span className="text-sm font-black text-foreground uppercase tracking-tight">
                 {LEAVE_TYPE_LABELS[leave.type]}
               </span>
-              <span className="px-1.5 py-0.5 rounded-md bg-chart-2/20 text-chart-2 text-[10px] font-bold">
-                ΑΔΕΙΑ
+              <span className="px-1.5 py-0.5 rounded bg-accent text-accent-foreground text-[8px] font-black uppercase tracking-widest">
+                ACTIVE
               </span>
             </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} &middot;{' '}
-              {leave.days} ημ.
+            <p className="text-[10px] font-bold text-muted-foreground mt-1 uppercase tracking-wider">
+              {formatGreekDate(leave.startDate)} — {formatGreekDate(leave.endDate)}
             </p>
           </div>
         </div>
