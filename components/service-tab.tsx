@@ -175,9 +175,9 @@ export function ServiceTab() {
                 Λελέμετρο
               </p>
               {dischargeDate && (
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary border border-primary">
-                  <CalendarDays className="h-3 w-3 text-primary-foreground" />
-                  <span className="text-[10px] font-black text-primary-foreground uppercase tracking-tight">
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-primary shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+                  <CalendarDays className="h-3.5 w-3.5 text-primary-foreground" />
+                  <span className="text-[10px] font-black text-primary-foreground uppercase tracking-wider">
                     {formatGreekDate(dischargeDate)}
                   </span>
                 </div>
@@ -191,8 +191,8 @@ export function ServiceTab() {
                   cy="80"
                   r="74"
                   fill="none"
-                  stroke="rgba(255,255,255,0.01)"
-                  strokeWidth="6"
+                  stroke="rgba(255,255,255,0.05)"
+                  strokeWidth="8"
                 />
                 <circle
                   cx="80"
@@ -200,7 +200,7 @@ export function ServiceTab() {
                   r="74"
                   fill="none"
                   stroke="var(--primary)"
-                  strokeWidth="6"
+                  strokeWidth="8"
                   strokeLinecap="round"
                   strokeDasharray={`${(percentage / 100) * (2 * Math.PI * 74)} ${(2 * Math.PI * 74)}`}
                   className="transition-all duration-1000 ease-out"
@@ -260,11 +260,13 @@ function StatCard({
   unit: string
 }) {
   return (
-    <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-secondary/40 border border-white/5">
-      <Icon className="h-4 w-4 text-primary" />
+    <div className="flex flex-col items-center gap-2 p-3.5 rounded-2xl bg-secondary/30 border border-white/5 hover:bg-secondary/50 transition-colors group">
+      <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+        <Icon className="h-4 w-4 text-primary" />
+      </div>
       <div className="flex flex-col items-center">
-        <span className="text-xl font-black text-foreground leading-none tracking-tight">{value}</span>
-        <span className="text-[8px] font-bold text-muted-foreground leading-none mt-1 tracking-widest">{unit}</span>
+        <span className="text-xl font-black text-foreground leading-none tracking-tighter">{value}</span>
+        <span className="text-[8px] font-black text-muted-foreground leading-none mt-1.5 tracking-[0.15em] uppercase">{unit}</span>
       </div>
     </div>
   )
