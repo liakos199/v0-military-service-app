@@ -225,10 +225,10 @@ function AddDutyForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Τύπος</label>
-        <div className="flex flex-wrap gap-2">
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τύπος</label>
+        <div className="flex flex-wrap gap-1.5">
           {(Object.keys(DUTY_TYPE_LABELS) as DutyType[]).map((t) => (
             <button
               key={t}
@@ -238,10 +238,10 @@ function AddDutyForm({ onAdd, onCancel }: {
                 setType(t)
               }}
               className={cn(
-                'px-3 py-2 rounded-lg text-xs font-medium min-h-[40px] transition-colors',
+                'px-2.5 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-tight transition-colors',
                 type === t
                   ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-secondary-foreground'
+                  : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
               )}
             >
               {DUTY_TYPE_LABELS[t]}
@@ -250,51 +250,51 @@ function AddDutyForm({ onAdd, onCancel }: {
         </div>
       </div>
 
-      <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
+      <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         <div>
-          <label className="block text-xs text-muted-foreground mb-1.5">Αρχή</label>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Αρχή</label>
           <input
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary/50"
           />
         </div>
         <div>
-          <label className="block text-xs text-muted-foreground mb-1.5">Τέλος</label>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τέλος</label>
           <input
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary/50"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Σημειώσεις</label>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Σημειώσεις</label>
         <input
           type="text"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προαιρετικό..."
-          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground"
+          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
         />
       </div>
 
-      <div className="flex gap-2 pt-2">
+      <div className="flex gap-2 pt-1">
         <button
           onClick={onCancel}
-          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+          className="flex-1 py-2 rounded-md bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[36px] hover:bg-secondary/80 transition-colors"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!date}
-          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
+          className="flex-1 py-2 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[36px] disabled:opacity-40 hover:bg-primary/90 transition-colors"
         >
           Προσθήκη
         </button>

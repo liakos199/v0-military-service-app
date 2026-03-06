@@ -12,9 +12,10 @@ interface GreekDatePickerProps {
   onChange: (date: string) => void
   label?: string
   minDate?: string
+  compact?: boolean
 }
 
-export function GreekDatePicker({ value, onChange, label, minDate }: GreekDatePickerProps) {
+export function GreekDatePicker({ value, onChange, label, minDate, compact = false }: GreekDatePickerProps) {
   const selectedDate = value ? new Date(value) : new Date()
   const [viewMonth, setViewMonth] = useState(selectedDate.getMonth())
   const [viewYear, setViewYear] = useState(selectedDate.getFullYear())
@@ -64,7 +65,10 @@ export function GreekDatePicker({ value, onChange, label, minDate }: GreekDatePi
   return (
     <div>
       {label && (
-        <label className="block text-xs text-muted-foreground mb-1.5">{label}</label>
+        <label className={cn(
+          "block font-bold uppercase tracking-wider text-muted-foreground mb-1",
+          compact ? "text-[10px]" : "text-xs"
+        )}>{label}</label>
       )}
       <button
         type="button"
@@ -72,10 +76,13 @@ export function GreekDatePicker({ value, onChange, label, minDate }: GreekDatePi
           hapticFeedback('light')
           setIsOpen(true)
         }}
-        className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+        className={cn(
+          "w-full flex items-center justify-between rounded-md bg-secondary text-secondary-foreground border border-border transition-colors hover:bg-secondary/80",
+          compact ? "px-2 py-2 text-xs min-h-[36px]" : "px-3 py-3 text-sm min-h-[48px]"
+        )}
       >
-        <span className={cn(!value && 'text-muted-foreground')}>{displayText}</span>
-        <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+        <span className={cn(!value && 'text-muted-foreground/50')}>{displayText}</span>
+        <CalendarIcon className={cn("text-muted-foreground", compact ? "h-3.5 w-3.5" : "h-4 w-4")} />
       </button>
 
       <FullscreenModal
