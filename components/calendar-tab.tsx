@@ -170,7 +170,7 @@ export function CalendarTab() {
               setSelectedDate(today)
               setShowActionSheet(true)
             }}
-            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center border border-white/5 hover:border-primary/30 transition-colors"
             aria-label="Προσθήκη"
           >
             <Plus className="h-5 w-5 text-primary" />
@@ -179,13 +179,13 @@ export function CalendarTab() {
       </div>
 
       {/* CONTENT - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4">
+      <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
       <div className="flex flex-col gap-4">
 
       {/* Calendar Card */}
-      <div className="glass-card rounded-2xl p-4 border border-white/5">
+      <div className="glass-card rounded-2xl p-4 border border-white/5 flex flex-col gap-4">
         {/* Month Navigation */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between">
           <button
             onClick={prevMonth}
             className="p-2 rounded-xl bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
@@ -206,7 +206,7 @@ export function CalendarTab() {
         </div>
 
         {/* Day Names */}
-        <div className="grid grid-cols-7 gap-1 mb-2">
+        <div className="grid grid-cols-7 gap-1 mb-3">
           {greekDaysStartMonday.map((d) => (
             <div
               key={d}
@@ -272,7 +272,7 @@ export function CalendarTab() {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-white/5">
+        <div className="flex items-center justify-center gap-6 pt-3 border-t border-white/5">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-chart-3 shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
             <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Υπηρεσία</span>
@@ -285,12 +285,15 @@ export function CalendarTab() {
       </div>
 
       {/* Monthly Summary */}
-      <MonthlySummary
+      <div className="glass-card rounded-2xl p-4 border border-white/5">
+        <MonthlySummary
         duties={duties}
         leaves={leaves}
         viewMonth={viewMonth}
         viewYear={viewYear}
       />
+
+      </div>
 
       {/* Upcoming Events */}
       <UpcomingEvents
@@ -484,18 +487,18 @@ function MonthlySummary({
   if (!hasDuties && !hasLeaves) return null
 
   return (
-    <div className="glass-card rounded-2xl p-4">
-      <h2 className="text-sm font-semibold text-foreground mb-3">
+    <div className="flex flex-col gap-3">
+      <h3 className="text-xs font-black text-muted-foreground uppercase tracking-widest">
         {GREEK_MONTHS[viewMonth]} - Σύνοψη
-      </h2>
+      </h3>
 
       <div className="flex gap-3">
         {/* Duties summary */}
         {hasDuties && (
-          <div className="flex-1 rounded-xl bg-chart-3/10 p-3">
+          <div className="flex-1 rounded-xl bg-chart-3/10 p-3 border border-chart-3/20">
             <div className="flex items-center gap-2 mb-2">
               <Shield className="h-4 w-4 text-chart-3" />
-              <span className="text-xs font-semibold text-chart-3">
+              <span className="text-xs font-black text-chart-3 uppercase tracking-wider">
                 {stats.totalDuties} υπηρεσ{stats.totalDuties === 1 ? 'ία' : 'ίες'}
               </span>
             </div>
@@ -516,11 +519,11 @@ function MonthlySummary({
 
         {/* Leave summary */}
         {hasLeaves && (
-          <div className="flex-1 rounded-xl bg-chart-2/10 p-3">
+          <div className="flex-1 rounded-xl bg-chart-2/10 p-3 border border-chart-2/20">
             <div className="flex items-center gap-2 mb-2">
               <Palmtree className="h-4 w-4 text-chart-2" />
-              <span className="text-xs font-semibold text-chart-2">
-                {stats.leaveDays} ημέρ{stats.leaveDays === 1 ? 'α' : 'ες'} άδειας
+              <span className="text-xs font-black text-chart-2 uppercase tracking-wider">
+                {stats.leaveDays} ημέρ{stats.leaveDays === 1 ? 'α' : 'ες'}
               </span>
             </div>
             <div className="flex flex-col gap-1">
@@ -572,7 +575,7 @@ function UpcomingEvents({
 
   if (upcoming.length === 0) {
     return (
-      <div className="glass-card rounded-xl p-6 text-center">
+      <div className="glass-card rounded-2xl p-6 text-center border border-white/5">
         <Clock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
         <p className="text-sm text-muted-foreground">Δεν υπάρχουν προσεχή γεγονότα</p>
         <p className="text-xs text-muted-foreground mt-1">Πάτησε μια ημερομηνία για να προσθέσεις</p>
@@ -581,8 +584,8 @@ function UpcomingEvents({
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <h2 className="text-sm font-semibold text-foreground">Προσεχώς</h2>
+    <div className="flex flex-col gap-3">
+      <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest">Προσεχώς</h2>
       {upcoming.map((item) => {
         const isToday = item.date === today
         if (item.type === 'duty') {
@@ -593,7 +596,7 @@ function UpcomingEvents({
               key={duty.id}
               onClick={() => onSelectDate(duty.date)}
               className={cn(
-                'glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full',
+                'glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5 hover:border-primary/20 transition-colors',
                 isToday && 'ring-1 ring-primary/30'
               )}
             >
@@ -622,7 +625,7 @@ function UpcomingEvents({
             <button
               key={leave.id}
               onClick={() => onSelectDate(leave.startDate)}
-              className="glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full"
+              className="glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5 hover:border-accent/20 transition-colors"
             >
               <div className="w-1 h-10 rounded-full flex-shrink-0 bg-chart-2" />
               <div className="w-9 h-9 rounded-lg bg-chart-2/20 flex items-center justify-center flex-shrink-0">
@@ -671,7 +674,7 @@ function DayDetailView({
       {/* Duties */}
       {hasDuties && (
         <div className="flex flex-col gap-2">
-          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+          <h3 className="text-xs font-black text-muted-foreground uppercase tracking-widest">
             Υπηρεσίες
           </h3>
           {events!.duties.map((duty) => {
@@ -681,7 +684,7 @@ function DayDetailView({
             const visible = showPasswords[duty.id]
 
             return (
-              <div key={duty.id} className="glass-card rounded-xl p-4">
+              <div key={duty.id} className="glass-card rounded-xl p-4 border border-white/5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-chart-3/20 flex items-center justify-center flex-shrink-0">
                     <Icon className="h-5 w-5 text-chart-3" />
@@ -746,11 +749,11 @@ function DayDetailView({
       {/* Leaves */}
       {hasLeaves && (
         <div className="flex flex-col gap-2">
-          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+          <h3 className="text-xs font-black text-muted-foreground uppercase tracking-wider">
             Άδειες
           </h3>
           {events!.leaves.map((leave) => (
-            <div key={leave.id} className="glass-card rounded-xl p-4 flex items-center gap-3">
+            <div key={leave.id} className="glass-card rounded-xl p-4 flex items-center gap-3 border border-white/5">
               <div className="w-10 h-10 rounded-lg bg-chart-2/20 flex items-center justify-center flex-shrink-0">
                 <Palmtree className="h-5 w-5 text-chart-2" />
               </div>
@@ -778,7 +781,7 @@ function DayDetailView({
       {/* Add New Button */}
       <button
         onClick={onAddNew}
-        className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px]"
+        className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] hover:bg-primary/90 transition-colors"
       >
         <Plus className="h-4 w-4" />
         Προσθήκη
