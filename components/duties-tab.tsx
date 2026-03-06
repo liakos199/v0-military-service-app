@@ -225,35 +225,37 @@ function AddDutyForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 h-full">
       <div>
         <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τύπος</label>
-        <div className="flex flex-wrap gap-1.5">
-          {(Object.keys(DUTY_TYPE_LABELS) as DutyType[]).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => {
-                hapticFeedback('light')
-                setType(t)
-              }}
-              className={cn(
-                'px-2.5 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-tight transition-colors',
-                type === t
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-              )}
-            >
-              {DUTY_TYPE_LABELS[t]}
-            </button>
-          ))}
+        <div className="flex overflow-x-auto gap-1.5 no-scrollbar pb-1 -mx-1 px-1">
+          <div className="flex gap-1.5 flex-nowrap">
+            {(Object.keys(DUTY_TYPE_LABELS) as DutyType[]).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => {
+                  hapticFeedback('light')
+                  setType(t)
+                }}
+                className={cn(
+                  'px-2.5 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-tight transition-colors whitespace-nowrap',
+                  type === t
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                )}
+              >
+                {DUTY_TYPE_LABELS[t]}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
 
       <div className="grid grid-cols-2 gap-2">
-        <div>
+        <div className="min-w-0">
           <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Αρχή</label>
           <input
             type="time"
@@ -262,7 +264,7 @@ function AddDutyForm({ onAdd, onCancel }: {
             className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary/50"
           />
         </div>
-        <div>
+        <div className="min-w-0">
           <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τέλος</label>
           <input
             type="time"
@@ -284,17 +286,17 @@ function AddDutyForm({ onAdd, onCancel }: {
         />
       </div>
 
-      <div className="flex gap-2 pt-1">
+      <div className="mt-auto flex gap-2 pt-4">
         <button
           onClick={onCancel}
-          className="flex-1 py-2 rounded-md bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[36px] hover:bg-secondary/80 transition-colors"
+          className="flex-1 py-3 rounded-md bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary/80 transition-colors"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!date}
-          className="flex-1 py-2 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[36px] disabled:opacity-40 hover:bg-primary/90 transition-colors"
+          className="flex-1 py-3 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40 hover:bg-primary/90 transition-colors"
         >
           Προσθήκη
         </button>
