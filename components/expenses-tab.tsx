@@ -8,7 +8,7 @@ import { FullscreenModal } from '@/components/fullscreen-modal'
 import { CanteenCatalogManager } from '@/components/canteen-catalog-manager'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { ExpenseEntry, CanteenCatalogItem } from '@/lib/types'
-import { EXPENSE_CATEGORY_LABELS, CANTEEN_CATEGORY_LABELS } from '@/lib/types'
+import { CANTEEN_CATEGORY_LABELS } from '@/lib/types'
 
 export function ExpensesTab() {
   const [expenses, setExpenses] = useLocalStorage<ExpenseEntry[]>('fantaros-expenses', [])
@@ -16,13 +16,7 @@ export function ExpensesTab() {
   const [showAdd, setShowAdd] = useState(false)
   const [showCatalogManager, setShowCatalogManager] = useState(false)
 
-  const canteenTotal = expenses
-    .filter((e) => e.category === 'canteen')
-    .reduce((sum, e) => sum + e.amount, 0)
-  const otherTotal = expenses
-    .filter((e) => e.category === 'other')
-    .reduce((sum, e) => sum + e.amount, 0)
-  const grandTotal = canteenTotal + otherTotal
+  const grandTotal = expenses.reduce((sum, e) => sum + e.amount, 0)
 
   return (
     <div className="flex flex-col h-full">
@@ -64,25 +58,10 @@ export function ExpensesTab() {
       <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
         <div className="flex flex-col gap-3">
 
-          {/* Summary Cards - Redesigned with better contrast */}
-          <div className="grid grid-cols-3 gap-2">
-            {/* Canteen Total */}
-            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-white/5 hover:border-primary/50 transition-colors">
-              <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">ΚΨΜ</span>
-              <span className="text-lg font-black text-foreground">{canteenTotal.toFixed(2)}€</span>
-            </div>
-            
-            {/* Other Total */}
-            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-white/5 hover:border-primary/50 transition-colors">
-              <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Γενικά</span>
-              <span className="text-lg font-black text-foreground">{otherTotal.toFixed(2)}€</span>
-            </div>
-            
-            {/* Grand Total - Redesigned with accent color instead of primary */}
-            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-accent/50 bg-gradient-to-br from-accent/10 to-accent/5 hover:border-accent transition-colors">
-              <span className="text-[10px] font-black text-accent uppercase tracking-wider">Σύνολο</span>
-              <span className="text-lg font-black text-accent">{grandTotal.toFixed(2)}€</span>
-            </div>
+          {/* Summary Card - Simplified to only show Grand Total */}
+          <div className="glass-card rounded-xl p-4 flex flex-col items-center justify-center gap-1 border border-accent/50 bg-gradient-to-br from-accent/10 to-accent/5">
+            <span className="text-xs font-black text-accent uppercase tracking-widest">Συνολικά Έξοδα</span>
+            <span className="text-3xl font-black text-accent">{grandTotal.toFixed(2)}€</span>
           </div>
 
           {/* Catalog Manager Modal */}
@@ -136,14 +115,6 @@ export function ExpensesTab() {
                   <div key={expense.id} className="glass-card rounded-xl p-3 flex items-center justify-between border border-white/5 hover:border-primary transition-colors group">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className={cn(
-                          'text-[9px] font-black px-2 py-1 rounded uppercase tracking-wider',
-                          expense.category === 'canteen' 
-                            ? 'bg-primary text-primary-foreground border border-primary' 
-                            : 'bg-chart-2/20 text-chart-2 border border-chart-2/30'
-                        )}>
-                          {EXPENSE_CATEGORY_LABELS[expense.category]}
-                        </span>
                         <span className="text-sm font-medium text-foreground truncate">
                           {expense.description || 'Έξοδο'}
                         </span>
@@ -187,7 +158,6 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
   const [amount, setAmount] = useState('')
   const [date, setDate] = useState(toLocalDateString())
   const [description, setDescription] = useState('')
-  const [category, setCategory] = useState<'canteen' | 'other'>('canteen')
   const [selectedCatalogCategory, setSelectedCatalogCategory] = useState<'food' | 'beverage' | 'snack' | 'other' | null>(null)
 
   // Filter catalog items by selected category
@@ -204,7 +174,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
       amount: parsed,
       date,
       description,
-      category,
+      category: 'other', // Default to other since categories are removed from UI
     })
   }
 
@@ -217,36 +187,8 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Category Selection */}
-      <div>
-        <label className="block text-xs font-black text-muted-foreground mb-2 uppercase tracking-widest">Τύπος Εξόδου</label>
-        <div className="flex gap-2">
-          {(['canteen', 'other'] as const).map((c) => (
-            <button
-              key={c}
-              type="button"
-              onClick={() => {
-                hapticFeedback('light')
-                setCategory(c)
-                setSelectedCatalogCategory(null)
-                setAmount('')
-                setDescription('')
-              }}
-              className={cn(
-                'flex-1 px-3 py-2.5 rounded-lg text-sm font-black min-h-[44px] uppercase tracking-wider transition-all border',
-                category === c
-                  ? 'bg-primary text-primary-foreground border-primary shadow-[0_0_12px_rgba(163,230,53,0.2)]'
-                  : 'bg-secondary/50 text-foreground border-white/5 hover:border-primary'
-              )}
-            >
-              {EXPENSE_CATEGORY_LABELS[c]}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Canteen Catalog Selection */}
-      {category === 'canteen' && canteenCatalog.length > 0 && (
+      {canteenCatalog.length > 0 && (
         <div className="glass-card rounded-xl p-3 border border-accent/30 flex flex-col gap-2">
           <h3 className="text-xs font-black text-accent uppercase tracking-tight">Κατάλογος Κ.Ψ.Μ.</h3>
           
@@ -310,7 +252,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
         </div>
       )}
 
-      {/* Description (Renamed to Name) */}
+      {/* Name Input */}
       <div>
         <label className="block text-xs font-black text-muted-foreground mb-2 uppercase tracking-widest">Όνομα</label>
         <input
