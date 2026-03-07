@@ -30,7 +30,7 @@ export function ProfileTab() {
       <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
         <div>
           <h1 className="text-xl font-bold text-foreground">Προφίλ</h1>
-          <p className="text-xs text-muted-foreground">Στοιχεία, ιεραρχία & φίλοι</p>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Στοιχεία, ιεραρχία & φίλοι</p>
         </div>
 
         {/* Section Toggle - 3 tabs */}
@@ -41,13 +41,13 @@ export function ProfileTab() {
               setActiveSection('profile')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'profile'
                 ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
                 : 'text-muted-foreground'
             )}
           >
-            <User className="h-3.5 w-3.5" />
+            <User className="h-3 w-3" />
             Στοιχεία
           </button>
           <button
@@ -56,13 +56,13 @@ export function ProfileTab() {
               setActiveSection('superiors')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'superiors'
                 ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
                 : 'text-muted-foreground'
             )}
           >
-            <Users className="h-3.5 w-3.5" />
+            <Users className="h-3 w-3" />
             Ιεραρχία
           </button>
           <button
@@ -71,20 +71,20 @@ export function ProfileTab() {
               setActiveSection('friends')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'friends'
                 ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
                 : 'text-muted-foreground'
             )}
           >
-            <UserPlus className="h-3.5 w-3.5" />
+            <UserPlus className="h-3 w-3" />
             Φίλοι
           </button>
         </div>
       </div>
 
       {/* CONTENT - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4">
+      <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
         {activeSection === 'profile' && <ProfileSection />}
         {activeSection === 'superiors' && <SuperiorsSection />}
         {activeSection === 'friends' && <FriendsSection />}
@@ -114,21 +114,21 @@ function ProfileSection() {
 
   if (!isEditing) {
     return (
-      <div className="glass-card rounded-2xl p-5 flex flex-col gap-6 border border-white/5">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-primary border border-primary flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(163,230,53,0.1)]">
-            <User className="h-7 w-7 text-primary-foreground" />
+      <div className="glass-card rounded-2xl p-4 flex flex-col gap-4 border border-white/5">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-primary border border-primary flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(163,230,53,0.1)]">
+            <User className="h-6 w-6 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="text-lg font-black text-foreground truncate tracking-tight">
+            <h2 className="text-base font-black text-foreground truncate tracking-tight">
               {profile.fullName || 'Ονοματεπώνυμο'}
             </h2>
             <div className="flex items-center gap-2 mt-0.5">
-              <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-tight">
+              <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-black uppercase tracking-tight">
                 {profile.rank}
               </span>
               {profile.serviceNumber && (
-                <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest">
+                <span className="text-[8px] text-muted-foreground font-bold uppercase tracking-widest">
                   ID: {profile.serviceNumber}
                 </span>
               )}
@@ -136,10 +136,10 @@ function ProfileSection() {
           </div>
           <button
             onClick={startEdit}
-            className="p-2 rounded-xl bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
+            className="p-2 rounded-lg bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
             aria-label="Επεξεργασία"
           >
-            <Edit3 className="h-4 w-4 text-primary" />
+            <Edit3 className="h-3.5 w-3.5 text-primary" />
           </button>
         </div>
 
@@ -153,10 +153,10 @@ function ProfileSection() {
         </div>
 
         {profile.reportingPhrase && (
-          <div className="p-4 rounded-xl bg-secondary/30 border border-white/5 relative overflow-hidden">
+          <div className="p-3 rounded-xl bg-secondary/30 border border-white/5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
-            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">Φράση Αναφοράς</p>
-            <p className="text-sm text-foreground/90 italic font-medium leading-relaxed">{`"${profile.reportingPhrase}"`}</p>
+            <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-1.5">Φράση Αναφοράς</p>
+            <p className="text-xs text-foreground/90 italic font-medium leading-relaxed">{`"${profile.reportingPhrase}"`}</p>
           </div>
         )}
       </div>
@@ -169,7 +169,7 @@ function ProfileSection() {
       onClose={() => setIsEditing(false)}
       title="Επεξεργασία Προφίλ"
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         <FormField
           label="Ονοματεπώνυμο"
           value={form.fullName}
@@ -182,7 +182,7 @@ function ProfileSection() {
           onChange={(v) => setForm({ ...form, serviceNumber: v })}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <FormField
             label="Λόχος"
             value={form.company}
@@ -195,7 +195,7 @@ function ProfileSection() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <FormField
             label="Κωδικός Όπλου"
             value={form.weaponCode}
@@ -210,20 +210,20 @@ function ProfileSection() {
 
         {/* Rank Selector */}
         <div>
-          <label className="block text-xs text-muted-foreground mb-1.5">Βαθμός</label>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Βαθμός</label>
           <button
             type="button"
             onClick={() => {
               hapticFeedback('light')
               setShowRanks(!showRanks)
             }}
-            className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+            className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border"
           >
             <span>{form.rank}</span>
             {showRanks ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           {showRanks && (
-            <div className="mt-1 max-h-48 overflow-y-auto rounded-lg bg-secondary border border-border">
+            <div className="mt-1 max-h-40 overflow-y-auto rounded-lg bg-secondary border border-border no-scrollbar">
               {RANKS.map((r) => (
                 <button
                   key={r}
@@ -234,7 +234,7 @@ function ProfileSection() {
                     setShowRanks(false)
                   }}
                   className={cn(
-                    'w-full text-left px-3 py-2.5 text-sm min-h-[44px]',
+                    'w-full text-left px-3 py-2 text-sm min-h-[36px]',
                     form.rank === r ? 'text-primary-foreground font-semibold bg-primary' : 'text-foreground'
                   )}
                 >
@@ -247,14 +247,14 @@ function ProfileSection() {
 
         {/* Blood Type Selector */}
         <div>
-          <label className="block text-xs text-muted-foreground mb-1.5">Ομάδα Αίματος</label>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Ομάδα Αίματος</label>
           <button
             type="button"
             onClick={() => {
               hapticFeedback('light')
               setShowBlood(!showBlood)
             }}
-            className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+            className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border"
           >
             <span className={cn(!form.bloodType && 'text-muted-foreground')}>
               {form.bloodType || 'Επίλεξε'}
@@ -262,7 +262,7 @@ function ProfileSection() {
             {showBlood ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           {showBlood && (
-            <div className="mt-1 grid grid-cols-4 gap-1 p-2 rounded-lg bg-secondary border border-border">
+            <div className="mt-1 grid grid-cols-4 gap-1 p-1.5 rounded-lg bg-secondary border border-border">
               {BLOOD_TYPES.map((bt) => (
                 <button
                   key={bt}
@@ -273,7 +273,7 @@ function ProfileSection() {
                     setShowBlood(false)
                   }}
                   className={cn(
-                    'py-2.5 rounded-lg text-sm font-medium min-h-[44px]',
+                    'py-2 rounded-lg text-sm font-medium min-h-[36px]',
                     form.bloodType === bt
                       ? 'bg-primary text-primary-foreground'
                       : 'text-foreground'
@@ -287,28 +287,28 @@ function ProfileSection() {
         </div>
 
         <div>
-          <label className="block text-xs text-muted-foreground mb-1.5">Φράση Αναφοράς</label>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Φράση Αναφοράς</label>
           <textarea
             value={form.reportingPhrase}
             onChange={(e) => setForm({ ...form, reportingPhrase: e.target.value })}
             placeholder="Π.χ. Στρατιώτης Παπαδόπουλος αναφέρομαι..."
-            className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[60px] border border-border resize-none placeholder:text-muted-foreground/50"
           />
         </div>
 
         <div className="flex gap-2 pt-2">
           <button
             onClick={() => setIsEditing(false)}
-            className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px] flex items-center justify-center gap-1"
+            className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] flex items-center justify-center gap-1"
           >
-            <X className="h-4 w-4" />
+            <X className="h-3.5 w-3.5" />
             Ακύρωση
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] flex items-center justify-center gap-1"
+            className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] flex items-center justify-center gap-1"
           >
-            <Check className="h-4 w-4" />
+            <Check className="h-3.5 w-3.5" />
             Αποθήκευση
           </button>
         </div>
@@ -324,16 +324,16 @@ function SuperiorsSection() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-foreground">Ανώτεροι</h2>
+        <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest">Ιεραρχία</h2>
         <button
           onClick={() => {
             hapticFeedback('light')
             setShowAdd(true)
           }}
-          className="p-2 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center"
           aria-label="Προσθήκη ανωτέρου"
         >
-          <Plus className="h-5 w-5 text-primary" />
+          <Plus className="h-4 w-4 text-primary" />
         </button>
       </div>
 
@@ -352,35 +352,58 @@ function SuperiorsSection() {
       </FullscreenModal>
 
       {superiors.length === 0 ? (
-        <div className="glass-card rounded-xl p-6 text-center">
+        <div className="glass-card rounded-xl p-6 text-center border border-white/5">
           <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
           <p className="text-sm text-muted-foreground">Δεν έχεις καταχωρήσει ανωτέρους</p>
         </div>
       ) : (
-        superiors.map((sup) => (
-          <div key={sup.id} className="glass-card rounded-xl p-3 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-              <User className="h-5 w-5 text-muted-foreground" />
+        <div className="flex flex-col gap-2">
+          {superiors.map((sup) => (
+            <div key={sup.id} className="glass-card rounded-xl p-2.5 flex items-center gap-3 border border-white/5">
+              <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                <User className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <p className="text-sm font-bold text-foreground truncate">{sup.name}</p>
+                  <span className="text-[8px] font-black text-primary uppercase tracking-tight bg-primary/10 px-1 rounded">
+                    {sup.rank}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mt-0.5">
+                  {sup.role && (
+                    <p className="text-[10px] text-muted-foreground truncate">{sup.role}</p>
+                  )}
+                  {sup.phone && (
+                    <p className="text-[10px] text-primary font-mono">{sup.phone}</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center gap-1">
+                {sup.phone && (
+                  <a
+                    href={`tel:${sup.phone}`}
+                    onClick={() => hapticFeedback('medium')}
+                    className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center bg-primary/10 text-primary"
+                    aria-label={`Κλήση ${sup.name}`}
+                  >
+                    <Phone className="h-3.5 w-3.5" />
+                  </a>
+                )}
+                <button
+                  onClick={() => {
+                    hapticFeedback('medium')
+                    setSuperiors(superiors.filter((s) => s.id !== sup.id))
+                  }}
+                  className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center text-destructive/70 hover:text-destructive"
+                  aria-label="Διαγραφή"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground truncate">{sup.name}</p>
-              <p className="text-xs text-primary">{sup.rank}</p>
-              {sup.role && (
-                <p className="text-[10px] text-muted-foreground">{sup.role}</p>
-              )}
-            </div>
-            <button
-              onClick={() => {
-                hapticFeedback('medium')
-                setSuperiors(superiors.filter((s) => s.id !== sup.id))
-              }}
-              className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive flex-shrink-0"
-              aria-label="Διαγραφή"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   )
@@ -393,16 +416,16 @@ function FriendsSection() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-foreground">Φίλοι</h2>
+        <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest">Φίλοι</h2>
         <button
           onClick={() => {
             hapticFeedback('light')
             setShowAdd(true)
           }}
-          className="p-2 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center"
           aria-label="Προσθήκη φίλου"
         >
-          <Plus className="h-5 w-5 text-primary" />
+          <Plus className="h-4 w-4 text-primary" />
         </button>
       </div>
 
@@ -421,53 +444,53 @@ function FriendsSection() {
       </FullscreenModal>
 
       {friends.length === 0 ? (
-        <div className="glass-card rounded-xl p-6 text-center">
+        <div className="glass-card rounded-xl p-6 text-center border border-white/5">
           <UserPlus className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
           <p className="text-sm text-muted-foreground">Δεν έχεις προσθέσει φίλους</p>
-          <p className="text-xs text-muted-foreground mt-1">Πάτησε + για να προσθέσεις</p>
         </div>
       ) : (
-        friends.map((friend) => (
-          <div key={friend.id} className="glass-card rounded-xl p-3 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-              <User className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground truncate">{friend.name}</p>
-              {friend.unit && (
-                <p className="text-xs text-primary">{friend.unit}</p>
-              )}
-              {friend.phone && (
-                <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{friend.phone}</p>
-              )}
-              {friend.notes && (
-                <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{friend.notes}</p>
-              )}
-            </div>
-            <div className="flex items-center gap-1 flex-shrink-0">
-              {friend.phone && (
-                <a
-                  href={`tel:${friend.phone}`}
-                  onClick={() => hapticFeedback('medium')}
-                  className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center bg-primary"
-                  aria-label={`Κλήση ${friend.name}`}
+        <div className="flex flex-col gap-2">
+          {friends.map((friend) => (
+            <div key={friend.id} className="glass-card rounded-xl p-2.5 flex items-center gap-3 border border-white/5">
+              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <User className="h-4 w-4 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-foreground truncate">{friend.name}</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  {friend.unit && (
+                    <p className="text-[10px] text-primary truncate">{friend.unit}</p>
+                  )}
+                  {friend.phone && (
+                    <p className="text-[10px] text-muted-foreground font-mono">{friend.phone}</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                {friend.phone && (
+                  <a
+                    href={`tel:${friend.phone}`}
+                    onClick={() => hapticFeedback('medium')}
+                    className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center bg-primary/10 text-primary"
+                    aria-label={`Κλήση ${friend.name}`}
+                  >
+                    <Phone className="h-3.5 w-3.5" />
+                  </a>
+                )}
+                <button
+                  onClick={() => {
+                    hapticFeedback('medium')
+                    setFriends(friends.filter((f) => f.id !== friend.id))
+                  }}
+                  className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center text-destructive/70 hover:text-destructive"
+                  aria-label="Διαγραφή"
                 >
-                  <Phone className="h-4.5 w-4.5 text-primary-foreground" />
-                </a>
-              )}
-              <button
-                onClick={() => {
-                  hapticFeedback('medium')
-                  setFriends(friends.filter((f) => f.id !== friend.id))
-                }}
-                className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive"
-                aria-label="Διαγραφή"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   )
@@ -495,18 +518,18 @@ function AddFriendForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
 
       <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Τηλέφωνο</label>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τηλέφωνο</label>
         <input
           type="tel"
           inputMode="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="Π.χ. 69XXXXXXXX"
-          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground"
+          className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50"
         />
       </div>
 
@@ -518,27 +541,27 @@ function AddFriendForm({ onAdd, onCancel }: {
       />
 
       <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Σημειώσεις</label>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Σημειώσεις</label>
         <input
           type="text"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προαιρετικό..."
-          className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground"
+          className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50"
         />
       </div>
 
       <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
-          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px]"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!name.trim()}
-          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40"
         >
           Προσθήκη
         </button>
@@ -554,34 +577,35 @@ function AddSuperiorForm({ onAdd, onCancel }: {
   const [name, setName] = useState('')
   const [rank, setRank] = useState('Λοχαγός')
   const [role, setRole] = useState('')
+  const [phone, setPhone] = useState('')
   const [showRanks, setShowRanks] = useState(false)
 
   const handleSubmit = () => {
     if (!name.trim()) return
     hapticFeedback('heavy')
-    onAdd({ id: generateId(), name: name.trim(), rank, role: role.trim() })
+    onAdd({ id: generateId(), name: name.trim(), rank, role: role.trim(), phone: phone.trim() })
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
 
       <div>
-        <label className="block text-xs text-muted-foreground mb-1.5">Βαθμός</label>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Βαθμός</label>
         <button
           type="button"
           onClick={() => {
             hapticFeedback('light')
             setShowRanks(!showRanks)
           }}
-          className="w-full flex items-center justify-between px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border"
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border"
         >
           <span>{rank}</span>
           {showRanks ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
         </button>
         {showRanks && (
-          <div className="mt-1 max-h-48 overflow-y-auto rounded-lg bg-secondary border border-border">
-            {RANKS.map((r) => (
+          <div className="mt-1 max-h-40 overflow-y-auto rounded-lg bg-secondary border border-border no-scrollbar">
+            {RANKS.slice(5).map((r) => (
               <button
                 key={r}
                 type="button"
@@ -591,7 +615,7 @@ function AddSuperiorForm({ onAdd, onCancel }: {
                   setShowRanks(false)
                 }}
                 className={cn(
-                  'w-full text-left px-3 py-2.5 text-sm min-h-[44px]',
+                  'w-full text-left px-3 py-2 text-sm min-h-[36px]',
                   rank === r ? 'text-primary-foreground font-semibold bg-primary' : 'text-foreground'
                 )}
               >
@@ -602,24 +626,31 @@ function AddSuperiorForm({ onAdd, onCancel }: {
         )}
       </div>
 
-      <FormField
-        label="Θέση / Ρόλος"
-        value={role}
-        onChange={setRole}
-        placeholder="Π.χ. Διοικητής Λόχου"
-      />
+      <FormField label="Καθήκοντα / Ρόλος" value={role} onChange={setRole} placeholder="Π.χ. Διοικητής Λόχου" />
+
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τηλέφωνο</label>
+        <input
+          type="tel"
+          inputMode="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="Προαιρετικό..."
+          className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50"
+        />
+      </div>
 
       <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
-          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px]"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!name.trim()}
-          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40"
         >
           Προσθήκη
         </button>
@@ -630,9 +661,9 @@ function AddSuperiorForm({ onAdd, onCancel }: {
 
 function InfoField({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-3 rounded-xl bg-secondary/30 border border-white/5 flex flex-col gap-1">
-      <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.15em] leading-none">{label}</p>
-      <p className="text-xs font-bold text-foreground/90 truncate leading-none">{value || '—'}</p>
+    <div className="flex flex-col gap-0.5">
+      <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">{label}</span>
+      <span className="text-xs font-bold text-foreground truncate">{value || '—'}</span>
     </div>
   )
 }
@@ -645,13 +676,13 @@ function FormField({ label, value, onChange, placeholder }: {
 }) {
   return (
     <div>
-      <label className="block text-xs text-muted-foreground mb-1.5">{label}</label>
+      <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">{label}</label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder || label}
-        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[48px] border border-border placeholder:text-muted-foreground"
+        placeholder={placeholder}
+        className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50"
       />
     </div>
   )

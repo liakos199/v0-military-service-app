@@ -72,131 +72,135 @@ export function DutiesTab() {
   return (
     <div className="flex flex-col h-full">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50">
+      <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground">Πρόγραμμα</h1>
-            <p className="text-xs text-muted-foreground">Καταγραφή υπηρεσιών</p>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Καταγραφή υπηρεσιών</p>
           </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={requestNotifications}
-            className={cn(
-              'p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center',
-              notificationsEnabled && 'ring-1 ring-primary'
-            )}
-            aria-label={notificationsEnabled ? 'Ειδοποιήσεις ενεργές' : 'Ενεργοποίηση ειδοποιήσεων'}
-          >
-            {notificationsEnabled ? (
-              <Bell className="h-5 w-5 text-primary" />
-            ) : (
-              <BellOff className="h-5 w-5 text-muted-foreground" />
-            )}
-          </button>
-          <button
-            onClick={() => {
-              hapticFeedback('light')
-              setShowAdd(true)
-            }}
-            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
-            aria-label="Προσθήκη υπηρεσίας"
-          >
-            <Plus className="h-5 w-5 text-primary" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={requestNotifications}
+              className={cn(
+                'p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center transition-all',
+                notificationsEnabled && 'ring-1 ring-primary bg-primary/5'
+              )}
+              aria-label={notificationsEnabled ? 'Ειδοποιήσεις ενεργές' : 'Ενεργοποίηση ειδοποιήσεων'}
+            >
+              {notificationsEnabled ? (
+                <Bell className="h-4 w-4 text-primary" />
+              ) : (
+                <BellOff className="h-4 w-4 text-muted-foreground" />
+              )}
+            </button>
+            <button
+              onClick={() => {
+                hapticFeedback('light')
+                setShowAdd(true)
+              }}
+              className="p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center"
+              aria-label="Προσθήκη υπηρεσίας"
+            >
+              <Plus className="h-4 w-4 text-primary" />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-28">
-      <div className="flex flex-col gap-4 pt-4">
+      <div className="flex-1 overflow-y-auto px-4 pb-28 no-scrollbar">
+        <div className="flex flex-col gap-4 pt-4">
+          {/* Add Duty Modal */}
+          <FullscreenModal
+            isOpen={showAdd}
+            onClose={() => setShowAdd(false)}
+            title="Νέα Υπηρεσία"
+          >
+            <AddDutyForm
+              onAdd={(duty) => {
+                setDuties([...duties, duty])
+                setShowAdd(false)
+              }}
+              onCancel={() => setShowAdd(false)}
+            />
+          </FullscreenModal>
 
-      {/* Add Duty Modal */}
-      <FullscreenModal
-        isOpen={showAdd}
-        onClose={() => setShowAdd(false)}
-        title="Νέα Υπηρεσία"
-      >
-        <AddDutyForm
-          onAdd={(duty) => {
-            setDuties([...duties, duty])
-            setShowAdd(false)
-          }}
-          onCancel={() => setShowAdd(false)}
-        />
-      </FullscreenModal>
-
-      {/* Duties List */}
-      {sortedDates.length === 0 ? (
-        <div className="glass-card rounded-xl p-6 text-center">
-          <Clock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">Δεν υπάρχουν υπηρεσίες</p>
-          <p className="text-xs text-muted-foreground mt-1">Πάτησε + για να προσθέσεις</p>
-        </div>
-      ) : (
-        sortedDates.map((date) => {
-          const isToday = date === today
-          const isPast = date < today
-          return (
-            <div key={date} className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <h3
-                  className={cn(
-                    'text-xs font-semibold uppercase tracking-wider',
-                    isToday ? 'text-primary' : isPast ? 'text-muted-foreground' : 'text-foreground'
-                  )}
-                >
-                  {isToday ? 'Σήμερα' : formatGreekDate(date)}
-                </h3>
-                {isToday && (
-                  <span className="px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-bold">
-                    ΕΝΕΡΓΗ
-                  </span>
-                )}
-              </div>
-
-              {groupedDuties[date].map((duty) => (
-                <div
-                  key={duty.id}
-                  className={cn(
-                    'glass-card rounded-xl p-3 flex items-center gap-3',
-                    isToday && 'ring-1 ring-primary'
-                  )}
-                >
-                  <div className={cn(
-                    'w-1 h-10 rounded-full flex-shrink-0',
-                    isToday ? 'bg-primary' : isPast ? 'bg-muted-foreground/30' : 'bg-primary'
-                  )} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-foreground">
-                        {DUTY_TYPE_LABELS[duty.type]}
+          {/* Duties List */}
+          {sortedDates.length === 0 ? (
+            <div className="glass-card rounded-xl p-6 text-center border border-white/5">
+              <Clock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">Δεν υπάρχουν υπηρεσίες</p>
+            </div>
+          ) : (
+            sortedDates.map((date) => {
+              const isToday = date === today
+              const isPast = date < today
+              return (
+                <div key={date} className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 px-1">
+                    <h3
+                      className={cn(
+                        'text-[10px] font-black uppercase tracking-widest',
+                        isToday ? 'text-primary' : isPast ? 'text-muted-foreground/60' : 'text-muted-foreground'
+                      )}
+                    >
+                      {isToday ? 'Σήμερα' : formatGreekDate(date)}
+                    </h3>
+                    {isToday && (
+                      <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-black uppercase tracking-tighter">
+                        ΕΝΕΡΓΗ
                       </span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {duty.startTime} - {duty.endTime}
-                    </p>
-                    {duty.notes && (
-                      <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{duty.notes}</p>
                     )}
                   </div>
-                  <button
-                    onClick={() => {
-                      hapticFeedback('medium')
-                      setDuties(duties.filter((d) => d.id !== duty.id))
-                    }}
-                    className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive"
-                    aria-label="Διαγραφή υπηρεσίας"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+
+                  <div className="flex flex-col gap-1.5">
+                    {groupedDuties[date].map((duty) => (
+                      <div
+                        key={duty.id}
+                        className={cn(
+                          'glass-card rounded-xl p-2.5 flex items-center gap-3 border border-white/5',
+                          isToday && 'ring-1 ring-primary/30 bg-primary/5'
+                        )}
+                      >
+                        <div className={cn(
+                          'w-1 h-8 rounded-full flex-shrink-0',
+                          isToday ? 'bg-primary' : isPast ? 'bg-muted-foreground/20' : 'bg-primary/40'
+                        )} />
+                        <div className="flex-1 min-w-0">
+                          <span className="text-sm font-bold text-foreground">
+                            {DUTY_TYPE_LABELS[duty.type]}
+                          </span>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <p className="text-[10px] text-muted-foreground font-mono">
+                              {duty.startTime} - {duty.endTime}
+                            </p>
+                            {duty.notes && (
+                              <>
+                                <span className="w-0.5 h-0.5 rounded-full bg-muted-foreground/30" />
+                                <p className="text-[10px] text-muted-foreground truncate">{duty.notes}</p>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            hapticFeedback('medium')
+                            setDuties(duties.filter((d) => d.id !== duty.id))
+                          }}
+                          className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center text-destructive/70 hover:text-destructive"
+                          aria-label="Διαγραφή υπηρεσίας"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
-          )
-        })
-      )}
-    </div>
-    </div>
+              )
+            })
+          )}
+        </div>
+      </div>
     </div>
   )
 }
@@ -227,7 +231,7 @@ function AddDutyForm({ onAdd, onCancel }: {
   return (
     <div className="flex flex-col gap-3 h-full">
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τύπος</label>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Τύπος</label>
         <div className="flex overflow-x-auto gap-1.5 no-scrollbar pb-1 -mx-1 px-1">
           <div className="flex gap-1.5 flex-nowrap">
             {(Object.keys(DUTY_TYPE_LABELS) as DutyType[]).map((t) => (
@@ -239,10 +243,10 @@ function AddDutyForm({ onAdd, onCancel }: {
                   setType(t)
                 }}
                 className={cn(
-                  'px-2.5 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-tight transition-colors whitespace-nowrap',
+                  'px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-tight transition-all whitespace-nowrap border',
                   type === t
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-secondary text-secondary-foreground border-border hover:bg-secondary/80'
                 )}
               >
                 {DUTY_TYPE_LABELS[t]}
@@ -261,7 +265,7 @@ function AddDutyForm({ onAdd, onCancel }: {
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
         <div className="min-w-0">
@@ -270,7 +274,7 @@ function AddDutyForm({ onAdd, onCancel }: {
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
@@ -282,21 +286,21 @@ function AddDutyForm({ onAdd, onCancel }: {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προαιρετικό..."
-          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary"
+          className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
 
       <div className="mt-auto flex gap-2 pt-4">
         <button
           onClick={onCancel}
-          className="flex-1 py-3 rounded-md bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary/80 transition-colors"
+          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary/80 transition-colors"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!date}
-          className="flex-1 py-3 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40 hover:bg-primary transition-colors"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40 hover:bg-primary transition-colors"
         >
           Προσθήκη
         </button>

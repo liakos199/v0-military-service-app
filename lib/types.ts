@@ -96,6 +96,7 @@ export interface SuperiorEntry {
   name: string
   rank: string
   role: string
+  phone?: string
 }
 
 export const RANKS = [

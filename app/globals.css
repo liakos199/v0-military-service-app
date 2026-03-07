@@ -4,33 +4,33 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Gold - Zinc Tactical Theme */
-  --background: #09090b; /* Zinc 950 */
-  --foreground: #fafafa; /* Zinc 50 */
-  --card: #18181b; /* Zinc 900 */
-  --card-foreground: #fafafa;
-  --popover: #18181b;
-  --popover-foreground: #fafafa;
+  /* Tactical Slate & Olive Theme */
+  --background: #0a0a0b; 
+  --foreground: #f1f1f1;
+  --card: #121214;
+  --card-foreground: #f1f1f1;
+  --popover: #121214;
+  --popover-foreground: #f1f1f1;
   
-  /* Gold Accents */
-  --primary: #eab308; /* Gold/Yellow 500 */
-  --primary-foreground: #09090b;
+  /* Tactical Olive/Gold Accents */
+  --primary: #a3e635; /* Lime 400 - High visibility tactical green */
+  --primary-foreground: #052e16;
   
-  --secondary: #27272a; /* Zinc 800 */
-  --secondary-foreground: #e4e4e7; /* Zinc 200 */
+  --secondary: #1c1c1f;
+  --secondary-foreground: #d1d1d6;
   
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa; /* Zinc 400 */
+  --muted: #1c1c1f;
+  --muted-foreground: #8e8e93;
   
-  --accent: #ca8a04; /* Gold/Yellow 600 */
-  --accent-foreground: #fafafa;
+  --accent: #a3e635;
+  --accent-foreground: #052e16;
   
-  --destructive: #ef4444;
-  --destructive-foreground: #fafafa;
+  --destructive: #ff453a;
+  --destructive-foreground: #ffffff;
   
-  --border: rgba(255, 255, 255, 0.06);
-  --input: #27272a;
-  --ring: #eab308;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: #1c1c1f;
+  --ring: #a3e635;
   
   /* Chart Colors - Gold/Zinc focused */
   --chart-1: #eab308; /* Gold */
@@ -100,10 +100,10 @@
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(39, 39, 42, 0.9), rgba(24, 24, 27, 0.7));
+  background: rgba(28, 28, 31, 0.6);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .glass-card-highlight {

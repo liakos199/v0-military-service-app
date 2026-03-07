@@ -25,7 +25,7 @@ export function ExpensesTab() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground">Έξοδα</h1>
-            <p className="text-xs text-muted-foreground">Δαπάνες & καταλόγου</p>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Δαπάνες & καταλόγου</p>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -33,9 +33,8 @@ export function ExpensesTab() {
                 hapticFeedback('light')
                 setShowCatalogManager(true)
               }}
-              className="px-3 py-2 rounded-lg glass-card border border-white/5 text-foreground text-xs font-black min-h-[44px] uppercase tracking-wider hover:border-primary transition-colors"
+              className="px-3 py-2 rounded-lg glass-card border border-white/5 text-foreground text-[10px] font-black min-h-[40px] uppercase tracking-wider hover:border-primary transition-colors"
               aria-label="Διαχείριση καταλόγου Κ.Ψ.Μ."
-              title="Διαχείριση καταλόγου Κ.Ψ.Μ."
             >
               Κατάλογος
             </button>
@@ -44,9 +43,8 @@ export function ExpensesTab() {
                 hapticFeedback('light')
                 setShowAdd(true)
               }}
-              className="px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-black min-h-[44px] uppercase tracking-wider hover:bg-primary transition-colors"
+              className="px-3 py-2 rounded-lg bg-primary text-primary-foreground text-[10px] font-black min-h-[40px] uppercase tracking-wider hover:bg-primary transition-colors"
               aria-label="Προσθήκη εξόδου"
-              title="Προσθήκη νέου εξόδου"
             >
               + Νέο
             </button>
@@ -59,9 +57,9 @@ export function ExpensesTab() {
         <div className="flex flex-col gap-3">
 
           {/* Summary Card - Simplified to only show Grand Total */}
-          <div className="glass-card rounded-xl p-4 flex flex-col items-center justify-center gap-1 border border-accent/50 bg-gradient-to-br from-accent/10 to-accent/5">
-            <span className="text-xs font-black text-accent uppercase tracking-widest">Συνολικά Έξοδα</span>
-            <span className="text-3xl font-black text-accent">{grandTotal.toFixed(2)}€</span>
+          <div className="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-1 border border-primary/20 bg-primary/5">
+            <span className="text-[10px] font-black text-primary uppercase tracking-widest">Συνολικά Έξοδα</span>
+            <span className="text-3xl font-black text-foreground tracking-tighter">{grandTotal.toFixed(2)}€</span>
           </div>
 
           {/* Catalog Manager Modal */}
@@ -102,44 +100,43 @@ export function ExpensesTab() {
           {expenses.length === 0 ? (
             <div className="glass-card rounded-2xl p-6 text-center flex flex-col items-center gap-2 border border-white/5">
               <p className="text-sm text-muted-foreground">Δεν υπάρχουν έξοδα</p>
-              <p className="text-xs text-muted-foreground">Πάτησε "+ Νέο" για καταχώρηση</p>
             </div>
           ) : (
             <div className="flex flex-col gap-2">
-              <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest px-1 mt-1">
+              <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1 mt-1">
                 Ιστορικό ({expenses.length})
               </h2>
-              {expenses
-                .sort((a, b) => b.date.localeCompare(a.date))
-                .map((expense) => (
-                  <div key={expense.id} className="glass-card rounded-xl p-3 flex items-center justify-between border border-white/5 hover:border-primary transition-colors group">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-foreground truncate">
+              <div className="flex flex-col gap-1.5">
+                {expenses
+                  .sort((a, b) => b.date.localeCompare(a.date))
+                  .map((expense) => (
+                    <div key={expense.id} className="glass-card rounded-xl p-2.5 flex items-center justify-between border border-white/5 hover:border-primary/30 transition-colors group">
+                      <div className="flex-1 min-w-0">
+                        <span className="text-sm font-bold text-foreground truncate block">
                           {expense.description || 'Έξοδο'}
                         </span>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">
+                          {formatGreekDate(expense.date)}
+                        </p>
                       </div>
-                      <p className="text-[11px] text-muted-foreground mt-1">
-                        {formatGreekDate(expense.date)}
-                      </p>
+                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                        <span className="text-sm font-black text-primary whitespace-nowrap">
+                          {expense.amount.toFixed(2)}€
+                        </span>
+                        <button
+                          onClick={() => {
+                            hapticFeedback('medium')
+                            setExpenses(expenses.filter((e) => e.id !== expense.id))
+                          }}
+                          className="p-1.5 rounded-lg text-destructive/70 hover:text-destructive hover:bg-destructive/10 transition-all"
+                          aria-label="Διαγραφή"
+                        >
+                          <span className="text-xs">✕</span>
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                      <span className="text-sm font-bold text-foreground whitespace-nowrap">
-                        {expense.amount.toFixed(2)}€
-                      </span>
-                      <button
-                        onClick={() => {
-                          hapticFeedback('medium')
-                          setExpenses(expenses.filter((e) => e.id !== expense.id))
-                        }}
-                        className="px-2 py-1 rounded text-xs text-destructive hover:bg-destructive/10 transition-colors opacity-0 group-hover:opacity-100"
-                        aria-label="Διαγραφή"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
           )}
         </div>
@@ -189,12 +186,12 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
     <div className="flex flex-col gap-3">
       {/* Canteen Catalog Selection */}
       {canteenCatalog.length > 0 && (
-        <div className="glass-card rounded-xl p-3 border border-accent/30 flex flex-col gap-2">
-          <h3 className="text-xs font-black text-accent uppercase tracking-tight">Κατάλογος Κ.Ψ.Μ.</h3>
+        <div className="glass-card rounded-xl p-3 border border-primary/20 flex flex-col gap-2">
+          <h3 className="text-[10px] font-black text-primary uppercase tracking-widest">Κατάλογος Κ.Ψ.Μ.</h3>
           
           {selectedCatalogCategory === null ? (
             // Show categories
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               {(Object.keys(CANTEEN_CATEGORY_LABELS) as Array<'food' | 'beverage' | 'snack' | 'other'>).map((cat) => {
                 const itemsInCat = canteenCatalog.filter((item) => item.category === cat)
                 if (itemsInCat.length === 0) return null
@@ -206,10 +203,10 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                       hapticFeedback('light')
                       setSelectedCatalogCategory(cat)
                     }}
-                    className="bg-secondary/50 border border-white/5 rounded-lg p-2.5 flex items-center justify-between hover:border-primary transition-colors text-sm"
+                    className="bg-secondary/50 border border-white/5 rounded-lg p-2 flex items-center justify-between hover:border-primary transition-colors text-sm"
                   >
-                    <span className="text-foreground font-medium">{CANTEEN_CATEGORY_LABELS[cat]}</span>
-                    <span className="text-muted-foreground text-xs font-black">
+                    <span className="text-foreground font-bold text-xs">{CANTEEN_CATEGORY_LABELS[cat]}</span>
+                    <span className="text-muted-foreground text-[10px] font-black">
                       {itemsInCat.length}
                     </span>
                   </button>
@@ -225,25 +222,25 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                   hapticFeedback('light')
                   setSelectedCatalogCategory(null)
                 }}
-                className="text-accent text-sm font-black uppercase tracking-tight hover:text-accent/80 transition-colors py-1 w-fit text-left"
+                className="text-primary text-[10px] font-black uppercase tracking-widest hover:text-primary/80 transition-colors py-1 w-fit text-left"
               >
                 ← Πίσω
               </button>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1.5">
                 {catalogItemsInCategory.map((item) => (
                   <button
                     key={item.id}
                     type="button"
                     onClick={() => handleSelectCatalogItem(item)}
                     className={cn(
-                      'bg-secondary/50 border rounded-lg p-2.5 flex items-center justify-between hover:border-primary transition-all text-sm',
+                      'bg-secondary/50 border rounded-lg p-2 flex items-center justify-between hover:border-primary transition-all text-sm',
                       description === item.name && amount === item.price.toFixed(2)
                         ? 'border-primary bg-primary/10 ring-1 ring-primary'
                         : 'border-white/5'
                     )}
                   >
-                    <span className="font-black text-foreground tracking-tight">{item.name}</span>
-                    <span className="font-black text-accent">{item.price.toFixed(2)}€</span>
+                    <span className="font-bold text-foreground text-xs tracking-tight">{item.name}</span>
+                    <span className="font-black text-primary text-xs">{item.price.toFixed(2)}€</span>
                   </button>
                 ))}
               </div>
@@ -254,19 +251,19 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
 
       {/* Name Input */}
       <div>
-        <label className="block text-xs font-black text-muted-foreground mb-2 uppercase tracking-widest">Όνομα</label>
+        <label className="block text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-widest">Όνομα</label>
         <input
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Π.χ. Καφές, Σνακ..."
-          className="w-full px-3 py-2.5 rounded-lg bg-secondary text-foreground text-sm min-h-[44px] border border-border placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
+          className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none transition-colors"
         />
       </div>
 
       {/* Amount Input */}
       <div>
-        <label className="block text-xs font-black text-muted-foreground mb-2 uppercase tracking-widest">Ποσό (€)</label>
+        <label className="block text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-widest">Ποσό (€)</label>
         <input
           type="number"
           inputMode="decimal"
@@ -274,25 +271,25 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder="0.00"
-          className="w-full px-3 py-2.5 rounded-lg bg-secondary text-foreground text-base font-semibold min-h-[44px] border border-border placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
+          className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm font-bold min-h-[40px] border border-border placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none transition-colors"
         />
       </div>
 
       {/* Date Picker */}
-      <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
+      <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
 
       {/* Action Buttons */}
       <div className="flex gap-2 pt-2 border-t border-border/50">
         <button
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-lg bg-secondary/50 border border-white/5 text-foreground font-black text-sm min-h-[44px] uppercase tracking-wider hover:bg-secondary transition-colors"
+          className="flex-1 py-2.5 rounded-lg bg-secondary/50 border border-white/5 text-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary transition-colors"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!amount || !date}
-          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-black text-sm min-h-[44px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
         >
           Προσθήκη
         </button>

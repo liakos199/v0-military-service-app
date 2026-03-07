@@ -315,7 +315,7 @@ export function NotesTab() {
       <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
         <div>
           <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
-          <p className="text-xs text-muted-foreground">Προσωπικές σημειώσεις & εγχειρίδια</p>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Προσωπικές σημειώσεις & εγχειρίδια</p>
         </div>
 
         {/* Section Toggle */}
@@ -326,13 +326,13 @@ export function NotesTab() {
               setActiveSection('notes')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'notes'
                 ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
                 : 'text-muted-foreground/60'
             )}
           >
-            <FileText className="h-3.5 w-3.5" />
+            <FileText className="h-3 w-3" />
             Σημειώσεις
           </button>
           <button
@@ -341,13 +341,13 @@ export function NotesTab() {
               setActiveSection('guides')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'guides'
                 ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
                 : 'text-muted-foreground/60'
             )}
           >
-            <BookOpen className="h-3.5 w-3.5" />
+            <BookOpen className="h-3 w-3" />
             Εγχειρίδια
           </button>
         </div>
@@ -388,16 +388,16 @@ function NotesSection() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest">Προσωπικές Σημειώσεις</h2>
+        <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Προσωπικές Σημειώσεις</h2>
         <button
           onClick={() => {
             hapticFeedback('light')
             setShowAdd(true)
           }}
-          className="p-2 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center"
           aria-label="Νέα σημείωση"
         >
-          <Plus className="h-5 w-5 text-primary" />
+          <Plus className="h-4 w-4 text-primary" />
         </button>
       </div>
 
@@ -416,79 +416,81 @@ function NotesSection() {
           <p className="text-sm text-muted-foreground">Δεν υπάρχουν σημειώσεις</p>
         </div>
       ) : (
-        notes.map((note) => (
-          <div key={note.id} className="glass-card rounded-xl p-3 border border-white/5">
-            <div className="flex items-start justify-between">
-              <p className="text-[10px] text-muted-foreground">{formatGreekDate(note.date)}</p>
-              <div className="flex items-center gap-1">
-                {editingId === note.id ? (
-                  <>
-                    <button
-                      onClick={() => setEditingId(null)}
-                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
-                      aria-label="Ακύρωση"
-                    >
-                      <X className="h-3.5 w-3.5 text-muted-foreground" />
-                    </button>
-                    <button
-                      onClick={() => handleUpdate(note.id)}
-                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
-                      aria-label="Αποθήκευση"
-                    >
-                      <Check className="h-3.5 w-3.5 text-primary" />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => {
-                        hapticFeedback('light')
-                        setEditingId(note.id)
-                        setEditTitle(note.title || '')
-                        setEditContent(note.content)
-                      }}
-                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
-                      aria-label="Επεξεργασία"
-                    >
-                      <Edit3 className="h-3.5 w-3.5 text-muted-foreground" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        hapticFeedback('medium')
-                        setNotes(notes.filter((n) => n.id !== note.id))
-                      }}
-                      className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
-                      aria-label="Διαγραφή"
-                    >
-                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
-                    </button>
-                  </>
-                )}
+        <div className="flex flex-col gap-2">
+          {notes.map((note) => (
+            <div key={note.id} className="glass-card rounded-xl p-3 border border-white/5">
+              <div className="flex items-start justify-between">
+                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{formatGreekDate(note.date)}</p>
+                <div className="flex items-center gap-1">
+                  {editingId === note.id ? (
+                    <>
+                      <button
+                        onClick={() => setEditingId(null)}
+                        className="p-1.5 rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        aria-label="Ακύρωση"
+                      >
+                        <X className="h-3.5 w-3.5 text-muted-foreground" />
+                      </button>
+                      <button
+                        onClick={() => handleUpdate(note.id)}
+                        className="p-1.5 rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        aria-label="Αποθήκευση"
+                      >
+                        <Check className="h-3.5 w-3.5 text-primary" />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          hapticFeedback('light')
+                          setEditingId(note.id)
+                          setEditTitle(note.title || '')
+                          setEditContent(note.content)
+                        }}
+                        className="p-1.5 rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        aria-label="Επεξεργασία"
+                      >
+                        <Edit3 className="h-3.5 w-3.5 text-muted-foreground/60" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          hapticFeedback('medium')
+                          setNotes(notes.filter((n) => n.id !== note.id))
+                        }}
+                        className="p-1.5 rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        aria-label="Διαγραφή"
+                      >
+                        <Trash2 className="h-3.5 w-3.5 text-destructive/60" />
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
+              {editingId === note.id ? (
+                <div className="flex flex-col gap-2 mt-2">
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    placeholder="Τίτλος"
+                    className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm font-bold min-h-[40px] border border-border placeholder:text-muted-foreground/50"
+                  />
+                  <textarea
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[80px] border border-border resize-none"
+                  />
+                </div>
+              ) : (
+                <div className="mt-1">
+                  {note.title && <p className="text-sm font-bold text-foreground mb-0.5">{note.title}</p>}
+                  <p className="text-xs text-foreground/80 whitespace-pre-wrap leading-relaxed">{note.content}</p>
+                </div>
+              )}
             </div>
-            {editingId === note.id ? (
-              <div className="flex flex-col gap-2 mt-2">
-                <input
-                  type="text"
-                  value={editTitle}
-                  onChange={(e) => setEditTitle(e.target.value)}
-	                  placeholder="Τίτλος"
-	                  className="w-full px-3 py-2.5 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[44px] border border-border placeholder:text-muted-foreground"
-	                />
-                <textarea
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[80px] border border-border resize-none"
-                />
-              </div>
-            ) : (
-              <div className="mt-1.5">
-                {note.title && <p className="text-sm font-semibold text-foreground">{note.title}</p>}
-                <p className="text-sm text-foreground whitespace-pre-wrap">{note.content}</p>
-              </div>
-            )}
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   )
@@ -501,72 +503,74 @@ function GuidesSection() {
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-xs text-muted-foreground/70 leading-relaxed">
-        Βασικές πληροφορίες & εγχειρίδια για τη στρατιωτική θητεία
+      <p className="text-[10px] text-muted-foreground/70 leading-relaxed uppercase tracking-wider px-1">
+        Βασικές πληροφορίες & εγχειρίδια
       </p>
 
-      {MILITARY_GUIDES.map((guide) => {
-        const Icon = GUIDE_ICONS[guide.icon] || BookOpen
-        const isExpanded = expandedGuide === guide.id
-        const hasQuiz = !!GUIDE_QUIZZES[guide.id]
+      <div className="flex flex-col gap-2">
+        {MILITARY_GUIDES.map((guide) => {
+          const Icon = GUIDE_ICONS[guide.icon] || BookOpen
+          const isExpanded = expandedGuide === guide.id
+          const hasQuiz = !!GUIDE_QUIZZES[guide.id]
 
-        return (
-          <div key={guide.id} className="glass-card rounded-xl overflow-hidden border border-white/5">
-            <button
-              onClick={() => {
-                hapticFeedback('light')
-                setExpandedGuide(isExpanded ? null : guide.id)
-              }}
-              className="w-full flex items-center gap-3 p-4 min-h-[56px] text-left hover:bg-white/5 transition-colors"
-            >
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
-                <Icon className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="flex-1 text-sm font-black text-foreground tracking-tight">{guide.title}</span>
-              {isExpanded ? (
-                <ChevronUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              ) : (
-                <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              )}
-            </button>
-
-            {isExpanded && (
-              <div className="px-4 pb-4 flex flex-col gap-4">
-                {guide.sections.map((section, sIdx) => (
-                  <div key={sIdx}>
-                    <h4 className="text-xs font-black text-accent uppercase tracking-wider mb-2">{section.heading}</h4>
-                    <div className="flex flex-col gap-1.5">
-                      {section.items.map((item, iIdx) => (
-                        <div
-                          key={iIdx}
-                          className="flex items-start gap-2 py-1.5 px-3 rounded-lg bg-secondary/40 border border-white/5"
-                        >
-                          <span className="w-1 h-1 rounded-full bg-accent/60 mt-1.5 flex-shrink-0" />
-                          <p className="text-xs text-foreground leading-relaxed">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-
-                {/* Quiz button */}
-                {hasQuiz && (
-                  <button
-                    onClick={() => {
-                      hapticFeedback('medium')
-                      setActiveQuiz(guide.id)
-                    }}
-                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary border border-primary text-primary-foreground font-black text-sm min-h-[48px] uppercase tracking-wider transition-colors hover:bg-primary active:bg-primary"
-                  >
-                    <GraduationCap className="h-4 w-4" />
-                    Εξέτασε με
-                  </button>
+          return (
+            <div key={guide.id} className="glass-card rounded-xl overflow-hidden border border-white/5">
+              <button
+                onClick={() => {
+                  hapticFeedback('light')
+                  setExpandedGuide(isExpanded ? null : guide.id)
+                }}
+                className="w-full flex items-center gap-3 p-3 min-h-[48px] text-left hover:bg-white/5 transition-colors"
+              >
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <Icon className="h-4 w-4 text-primary" />
+                </div>
+                <span className="flex-1 text-sm font-bold text-foreground tracking-tight">{guide.title}</span>
+                {isExpanded ? (
+                  <ChevronUp className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                ) : (
+                  <ChevronDown className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                 )}
-              </div>
-            )}
-          </div>
-        )
-      })}
+              </button>
+
+              {isExpanded && (
+                <div className="px-3 pb-3 flex flex-col gap-3">
+                  {guide.sections.map((section, sIdx) => (
+                    <div key={sIdx}>
+                      <h4 className="text-[9px] font-black text-primary uppercase tracking-widest mb-1.5 px-1">{section.heading}</h4>
+                      <div className="flex flex-col gap-1">
+                        {section.items.map((item, iIdx) => (
+                          <div
+                            key={iIdx}
+                            className="flex items-start gap-2 py-1.5 px-2.5 rounded-lg bg-secondary/30 border border-white/5"
+                          >
+                            <span className="w-1 h-1 rounded-full bg-primary/40 mt-1.5 flex-shrink-0" />
+                            <p className="text-[11px] text-foreground/90 leading-relaxed">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Quiz button */}
+                  {hasQuiz && (
+                    <button
+                      onClick={() => {
+                        hapticFeedback('medium')
+                        setActiveQuiz(guide.id)
+                      }}
+                      className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[40px] transition-all hover:opacity-90"
+                    >
+                      <GraduationCap className="h-3.5 w-3.5" />
+                      Εξέτασε με
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
 
       {/* Quiz Modal */}
       {activeQuiz && (
@@ -591,174 +595,126 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
 
   const shuffledQuestions = useMemo(() => {
     const picked = shuffleArray(allQuestions).slice(0, 5)
-    return picked.map((q) => {
-      const indexed = q.options.map((opt, i) => ({ opt, wasCorrect: i === q.correctIndex }))
-      const shuffled = shuffleArray(indexed)
-      return {
-        question: q.question,
-        options: shuffled.map((s) => s.opt),
-        correctIndex: shuffled.findIndex((s) => s.wasCorrect),
-      }
-    })
-  }, [guideId]) // eslint-disable-line react-hooks/exhaustive-deps
+    return picked
+  }, [allQuestions])
 
-  const [currentIdx, setCurrentIdx] = useState(0)
-  const [selectedOption, setSelectedOption] = useState<number | null>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [score, setScore] = useState(0)
-  const [finished, setFinished] = useState(false)
-  const [answered, setAnswered] = useState(false)
+  const [selectedOption, setSelectedOption] = useState<number | null>(null)
+  const [isAnswered, setIsAnswered] = useState(false)
+  const [showResult, setShowResult] = useState(false)
 
-  const total = shuffledQuestions.length
-  const current = shuffledQuestions[currentIdx]
+  const currentQuestion = shuffledQuestions[currentIndex]
 
-  const handleSelect = useCallback(
-    (optIdx: number) => {
-      if (answered) return
-      hapticFeedback('light')
-      setSelectedOption(optIdx)
-      setAnswered(true)
-      if (optIdx === current.correctIndex) {
-        setScore((s) => s + 1)
-        hapticFeedback('heavy')
-      } else {
-        hapticFeedback('medium')
-      }
-    },
-    [answered, current]
-  )
-
-  const handleNext = useCallback(() => {
-    if (currentIdx + 1 >= total) {
-      setFinished(true)
-      hapticFeedback('heavy')
-    } else {
-      setCurrentIdx((i) => i + 1)
-      setSelectedOption(null)
-      setAnswered(false)
-      hapticFeedback('light')
+  const handleOptionSelect = (idx: number) => {
+    if (isAnswered) return
+    hapticFeedback('light')
+    setSelectedOption(idx)
+    setIsAnswered(true)
+    if (idx === currentQuestion.correctIndex) {
+      setScore((s) => s + 1)
     }
-  }, [currentIdx, total])
+  }
 
-  const handleRetry = useCallback(() => {
-    setCurrentIdx(0)
-    setSelectedOption(null)
-    setScore(0)
-    setFinished(false)
-    setAnswered(false)
-    hapticFeedback('medium')
-  }, [])
+  const handleNext = () => {
+    hapticFeedback('light')
+    if (currentIndex < shuffledQuestions.length - 1) {
+      setCurrentIndex((i) => i + 1)
+      setSelectedOption(null)
+      setIsAnswered(false)
+    } else {
+      setShowResult(true)
+    }
+  }
 
-  if (total === 0) return null
-
-  // Results screen
-  if (finished) {
-    const pct = Math.round((score / total) * 100)
-    const isGreat = pct >= 80
-    const isOk = pct >= 50 && pct < 80
-
+  if (showResult) {
+    const isPerfect = score === shuffledQuestions.length
     return (
-      <div className="flex flex-col items-center justify-center gap-6 py-8">
-        <div
-          className={cn(
-            'w-24 h-24 rounded-full flex items-center justify-center text-3xl font-black border-2',
-            isGreat
-              ? 'bg-chart-2/10 border-chart-2/40 text-chart-2'
-              : isOk
-                ? 'bg-chart-4/10 border-chart-4/40 text-chart-4'
-                : 'bg-destructive/10 border-destructive/40 text-destructive'
-          )}
+      <div className="flex flex-col items-center justify-center py-8 text-center gap-4">
+        <div className={cn(
+          "w-16 h-16 rounded-full flex items-center justify-center mb-2",
+          isPerfect ? "bg-primary/20 text-primary" : "bg-secondary text-muted-foreground"
+        )}>
+          {isPerfect ? <CircleCheck className="h-10 w-10" /> : <RotateCcw className="h-8 w-8" />}
+        </div>
+        <div>
+          <h3 className="text-xl font-black text-foreground">Αποτέλεσμα</h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Σκορ: <span className="text-primary font-bold">{score}</span> / {shuffledQuestions.length}
+          </p>
+        </div>
+        <p className="text-xs text-muted-foreground max-w-[200px]">
+          {isPerfect ? 'Εξαιρετικά! Γνωρίζεις καλά το αντικείμενο.' : 'Μπορείς και καλύτερα. Διάβασε ξανά το εγχειρίδιο.'}
+        </p>
+        <button
+          onClick={onClose}
+          className="mt-4 w-full py-3 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px]"
         >
-          {score}/{total}
-        </div>
-
-        <div className="text-center">
-          <p className="text-lg font-black text-foreground uppercase tracking-tight">
-            {isGreat ? 'Εξαιρετικά!' : isOk ? 'Καλή προσπάθεια!' : 'Χρειάζεται διάβασμα'}
-          </p>
-          <p className="text-xs text-muted-foreground mt-2 font-medium">
-            Σωστές: {score}/{total} ({pct}%)
-          </p>
-        </div>
-
-        <div className="flex gap-3 w-full">
-          <button
-            onClick={handleRetry}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-secondary/50 border border-white/5 text-foreground font-black text-sm min-h-[48px] uppercase tracking-wider hover:bg-secondary transition-colors"
-          >
-            <RotateCcw className="h-4 w-4" />
-            Ξανά
-          </button>
-          <button
-            onClick={onClose}
-            className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-black text-sm min-h-[48px] uppercase tracking-wider hover:bg-primary transition-colors"
-          >
-            Κλείσιμο
-          </button>
-        </div>
+          Κλείσιμο
+        </button>
       </div>
     )
   }
 
-  // Question screen
   return (
-    <div className="flex flex-col gap-5">
-      {/* Progress */}
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-2 rounded-full bg-secondary/50 border border-white/5 overflow-hidden">
-          <div
-            className="h-full rounded-full bg-primary shadow-[0_0_12px_rgba(163,230,53,0.4)] transition-all duration-300"
-            style={{ width: `${((currentIdx + (answered ? 1 : 0)) / total) * 100}%` }}
-          />
-        </div>
-        <span className="text-xs font-black text-muted-foreground tabular-nums uppercase tracking-wider">
-          {currentIdx + 1}/{total}
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between px-1">
+        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+          Ερώτηση {currentIndex + 1} / {shuffledQuestions.length}
         </span>
+        <div className="flex gap-1">
+          {shuffledQuestions.map((_, i) => (
+            <div
+              key={i}
+              className={cn(
+                "w-1.5 h-1.5 rounded-full transition-colors",
+                i === currentIndex ? "bg-primary" : i < currentIndex ? "bg-primary/40" : "bg-secondary"
+              )}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Question */}
-      <p className="text-base font-black text-foreground leading-snug tracking-tight">{current.question}</p>
+      <h3 className="text-base font-bold text-foreground leading-tight px-1">
+        {currentQuestion.question}
+      </h3>
 
-      {/* Options */}
-      <div className="flex flex-col gap-2.5">
-        {current.options.map((opt, optIdx) => {
-          const isCorrect = optIdx === current.correctIndex
-          const isSelected = optIdx === selectedOption
-          const showCorrect = answered && isCorrect
-          const showWrong = answered && isSelected && !isCorrect
+      <div className="flex flex-col gap-2">
+        {currentQuestion.options.map((opt, idx) => {
+          const isCorrect = idx === currentQuestion.correctIndex
+          const isSelected = idx === selectedOption
+          
+          let stateClasses = "bg-secondary/50 border-white/5 text-foreground"
+          if (isAnswered) {
+            if (isCorrect) stateClasses = "bg-primary/20 border-primary text-primary"
+            else if (isSelected) stateClasses = "bg-destructive/20 border-destructive text-destructive"
+            else stateClasses = "bg-secondary/30 border-white/5 text-muted-foreground/50"
+          }
 
           return (
             <button
-              key={optIdx}
-              onClick={() => handleSelect(optIdx)}
-              disabled={answered}
+              key={idx}
+              onClick={() => handleOptionSelect(idx)}
+              disabled={isAnswered}
               className={cn(
-                'flex items-center gap-3 w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium transition-all min-h-[52px] border',
-                answered
-                  ? showCorrect
-                    ? 'bg-chart-2/10 border-chart-2/40 text-chart-2 font-black'
-                    : showWrong
-                      ? 'bg-destructive/10 border-destructive/40 text-destructive font-black'
-                      : 'bg-secondary/50 border-border/50 text-muted-foreground'
-                  : isSelected
-                    ? 'bg-primary border-primary text-primary-foreground font-black'
-                    : 'bg-secondary border-border text-foreground hover:border-primary active:bg-secondary/80'
+                "w-full text-left p-3.5 rounded-xl border text-sm font-medium transition-all flex items-center justify-between min-h-[52px]",
+                stateClasses
               )}
             >
-              <span className="flex-1">{opt}</span>
-              {showCorrect && <CircleCheck className="h-5 w-5 flex-shrink-0" />}
-              {showWrong && <CircleX className="h-5 w-5 flex-shrink-0" />}
+              <span>{opt}</span>
+              {isAnswered && isCorrect && <CircleCheck className="h-4 w-4" />}
+              {isAnswered && isSelected && !isCorrect && <CircleX className="h-4 w-4" />}
             </button>
           )
         })}
       </div>
 
-      {/* Next button */}
-      {answered && (
+      {isAnswered && (
         <button
           onClick={handleNext}
-          className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] transition-all"
+          className="mt-2 w-full py-3 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] flex items-center justify-center gap-2"
         >
-          {currentIdx + 1 >= total ? 'Αποτελέσματα' : 'Επόμενη'}
+          {currentIndex < shuffledQuestions.length - 1 ? 'Επόμενη' : 'Τέλος'}
           <ChevronRight className="h-4 w-4" />
         </button>
       )}
@@ -766,37 +722,42 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
   )
 }
 
-/* ========== ADD NOTE FORM ========== */
-function AddNoteForm({ onAdd, onCancel }: { onAdd: (title: string, content: string) => void; onCancel: () => void }) {
+function AddNoteForm({ onAdd, onCancel }: { onAdd: (t: string, c: string) => void; onCancel: () => void }) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
   return (
-    <div className="flex flex-col gap-4">
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-	        placeholder="Τίτλος (προαιρετικό)"
-	        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold min-h-[48px] border border-border placeholder:text-muted-foreground placeholder:font-normal"
-	      />
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="Γράψε εδώ..."
-        className="w-full px-3 py-3 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[200px] border border-border resize-none placeholder:text-muted-foreground"
-      />
-      <div className="flex gap-2">
+    <div className="flex flex-col gap-3">
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τίτλος</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Προαιρετικό..."
+          className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm font-bold min-h-[40px] border border-border placeholder:text-muted-foreground/50"
+        />
+      </div>
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Περιεχόμενο</label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Γράψε εδώ..."
+          className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[120px] border border-border resize-none placeholder:text-muted-foreground/50"
+        />
+      </div>
+      <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
-          className="flex-1 py-3 rounded-lg bg-secondary text-secondary-foreground font-medium text-sm min-h-[48px]"
+          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px]"
         >
           Ακύρωση
         </button>
         <button
-          onClick={() => content.trim() && onAdd(title.trim(), content.trim())}
+          onClick={() => onAdd(title, content)}
           disabled={!content.trim()}
-          className="flex-1 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] disabled:opacity-40"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40"
         >
           Προσθήκη
         </button>
