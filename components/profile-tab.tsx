@@ -15,7 +15,7 @@ const DEFAULT_PROFILE: ProfileData = {
   barracks: '',
   bloodType: '',
   reportingPhrase: '',
-  rank: 'Στρατιώτης',
+  rank: 'ΝΕΟΣΥΛΛΕΚΤΟΣ',
   serviceNumber: '',
   weaponCode: '',
   weaponCell: '',

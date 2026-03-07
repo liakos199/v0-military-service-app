@@ -99,6 +99,7 @@ export interface SuperiorEntry {
 }
 
 export const RANKS = [
+  'ΝΕΟΣΥΛΛΕΚΤΟΣ',
   'Στρατιώτης',
   'Υποδεκανέας',
   'Δεκανέας',
