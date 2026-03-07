@@ -310,6 +310,18 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
         </div>
       )}
 
+      {/* Description (Renamed to Name) */}
+      <div>
+        <label className="block text-xs font-black text-muted-foreground mb-2 uppercase tracking-widest">Όνομα</label>
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Π.χ. Καφές, Σνακ..."
+          className="w-full px-3 py-2.5 rounded-lg bg-secondary text-foreground text-sm min-h-[44px] border border-border placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
+        />
+      </div>
+
       {/* Amount Input */}
       <div>
         <label className="block text-xs font-black text-muted-foreground mb-2 uppercase tracking-widest">Ποσό (€)</label>
@@ -326,18 +338,6 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
 
       {/* Date Picker */}
       <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
-
-      {/* Description */}
-      <div>
-        <label className="block text-xs font-black text-muted-foreground mb-2 uppercase tracking-widest">Περιγραφή</label>
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Π.χ. Καφές, Σνακ..."
-          className="w-full px-3 py-2.5 rounded-lg bg-secondary text-foreground text-sm min-h-[44px] border border-border placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
-        />
-      </div>
 
       {/* Action Buttons */}
       <div className="flex gap-2 pt-2 border-t border-border/50">
