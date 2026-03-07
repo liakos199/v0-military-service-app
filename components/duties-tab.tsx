@@ -258,23 +258,23 @@ function AddDutyForm({ onAdd, onCancel }: {
 
       <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
 
-      <div className="grid grid-cols-2 gap-1.5">
-        <div className="min-w-0">
+      <div className="flex gap-1.5">
+        <div className="flex-1 min-w-0">
           <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Αρχή</label>
           <input
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-2.5 py-1.5 rounded-lg bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
-        <div className="min-w-0">
+        <div className="flex-1 min-w-0">
           <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Τέλος</label>
           <input
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2.5 py-1.5 rounded-lg bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
