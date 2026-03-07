@@ -283,7 +283,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                   hapticFeedback('light')
                   setSelectedCatalogCategory(null)
                 }}
-                className="text-accent text-sm font-black uppercase tracking-tight hover:text-accent/80 transition-colors py-1"
+                className="text-accent text-sm font-black uppercase tracking-tight hover:text-accent/80 transition-colors py-1 w-fit text-left"
               >
                 ← Πίσω
               </button>
