@@ -228,7 +228,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                               className="px-2 py-1 rounded text-xs text-accent hover:bg-accent/10 transition-colors font-medium"
                               aria-label={`Επεξεργασία ${item.name}`}
                             >
-                              Επ.
+                              ✎
                             </button>
                             <button
                               onClick={() => handleDelete(item.id)}
