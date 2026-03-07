@@ -15,6 +15,7 @@ import {
   Palmtree,
   Eye,
   EyeOff,
+  TrendingUp,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -222,6 +223,84 @@ export function ServiceTab() {
               </div>
             </div>
 
+            {/* Simple Progress Visualization */}
+            <div className="w-full flex flex-col gap-1.5 px-1">
+               <div className="flex items-center justify-between">
+                  <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Πορεία Θητείας</span>
+                  <span className="text-[8px] font-black text-primary uppercase tracking-widest">{Math.round(percentage)}%</span>
+               </div>
+               <div className="w-full h-1.5 rounded-full bg-secondary/50 overflow-hidden border border-white/5">
+                  <motion.div 
+                    className="h-full bg-primary"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${percentage}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                  />
+               </div>
+            </div>
+
+            <motion.div
+              className="grid grid-cols-3 gap-2 w-full"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1,
+                    delayChildren: 0.3,
+                  },
+                },
+              }}
+            >
+            <div className="flex items-center justify-between w-full">
+              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+                Λελέμετρο
+              </p>
+              {dischargeDate && (
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 border border-primary/20">
+                  <CalendarDays className="h-3 w-3 text-primary" />
+                  <span className="text-[9px] font-black text-primary uppercase tracking-wider">
+                    {formatGreekDate(dischargeDate)}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="relative w-32 h-32">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="74"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.05)"
+                  strokeWidth="8"
+                />
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="74"
+                  fill="none"
+                  stroke="var(--primary)"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(percentage / 100) * (2 * Math.PI * 74)} ${(2 * Math.PI * 74)}`}
+                  className="transition-all duration-1000 ease-out"
+                  style={{
+                    filter: 'drop-shadow(0 0 8px var(--primary))',
+                  }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-3xl font-black text-foreground tracking-tighter">
+                  <Counter value={percentage} duration={1.5} decimals={1} /><span className="text-sm text-muted-foreground ml-0.5">%</span>
+                </span>
+                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-0.5">ΠΡΟΟΔΟΣ</span>
+              </div>
+            </div>
+
             <motion.div
               className="grid grid-cols-3 gap-2 w-full"
               initial="hidden"
@@ -258,8 +337,34 @@ export function ServiceTab() {
             </motion.div>
           </motion.div>
 
+          {/* Stats Breakdown Section */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="glass-card rounded-2xl p-3 border border-white/5 flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <Shield className="h-3 w-3 text-primary" />
+                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Υπηρεσίες</span>
+              </div>
+              <div className="flex items-end justify-between">
+                <span className="text-xl font-black text-foreground">{duties.length}</span>
+                <span className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Σύνολο</span>
+              </div>
+            </div>
+            <div className="glass-card rounded-2xl p-3 border border-white/5 flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-3 w-3 text-primary" />
+                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Προβλεπόμενες</span>
+              </div>
+              <div className="flex items-end justify-between">
+                <span className="text-xl font-black text-foreground">
+                  {Math.max(0, Math.round(duties.length * (100 / (percentage || 1)) - duties.length))}
+                </span>
+                <span className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Εκτίμηση</span>
+              </div>
+            </div>
+          </div>
+
           {/* Today's Status Section */}
-          <TodayStatus duties={todayDuties} leave={todayLeave} />
+          <TodayStatus duties={todayDuties} leave={todayLeave} onAddDuty={() => setShowConfig(true)} />
         </div>
       </div>
     </div>
@@ -303,9 +408,11 @@ function StatCard({
 function TodayStatus({
   duties,
   leave,
+  onAddDuty,
 }: {
   duties: DutyEntry[]
   leave: LeaveEntry | undefined
+  onAddDuty: () => void
 }) {
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({})
 
@@ -382,8 +489,15 @@ function TodayStatus({
         </div>
       ) : (
         !leave && (
-          <div className="glass-card rounded-2xl p-4 text-center border border-white/5">
+          <div className="glass-card rounded-2xl p-6 text-center border border-white/5 flex flex-col items-center gap-2">
+            <Shield className="h-6 w-6 text-muted-foreground/30" />
             <p className="text-xs text-muted-foreground">Καμία υπηρεσία για σήμερα</p>
+            <button 
+              onClick={onAddDuty}
+              className="text-[9px] font-black text-primary uppercase tracking-widest mt-1 hover:opacity-80 transition-opacity"
+            >
+              Προγραμματισμός στο ημερολόγιο →
+            </button>
           </div>
         )
       )}

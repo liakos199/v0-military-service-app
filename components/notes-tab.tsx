@@ -19,6 +19,7 @@ import {
   ChevronRight,
   CircleCheck,
   CircleX,
+  Search,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -309,13 +310,37 @@ function shuffleArray<T>(arr: T[]): T[] {
 export function NotesTab() {
   const [activeSection, setActiveSection] = useState<'notes' | 'guides'>('notes')
 
+  const [searchQuery, setSearchQuery] = useState('')
+
   return (
     <div className="flex flex-col h-full">
       {/* HEADER - Always Visible */}
       <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Προσωπικές σημειώσεις & εγχειρίδια</p>
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Προσωπικές σημειώσεις & εγχειρίδια</p>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="relative mb-3">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={activeSection === 'notes' ? "Αναζήτηση σημειώσεων..." : "Αναζήτηση εγχειριδίων..."}
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-secondary/50 border border-white/5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 transition-colors"
+          />
+          {searchQuery && (
+            <button 
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              <X className="h-3 w-3 text-muted-foreground" />
+            </button>
+          )}
         </div>
 
         {/* Section Toggle */}
@@ -355,15 +380,15 @@ export function NotesTab() {
 
       {/* CONTENT - Scrollable */}
       <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
-        {activeSection === 'notes' && <NotesSection />}
-        {activeSection === 'guides' && <GuidesSection />}
+        {activeSection === 'notes' && <NotesSection searchQuery={searchQuery} />}
+        {activeSection === 'guides' && <GuidesSection searchQuery={searchQuery} />}
       </div>
     </div>
   )
 }
 
 /* ========== NOTES SECTION ========== */
-function NotesSection() {
+function NotesSection({ searchQuery }: { searchQuery: string }) {
   const [notes, setNotes] = useLocalStorage<NoteEntry[]>('fantaros-notes', [])
   const [showAdd, setShowAdd] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -384,6 +409,15 @@ function NotesSection() {
     setNotes(notes.map((n) => (n.id === id ? { ...n, title: editTitle, content: editContent } : n)))
     setEditingId(null)
   }
+
+  const filteredNotes = useMemo(() => {
+    if (!searchQuery.trim()) return notes
+    const q = searchQuery.toLowerCase()
+    return notes.filter(n => 
+      n.title?.toLowerCase().includes(q) || 
+      n.content.toLowerCase().includes(q)
+    )
+  }, [notes, searchQuery])
 
   return (
     <div className="flex flex-col gap-3">
@@ -410,14 +444,16 @@ function NotesSection() {
         <AddNoteForm onAdd={handleAdd} onCancel={() => setShowAdd(false)} />
       </FullscreenModal>
 
-      {notes.length === 0 ? (
+      {filteredNotes.length === 0 ? (
         <div className="glass-card rounded-2xl p-6 text-center border border-white/5">
           <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">Δεν υπάρχουν σημειώσεις</p>
+          <p className="text-sm text-muted-foreground">
+            {searchQuery ? 'Δεν βρέθηκαν σημειώσεις' : 'Δεν υπάρχουν σημειώσεις'}
+          </p>
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          {notes.map((note) => (
+          {filteredNotes.map((note) => (
             <div key={note.id} className="glass-card rounded-xl p-3 border border-white/5">
               <div className="flex items-start justify-between">
                 <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{formatGreekDate(note.date)}</p>
@@ -497,18 +533,35 @@ function NotesSection() {
 }
 
 /* ========== GUIDES SECTION ========== */
-function GuidesSection() {
+function GuidesSection({ searchQuery }: { searchQuery: string }) {
   const [expandedGuide, setExpandedGuide] = useState<string | null>(null)
   const [activeQuiz, setActiveQuiz] = useState<string | null>(null)
+
+  const filteredGuides = useMemo(() => {
+    if (!searchQuery.trim()) return MILITARY_GUIDES
+    const q = searchQuery.toLowerCase()
+    return MILITARY_GUIDES.filter(guide => 
+      guide.title.toLowerCase().includes(q) ||
+      guide.sections.some(section => 
+        section.heading.toLowerCase().includes(q) ||
+        section.items.some(item => item.toLowerCase().includes(q))
+      )
+    )
+  }, [searchQuery])
 
   return (
     <div className="flex flex-col gap-3">
       <p className="text-[10px] text-muted-foreground/70 leading-relaxed uppercase tracking-wider px-1">
-        Βασικές πληροφορίες & εγχειρίδια
+        {searchQuery ? `Αποτελέσματα αναζήτησης (${filteredGuides.length})` : 'Βασικές πληροφορίες & εγχειρίδια'}
       </p>
 
       <div className="flex flex-col gap-2">
-        {MILITARY_GUIDES.map((guide) => {
+        {filteredGuides.length === 0 ? (
+          <div className="glass-card rounded-2xl p-6 text-center border border-white/5">
+            <BookOpen className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <p className="text-sm text-muted-foreground">Δεν βρέθηκαν εγχειρίδια</p>
+          </div>
+        ) : filteredGuides.map((guide) => {
           const Icon = GUIDE_ICONS[guide.icon] || BookOpen
           const isExpanded = expandedGuide === guide.id
           const hasQuiz = !!GUIDE_QUIZZES[guide.id]

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { Search, X, Filter, SlidersHorizontal } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
@@ -15,8 +16,22 @@ export function ExpensesTab() {
   const [canteenCatalog, setCanteenCatalog] = useLocalStorage<CanteenCatalogItem[]>('fantaros-canteen-catalog', [])
   const [showAdd, setShowAdd] = useState(false)
   const [showCatalogManager, setShowCatalogManager] = useState(false)
+  
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showFilters, setShowFilters] = useState(false)
+  const [filterCategory, setFilterCategory] = useState<string | 'all'>('all')
 
-  const grandTotal = expenses.reduce((sum, e) => sum + e.amount, 0)
+  const filteredExpenses = useMemo(() => {
+    return expenses
+      .filter(e => {
+        const matchesSearch = !searchQuery || e.description.toLowerCase().includes(searchQuery.toLowerCase())
+        const matchesCategory = filterCategory === 'all' || e.category === filterCategory
+        return matchesSearch && matchesCategory
+      })
+      .sort((a, b) => b.date.localeCompare(a.date))
+  }, [expenses, searchQuery, filterCategory])
+
+  const grandTotal = filteredExpenses.reduce((sum, e) => sum + e.amount, 0)
 
   return (
     <div className="flex flex-col h-full">
@@ -55,10 +70,78 @@ export function ExpensesTab() {
       {/* CONTENT - Scrollable */}
       <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
         <div className="flex flex-col gap-3">
+          
+          {/* Search and Filter Bar */}
+          <div className="flex gap-2 mb-1">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Αναζήτηση εξόδων..."
+                className="w-full pl-9 pr-8 py-2 rounded-xl bg-secondary/50 border border-white/5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 transition-colors"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                >
+                  <X className="h-3 w-3 text-muted-foreground" />
+                </button>
+              )}
+            </div>
+            <button
+              onClick={() => {
+                hapticFeedback('light')
+                setShowFilters(!showFilters)
+              }}
+              className={cn(
+                "p-2 rounded-xl border transition-all flex items-center justify-center min-w-[40px]",
+                showFilters || filterCategory !== 'all' 
+                  ? "bg-primary/10 border-primary/30 text-primary" 
+                  : "bg-secondary/50 border-white/5 text-muted-foreground"
+              )}
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+            </button>
+          </div>
+
+          {/* Filter Options */}
+          {showFilters && (
+            <div className="glass-card rounded-xl p-3 border border-white/5 flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest px-1">Φιλτράρισμα ανά κατηγορία</p>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  onClick={() => setFilterCategory('all')}
+                  className={cn(
+                    "px-2.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all",
+                    filterCategory === 'all' ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+                  )}
+                >
+                  Όλα
+                </button>
+                {Object.entries(CANTEEN_CATEGORY_LABELS).map(([key, label]) => (
+                  <button
+                    key={key}
+                    onClick={() => setFilterCategory(key)}
+                    className={cn(
+                      "px-2.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all",
+                      filterCategory === key ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Summary Card - Simplified to only show Grand Total */}
           <div className="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-1 border border-primary/20 bg-primary/5">
-            <span className="text-[10px] font-black text-primary uppercase tracking-widest">Συνολικά Έξοδα</span>
+            <span className="text-[10px] font-black text-primary uppercase tracking-widest">
+              {searchQuery || filterCategory !== 'all' ? 'Σύνολο Αναζήτησης' : 'Συνολικά Έξοδα'}
+            </span>
             <span className="text-3xl font-black text-foreground tracking-tighter">{grandTotal.toFixed(2)}€</span>
           </div>
 
@@ -97,19 +180,29 @@ export function ExpensesTab() {
           </FullscreenModal>
 
           {/* Expense List */}
-          {expenses.length === 0 ? (
+          {filteredExpenses.length === 0 ? (
             <div className="glass-card rounded-2xl p-6 text-center flex flex-col items-center gap-2 border border-white/5">
-              <p className="text-sm text-muted-foreground">Δεν υπάρχουν έξοδα</p>
+              <p className="text-sm text-muted-foreground">
+                {searchQuery || filterCategory !== 'all' ? 'Δεν βρέθηκαν έξοδα' : 'Δεν υπάρχουν έξοδα'}
+              </p>
+              {!searchQuery && filterCategory === 'all' && (
+                <button
+                  onClick={() => setShowAdd(true)}
+                  className="text-[10px] font-black text-primary uppercase tracking-widest mt-1"
+                >
+                  Προσθήκη πρώτου εξόδου
+                </button>
+              )}
             </div>
           ) : (
             <div className="flex flex-col gap-2">
-              <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1 mt-1">
-                Ιστορικό ({expenses.length})
-              </h2>
+              <div className="flex items-center justify-between px-1 mt-1">
+                <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                  {searchQuery || filterCategory !== 'all' ? 'Αποτελέσματα' : 'Ιστορικό'} ({filteredExpenses.length})
+                </h2>
+              </div>
               <div className="flex flex-col gap-1.5">
-                {expenses
-                  .sort((a, b) => b.date.localeCompare(a.date))
-                  .map((expense) => (
+                {filteredExpenses.map((expense) => (
                     <div key={expense.id} className="glass-card rounded-xl p-2.5 flex items-center justify-between border border-white/5 hover:border-primary/30 transition-colors group">
                       <div className="flex-1 min-w-0">
                         <span className="text-sm font-bold text-foreground truncate block">
