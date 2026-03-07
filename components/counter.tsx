@@ -1,34 +1,34 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useMotionValue, useTransform, motion } from 'framer-motion'
+import { useEffect, useState, useRef } from 'react'
+import { animate } from 'framer-motion'
 
 interface CounterProps {
   value: number
   duration?: number
+  decimals?: number
 }
 
-export function Counter({ value, duration = 1.5 }: CounterProps) {
+export function Counter({ value, duration = 1.5, decimals = 0 }: CounterProps) {
   const [displayValue, setDisplayValue] = useState(0)
-  const motionValue = useMotionValue(0)
-  const rounded = useTransform(motionValue, (latest) => Math.round(latest))
+  const prevValueRef = useRef(0)
 
   useEffect(() => {
-    const controls = motionValue.animate(value, {
+    const controls = animate(prevValueRef.current, value, {
       duration,
       ease: 'easeOut',
+      onUpdate: (latest) => {
+        setDisplayValue(Number(latest.toFixed(decimals)))
+      },
+      onComplete: () => {
+        prevValueRef.current = value
+      }
     })
-
     return () => controls.stop()
-  }, [value, motionValue, duration])
+  }, [value, duration, decimals])
 
-  useEffect(() => {
-    const unsubscribe = rounded.onChange((latest) => {
-      setDisplayValue(latest)
-    })
-
-    return () => unsubscribe()
-  }, [rounded])
-
-  return <span>{displayValue}</span>
+  return <span>{displayValue.toLocaleString(undefined, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  })}</span>
 }

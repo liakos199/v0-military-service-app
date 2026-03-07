@@ -216,7 +216,7 @@ export function ServiceTab() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-3xl font-black text-foreground tracking-tighter">
-                  <Counter value={Math.round(percentage * 10) / 10} duration={1.5} /><span className="text-sm text-muted-foreground ml-0.5">%</span>
+                  <Counter value={percentage} duration={1.5} decimals={1} /><span className="text-sm text-muted-foreground ml-0.5">%</span>
                 </span>
                 <span className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-0.5">ΠΡΟΟΔΟΣ</span>
               </div>
