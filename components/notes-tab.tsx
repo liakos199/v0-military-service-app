@@ -534,15 +534,15 @@ function GuidesSection() {
               <div className="px-4 pb-4 flex flex-col gap-4">
                 {guide.sections.map((section, sIdx) => (
                   <div key={sIdx}>
-                    <h4 className="text-xs font-black text-primary-foreground uppercase tracking-wider mb-2">{section.heading}</h4>
+                    <h4 className="text-xs font-black text-accent uppercase tracking-wider mb-2">{section.heading}</h4>
                     <div className="flex flex-col gap-1.5">
                       {section.items.map((item, iIdx) => (
                         <div
                           key={iIdx}
-                          className="flex items-start gap-2 py-1.5 px-3 rounded-lg bg-secondary"
+                          className="flex items-start gap-2 py-1.5 px-3 rounded-lg bg-secondary/40 border border-white/5"
                         >
-                          <span className="w-1 h-1 rounded-full bg-muted-foreground mt-1.5 flex-shrink-0" />
-                          <p className="text-xs text-secondary-foreground leading-relaxed">{item}</p>
+                          <span className="w-1 h-1 rounded-full bg-accent/60 mt-1.5 flex-shrink-0" />
+                          <p className="text-xs text-foreground leading-relaxed">{item}</p>
                         </div>
                       ))}
                     </div>
