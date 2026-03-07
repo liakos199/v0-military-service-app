@@ -6,12 +6,6 @@ import {
   ChevronRight,
   Plus,
   Trash2,
-  Shield,
-  Home,
-  Palmtree,
-  UtensilsCrossed,
-  Footprints,
-  HelpCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -30,14 +24,7 @@ import { DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS, GREEK_MONTHS } from '@/lib/types'
 
 type ActionType = 'duty' | 'leave'
 
-const DUTY_ICONS: Record<DutyType, typeof Shield> = {
-  guard: Shield,
-  barracks: Home,
-  officer: Shield,
-  patrol: Footprints,
-  kitchen: UtensilsCrossed,
-  other: HelpCircle,
-}
+// Icons removed for professional appearance - using text labels instead
 
 export function CalendarTab() {
   const [duties, setDuties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
@@ -302,13 +289,11 @@ export function CalendarTab() {
         subtitle="Τι θέλεις να προσθέσεις;"
       >
         <ActionSheetItem
-          icon={<Shield className="h-5 w-5" />}
           title="Προσθήκη Υπηρεσίας"
           subtitle="Σκοπιά, Θαλαμοφύλακας, κ.ά."
           onClick={() => setShowAddDuty(true)}
         />
         <ActionSheetItem
-          icon={<Palmtree className="h-5 w-5" />}
           title="Προσθήκη Άδειας"
           subtitle="Κανονική, Σπουδαστική, κ.ά."
           onClick={() => setShowAddLeave(true)}
@@ -420,7 +405,6 @@ function MonthlySummary({
         {hasDuties && (
           <div className="flex-1 rounded-xl bg-chart-3/10 p-3 border border-chart-3/20">
             <div className="flex items-center gap-2 mb-2">
-              <Shield className="h-4 w-4 text-chart-3" />
               <span className="text-xs font-black text-chart-3 uppercase tracking-wider">
                 {stats.totalDuties} υπηρεσ{stats.totalDuties === 1 ? 'ία' : 'ίες'}
               </span>
@@ -444,7 +428,6 @@ function MonthlySummary({
         {hasLeaves && (
           <div className="flex-1 rounded-xl bg-chart-2/10 p-3 border border-chart-2/20">
             <div className="flex items-center gap-2 mb-2">
-              <Palmtree className="h-4 w-4 text-chart-2" />
               <span className="text-xs font-black text-chart-2 uppercase tracking-wider">
                 {stats.leaveDays} ημέρ{stats.leaveDays === 1 ? 'α' : 'ες'}
               </span>
@@ -510,7 +493,6 @@ function UpcomingEvents({
         const isToday = item.date === today
         if (item.type === 'duty') {
           const duty = item.entry as DutyEntry
-          const Icon = DUTY_ICONS[duty.type]
           return (
             <div
               key={duty.id}
@@ -520,9 +502,6 @@ function UpcomingEvents({
               )}
             >
               <div className={cn('w-1 h-10 rounded-full flex-shrink-0', isToday ? 'bg-primary' : 'bg-chart-3')} />
-              <div className="w-9 h-9 rounded-lg bg-chart-3/20 flex items-center justify-center flex-shrink-0">
-                <Icon className="h-4 w-4 text-chart-3" />
-              </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-foreground">{DUTY_TYPE_LABELS[duty.type]}</span>
@@ -553,9 +532,6 @@ function UpcomingEvents({
               className="glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5"
             >
               <div className="w-1 h-10 rounded-full flex-shrink-0 bg-chart-2" />
-              <div className="w-9 h-9 rounded-lg bg-chart-2/20 flex items-center justify-center flex-shrink-0">
-                <Palmtree className="h-4 w-4 text-chart-2" />
-              </div>
               <div className="flex-1 min-w-0">
                 <span className="text-sm font-semibold text-foreground">{LEAVE_TYPE_LABELS[leave.type]}</span>
                 <p className="text-xs text-muted-foreground mt-0.5">
