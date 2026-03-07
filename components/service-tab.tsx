@@ -259,8 +259,8 @@ function StatCard({
 }) {
   return (
     <div className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl bg-secondary/30 border border-white/5 hover:bg-secondary/50 transition-colors group">
-      <div className="p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-        <span className="text-xs font-black text-primary">{label}</span>
+      <div>
+        <span className="text-[9px] font-black text-primary">{label}</span>
       </div>
       <div className="flex flex-col items-center">
         <span className="text-lg font-black text-foreground leading-none tracking-tighter">{value}</span>
