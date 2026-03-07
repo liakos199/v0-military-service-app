@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
+import { Counter } from '@/components/counter'
 import {
   hapticFeedback,
   formatGreekDate,
@@ -215,7 +216,7 @@ export function ServiceTab() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-3xl font-black text-foreground tracking-tighter">
-                  {percentage.toFixed(1)}<span className="text-sm text-muted-foreground ml-0.5">%</span>
+                  <Counter value={Math.round(percentage * 10) / 10} duration={1.5} /><span className="text-sm text-muted-foreground ml-0.5">%</span>
                 </span>
                 <span className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-0.5">ΠΡΟΟΔΟΣ</span>
               </div>
@@ -289,7 +290,9 @@ function StatCard({
         <span className="text-[9px] font-black text-primary">{label}</span>
       </div>
       <div className="flex flex-col items-center">
-        <span className="text-lg font-black text-foreground leading-none tracking-tighter">{value}</span>
+        <span className="text-lg font-black text-foreground leading-none tracking-tighter">
+          <Counter value={parseInt(value)} duration={1.5} />
+        </span>
         <span className="text-[7px] font-black text-muted-foreground leading-none mt-1 tracking-[0.1em] uppercase">{unit}</span>
       </div>
     </motion.div>
