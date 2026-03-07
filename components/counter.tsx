@@ -9,24 +9,26 @@ interface CounterProps {
 }
 
 export function Counter({ value, duration = 1.5 }: CounterProps) {
-  const [isVisible, setIsVisible] = useState(false)
+  const [displayValue, setDisplayValue] = useState(0)
   const motionValue = useMotionValue(0)
   const rounded = useTransform(motionValue, (latest) => Math.round(latest))
 
   useEffect(() => {
-    setIsVisible(true)
-  }, [])
-
-  useEffect(() => {
-    if (!isVisible) return
-
     const controls = motionValue.animate(value, {
       duration,
       ease: 'easeOut',
     })
 
     return () => controls.stop()
-  }, [value, isVisible, motionValue, duration])
+  }, [value, motionValue, duration])
 
-  return <motion.span>{rounded}</motion.span>
+  useEffect(() => {
+    const unsubscribe = rounded.onChange((latest) => {
+      setDisplayValue(latest)
+    })
+
+    return () => unsubscribe()
+  }, [rounded])
+
+  return <span>{displayValue}</span>
 }
