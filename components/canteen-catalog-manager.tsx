@@ -19,7 +19,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
   const [newLabel, setNewLabel] = useState('')
   const [newPrice, setNewPrice] = useState('')
   const [newCategory, setNewCategory] = useState<'food' | 'beverage' | 'snack' | 'other'>('food')
-  const [expandedCategory, setExpandedCategory] = useState<'food' | 'beverage' | 'snack' | 'other' | null>('food')
+  const [expandedCategory, setExpandedCategory] = useState<'food' | 'beverage' | 'snack' | 'other' | null>(null)
 
   const startEdit = (item: CanteenCatalogItem) => {
     hapticFeedback('light')
@@ -86,8 +86,8 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         Προσθέστε και διαχειρίστε τα προϊόντα του Κ.Ψ.Μ. που θα εμφανίζονται ως επιλογές κατά την καταχώρηση εξόδων.
       </p>
 
-      {/* Add new item - Compact section */}
-      <div className="bg-primary border border-primary rounded-lg p-3 flex flex-col gap-2">
+      {/* Add new item - Redesigned with reduced opacity and better contrast */}
+      <div className="glass-card rounded-lg p-3 flex flex-col gap-2 border border-accent/30 bg-gradient-to-br from-accent/5 to-accent/5">
         <h3 className="text-sm font-semibold text-foreground">Προσθήκη προϊόντος</h3>
         
         <div className="flex gap-2">
@@ -96,7 +96,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
             value={newLabel}
             onChange={(e) => setNewLabel(e.target.value)}
             placeholder="Όνομα"
-            className="flex-1 px-2.5 py-2 rounded-lg bg-background text-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground"
+            className="flex-1 px-2.5 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
           />
           <div className="relative w-24">
             <input
@@ -106,7 +106,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
               value={newPrice}
               onChange={(e) => setNewPrice(e.target.value)}
               placeholder="0.00"
-              className="w-full px-2.5 py-2 rounded-lg bg-background text-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground pr-6"
+              className="w-full px-2.5 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground pr-6 focus:border-primary focus:outline-none transition-colors"
             />
             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">€</span>
           </div>
@@ -124,8 +124,8 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
               className={cn(
                 'flex-1 px-2 py-1.5 rounded text-[11px] font-medium min-h-[32px] transition-colors border',
                 newCategory === cat
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-background text-foreground border-border'
+                  ? 'bg-accent text-accent-foreground border-accent'
+                  : 'bg-secondary/50 text-foreground border-border'
               )}
             >
               {CANTEEN_CATEGORY_LABELS[cat]}
@@ -136,7 +136,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         <button
           onClick={handleAdd}
           disabled={!newLabel.trim() || !newPrice || isNaN(parseFloat(newPrice)) || parseFloat(newPrice) <= 0}
-          className="w-full py-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[40px] disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+          className="w-full py-2 rounded-lg bg-accent text-accent-foreground font-semibold text-sm min-h-[40px] disabled:opacity-50 disabled:cursor-not-allowed transition-opacity hover:bg-accent/90"
         >
           Προσθήκη
         </button>
@@ -151,7 +151,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
           const isExpanded = expandedCategory === category
           
           return (
-            <div key={category} className="bg-secondary/20 rounded-lg overflow-hidden">
+            <div key={category} className="glass-card rounded-lg overflow-hidden border border-white/5">
               <button
                 onClick={() => {
                   hapticFeedback('light')
@@ -179,14 +179,14 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                     categoryItems.map((item) => (
                       <div key={item.id}>
                         {editingId === item.id && editData ? (
-                          <div className="flex flex-col gap-2 p-2 bg-background rounded border border-border">
+                          <div className="flex flex-col gap-2 p-2 bg-secondary rounded border border-border">
                             <div className="flex gap-2">
                               <input
                                 type="text"
                                 value={editData.name}
                                 onChange={(e) => setEditData({ ...editData, name: e.target.value })}
                                 placeholder="Όνομα"
-                                className="flex-1 px-2 py-1.5 rounded bg-secondary text-foreground text-sm min-h-[36px] border border-border placeholder:text-muted-foreground"
+                                className="flex-1 px-2 py-1.5 rounded bg-background text-foreground text-sm min-h-[36px] border border-border placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
                               />
                               <div className="relative w-20">
                                 <input
@@ -196,7 +196,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                                   value={editData.price}
                                   onChange={(e) => setEditData({ ...editData, price: parseFloat(e.target.value) || 0 })}
                                   placeholder="0.00"
-                                  className="w-full px-2 py-1.5 rounded bg-secondary text-foreground text-sm min-h-[36px] border border-border placeholder:text-muted-foreground pr-6"
+                                  className="w-full px-2 py-1.5 rounded bg-background text-foreground text-sm min-h-[36px] border border-border placeholder:text-muted-foreground pr-6 focus:border-primary focus:outline-none transition-colors"
                                 />
                                 <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">€</span>
                               </div>
@@ -211,7 +211,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                               <button
                                 onClick={saveEdit}
                                 disabled={!editData.name.trim() || editData.price <= 0}
-                                className="flex-1 py-1.5 rounded bg-primary text-primary-foreground text-xs font-semibold min-h-[32px] disabled:opacity-50 transition-opacity"
+                                className="flex-1 py-1.5 rounded bg-accent text-accent-foreground text-xs font-semibold min-h-[32px] disabled:opacity-50 transition-opacity hover:bg-accent/90"
                               >
                                 Αποθήκευση
                               </button>
@@ -225,7 +225,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                             </div>
                             <button
                               onClick={() => startEdit(item)}
-                              className="px-2 py-1 rounded text-xs text-foreground hover:bg-secondary transition-colors"
+                              className="px-2 py-1 rounded text-xs text-accent hover:bg-accent/10 transition-colors font-medium"
                               aria-label={`Επεξεργασία ${item.name}`}
                             >
                               Επ.
@@ -255,13 +255,13 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
       <div className="flex gap-2 pt-2 border-t border-border/50">
         <button
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-lg bg-secondary text-foreground font-medium text-sm min-h-[44px] hover:bg-secondary/80 transition-colors"
+          className="flex-1 py-2.5 rounded-lg bg-secondary/50 text-foreground font-medium text-sm min-h-[44px] hover:bg-secondary transition-colors border border-white/5"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSave}
-          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm min-h-[44px] hover:bg-primary transition-colors"
+          className="flex-1 py-2.5 rounded-lg bg-accent text-accent-foreground font-semibold text-sm min-h-[44px] hover:bg-accent/90 transition-colors"
         >
           Αποθήκευση
         </button>

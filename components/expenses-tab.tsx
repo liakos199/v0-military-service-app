@@ -64,19 +64,24 @@ export function ExpensesTab() {
       <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
         <div className="flex flex-col gap-3">
 
-          {/* Summary Cards - Compact Layout */}
+          {/* Summary Cards - Redesigned with better contrast */}
           <div className="grid grid-cols-3 gap-2">
-            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-white/5">
+            {/* Canteen Total */}
+            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-white/5 hover:border-primary/50 transition-colors">
               <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">ΚΨΜ</span>
               <span className="text-lg font-black text-foreground">{canteenTotal.toFixed(2)}€</span>
             </div>
-            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-white/5">
+            
+            {/* Other Total */}
+            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-white/5 hover:border-primary/50 transition-colors">
               <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Γενικά</span>
               <span className="text-lg font-black text-foreground">{otherTotal.toFixed(2)}€</span>
             </div>
-            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-primary bg-primary">
-              <span className="text-[10px] font-black text-primary-foreground uppercase tracking-wider">Σύνολο</span>
-              <span className="text-lg font-black text-primary-foreground">{grandTotal.toFixed(2)}€</span>
+            
+            {/* Grand Total - Redesigned with accent color instead of primary */}
+            <div className="glass-card rounded-xl p-3 flex flex-col gap-1 border border-accent/50 bg-gradient-to-br from-accent/10 to-accent/5 hover:border-accent transition-colors">
+              <span className="text-[10px] font-black text-accent uppercase tracking-wider">Σύνολο</span>
+              <span className="text-lg font-black text-accent">{grandTotal.toFixed(2)}€</span>
             </div>
           </div>
 
@@ -242,8 +247,8 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
 
       {/* Canteen Catalog Selection */}
       {category === 'canteen' && canteenCatalog.length > 0 && (
-        <div className="glass-card rounded-xl p-3 border border-primary flex flex-col gap-2">
-          <h3 className="text-xs font-black text-primary-foreground uppercase tracking-tight">Κατάλογος Κ.Ψ.Μ.</h3>
+        <div className="glass-card rounded-xl p-3 border border-accent/30 flex flex-col gap-2">
+          <h3 className="text-xs font-black text-accent uppercase tracking-tight">Κατάλογος Κ.Ψ.Μ.</h3>
           
           {selectedCatalogCategory === null ? (
             // Show categories
@@ -261,8 +266,8 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                     }}
                     className="bg-secondary/50 border border-white/5 rounded-lg p-2.5 flex items-center justify-between hover:border-primary transition-colors text-sm"
                   >
-                    <span className="font-black text-foreground tracking-tight">{CANTEEN_CATEGORY_LABELS[cat]}</span>
-                    <span className="text-xs font-black text-primary-foreground bg-primary px-2 py-0.5 rounded border border-primary">
+                    <span className="text-foreground font-medium">{CANTEEN_CATEGORY_LABELS[cat]}</span>
+                    <span className="text-muted-foreground text-xs font-black">
                       {itemsInCat.length}
                     </span>
                   </button>
@@ -278,7 +283,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                   hapticFeedback('light')
                   setSelectedCatalogCategory(null)
                 }}
-                className="text-primary-foreground text-sm font-black uppercase tracking-tight hover:text-primary-foreground/80 transition-colors py-1"
+                className="text-accent text-sm font-black uppercase tracking-tight hover:text-accent/80 transition-colors py-1"
               >
                 ← Πίσω
               </button>
@@ -291,12 +296,12 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                     className={cn(
                       'bg-secondary/50 border rounded-lg p-2.5 flex items-center justify-between hover:border-primary transition-all text-sm',
                       description === item.name && amount === item.price.toFixed(2)
-                        ? 'border-primary bg-primary ring-1 ring-primary'
+                        ? 'border-primary bg-primary/10 ring-1 ring-primary'
                         : 'border-white/5'
                     )}
                   >
                     <span className="font-black text-foreground tracking-tight">{item.name}</span>
-                    <span className="font-black text-primary-foreground">{item.price.toFixed(2)}€</span>
+                    <span className="font-black text-accent">{item.price.toFixed(2)}€</span>
                   </button>
                 ))}
               </div>
