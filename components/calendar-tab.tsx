@@ -8,14 +8,10 @@ import {
   Trash2,
   Shield,
   Home,
-  Eye,
-  EyeOff,
   Palmtree,
   UtensilsCrossed,
   Footprints,
   HelpCircle,
-  Clock,
-  X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -55,7 +51,6 @@ export function CalendarTab() {
   const [showActionSheet, setShowActionSheet] = useState(false)
   const [showAddDuty, setShowAddDuty] = useState(false)
   const [showAddLeave, setShowAddLeave] = useState(false)
-  const [showDayDetail, setShowDayDetail] = useState(false)
 
   // Build a map of date -> events for quick lookup
   const dateEventsMap = useMemo(() => {
@@ -109,13 +104,7 @@ export function CalendarTab() {
     const d = String(day).padStart(2, '0')
     const dateStr = `${viewYear}-${m}-${d}`
     setSelectedDate(dateStr)
-
-    const events = dateEventsMap[dateStr]
-    if (events && (events.duties.length > 0 || events.leaves.length > 0)) {
-      setShowDayDetail(true)
-    } else {
-      setShowActionSheet(true)
-    }
+    setShowActionSheet(true)
   }
 
   const handleAddDuty = useCallback(
@@ -153,8 +142,6 @@ export function CalendarTab() {
   )
 
   const greekDaysStartMonday = ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
-
-  const selectedEvents = selectedDate ? dateEventsMap[selectedDate] : null
 
   return (
     <div className="flex flex-col h-full">
@@ -285,6 +272,15 @@ export function CalendarTab() {
         </div>
       </div>
 
+      {/* Upcoming Events - MOVED ABOVE SUMMARY */}
+      <UpcomingEvents
+        duties={duties}
+        leaves={leaves}
+        today={today}
+        onDeleteDuty={handleDeleteDuty}
+        onDeleteLeave={handleDeleteLeave}
+      />
+
       {/* Monthly Summary */}
       <div className="glass-card rounded-2xl p-4 border border-white/5">
         <MonthlySummary
@@ -295,19 +291,6 @@ export function CalendarTab() {
       />
 
       </div>
-
-      {/* Upcoming Events */}
-      <UpcomingEvents
-        duties={duties}
-        leaves={leaves}
-        today={today}
-        onDeleteDuty={handleDeleteDuty}
-        onDeleteLeave={handleDeleteLeave}
-        onSelectDate={(date) => {
-          setSelectedDate(date)
-          setShowDayDetail(true)
-        }}
-      />
 
       {/* Action Sheet - Choose what to add */}
       </div>
@@ -369,26 +352,6 @@ export function CalendarTab() {
             setShowActionSheet(false)
           }}
         />
-      </FullscreenModal>
-
-      {/* Day Detail Modal */}
-      <FullscreenModal
-        isOpen={showDayDetail}
-        onClose={() => setShowDayDetail(false)}
-        title={selectedDate ? formatGreekDate(selectedDate) : ''}
-      >
-        {selectedDate && (
-          <DayDetailView
-            date={selectedDate}
-            events={selectedEvents}
-            onDeleteDuty={handleDeleteDuty}
-            onDeleteLeave={handleDeleteLeave}
-            onAddNew={() => {
-              setShowDayDetail(false)
-              setShowActionSheet(true)
-            }}
-          />
-        )}
       </FullscreenModal>
     </div>
   )
@@ -513,14 +476,12 @@ function UpcomingEvents({
   today,
   onDeleteDuty,
   onDeleteLeave,
-  onSelectDate,
 }: {
   duties: DutyEntry[]
   leaves: LeaveEntry[]
   today: string
   onDeleteDuty: (id: string) => void
   onDeleteLeave: (id: string) => void
-  onSelectDate: (date: string) => void
 }) {
   const upcoming = useMemo(() => {
     const items: { type: 'duty' | 'leave'; date: string; entry: DutyEntry | LeaveEntry }[] = []
@@ -536,7 +497,6 @@ function UpcomingEvents({
   if (upcoming.length === 0) {
     return (
       <div className="glass-card rounded-2xl p-6 text-center border border-white/5">
-        <Clock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
         <p className="text-sm text-muted-foreground">Δεν υπάρχουν προσεχή γεγονότα</p>
         <p className="text-xs text-muted-foreground mt-1">Πάτησε μια ημερομηνία για να προσθέσεις</p>
       </div>
@@ -552,11 +512,10 @@ function UpcomingEvents({
           const duty = item.entry as DutyEntry
           const Icon = DUTY_ICONS[duty.type]
           return (
-            <button
+            <div
               key={duty.id}
-              onClick={() => onSelectDate(duty.date)}
               className={cn(
-                'glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5 hover:border-primary transition-colors',
+                'glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5',
                 isToday && 'ring-1 ring-primary'
               )}
             >
@@ -577,15 +536,21 @@ function UpcomingEvents({
                   {formatGreekDate(duty.date)} &middot; {duty.startTime} - {duty.endTime}
                 </p>
               </div>
-            </button>
+              <button
+                onClick={() => onDeleteDuty(duty.id)}
+                className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive flex-shrink-0 hover:bg-destructive/10 transition-colors"
+                aria-label="Διαγραφή"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
           )
         } else {
           const leave = item.entry as LeaveEntry
           return (
-            <button
+            <div
               key={leave.id}
-              onClick={() => onSelectDate(leave.startDate)}
-              className="glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5 hover:border-accent/20 transition-colors"
+              className="glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5"
             >
               <div className="w-1 h-10 rounded-full flex-shrink-0 bg-chart-2" />
               <div className="w-9 h-9 rounded-lg bg-chart-2/20 flex items-center justify-center flex-shrink-0">
@@ -597,155 +562,17 @@ function UpcomingEvents({
                   {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} &middot; {leave.days} ημ.
                 </p>
               </div>
-            </button>
-          )
-        }
-      })}
-    </div>
-  )
-}
-
-/* ---------- Day Detail View ---------- */
-function DayDetailView({
-  date,
-  events,
-  onDeleteDuty,
-  onDeleteLeave,
-  onAddNew,
-}: {
-  date: string
-  events: { duties: DutyEntry[]; leaves: LeaveEntry[] } | null | undefined
-  onDeleteDuty: (id: string) => void
-  onDeleteLeave: (id: string) => void
-  onAddNew: () => void
-}) {
-  const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({})
-
-  const togglePassword = (id: string) => {
-    hapticFeedback('light')
-    setShowPasswords((prev) => ({ ...prev, [id]: !prev[id] }))
-  }
-
-  const hasDuties = events?.duties && events.duties.length > 0
-  const hasLeaves = events?.leaves && events.leaves.length > 0
-
-  return (
-    <div className="flex flex-col gap-4">
-      {/* Duties */}
-      {hasDuties && (
-        <div className="flex flex-col gap-2">
-          <h3 className="text-xs font-black text-muted-foreground uppercase tracking-widest">
-            Υπηρεσίες
-          </h3>
-          {events!.duties.map((duty) => {
-            const Icon = DUTY_ICONS[duty.type]
-            const isGuard = duty.type === 'guard'
-            const hasPassword = isGuard && (duty.password || duty.countersign)
-            const visible = showPasswords[duty.id]
-
-            return (
-              <div key={duty.id} className="glass-card rounded-xl p-4 border border-white/5">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-chart-3/20 flex items-center justify-center flex-shrink-0">
-                    <Icon className="h-5 w-5 text-chart-3" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-foreground">{DUTY_TYPE_LABELS[duty.type]}</p>
-                    <p className="text-xs text-muted-foreground">{duty.startTime} - {duty.endTime}</p>
-                    {duty.notes && (
-                      <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{duty.notes}</p>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => onDeleteDuty(duty.id)}
-                    className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive flex-shrink-0"
-                    aria-label="Διαγραφή"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-
-                {/* Password display for guard duty */}
-                {isGuard && hasPassword && (
-                  <div className="mt-3 pt-3 border-t border-border">
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
-                        Σύνθημα / Παρασύνθημα
-                      </p>
-                      <button
-                        onClick={() => togglePassword(duty.id)}
-                        className="p-1.5 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center"
-                        aria-label={visible ? 'Απόκρυψη' : 'Εμφάνιση'}
-                      >
-                        {visible ? (
-                          <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-3.5 w-3.5 text-muted-foreground" />
-                        )}
-                      </button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="p-2 rounded-lg bg-secondary">
-                        <p className="text-[9px] text-muted-foreground uppercase mb-0.5">Σύνθημα</p>
-                        <p className={cn('text-sm font-mono font-bold', visible ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
-                          {duty.password || '---'}
-                        </p>
-                      </div>
-                      <div className="p-2 rounded-lg bg-secondary">
-                        <p className="text-[9px] text-muted-foreground uppercase mb-0.5">Παρασύνθημα</p>
-                        <p className={cn('text-sm font-mono font-bold', visible ? 'text-foreground' : 'text-foreground blur-sm select-none')}>
-                          {duty.countersign || '---'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Leaves */}
-      {hasLeaves && (
-        <div className="flex flex-col gap-2">
-          <h3 className="text-xs font-black text-muted-foreground uppercase tracking-wider">
-            Άδειες
-          </h3>
-          {events!.leaves.map((leave) => (
-            <div key={leave.id} className="glass-card rounded-xl p-4 flex items-center gap-3 border border-white/5">
-              <div className="w-10 h-10 rounded-lg bg-chart-2/20 flex items-center justify-center flex-shrink-0">
-                <Palmtree className="h-5 w-5 text-chart-2" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-foreground">{LEAVE_TYPE_LABELS[leave.type]}</p>
-                <p className="text-xs text-muted-foreground">
-                  {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} &middot; {leave.days} ημ.
-                </p>
-                {leave.notes && (
-                  <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{leave.notes}</p>
-                )}
-              </div>
               <button
                 onClick={() => onDeleteLeave(leave.id)}
-                className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive flex-shrink-0"
+                className="p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive flex-shrink-0 hover:bg-destructive/10 transition-colors"
                 aria-label="Διαγραφή"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
             </div>
-          ))}
-        </div>
-      )}
-
-      {/* Add New Button */}
-      <button
-        onClick={onAddNew}
-        className="flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[48px] hover:bg-primary transition-colors"
-      >
-        <Plus className="h-4 w-4" />
-        Προσθήκη
-      </button>
+          )
+        }
+      })}
     </div>
   )
 }
@@ -810,83 +637,91 @@ function AddDutyForm({
         </div>
       </div>
 
-      <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+          Ημερομηνία
+        </label>
+        <GreekDatePicker value={date} onChange={setDate} />
+      </div>
 
       <div className="grid grid-cols-2 gap-2">
-        <div className="min-w-0">
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Αρχή</label>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+            Ώρα Έναρξης
+          </label>
           <input
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
           />
         </div>
-        <div className="min-w-0">
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τέλος</label>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+            Ώρα Λήξης
+          </label>
           <input
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
           />
         </div>
       </div>
 
-      {/* Password fields for guard duty */}
-      {type === 'guard' && (
-        <div className="p-2.5 rounded-lg bg-secondary/30 border border-border/50 flex flex-col gap-2">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
-            <Shield className="h-3 w-3 text-primary" />
-            Σύνθημα & Παρασύνθημα
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="block text-[9px] font-bold uppercase tracking-tighter text-muted-foreground mb-0.5">Σύνθημα</label>
-              <input
-                type="text"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Σύνθημα..."
-                className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border font-mono placeholder:text-muted-foreground/50 placeholder:font-sans"
-              />
-            </div>
-            <div>
-              <label className="block text-[9px] font-bold uppercase tracking-tighter text-muted-foreground mb-0.5">Παρασύνθημα</label>
-              <input
-                type="text"
-                value={countersign}
-                onChange={(e) => setCountersign(e.target.value)}
-                placeholder="Παρασύνθημα..."
-                className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border font-mono placeholder:text-muted-foreground/50 placeholder:font-sans"
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Σημειώσεις</label>
-        <input
-          type="text"
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+          Σημειώσεις
+        </label>
+        <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Προαιρετικό..."
-          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary"
+          placeholder="Προσθήκη σημειώσεων..."
+          className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm resize-none"
+          rows={3}
         />
       </div>
 
-      <div className="mt-auto flex gap-2 pt-4">
+      {type === 'guard' && (
+        <>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+              Σύνθημα
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Σύνθημα"
+              className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+              Παρασύνθημα
+            </label>
+            <input
+              type="password"
+              value={countersign}
+              onChange={(e) => setCountersign(e.target.value)}
+              placeholder="Παρασύνθημα"
+              className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
+            />
+          </div>
+        </>
+      )}
+
+      <div className="flex gap-2 mt-auto pt-4">
         <button
           onClick={onCancel}
-          className="flex-1 py-3 rounded-md bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary/80 transition-colors"
+          className="flex-1 px-4 py-3 rounded-xl bg-secondary text-foreground font-semibold text-sm min-h-[44px] hover:bg-secondary/80 transition-colors"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
-          disabled={!date}
-          className="flex-1 py-3 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40 hover:bg-primary/90 transition-colors"
+          className="flex-1 px-4 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[44px] hover:bg-primary/90 transition-colors"
         >
           Προσθήκη
         </button>
@@ -907,21 +742,13 @@ function AddLeaveForm({
 }) {
   const [type, setType] = useState<LeaveType>('regular')
   const [startDate, setStartDate] = useState(initialDate)
-  const [endDate, setEndDate] = useState('')
+  const [endDate, setEndDate] = useState(initialDate)
   const [notes, setNotes] = useState('')
 
-  const handleStartDateChange = (date: string) => {
-    setStartDate(date)
-    if (endDate && endDate < date) {
-      setEndDate('')
-    }
-  }
-
-  const days = startDate && endDate ? Math.max(0, daysBetween(startDate, endDate) + 1) : 0
-
   const handleSubmit = () => {
-    if (!startDate || !endDate) return
+    if (!startDate || !endDate || startDate > endDate) return
     hapticFeedback('heavy')
+    const days = daysBetween(startDate, endDate) + 1
     onAdd({
       id: generateId(),
       type,
@@ -933,64 +760,70 @@ function AddLeaveForm({
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 h-full">
       <div>
         <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τύπος</label>
-        <div className="flex flex-wrap gap-1.5">
-          {(Object.keys(LEAVE_TYPE_LABELS) as LeaveType[]).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => {
-                hapticFeedback('light')
-                setType(t)
-              }}
-              className={cn(
-                'px-2.5 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-tight transition-colors',
-                type === t
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-              )}
-            >
-              {LEAVE_TYPE_LABELS[t]}
-            </button>
-          ))}
+        <div className="flex overflow-x-auto gap-1.5 no-scrollbar pb-1 -mx-1 px-1">
+          <div className="flex gap-1.5 flex-nowrap">
+            {(Object.keys(LEAVE_TYPE_LABELS) as LeaveType[]).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => {
+                  hapticFeedback('light')
+                  setType(t)
+                }}
+                className={cn(
+                  'px-2.5 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-tight transition-colors whitespace-nowrap',
+                  type === t
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                )}
+              >
+                {LEAVE_TYPE_LABELS[t]}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <GreekDatePicker value={startDate} onChange={handleStartDateChange} label="Από" compact />
-        <GreekDatePicker value={endDate} onChange={setEndDate} label="Έως" minDate={startDate} compact />
-      </div>
-
-      {days > 0 && (
-        <div className="text-center py-1.5 rounded-md bg-primary border border-primary">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-primary-foreground">{days} ημέρες</span>
-        </div>
-      )}
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Σημειώσεις</label>
-        <input
-          type="text"
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+          Ημερομηνία Έναρξης
+        </label>
+        <GreekDatePicker value={startDate} onChange={setStartDate} />
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+          Ημερομηνία Λήξης
+        </label>
+        <GreekDatePicker value={endDate} onChange={setEndDate} />
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+          Σημειώσεις
+        </label>
+        <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Προαιρετικό..."
-          className="w-full px-2 py-2 rounded-md bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary"
+          placeholder="Προσθήκη σημειώσεων..."
+          className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm resize-none"
+          rows={3}
         />
       </div>
 
-      <div className="flex gap-2 pt-1">
+      <div className="flex gap-2 mt-auto pt-4">
         <button
           onClick={onCancel}
-          className="flex-1 py-2 rounded-md bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[36px] hover:bg-secondary/80 transition-colors"
+          className="flex-1 px-4 py-3 rounded-xl bg-secondary text-foreground font-semibold text-sm min-h-[44px] hover:bg-secondary/80 transition-colors"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
-          disabled={!startDate || !endDate}
-          className="flex-1 py-2 rounded-md bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[36px] disabled:opacity-40 hover:bg-primary transition-colors"
+          className="flex-1 px-4 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[44px] hover:bg-primary/90 transition-colors"
         >
           Προσθήκη
         </button>
