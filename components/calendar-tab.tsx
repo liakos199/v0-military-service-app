@@ -617,8 +617,6 @@ function AddDutyForm({
       password,
       countersign,
     })
-  }sign } : {}),
-    })
   }
 
   return (
