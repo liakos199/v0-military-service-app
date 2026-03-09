@@ -223,21 +223,7 @@ export function ServiceTab() {
               </div>
             </div>
 
-            {/* Simple Progress Visualization */}
-            <div className="w-full flex flex-col gap-1.5 px-1">
-               <div className="flex items-center justify-between">
-                  <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Πορεία Θητείας</span>
-                  <span className="text-[8px] font-black text-primary uppercase tracking-widest">{Math.round(percentage)}%</span>
-               </div>
-               <div className="w-full h-1.5 rounded-full bg-secondary/50 overflow-hidden border border-white/5">
-                  <motion.div 
-                    className="h-full bg-primary"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${percentage}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                  />
-               </div>
-            </div>
+
 
             <motion.div
               className="grid grid-cols-3 gap-2 w-full"
@@ -275,31 +261,7 @@ export function ServiceTab() {
             </motion.div>
           </motion.div>
 
-          {/* Stats Breakdown Section */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="glass-card rounded-2xl p-3 border border-white/5 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <Shield className="h-3 w-3 text-primary" />
-                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Υπηρεσίες</span>
-              </div>
-              <div className="flex items-end justify-between">
-                <span className="text-xl font-black text-foreground">{duties.length}</span>
-                <span className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Σύνολο</span>
-              </div>
-            </div>
-            <div className="glass-card rounded-2xl p-3 border border-white/5 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-3 w-3 text-primary" />
-                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Προβλεπόμενες</span>
-              </div>
-              <div className="flex items-end justify-between">
-                <span className="text-xl font-black text-foreground">
-                  {Math.max(0, Math.round(duties.length * (100 / (percentage || 1)) - duties.length))}
-                </span>
-                <span className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Εκτίμηση</span>
-              </div>
-            </div>
-          </div>
+
 
           {/* Today's Status Section */}
           <TodayStatus duties={todayDuties} leave={todayLeave} onAddDuty={() => setShowConfig(true)} />
@@ -430,12 +392,6 @@ function TodayStatus({
           <div className="glass-card rounded-2xl p-6 text-center border border-white/5 flex flex-col items-center gap-2">
             <Shield className="h-6 w-6 text-muted-foreground/30" />
             <p className="text-xs text-muted-foreground">Καμία υπηρεσία για σήμερα</p>
-            <button 
-              onClick={onAddDuty}
-              className="text-[9px] font-black text-primary uppercase tracking-widest mt-1 hover:opacity-80 transition-opacity"
-            >
-              Προγραμματισμός στο ημερολόγιο →
-            </button>
           </div>
         )
       )}
