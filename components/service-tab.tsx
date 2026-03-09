@@ -22,13 +22,14 @@ import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { Counter } from '@/components/counter'
+import { PrisonDetentionManager } from '@/components/prison-detention-manager'
 import {
   hapticFeedback,
   formatGreekDate,
   daysBetween,
   toLocalDateString,
 } from '@/lib/helpers'
-import type { ServiceConfig, DutyEntry, LeaveEntry, DutyType } from '@/lib/types'
+import type { ServiceConfig, DutyEntry, LeaveEntry, DutyType, PrisonEntry, DetentionEntry } from '@/lib/types'
 import {
   DUTY_TYPE_LABELS,
   LEAVE_TYPE_LABELS,
@@ -42,8 +43,6 @@ const DUTY_ICONS: Record<DutyType, typeof Shield> = {
   patrol: Footprints,
   kitchen: UtensilsCrossed,
   other: HelpCircle,
-  prison: Shield,
-  detention: Shield,
 }
 
 export function ServiceTab() {
@@ -53,6 +52,8 @@ export function ServiceTab() {
   })
   const [duties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
   const [leaves] = useLocalStorage<LeaveEntry[]>('fantaros-leaves', [])
+  const [prisons] = useLocalStorage<PrisonEntry[]>('fantaros-prisons', [])
+  const [detentions] = useLocalStorage<DetentionEntry[]>('fantaros-detentions', [])
   const [showConfig, setShowConfig] = useState(false)
 
   const today = toLocalDateString()
@@ -60,8 +61,12 @@ export function ServiceTab() {
     ? Math.max(0, daysBetween(config.enlistmentDate, today))
     : 0
   const totalLeaveDays = leaves.reduce((sum, l) => sum + l.days, 0)
-  const totalPrisonDays = duties.reduce((sum, d) => sum + (d.type === 'prison' ? (d.prisonDays || 0) : 0), 0)
-  const effectiveTotalDays = config.totalDays + totalPrisonDays
+  const totalPrisonDays = prisons.reduce((sum, p) => sum + p.days, 0)
+  const totalDetentionDays = detentions.reduce((sum, d) => {
+    const days = daysBetween(d.startDate, d.endDate) + 1
+    return sum + Math.max(0, days)
+  }, 0)
+  const effectiveTotalDays = config.totalDays + totalPrisonDays + totalDetentionDays
   const effectiveDaysRemaining = Math.max(0, effectiveTotalDays - daysServed)
   const percentage = config.enlistmentDate
     ? Math.min(100, Math.max(0, (daysServed / effectiveTotalDays) * 100))
@@ -268,6 +273,9 @@ export function ServiceTab() {
           </motion.div>
 
 
+
+          {/* Prison & Detention Section */}
+          <PrisonDetentionManager />
 
           {/* Today's Status Section */}
           <TodayStatus duties={todayDuties} leave={todayLeave} onAddDuty={() => setShowConfig(true)} />

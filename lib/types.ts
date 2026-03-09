@@ -29,8 +29,6 @@ export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {
   medical: 'Αναρρωτική',
   emergency: 'Έκτακτη',
   other: 'Άλλη',
-  prison: 'Φυλακή',
-  detention: 'Κράτηση',
 }
 
 export interface DutyEntry {
@@ -40,9 +38,23 @@ export interface DutyEntry {
   startTime?: string
   endTime?: string
   notes: string
-  prisonDays?: number    // For prison entries
   password?: string      // Σύνθημα (for guard duty)
   countersign?: string   // Παρασύνθημα (for guard duty)
+}
+
+export interface PrisonEntry {
+  id: string
+  reason: string
+  days: number
+  addedDate: string
+}
+
+export interface DetentionEntry {
+  id: string
+  reason: string
+  startDate: string
+  endDate: string
+  createdAt: string
 }
 
 // Calendar event - union of duties and leaves for calendar display
@@ -50,7 +62,7 @@ export type CalendarEvent =
   | { kind: 'duty'; entry: DutyEntry }
   | { kind: 'leave'; entry: LeaveEntry }
 
-export type DutyType = 'guard' | 'barracks' | 'officer' | 'patrol' | 'kitchen' | 'other' | 'prison' | 'detention'
+export type DutyType = 'guard' | 'barracks' | 'officer' | 'patrol' | 'kitchen' | 'other'
 
 export const DUTY_TYPE_LABELS: Record<DutyType, string> = {
   guard: 'Σκοπιά',
@@ -59,8 +71,6 @@ export const DUTY_TYPE_LABELS: Record<DutyType, string> = {
   patrol: 'Περίπολος',
   kitchen: 'Μαγειρείο',
   other: 'Άλλη',
-  prison: 'Φυλακή',
-  detention: 'Κράτηση',
 }
 
 export interface NoteEntry {
