@@ -38,6 +38,7 @@ export function CalendarTab() {
   const [showActionSheet, setShowActionSheet] = useState(false)
   const [showAddDuty, setShowAddDuty] = useState(false)
   const [showAddLeave, setShowAddLeave] = useState(false)
+  const [initialDutyType, setInitialDutyType] = useState<DutyType>('guard')
 
   // Build a map of date -> events for quick lookup
   const dateEventsMap = useMemo(() => {
@@ -291,12 +292,31 @@ export function CalendarTab() {
         <ActionSheetItem
           title="Προσθήκη Υπηρεσίας"
           subtitle="Σκοπιά, Θαλαμοφύλακας, κ.ά."
-          onClick={() => setShowAddDuty(true)}
+          onClick={() => {
+            setInitialDutyType('guard')
+            setShowAddDuty(true)
+          }}
         />
         <ActionSheetItem
           title="Προσθήκη Άδειας"
           subtitle="Κανονική, Σπουδαστική, κ.ά."
           onClick={() => setShowAddLeave(true)}
+        />
+        <ActionSheetItem
+          title="Προσθήκη Κράτησης"
+          subtitle="Περιορισμός εντός μονάδας"
+          onClick={() => {
+            setInitialDutyType('detention')
+            setShowAddDuty(true)
+          }}
+        />
+        <ActionSheetItem
+          title="Προσθήκη Φυλακής"
+          subtitle="Επέκταση θητείας"
+          onClick={() => {
+            setInitialDutyType('prison')
+            setShowAddDuty(true)
+          }}
         />
         <ActionSheetCancel onClick={() => setShowActionSheet(false)} />
       </ActionSheet>
@@ -312,6 +332,7 @@ export function CalendarTab() {
       >
         <AddDutyForm
           initialDate={selectedDate || today}
+          initialType={initialDutyType}
           onAdd={handleAddDuty}
           onCancel={() => {
             setShowAddDuty(false)
@@ -365,7 +386,8 @@ function MonthlySummary({
     const monthDuties = duties.filter((d) => d.date.startsWith(monthPrefix))
     const dutyCountByType: Partial<Record<DutyType, number>> = {}
     monthDuties.forEach((d) => {
-      dutyCountByType[d.type] = (dutyCountByType[d.type] || 0) + 1
+      const count = d.type === 'prison' ? (d.prisonDays || 1) : 1
+      dutyCountByType[d.type] = (dutyCountByType[d.type] || 0) + count
     })
 
     // Count leave days that fall within this month
@@ -406,7 +428,7 @@ function MonthlySummary({
           <div className="flex-1 rounded-xl bg-chart-3/10 p-3 border border-chart-3/20">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-black text-chart-3 uppercase tracking-wider">
-                {stats.totalDuties} υπηρεσ{stats.totalDuties === 1 ? 'ία' : 'ίες'}
+                {stats.totalDuties} γεγονότ{stats.totalDuties === 1 ? 'α' : 'α'}
               </span>
             </div>
             <div className="flex flex-col gap-1">
@@ -416,7 +438,7 @@ function MonthlySummary({
                     <span className="text-[11px] text-muted-foreground">
                       {DUTY_TYPE_LABELS[type]}
                     </span>
-                    <span className="text-[11px] font-medium text-foreground">{count}</span>
+                    <span className="text-[11px] font-medium text-foreground">{count} {type === 'prison' ? 'ημ.' : ''}</span>
                   </div>
                 )
               )}
@@ -512,7 +534,12 @@ function UpcomingEvents({
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  {formatGreekDate(duty.date)} &middot; {duty.startTime} - {duty.endTime}
+                  {formatGreekDate(duty.date)}
+                  {duty.type === 'prison' ? (
+                    <> &middot; {duty.prisonDays} ημ. {duty.notes ? `(${duty.notes})` : ''}</>
+                  ) : (
+                    <> &middot; {duty.startTime} - {duty.endTime}</>
+                  )}
                 </p>
               </div>
               <button
@@ -556,32 +583,41 @@ function UpcomingEvents({
 /* ---------- Add Duty Form ---------- */
 function AddDutyForm({
   initialDate,
+  initialType = 'guard',
   onAdd,
   onCancel,
 }: {
   initialDate: string
+  initialType?: DutyType
   onAdd: (duty: DutyEntry) => void
   onCancel: () => void
 }) {
-  const [type, setType] = useState<DutyType>('guard')
+  const [type, setType] = useState<DutyType>(initialType)
   const [date, setDate] = useState(initialDate)
   const [startTime, setStartTime] = useState('08:00')
   const [endTime, setEndTime] = useState('08:00')
+  const [prisonDays, setPrisonDays] = useState('1')
   const [notes, setNotes] = useState('')
   const [password, setPassword] = useState('')
   const [countersign, setCountersign] = useState('')
 
   const handleSubmit = () => {
-    if (!date || !startTime || !endTime) return
+    if (!date) return
+    if (type !== 'prison' && type !== 'detention' && (!startTime || !endTime)) return
+    
     hapticFeedback('heavy')
     onAdd({
       id: generateId(),
       type,
       date,
-      startTime,
-      endTime,
+      startTime: (type === 'prison' || type === 'detention') ? undefined : startTime,
+      endTime: (type === 'prison' || type === 'detention') ? undefined : endTime,
+      prisonDays: type === 'prison' ? parseInt(prisonDays) || 0 : undefined,
       notes,
-      ...(type === 'guard' ? { password, countersign } : {}),
+      password,
+      countersign,
+    })
+  }sign } : {}),
     })
   }
 
@@ -620,39 +656,58 @@ function AddDutyForm({
         <GreekDatePicker value={date} onChange={setDate} />
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
+      {type !== 'prison' && type !== 'detention' && (
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+              Ώρα Έναρξης
+            </label>
+            <input
+              type="time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+              Ώρα Λήξης
+            </label>
+            <input
+              type="time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
+            />
+          </div>
+        </div>
+      )}
+
+      {type === 'prison' && (
         <div>
           <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
-            Ώρα Έναρξης
+            Ημέρες Φυλακής
           </label>
           <input
-            type="time"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            type="number"
+            inputMode="numeric"
+            min="1"
+            value={prisonDays}
+            onChange={(e) => setPrisonDays(e.target.value)}
             className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
+            placeholder="Αριθμός ημερών"
           />
         </div>
-        <div>
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
-            Ώρα Λήξης
-          </label>
-          <input
-            type="time"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
-          />
-        </div>
-      </div>
+      )}
 
       <div>
         <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
-          Σημειώσεις
+          {type === 'prison' ? 'Αιτιολογία (Προαιρετικό)' : 'Σημειώσεις'}
         </label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Προσθήκη σημειώσεων..."
+          placeholder={type === 'prison' ? "Λόγος φυλάκισης..." : "Προσθήκη σημειώσεων..."}
           className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm resize-none"
           rows={3}
         />

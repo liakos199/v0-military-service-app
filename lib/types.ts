@@ -40,6 +40,7 @@ export interface DutyEntry {
   startTime?: string
   endTime?: string
   notes: string
+  prisonDays?: number    // For prison entries
   password?: string      // Σύνθημα (for guard duty)
   countersign?: string   // Παρασύνθημα (for guard duty)
 }

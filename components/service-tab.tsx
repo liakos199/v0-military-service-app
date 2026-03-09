@@ -60,18 +60,22 @@ export function ServiceTab() {
     ? Math.max(0, daysBetween(config.enlistmentDate, today))
     : 0
   const totalLeaveDays = leaves.reduce((sum, l) => sum + l.days, 0)
-  const effectiveDaysRemaining = Math.max(0, config.totalDays - daysServed)
+  const totalPrisonDays = duties.reduce((sum, d) => sum + (d.type === 'prison' ? (d.prisonDays || 0) : 0), 0)
+  const effectiveTotalDays = config.totalDays + totalPrisonDays
+  const effectiveDaysRemaining = Math.max(0, effectiveTotalDays - daysServed)
   const percentage = config.enlistmentDate
-    ? Math.min(100, Math.max(0, (daysServed / config.totalDays) * 100))
+    ? Math.min(100, Math.max(0, (daysServed / effectiveTotalDays) * 100))
     : 0
 
   const dischargeDate = config.enlistmentDate
     ? (() => {
         const d = new Date(config.enlistmentDate)
-        d.setDate(d.getDate() + config.totalDays)
+        d.setDate(d.getDate() + effectiveTotalDays)
         return toLocalDateString(d)
       })()
     : ''
+
+
 
   // Today's duties
   const todayDuties = useMemo(
