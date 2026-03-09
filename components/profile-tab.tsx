@@ -63,7 +63,7 @@ export function ProfileTab() {
             )}
           >
             <Users className="h-3 w-3" />
-            Ιεραρχία
+            Ανώτεροι
           </button>
           <button
             onClick={() => {
@@ -324,7 +324,7 @@ function SuperiorsSection() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest">Ιεραρχία</h2>
+        <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest">Ανώτεροι</h2>
         <button
           onClick={() => {
             hapticFeedback('light')
