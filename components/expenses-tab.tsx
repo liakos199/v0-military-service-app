@@ -8,8 +8,8 @@ import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { CanteenCatalogManager } from '@/components/canteen-catalog-manager'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
-import type { ExpenseEntry, CanteenCatalogItem } from '@/lib/types'
-import { CANTEEN_CATEGORY_LABELS } from '@/lib/types'
+import type { CanteenCatalogItem, ExpenseEntry } from '@/lib/types'
+import { CANTEEN_CATEGORY_LABELS, EXPENSE_CATEGORY_LABELS } from '@/lib/types'
 
 export function ExpensesTab() {
   const [expenses, setExpenses] = useLocalStorage<ExpenseEntry[]>('fantaros-expenses', [])
@@ -121,7 +121,7 @@ export function ExpensesTab() {
                 >
                   Όλα
                 </button>
-                {Object.entries(CANTEEN_CATEGORY_LABELS).map(([key, label]) => (
+                {Object.entries(EXPENSE_CATEGORY_LABELS).map(([key, label]) => (
                   <button
                     key={key}
                     onClick={() => setFilterCategory(key)}
@@ -248,6 +248,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
   const [amount, setAmount] = useState('')
   const [date, setDate] = useState(toLocalDateString())
   const [description, setDescription] = useState('')
+  const [expenseCategory, setExpenseCategory] = useState<'food' | 'beverage' | 'snack' | 'other'>('other')
   const [selectedCatalogCategory, setSelectedCatalogCategory] = useState<'food' | 'beverage' | 'snack' | 'other' | null>(null)
 
   // Filter catalog items by selected category
@@ -264,7 +265,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
       amount: parsed,
       date,
       description,
-      category: 'other', // Default to other since categories are removed from UI
+      category: expenseCategory,
     })
   }
 
@@ -272,6 +273,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
     hapticFeedback('light')
     setAmount(item.price.toFixed(2))
     setDescription(item.name)
+    setExpenseCategory(item.category)
     setSelectedCatalogCategory(null)
   }
 
@@ -366,6 +368,31 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
           placeholder="0.00"
           className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm font-bold min-h-[40px] border border-border placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none transition-colors"
         />
+      </div>
+
+      {/* Category Selection */}
+      <div>
+        <label className="block text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-widest">Κατηγορία</label>
+        <div className="flex gap-1.5">
+          {(['food', 'beverage', 'snack', 'other'] as const).map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => {
+                hapticFeedback('light')
+                setExpenseCategory(cat)
+              }}
+              className={cn(
+                'flex-1 px-2 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all min-h-[36px]',
+                expenseCategory === cat
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-secondary text-muted-foreground border border-white/5'
+              )}
+            >
+              {EXPENSE_CATEGORY_LABELS[cat]}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Date Picker */}

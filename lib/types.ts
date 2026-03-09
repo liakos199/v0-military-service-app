@@ -173,12 +173,14 @@ export interface ExpenseEntry {
   amount: number
   date: string
   description: string
-  category: 'canteen' | 'other'
+  category: 'food' | 'beverage' | 'snack' | 'other'
 }
 
-export const EXPENSE_CATEGORY_LABELS: Record<'canteen' | 'other', string> = {
-  canteen: 'ΚΨΜ',
-  other: 'Γενικά',
+export const EXPENSE_CATEGORY_LABELS: Record<'food' | 'beverage' | 'snack' | 'other', string> = {
+  food: 'Φαγητό',
+  beverage: 'Ποτό',
+  snack: 'Σνακ',
+  other: 'Άλλο',
 }
 
 // Greek month names
