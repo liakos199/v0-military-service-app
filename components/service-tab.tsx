@@ -42,6 +42,8 @@ const DUTY_ICONS: Record<DutyType, typeof Shield> = {
   patrol: Footprints,
   kitchen: UtensilsCrossed,
   other: HelpCircle,
+  prison: Shield,
+  detention: Shield,
 }
 
 export function ServiceTab() {

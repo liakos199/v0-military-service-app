@@ -211,19 +211,19 @@ function AddDutyForm({ onAdd, onCancel }: {
 }) {
   const [type, setType] = useState<DutyType>('guard')
   const [date, setDate] = useState(toLocalDateString())
-  const [startTime, setStartTime] = useState('08:00')
-  const [endTime, setEndTime] = useState('08:00')
+  const [startTime, setStartTime] = useState<string | undefined>(undefined)
+  const [endTime, setEndTime] = useState<string | undefined>(undefined)
   const [notes, setNotes] = useState('')
 
   const handleSubmit = () => {
-    if (!date || !startTime || !endTime) return
+    if (!date) return
     hapticFeedback('heavy')
     onAdd({
       id: generateId(),
       type,
       date,
-      startTime,
-      endTime,
+      ...(startTime && { startTime }),
+      ...(endTime && { endTime }),
       notes,
     })
   }
@@ -258,26 +258,28 @@ function AddDutyForm({ onAdd, onCancel }: {
 
       <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
 
-      <div className="flex gap-1.5">
-        <div className="flex-1 min-w-0">
-          <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Αρχή</label>
-          <input
-            type="time"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
-          />
+      {(type !== 'prison' && type !== 'detention') && (
+        <div className="flex gap-1.5">
+          <div className="flex-1 min-w-0">
+            <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Αρχή</label>
+            <input
+              type="time"
+              value={startTime || ''}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Τέλος</label>
+            <input
+              type="time"
+              value={endTime || ''}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Τέλος</label>
-          <input
-            type="time"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
-      </div>
+      )}
 
       <div>
         <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Σημειώσεις</label>
