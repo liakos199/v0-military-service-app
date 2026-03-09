@@ -8,7 +8,7 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'ΑΠΟΛΕΛΕ PRO - Στρατιωτική Εφαρμογή',
-  description: 'Η πλήρης εφαρμογή για τη στρατιωτική σου θητεία. Λελέμετρο, Ημερολόγιο, Σημειώσεις & Εγχειρίδια, Προφίλ & Έξοδα.',
+  description: 'Η πλήρης εφαρμογή για τη στρατιωτική σου θητεία. Λελέμετρο, Ημερολόγιο, Σημειώσεις & Εγχειρίδια, Άτομα & Έξοδα.',
   generator: 'v0.app',
   manifest: '/manifest.json',
   appleWebApp: {

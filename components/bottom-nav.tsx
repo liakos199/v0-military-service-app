@@ -15,7 +15,7 @@ const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
   { id: 'service', label: 'Θητεία', icon: Shield },
   { id: 'duties', label: 'Ημερολόγιο', icon: Calendar },
   { id: 'notes', label: 'Σημειώσεις', icon: FileText },
-  { id: 'profile', label: 'Προφίλ', icon: User },
+  { id: 'profile', label: 'Άτομα', icon: User },
   { id: 'expenses', label: 'Έξοδα', icon: Wallet },
 ]
 
