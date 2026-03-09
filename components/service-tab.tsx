@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
 import {
   Settings,
   Clock,
@@ -181,11 +180,8 @@ export function ServiceTab() {
           </FullscreenModal>
 
           {/* Main Progress Ring - LELEmeter */}
-          <motion.div
+          <div
             className="glass-card rounded-2xl p-4 flex flex-col items-center gap-4 border border-white/5"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
           >
             <div className="flex items-center justify-between w-full">
               <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">
@@ -236,21 +232,7 @@ export function ServiceTab() {
 
 
 
-            <motion.div
-              className="grid grid-cols-3 gap-2 w-full"
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.1,
-                    delayChildren: 0.3,
-                  },
-                },
-              }}
-            >
+            <div className="grid grid-cols-3 gap-2 w-full">
               <StatCard
                 icon={Clock}
                 label="Υπηρέτησες"
@@ -269,8 +251,8 @@ export function ServiceTab() {
                 value={`${totalLeaveDays}`}
                 unit="ΗΜΕΡΕΣ"
               />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
 
 
@@ -298,12 +280,8 @@ function StatCard({
   unit: string
 }) {
   return (
-    <motion.div
+    <div
       className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl bg-secondary/30 border border-white/5 hover:bg-secondary/50 transition-colors group"
-      variants={{
-        hidden: { opacity: 0, scale: 0.8 },
-        visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
-      }}
     >
       <div>
         <span className="text-[9px] font-black text-primary">{label}</span>
@@ -314,7 +292,7 @@ function StatCard({
         </span>
         <span className="text-[7px] font-black text-muted-foreground leading-none mt-1 tracking-[0.1em] uppercase">{unit}</span>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
