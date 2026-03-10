@@ -509,7 +509,7 @@ function UpcomingEvents({
             >
               <div className={cn('w-1 h-10 rounded-full flex-shrink-0', isToday ? 'bg-primary' : 'bg-chart-3')} />
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-sm font-semibold text-foreground">{DUTY_TYPE_LABELS[duty.type]}</span>
                   {isToday && (
                      <span className="px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-bold">
@@ -539,7 +539,7 @@ function UpcomingEvents({
             >
               <div className="w-1 h-10 rounded-full flex-shrink-0 bg-chart-2" />
               <div className="flex-1 min-w-0">
-                <span className="text-sm font-semibold text-foreground">{LEAVE_TYPE_LABELS[leave.type]}</span>
+                <span className="text-sm font-semibold text-foreground break-words">{LEAVE_TYPE_LABELS[leave.type]}</span>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} &middot; {leave.days} ημ.
                 </p>

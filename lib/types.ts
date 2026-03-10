@@ -23,12 +23,12 @@ export type LeaveType =
   | 'other'
 
 export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {
-  regular: 'Κανονική',
-  student: 'Σπουδαστική',
-  honorary: 'Τιμητική',
-  medical: 'Αναρρωτική',
-  emergency: 'Έκτακτη',
-  other: 'Άλλη',
+  regular: 'Κανονική Άδεια',
+  student: 'Σπουδαστική Άδεια',
+  honorary: 'Τιμητική Άδεια',
+  medical: 'Αναρρωτική Άδεια',
+  emergency: 'Έκτακτη Άδεια',
+  other: 'Άλλη Άδεια',
 }
 
 export interface DutyEntry {
