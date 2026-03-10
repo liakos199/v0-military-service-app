@@ -25,16 +25,16 @@ export function ProfileTab() {
   const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends'>('profile')
 
   return (
-    <div className="flex flex-col h-full bg-background">
+    <div className="flex flex-col h-full bg-black">
       {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 px-4 pt-6 pb-4 border-b border-border/40 safe-top">
+      <div className="flex-shrink-0 px-4 pt-6 pb-4 border-b border-white/10 safe-top">
         <div className="mb-5">
-          <h1 className="text-2xl font-black text-foreground tracking-tight">Άτομα</h1>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold mt-1">Στοιχεία, ιεραρχία & φίλοι</p>
+          <h1 className="text-2xl font-black text-white tracking-tight">Άτομα</h1>
+          <p className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold mt-1">Στοιχεία, ιεραρχία & φίλοι</p>
         </div>
 
         {/* Section Toggle - 3 tabs with consistent coloring */}
-        <div className="flex gap-1 p-1 rounded-xl bg-muted/30 border border-border/40">
+        <div className="flex gap-1 p-1 rounded-xl bg-gray-900 border border-white/10">
           <button
             onClick={() => {
               hapticFeedback('light')
@@ -43,8 +43,8 @@ export function ProfileTab() {
             className={cn(
               'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200',
               activeSection === 'profile'
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-green-500 text-black shadow-lg shadow-green-500/30'
+                : 'text-gray-400 hover:text-white'
             )}
           >
             Στοιχεία
@@ -57,8 +57,8 @@ export function ProfileTab() {
             className={cn(
               'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200',
               activeSection === 'superiors'
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-green-500 text-black shadow-lg shadow-green-500/30'
+                : 'text-gray-400 hover:text-white'
             )}
           >
             Ανώτεροι
@@ -71,8 +71,8 @@ export function ProfileTab() {
             className={cn(
               'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200',
               activeSection === 'friends'
-                ? 'bg-primary text-primary-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-green-500 text-black shadow-lg shadow-green-500/30'
+                : 'text-gray-400 hover:text-white'
             )}
           >
             Φίλοι
@@ -111,49 +111,80 @@ function ProfileSection() {
 
   if (!isEditing) {
     return (
-      <div className="space-y-6 pb-8">
-        {/* Main Profile Info with User Icon */}
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-muted/50 border border-border/40 flex items-center justify-center flex-shrink-0">
-            <User className="h-8 w-8 text-primary" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h2 className="text-xl font-black text-foreground tracking-tight truncate leading-tight">
-              {profile.fullName || 'Ονοματεπώνυμο'}
-            </h2>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10px] font-black text-primary uppercase tracking-widest">
-                {profile.rank}
-              </span>
-              {profile.serviceNumber && (
-                <span className="text-[10px] text-muted-foreground font-bold">
-                  #{profile.serviceNumber}
-                </span>
-              )}
+      <div className="space-y-4 pb-8">
+        {/* Main Profile Card - Slate Background */}
+        <div className="bg-slate-800 border border-white/10 rounded-2xl p-5">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-slate-700 border border-white/10 flex items-center justify-center flex-shrink-0">
+              <User className="h-8 w-8 text-green-400" />
             </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl font-black text-white tracking-tight truncate leading-tight">
+                {profile.fullName || 'Ονοματεπώνυμο'}
+              </h2>
+              <div className="flex items-center gap-2 mt-1.5">
+                <span className="px-2.5 py-1 rounded-lg bg-green-500 text-black text-[10px] font-black uppercase tracking-widest">
+                  {profile.rank}
+                </span>
+                {profile.serviceNumber && (
+                  <span className="text-[10px] text-gray-400 font-bold">
+                    #{profile.serviceNumber}
+                  </span>
+                )}
+              </div>
+            </div>
+            <button
+              onClick={startEdit}
+              className="p-2.5 rounded-xl bg-slate-700 border border-white/10 hover:bg-slate-600 transition-colors"
+            >
+              <Edit3 className="h-4 w-4 text-white" />
+            </button>
           </div>
-          <button
-            onClick={startEdit}
-            className="p-2.5 rounded-xl bg-muted/50 border border-border/40 hover:bg-muted transition-colors"
-          >
-            <Edit3 className="h-4 w-4 text-foreground" />
-          </button>
         </div>
 
-        {/* Info Grid - Clean and Professional */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-5 pt-6 border-t border-border/40">
-          <InfoField label="Λόχος" value={profile.company} />
-          <InfoField label="Θάλαμος" value={profile.barracks} />
-          <InfoField label="Αίμα" value={profile.bloodType} />
-          <InfoField label="Κωδ. Όπλου" value={profile.weaponCode} />
-          <InfoField label="Κελί Όπλου" value={profile.weaponCell} />
+        {/* Info Grid - Alternating Colors */}
+        <div className="space-y-3">
+          {profile.company && (
+            <div className="bg-blue-900 border border-white/10 rounded-2xl p-4">
+              <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest leading-none">Λόχος</span>
+              <p className="text-base font-black text-white leading-tight mt-1.5">{profile.company}</p>
+            </div>
+          )}
+          
+          {profile.barracks && (
+            <div className="bg-emerald-900 border border-white/10 rounded-2xl p-4">
+              <span className="text-[10px] font-black text-emerald-200 uppercase tracking-widest leading-none">Θάλαμος</span>
+              <p className="text-base font-black text-white leading-tight mt-1.5">{profile.barracks}</p>
+            </div>
+          )}
+          
+          {profile.bloodType && (
+            <div className="bg-rose-900 border border-white/10 rounded-2xl p-4">
+              <span className="text-[10px] font-black text-rose-200 uppercase tracking-widest leading-none">Ομάδα Αίματος</span>
+              <p className="text-base font-black text-white leading-tight mt-1.5">{profile.bloodType}</p>
+            </div>
+          )}
+          
+          {profile.weaponCode && (
+            <div className="bg-amber-900 border border-white/10 rounded-2xl p-4">
+              <span className="text-[10px] font-black text-amber-200 uppercase tracking-widest leading-none">Κωδικός Όπλου</span>
+              <p className="text-base font-black text-white leading-tight mt-1.5">{profile.weaponCode}</p>
+            </div>
+          )}
+          
+          {profile.weaponCell && (
+            <div className="bg-purple-900 border border-white/10 rounded-2xl p-4">
+              <span className="text-[10px] font-black text-purple-200 uppercase tracking-widest leading-none">Κελί Όπλου</span>
+              <p className="text-base font-black text-white leading-tight mt-1.5">{profile.weaponCell}</p>
+            </div>
+          )}
         </div>
 
         {/* Reporting Phrase */}
         {profile.reportingPhrase && (
-          <div className="pt-6 border-t border-border/40">
-            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] mb-1.5">Φράση Αναφοράς</p>
-            <p className="text-sm text-foreground/90 font-medium leading-relaxed italic">
+          <div className="bg-indigo-900 border border-white/10 rounded-2xl p-5">
+            <p className="text-[10px] font-black text-indigo-200 uppercase tracking-widest mb-2">Φράση Αναφοράς</p>
+            <p className="text-sm text-white font-bold leading-relaxed italic">
               "{profile.reportingPhrase}"
             </p>
           </div>
@@ -161,11 +192,11 @@ function ProfileSection() {
 
         {/* Empty State */}
         {!profile.fullName && (
-          <div className="py-12 text-center border-t border-border/40">
-            <p className="text-xs text-muted-foreground font-bold mb-4">Δεν έχουν προστεθεί στοιχεία</p>
+          <div className="py-12 text-center border-2 border-dashed border-white/20 rounded-2xl">
+            <p className="text-xs text-gray-400 font-bold mb-4">Δεν έχουν προστεθεί στοιχεία</p>
             <button
               onClick={startEdit}
-              className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-opacity"
+              className="px-5 py-2.5 rounded-xl bg-green-500 text-black text-[10px] font-black uppercase tracking-widest hover:bg-green-400 transition-colors"
             >
               Προσθήκη Στοιχείων
             </button>
@@ -222,20 +253,20 @@ function ProfileSection() {
 
         {/* Rank Selector */}
         <div>
-          <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5">Βαθμός</label>
+          <label className="block text-[10px] font-black uppercase tracking-wider text-gray-300 mb-1.5">Βαθμός</label>
           <button
             type="button"
             onClick={() => {
               hapticFeedback('light')
               setShowRanks(!showRanks)
             }}
-            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-muted/30 text-foreground text-sm border border-border/40 font-bold"
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-gray-800 text-white text-sm border border-white/10 font-bold"
           >
             <span>{form.rank}</span>
             {showRanks ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           {showRanks && (
-            <div className="mt-2 max-h-40 overflow-y-auto rounded-xl bg-card border border-border no-scrollbar shadow-xl">
+            <div className="mt-2 max-h-40 overflow-y-auto rounded-xl bg-gray-900 border border-white/10 no-scrollbar shadow-2xl">
               {RANKS.map((r) => (
                 <button
                   key={r}
@@ -246,8 +277,8 @@ function ProfileSection() {
                     setShowRanks(false)
                   }}
                   className={cn(
-                    'w-full text-left px-4 py-2.5 text-sm font-bold',
-                    form.rank === r ? 'text-primary bg-primary/5' : 'text-foreground/70 hover:bg-muted/30'
+                    'w-full text-left px-4 py-2.5 text-sm font-bold border-b border-white/5 last:border-0',
+                    form.rank === r ? 'text-green-400 bg-gray-800' : 'text-gray-300 hover:bg-gray-800'
                   )}
                 >
                   {r}
@@ -259,7 +290,7 @@ function ProfileSection() {
 
         {/* Blood Type Selector */}
         <div>
-          <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5">Ομάδα Αίματος</label>
+          <label className="block text-[10px] font-black uppercase tracking-wider text-gray-300 mb-1.5">Ομάδα Αίματος</label>
           <div className="grid grid-cols-4 gap-1.5">
             {BLOOD_TYPES.map((bt) => (
               <button
@@ -272,8 +303,8 @@ function ProfileSection() {
                 className={cn(
                   'py-2 rounded-lg text-[10px] font-black transition-all border',
                   form.bloodType === bt
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-muted/30 text-muted-foreground border-border/40'
+                    ? 'bg-green-500 text-black border-green-400'
+                    : 'bg-gray-800 text-gray-300 border-white/10'
                 )}
               >
                 {bt}
@@ -292,13 +323,13 @@ function ProfileSection() {
         <div className="flex gap-2 pt-4">
           <button
             onClick={() => setIsEditing(false)}
-            className="flex-1 py-3.5 rounded-2xl bg-muted text-foreground font-black text-[10px] uppercase tracking-widest"
+            className="flex-1 py-3.5 rounded-2xl bg-gray-800 text-white font-black text-[10px] uppercase tracking-widest border border-white/10"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 py-3.5 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/10"
+            className="flex-1 py-3.5 rounded-2xl bg-green-500 text-black font-black text-[10px] uppercase tracking-widest shadow-lg shadow-green-500/30"
           >
             Αποθήκευση
           </button>
@@ -345,42 +376,50 @@ function SuperiorsSection() {
           hapticFeedback('light')
           setShowAddForm(true)
         }}
-        className="w-full py-3.5 rounded-2xl border-2 border-dashed border-border/40 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary hover:border-primary/40 transition-all"
+        className="w-full py-3.5 rounded-2xl border-2 border-dashed border-white/20 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-green-400 hover:border-green-500/40 transition-all"
       >
         + Προσθήκη Ανώτερου
       </button>
 
       {superiors.length === 0 ? (
-        <div className="py-12 text-center border-t border-border/40">
-          <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Δεν έχουν προστεθεί ανώτεροι</p>
+        <div className="py-12 text-center border-2 border-dashed border-white/20 rounded-2xl">
+          <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Δεν έχουν προστεθεί ανώτεροι</p>
         </div>
       ) : (
-        <div className="divide-y divide-border/30 border-t border-border/40">
-          {superiors.map((superior) => (
-            <div key={superior.id} className="py-5 flex items-center gap-4 group">
-              <div className="w-12 h-12 rounded-xl bg-muted/30 border border-border/40 flex items-center justify-center flex-shrink-0">
-                <Shield className="h-5 w-5 text-primary" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-base font-black text-foreground leading-none">{superior.name}</h3>
-                <div className="flex items-center gap-2 mt-1.5">
-                  <span className="text-[9px] font-black text-primary uppercase tracking-widest">{superior.rank}</span>
-                  {superior.role && (
-                    <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest">{superior.role}</span>
+        <div className="space-y-3">
+          {superiors.map((superior, idx) => (
+            <div
+              key={superior.id}
+              className={cn(
+                'border border-white/10 rounded-2xl p-4',
+                idx % 3 === 0 ? 'bg-blue-900' : idx % 3 === 1 ? 'bg-emerald-900' : 'bg-amber-900'
+              )}
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-black/30 border border-white/10 flex items-center justify-center flex-shrink-0">
+                  <Shield className="h-5 w-5 text-green-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base font-black text-white leading-none">{superior.name}</h3>
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <span className="text-[9px] font-black text-green-300 uppercase tracking-widest">{superior.rank}</span>
+                    {superior.role && (
+                      <span className="text-[9px] text-gray-300 font-bold uppercase tracking-widest">{superior.role}</span>
+                    )}
+                  </div>
+                  {superior.phone && (
+                    <a href={`tel:${superior.phone}`} className="block text-[10px] font-bold text-gray-300 hover:text-green-400 transition-colors mt-1.5">
+                      {superior.phone}
+                    </a>
                   )}
                 </div>
-                {superior.phone && (
-                  <a href={`tel:${superior.phone}`} className="block text-[10px] font-bold text-foreground/70 hover:text-primary transition-colors mt-1.5">
-                    {superior.phone}
-                  </a>
-                )}
+                <button
+                  onClick={() => handleDelete(superior.id)}
+                  className="p-2.5 rounded-xl bg-black/30 text-gray-400 hover:text-red-400 transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </div>
-              <button
-                onClick={() => handleDelete(superior.id)}
-                className="p-2.5 rounded-xl bg-destructive/5 text-destructive/40 hover:text-destructive hover:bg-destructive/10 transition-all"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
             </div>
           ))}
         </div>
@@ -426,39 +465,47 @@ function FriendsSection() {
           hapticFeedback('light')
           setShowAddForm(true)
         }}
-        className="w-full py-3.5 rounded-2xl border-2 border-dashed border-border/40 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary hover:border-primary/40 transition-all"
+        className="w-full py-3.5 rounded-2xl border-2 border-dashed border-white/20 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-green-400 hover:border-green-500/40 transition-all"
       >
         + Προσθήκη Φίλου
       </button>
 
       {friends.length === 0 ? (
-        <div className="py-12 text-center border-t border-border/40">
-          <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Δεν έχουν προστεθεί φίλοι</p>
+        <div className="py-12 text-center border-2 border-dashed border-white/20 rounded-2xl">
+          <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Δεν έχουν προστεθεί φίλοι</p>
         </div>
       ) : (
-        <div className="divide-y divide-border/30 border-t border-border/40">
-          {friends.map((friend) => (
-            <div key={friend.id} className="py-5 flex items-center gap-4 group">
-              <div className="w-12 h-12 rounded-xl bg-muted/30 border border-border/40 flex items-center justify-center flex-shrink-0">
-                <UserPlus className="h-5 w-5 text-primary" />
+        <div className="space-y-3">
+          {friends.map((friend, idx) => (
+            <div
+              key={friend.id}
+              className={cn(
+                'border border-white/10 rounded-2xl p-4',
+                idx % 3 === 0 ? 'bg-rose-900' : idx % 3 === 1 ? 'bg-purple-900' : 'bg-indigo-900'
+              )}
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-black/30 border border-white/10 flex items-center justify-center flex-shrink-0">
+                  <UserPlus className="h-5 w-5 text-green-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base font-black text-white leading-none">{friend.name}</h3>
+                  {friend.unit && (
+                    <p className="text-[9px] text-gray-300 font-black uppercase tracking-widest mt-1.5">{friend.unit}</p>
+                  )}
+                  {friend.phone && (
+                    <a href={`tel:${friend.phone}`} className="block text-[10px] font-bold text-gray-300 hover:text-green-400 transition-colors mt-1.5">
+                      {friend.phone}
+                    </a>
+                  )}
+                </div>
+                <button
+                  onClick={() => handleDelete(friend.id)}
+                  className="p-2.5 rounded-xl bg-black/30 text-gray-400 hover:text-red-400 transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-base font-black text-foreground leading-none">{friend.name}</h3>
-                {friend.unit && (
-                  <p className="text-[9px] text-muted-foreground font-black uppercase tracking-widest mt-1.5">{friend.unit}</p>
-                )}
-                {friend.phone && (
-                  <a href={`tel:${friend.phone}`} className="block text-[10px] font-bold text-foreground/70 hover:text-primary transition-colors mt-1.5">
-                    {friend.phone}
-                  </a>
-                )}
-              </div>
-              <button
-                onClick={() => handleDelete(friend.id)}
-                className="p-2.5 rounded-xl bg-destructive/5 text-destructive/40 hover:text-destructive hover:bg-destructive/10 transition-all"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
             </div>
           ))}
         </div>
@@ -496,10 +543,10 @@ function AddFriendForm({ onAdd, onCancel }: {
       <FormField label="Σημειώσεις" value={notes} onChange={setNotes} placeholder="Προαιρετικό..." />
 
       <div className="flex gap-2 pt-4">
-        <button onClick={onCancel} className="flex-1 py-3.5 rounded-2xl bg-muted text-foreground font-black text-[10px] uppercase tracking-widest">
+        <button onClick={onCancel} className="flex-1 py-3.5 rounded-2xl bg-gray-800 text-white font-black text-[10px] uppercase tracking-widest border border-white/10">
           Ακύρωση
         </button>
-        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-3.5 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest disabled:opacity-40">
+        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-3.5 rounded-2xl bg-green-500 text-black font-black text-[10px] uppercase tracking-widest disabled:opacity-40">
           Προσθήκη
         </button>
       </div>
@@ -528,20 +575,20 @@ function AddSuperiorForm({ onAdd, onCancel }: {
       <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
       
       <div>
-        <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5">Βαθμός</label>
+        <label className="block text-[10px] font-black uppercase tracking-wider text-gray-300 mb-1.5">Βαθμός</label>
         <button
           type="button"
           onClick={() => {
             hapticFeedback('light')
             setShowRanks(!showRanks)
           }}
-          className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-muted/30 text-foreground text-sm border border-border/40 font-bold"
+          className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-gray-800 text-white text-sm border border-white/10 font-bold"
         >
           <span>{rank}</span>
           {showRanks ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
         </button>
         {showRanks && (
-          <div className="mt-2 max-h-40 overflow-y-auto rounded-xl bg-card border border-border no-scrollbar shadow-xl">
+          <div className="mt-2 max-h-40 overflow-y-auto rounded-xl bg-gray-900 border border-white/10 no-scrollbar shadow-2xl">
             {RANKS.slice(5).map((r) => (
               <button
                 key={r}
@@ -552,8 +599,8 @@ function AddSuperiorForm({ onAdd, onCancel }: {
                   setShowRanks(false)
                 }}
                 className={cn(
-                  'w-full text-left px-4 py-2.5 text-sm font-bold',
-                  rank === r ? 'text-primary bg-primary/5' : 'text-foreground/70 hover:bg-muted/30'
+                  'w-full text-left px-4 py-2.5 text-sm font-bold border-b border-white/5 last:border-0',
+                  rank === r ? 'text-green-400 bg-gray-800' : 'text-gray-300 hover:bg-gray-800'
                 )}
               >
                 {r}
@@ -567,22 +614,13 @@ function AddSuperiorForm({ onAdd, onCancel }: {
       <FormField label="Τηλέφωνο" value={phone} onChange={setPhone} />
 
       <div className="flex gap-2 pt-4">
-        <button onClick={onCancel} className="flex-1 py-3.5 rounded-2xl bg-muted text-foreground font-black text-[10px] uppercase tracking-widest">
+        <button onClick={onCancel} className="flex-1 py-3.5 rounded-2xl bg-gray-800 text-white font-black text-[10px] uppercase tracking-widest border border-white/10">
           Ακύρωση
         </button>
-        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-3.5 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest disabled:opacity-40">
+        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-3.5 rounded-2xl bg-green-500 text-black font-black text-[10px] uppercase tracking-widest disabled:opacity-40">
           Προσθήκη
         </button>
       </div>
-    </div>
-  )
-}
-
-function InfoField({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="space-y-1">
-      <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none">{label}</span>
-      <p className="text-sm font-black text-foreground leading-tight">{value || '—'}</p>
     </div>
   )
 }
@@ -595,13 +633,13 @@ function FormField({ label, value, onChange, placeholder }: {
 }) {
   return (
     <div>
-      <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1.5">{label}</label>
+      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-300 mb-1.5">{label}</label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-4 py-3 rounded-xl bg-muted/30 text-foreground text-sm border border-border/40 focus:border-primary/50 focus:outline-none transition-all font-bold placeholder:text-muted-foreground/30"
+        className="w-full px-4 py-3 rounded-xl bg-gray-800 text-white text-sm border border-white/10 focus:border-green-500/50 focus:outline-none transition-all font-bold placeholder:text-gray-500"
       />
     </div>
   )
