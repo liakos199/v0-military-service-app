@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Trash2, ChevronDown, ChevronUp, Edit3 } from 'lucide-react'
+import { Trash2, ChevronDown, ChevronUp, Edit3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal } from '@/components/fullscreen-modal'
@@ -25,26 +25,26 @@ export function ProfileTab() {
   const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends'>('profile')
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-background">
       {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">Άτομα</h1>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Στοιχεία, ιεραρχία & φίλοι</p>
+      <div className="flex-shrink-0 px-4 pt-6 pb-4 border-b border-border/40 safe-top">
+        <div className="mb-5">
+          <h1 className="text-2xl font-black text-foreground tracking-tight">Άτομα</h1>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold mt-1">Στοιχεία, ιεραρχία & φίλοι</p>
         </div>
 
         {/* Section Toggle - 3 tabs */}
-        <div className="flex gap-1 p-1 rounded-xl bg-secondary/50 border border-white/5 mt-3">
+        <div className="flex gap-1 p-1 rounded-xl bg-muted/30 border border-border/40">
           <button
             onClick={() => {
               hapticFeedback('light')
               setActiveSection('profile')
             }}
             className={cn(
-              'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200',
               activeSection === 'profile'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground'
+                ? 'bg-foreground text-background shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
             )}
           >
             Στοιχεία
@@ -55,10 +55,10 @@ export function ProfileTab() {
               setActiveSection('superiors')
             }}
             className={cn(
-              'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200',
               activeSection === 'superiors'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground'
+                ? 'bg-foreground text-background shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
             )}
           >
             Ανώτεροι
@@ -69,10 +69,10 @@ export function ProfileTab() {
               setActiveSection('friends')
             }}
             className={cn(
-              'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200',
               activeSection === 'friends'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground'
+                ? 'bg-foreground text-background shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
             )}
           >
             Φίλοι
@@ -81,7 +81,7 @@ export function ProfileTab() {
       </div>
 
       {/* CONTENT - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
+      <div className="flex-1 overflow-y-auto px-4 py-6 no-scrollbar">
         {activeSection === 'profile' && <ProfileSection />}
         {activeSection === 'superiors' && <SuperiorsSection />}
         {activeSection === 'friends' && <FriendsSection />}
@@ -111,19 +111,19 @@ function ProfileSection() {
 
   if (!isEditing) {
     return (
-      <div className="space-y-4 pb-4">
+      <div className="space-y-8 pb-8">
         {/* Main Profile Info */}
         <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold text-foreground tracking-tight leading-none">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-black text-foreground tracking-tighter leading-none">
               {profile.fullName || 'Ονοματεπώνυμο'}
             </h2>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-black text-primary uppercase tracking-widest">
+            <div className="flex items-center gap-3">
+              <span className="px-2 py-0.5 rounded bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest">
                 {profile.rank}
               </span>
               {profile.serviceNumber && (
-                <span className="text-[10px] text-muted-foreground font-medium">
+                <span className="text-xs text-muted-foreground font-bold tracking-widest">
                   #{profile.serviceNumber}
                 </span>
               )}
@@ -131,14 +131,14 @@ function ProfileSection() {
           </div>
           <button
             onClick={startEdit}
-            className="p-2 rounded-lg bg-secondary/50 border border-border/50 hover:bg-secondary transition-colors"
+            className="p-2.5 rounded-xl bg-muted/50 border border-border/60 hover:bg-muted transition-colors"
           >
-            <Edit3 className="h-4 w-4 text-muted-foreground" />
+            <Edit3 className="h-5 w-5 text-foreground" />
           </button>
         </div>
 
-        {/* Info Grid - Clean and Minimal */}
-        <div className="grid grid-cols-2 gap-y-4 border-t border-border/30 pt-4">
+        {/* Info Grid - High Contrast & Minimal */}
+        <div className="grid grid-cols-2 gap-x-8 gap-y-6 border-t border-border/40 pt-8">
           <InfoField label="Λόχος" value={profile.company} />
           <InfoField label="Θάλαμος" value={profile.barracks} />
           <InfoField label="Αίμα" value={profile.bloodType} />
@@ -148,21 +148,21 @@ function ProfileSection() {
 
         {/* Reporting Phrase - Minimalist */}
         {profile.reportingPhrase && (
-          <div className="pt-4 border-t border-border/30">
-            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mb-1">Φράση Αναφοράς</p>
-            <p className="text-sm text-foreground/80 font-medium leading-relaxed italic">
-              {profile.reportingPhrase}
+          <div className="pt-8 border-t border-border/40">
+            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">Φράση Αναφοράς</p>
+            <p className="text-lg text-foreground font-medium leading-tight italic">
+              "{profile.reportingPhrase}"
             </p>
           </div>
         )}
 
         {/* Empty State */}
         {!profile.fullName && (
-          <div className="py-12 text-center border-t border-border/30">
-            <p className="text-xs text-muted-foreground font-medium mb-4">Δεν έχουν προστεθεί στοιχεία</p>
+          <div className="py-16 text-center border-t border-border/40">
+            <p className="text-sm text-muted-foreground font-bold mb-6">Δεν έχουν προστεθεί στοιχεία</p>
             <button
               onClick={startEdit}
-              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider"
+              className="px-6 py-3 rounded-xl bg-foreground text-background text-xs font-black uppercase tracking-widest hover:opacity-90 transition-opacity"
             >
               Προσθήκη Στοιχείων
             </button>
@@ -178,7 +178,7 @@ function ProfileSection() {
       onClose={() => setIsEditing(false)}
       title="Επεξεργασία Προφίλ"
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         <FormField
           label="Ονοματεπώνυμο"
           value={form.fullName}
@@ -219,20 +219,20 @@ function ProfileSection() {
 
         {/* Rank Selector */}
         <div>
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Βαθμός</label>
+          <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground mb-2">Βαθμός</label>
           <button
             type="button"
             onClick={() => {
               hapticFeedback('light')
               setShowRanks(!showRanks)
             }}
-            className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-secondary/50 text-foreground text-sm border border-border/50"
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-muted/40 text-foreground text-sm border border-border/60 font-bold"
           >
             <span>{form.rank}</span>
-            {showRanks ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            {showRanks ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
           </button>
           {showRanks && (
-            <div className="mt-1 max-h-40 overflow-y-auto rounded-lg bg-secondary border border-border no-scrollbar">
+            <div className="mt-2 max-h-48 overflow-y-auto rounded-xl bg-card border border-border shadow-2xl no-scrollbar">
               {RANKS.map((r) => (
                 <button
                   key={r}
@@ -243,8 +243,8 @@ function ProfileSection() {
                     setShowRanks(false)
                   }}
                   className={cn(
-                    'w-full text-left px-3 py-2 text-sm',
-                    form.rank === r ? 'text-primary font-bold bg-primary/5' : 'text-foreground/70'
+                    'w-full text-left px-4 py-3 text-sm font-bold border-b border-border/20 last:border-0',
+                    form.rank === r ? 'text-primary bg-primary/5' : 'text-foreground/80 hover:bg-muted/50'
                   )}
                 >
                   {r}
@@ -256,8 +256,8 @@ function ProfileSection() {
 
         {/* Blood Type Selector */}
         <div>
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Ομάδα Αίματος</label>
-          <div className="grid grid-cols-4 gap-1.5">
+          <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground mb-2">Ομάδα Αίματος</label>
+          <div className="grid grid-cols-4 gap-2">
             {BLOOD_TYPES.map((bt) => (
               <button
                 key={bt}
@@ -267,10 +267,10 @@ function ProfileSection() {
                   setForm({ ...form, bloodType: bt })
                 }}
                 className={cn(
-                  'py-2 rounded-lg text-[10px] font-bold transition-all border',
+                  'py-2.5 rounded-xl text-[10px] font-black transition-all border-2',
                   form.bloodType === bt
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-secondary/50 text-foreground/60 border-border/50'
+                    ? 'bg-foreground text-background border-foreground'
+                    : 'bg-muted/30 text-muted-foreground border-transparent hover:border-border/60'
                 )}
               >
                 {bt}
@@ -286,16 +286,16 @@ function ProfileSection() {
           placeholder="Π.χ. Στρατιώτης [Όνομα], Λόχος [Λόχος]"
         />
 
-        <div className="flex gap-2 pt-4">
+        <div className="flex gap-3 pt-6">
           <button
             onClick={() => setIsEditing(false)}
-            className="flex-1 py-3 rounded-xl bg-secondary text-foreground font-bold text-[10px] uppercase tracking-wider"
+            className="flex-1 py-4 rounded-2xl bg-muted text-foreground font-black text-[10px] uppercase tracking-[0.2em] border border-border/60"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-primary/10"
+            className="flex-1 py-4 rounded-2xl bg-foreground text-background font-black text-[10px] uppercase tracking-[0.2em] shadow-xl"
           >
             Αποθήκευση
           </button>
@@ -336,44 +336,44 @@ function SuperiorsSection() {
   }
 
   return (
-    <div className="space-y-4 pb-4">
+    <div className="space-y-6 pb-8">
       <button
         onClick={() => {
           hapticFeedback('light')
           setShowAddForm(true)
         }}
-        className="w-full py-3 rounded-xl border border-dashed border-border/50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:text-primary hover:border-primary/50 transition-all"
+        className="w-full py-4 rounded-2xl border-2 border-dashed border-border/60 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground hover:border-foreground transition-all"
       >
         + Προσθήκη Ανώτερου
       </button>
 
       {superiors.length === 0 ? (
-        <div className="py-12 text-center border-t border-border/30">
-          <p className="text-xs text-muted-foreground font-medium">Δεν έχουν προστεθεί ανώτεροι</p>
+        <div className="py-16 text-center border-t border-border/40">
+          <p className="text-sm text-muted-foreground font-bold uppercase tracking-widest">Δεν έχουν προστεθεί ανώτεροι</p>
         </div>
       ) : (
-        <div className="divide-y divide-border/30 border-t border-border/30">
+        <div className="divide-y divide-border/40 border-t border-border/40">
           {superiors.map((superior) => (
-            <div key={superior.id} className="py-4 flex items-center justify-between group">
-              <div className="space-y-1">
-                <h3 className="text-sm font-bold text-foreground leading-none">{superior.name}</h3>
-                <div className="flex items-center gap-2">
-                  <span className="text-[9px] font-black text-primary uppercase tracking-widest">{superior.rank}</span>
+            <div key={superior.id} className="py-6 flex items-center justify-between group">
+              <div className="space-y-1.5">
+                <h3 className="text-lg font-black text-foreground leading-none">{superior.name}</h3>
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-black text-primary uppercase tracking-widest">{superior.rank}</span>
                   {superior.role && (
-                    <span className="text-[9px] text-muted-foreground font-medium">{superior.role}</span>
+                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{superior.role}</span>
                   )}
                 </div>
                 {superior.phone && (
-                  <a href={`tel:${superior.phone}`} className="block text-[10px] text-muted-foreground hover:text-primary transition-colors">
+                  <a href={`tel:${superior.phone}`} className="block text-xs font-bold text-foreground hover:text-primary transition-colors mt-1">
                     {superior.phone}
                   </a>
                 )}
               </div>
               <button
                 onClick={() => handleDelete(superior.id)}
-                className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground/40 hover:text-destructive transition-colors"
+                className="p-3 rounded-xl bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all"
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-5 w-5" />
               </button>
             </div>
           ))}
@@ -414,41 +414,41 @@ function FriendsSection() {
   }
 
   return (
-    <div className="space-y-4 pb-4">
+    <div className="space-y-6 pb-8">
       <button
         onClick={() => {
           hapticFeedback('light')
           setShowAddForm(true)
         }}
-        className="w-full py-3 rounded-xl border border-dashed border-border/50 text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:text-primary hover:border-primary/50 transition-all"
+        className="w-full py-4 rounded-2xl border-2 border-dashed border-border/60 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground hover:border-foreground transition-all"
       >
         + Προσθήκη Φίλου
       </button>
 
       {friends.length === 0 ? (
-        <div className="py-12 text-center border-t border-border/30">
-          <p className="text-xs text-muted-foreground font-medium">Δεν έχουν προστεθεί φίλοι</p>
+        <div className="py-16 text-center border-t border-border/40">
+          <p className="text-sm text-muted-foreground font-bold uppercase tracking-widest">Δεν έχουν προστεθεί φίλοι</p>
         </div>
       ) : (
-        <div className="divide-y divide-border/30 border-t border-border/30">
+        <div className="divide-y divide-border/40 border-t border-border/40">
           {friends.map((friend) => (
-            <div key={friend.id} className="py-4 flex items-center justify-between group">
-              <div className="space-y-1">
-                <h3 className="text-sm font-bold text-foreground leading-none">{friend.name}</h3>
+            <div key={friend.id} className="py-6 flex items-center justify-between group">
+              <div className="space-y-1.5">
+                <h3 className="text-lg font-black text-foreground leading-none">{friend.name}</h3>
                 {friend.unit && (
-                  <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-widest">{friend.unit}</p>
+                  <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest">{friend.unit}</p>
                 )}
                 {friend.phone && (
-                  <a href={`tel:${friend.phone}`} className="block text-[10px] text-muted-foreground hover:text-primary transition-colors">
+                  <a href={`tel:${friend.phone}`} className="block text-xs font-bold text-foreground hover:text-primary transition-colors mt-1">
                     {friend.phone}
                   </a>
                 )}
               </div>
               <button
                 onClick={() => handleDelete(friend.id)}
-                className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground/40 hover:text-destructive transition-colors"
+                className="p-3 rounded-xl bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all"
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-5 w-5" />
               </button>
             </div>
           ))}
@@ -480,17 +480,17 @@ function AddFriendForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
       <FormField label="Τηλέφωνο" value={phone} onChange={setPhone} placeholder="69XXXXXXXX" />
       <FormField label="Μονάδα / Λόχος" value={unit} onChange={setUnit} />
       <FormField label="Σημειώσεις" value={notes} onChange={setNotes} placeholder="Προαιρετικό..." />
 
-      <div className="flex gap-2 pt-4">
-        <button onClick={onCancel} className="flex-1 py-3 rounded-xl bg-secondary text-foreground font-bold text-[10px] uppercase tracking-wider">
+      <div className="flex gap-3 pt-6">
+        <button onClick={onCancel} className="flex-1 py-4 rounded-2xl bg-muted text-foreground font-black text-[10px] uppercase tracking-[0.2em] border border-border/60">
           Ακύρωση
         </button>
-        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider disabled:opacity-40">
+        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-4 rounded-2xl bg-foreground text-background font-black text-[10px] uppercase tracking-[0.2em] disabled:opacity-40">
           Προσθήκη
         </button>
       </div>
@@ -515,24 +515,24 @@ function AddSuperiorForm({ onAdd, onCancel }: {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
       
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Βαθμός</label>
+        <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground mb-2">Βαθμός</label>
         <button
           type="button"
           onClick={() => {
             hapticFeedback('light')
             setShowRanks(!showRanks)
           }}
-          className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-secondary/50 text-foreground text-sm border border-border/50"
+          className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-muted/40 text-foreground text-sm border border-border/60 font-bold"
         >
           <span>{rank}</span>
-          {showRanks ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          {showRanks ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
         </button>
         {showRanks && (
-          <div className="mt-1 max-h-40 overflow-y-auto rounded-lg bg-secondary border border-border no-scrollbar">
+          <div className="mt-2 max-h-48 overflow-y-auto rounded-xl bg-card border border-border shadow-2xl no-scrollbar">
             {RANKS.slice(5).map((r) => (
               <button
                 key={r}
@@ -543,8 +543,8 @@ function AddSuperiorForm({ onAdd, onCancel }: {
                   setShowRanks(false)
                 }}
                 className={cn(
-                  'w-full text-left px-3 py-2 text-sm',
-                  rank === r ? 'text-primary font-bold bg-primary/5' : 'text-foreground/70'
+                  'w-full text-left px-4 py-3 text-sm font-bold border-b border-border/20 last:border-0',
+                  rank === r ? 'text-primary bg-primary/5' : 'text-foreground/80 hover:bg-muted/50'
                 )}
               >
                 {r}
@@ -557,11 +557,11 @@ function AddSuperiorForm({ onAdd, onCancel }: {
       <FormField label="Καθήκοντα / Ρόλος" value={role} onChange={setRole} />
       <FormField label="Τηλέφωνο" value={phone} onChange={setPhone} />
 
-      <div className="flex gap-2 pt-4">
-        <button onClick={onCancel} className="flex-1 py-3 rounded-xl bg-secondary text-foreground font-bold text-[10px] uppercase tracking-wider">
+      <div className="flex gap-3 pt-6">
+        <button onClick={onCancel} className="flex-1 py-4 rounded-2xl bg-muted text-foreground font-black text-[10px] uppercase tracking-[0.2em] border border-border/60">
           Ακύρωση
         </button>
-        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider disabled:opacity-40">
+        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-4 rounded-2xl bg-foreground text-background font-black text-[10px] uppercase tracking-[0.2em] disabled:opacity-40">
           Προσθήκη
         </button>
       </div>
@@ -571,9 +571,9 @@ function AddSuperiorForm({ onAdd, onCancel }: {
 
 function InfoField({ label, value }: { label: string; value: string }) {
   return (
-    <div className="space-y-0.5">
-      <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest leading-none">{label}</span>
-      <p className="text-sm font-bold text-foreground leading-none">{value || '—'}</p>
+    <div className="space-y-1">
+      <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] leading-none">{label}</span>
+      <p className="text-base font-black text-foreground leading-tight">{value || '—'}</p>
     </div>
   )
 }
@@ -586,13 +586,13 @@ function FormField({ label, value, onChange, placeholder }: {
 }) {
   return (
     <div>
-      <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">{label}</label>
+      <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground mb-2">{label}</label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2.5 rounded-lg bg-secondary/50 text-foreground text-sm border border-border/50 focus:border-primary/50 focus:outline-none transition-colors"
+        className="w-full px-4 py-3 rounded-xl bg-muted/40 text-foreground text-sm border border-border/60 focus:border-foreground focus:outline-none transition-all font-bold placeholder:text-muted-foreground/40"
       />
     </div>
   )
