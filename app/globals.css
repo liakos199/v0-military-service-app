@@ -7,7 +7,7 @@
   /* Tactical Slate & Olive Theme */
   --background: #0a0a0b; 
   --foreground: #f1f1f1;
-  --card: #121214;
+  --card: #1c1c1f;
   --card-foreground: #f1f1f1;
   --popover: #121214;
   --popover-foreground: #f1f1f1;
@@ -16,10 +16,10 @@
   --primary: #a3e635; /* Lime 400 - High visibility tactical green */
   --primary-foreground: #052e16;
   
-  --secondary: #1c1c1f;
+  --secondary: #252529;
   --secondary-foreground: #d1d1d6;
   
-  --muted: #1c1c1f;
+  --muted: #252529;
   --muted-foreground: #8e8e93;
   
   --accent: #a3e635;
@@ -29,7 +29,7 @@
   --destructive-foreground: #ffffff;
   
   --border: rgba(255, 255, 255, 0.08);
-  --input: #1c1c1f;
+  --input: #252529;
   --ring: #a3e635;
   
   /* Chart Colors - Gold/Zinc focused */
@@ -100,7 +100,7 @@
 }
 
 .glass-card {
-  background: rgba(28, 28, 31, 0.6);
+  background: rgba(37, 37, 41, 0.6);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
