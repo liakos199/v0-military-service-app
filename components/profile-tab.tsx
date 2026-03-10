@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Trash2, User, Users, ChevronDown, ChevronUp, Edit3, Check, X, Phone, UserPlus } from 'lucide-react'
+import { Plus, Trash2, User, Users, ChevronDown, ChevronUp, Edit3, Check, X, Phone, UserPlus, Shield, MapPin, Droplet, Zap, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal } from '@/components/fullscreen-modal'
@@ -114,49 +114,141 @@ function ProfileSection() {
 
   if (!isEditing) {
     return (
-      <div className="glass-card rounded-2xl p-4 flex flex-col gap-4 border border-white/5">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-primary border border-primary flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(163,230,53,0.1)]">
-            <User className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h2 className="text-base font-black text-foreground truncate tracking-tight">
-              {profile.fullName || 'Ονοματεπώνυμο'}
-            </h2>
-            <div className="flex items-center gap-2 mt-0.5">
-              <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-black uppercase tracking-tight">
-                {profile.rank}
-              </span>
-              {profile.serviceNumber && (
-                <span className="text-[8px] text-muted-foreground font-bold uppercase tracking-widest">
-                  ID: {profile.serviceNumber}
-                </span>
+      <div className="space-y-3 pb-4">
+        {/* Header Card with Profile Info */}
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-4">
+          {/* Decorative accent line */}
+          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-primary/20" />
+          
+          <div className="flex items-start gap-4">
+            {/* Avatar */}
+            <div className="relative flex-shrink-0">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/40 to-primary/10 border border-primary/30 flex items-center justify-center shadow-[0_0_20px_rgba(74,222,128,0.15)]">
+                <User className="h-8 w-8 text-primary" />
+              </div>
+              {profile.rank && (
+                <div className="absolute -bottom-1 -right-1 px-2 py-1 rounded-lg bg-primary text-primary-foreground text-[7px] font-black uppercase tracking-tight whitespace-nowrap shadow-lg">
+                  {profile.rank.slice(0, 3)}
+                </div>
               )}
             </div>
+
+            {/* Profile Info */}
+            <div className="flex-1 min-w-0 pt-1">
+              <h2 className="text-base font-black text-foreground truncate tracking-tight">
+                {profile.fullName || 'Ονοματεπώνυμο'}
+              </h2>
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <span className="px-2 py-1 rounded-lg bg-primary/20 text-primary text-[8px] font-bold uppercase tracking-widest border border-primary/30">
+                  {profile.rank}
+                </span>
+                {profile.serviceNumber && (
+                  <span className="text-[8px] text-muted-foreground font-bold uppercase tracking-widest">
+                    ID: {profile.serviceNumber}
+                  </span>
+                )}
+              </div>
+              {profile.company && (
+                <p className="text-[10px] text-muted-foreground mt-1.5 font-medium">
+                  {profile.company} • {profile.barracks}
+                </p>
+              )}
+            </div>
+
+            {/* Edit Button */}
+            <button
+              onClick={startEdit}
+              className="flex-shrink-0 p-2.5 rounded-xl bg-primary/10 border border-primary/30 hover:bg-primary/20 transition-all duration-200 active:scale-95"
+              aria-label="Επεξεργασία"
+            >
+              <Edit3 className="h-4 w-4 text-primary" />
+            </button>
           </div>
-          <button
-            onClick={startEdit}
-            className="p-2 rounded-lg bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
-            aria-label="Επεξεργασία"
-          >
-            <Edit3 className="h-3.5 w-3.5 text-primary" />
-          </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          <InfoField label="Λόχος" value={profile.company} />
-          <InfoField label="Θάλαμος" value={profile.barracks} />
-          <InfoField label="Αίμα" value={profile.bloodType} />
-          <InfoField label="Βαθμός" value={profile.rank} />
-          <InfoField label="Κωδ. Όπλου" value={profile.weaponCode} />
-          <InfoField label="Κελί Όπλου" value={profile.weaponCell} />
-        </div>
-
+        {/* Reporting Phrase Card */}
         {profile.reportingPhrase && (
-          <div className="p-3 rounded-xl bg-secondary/30 border border-white/5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
-            <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-1.5">Φράση Αναφοράς</p>
-            <p className="text-xs text-foreground/90 italic font-medium leading-relaxed">{`"${profile.reportingPhrase}"`}</p>
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-4">
+            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-primary/20" />
+            <div className="flex items-start gap-3">
+              <Zap className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.15em] mb-1">Φράση Αναφοράς</p>
+                <p className="text-xs text-foreground/90 font-medium leading-relaxed italic">{`"${profile.reportingPhrase}"`}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Personal Details Grid */}
+        <div className="grid grid-cols-2 gap-3">
+          {/* Blood Type */}
+          {profile.bloodType && (
+            <div className="rounded-xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Droplet className="h-3.5 w-3.5 text-primary" />
+                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-wider">Αίμα</span>
+              </div>
+              <p className="text-sm font-bold text-foreground">{profile.bloodType}</p>
+            </div>
+          )}
+
+          {/* Company */}
+          {profile.company && (
+            <div className="rounded-xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Shield className="h-3.5 w-3.5 text-primary" />
+                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-wider">Λόχος</span>
+              </div>
+              <p className="text-sm font-bold text-foreground truncate">{profile.company}</p>
+            </div>
+          )}
+
+          {/* Barracks */}
+          {profile.barracks && (
+            <div className="rounded-xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <MapPin className="h-3.5 w-3.5 text-primary" />
+                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-wider">Θάλαμος</span>
+              </div>
+              <p className="text-sm font-bold text-foreground truncate">{profile.barracks}</p>
+            </div>
+          )}
+
+          {/* Weapon Code */}
+          {profile.weaponCode && (
+            <div className="rounded-xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Lock className="h-3.5 w-3.5 text-primary" />
+                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-wider">Κωδ. Όπλου</span>
+              </div>
+              <p className="text-sm font-bold text-foreground">{profile.weaponCode}</p>
+            </div>
+          )}
+
+          {/* Weapon Cell */}
+          {profile.weaponCell && (
+            <div className="rounded-xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Lock className="h-3.5 w-3.5 text-primary" />
+                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-wider">Κελί Όπλου</span>
+              </div>
+              <p className="text-sm font-bold text-foreground">{profile.weaponCell}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Empty State */}
+        {!profile.fullName && (
+          <div className="rounded-2xl border border-dashed border-white/10 bg-secondary/20 p-6 text-center">
+            <User className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground font-medium">Δεν έχουν προστεθεί στοιχεία</p>
+            <button
+              onClick={startEdit}
+              className="mt-3 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors"
+            >
+              Προσθήκη Στοιχείων
+            </button>
           </div>
         )}
       </div>
@@ -273,10 +365,10 @@ function ProfileSection() {
                     setShowBlood(false)
                   }}
                   className={cn(
-                    'py-2 rounded-lg text-sm font-medium min-h-[36px]',
+                    'py-2 rounded-md text-[10px] font-bold transition-all',
                     form.bloodType === bt
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground'
+                      ? 'text-primary-foreground font-semibold bg-primary'
+                      : 'text-foreground bg-secondary-foreground/10'
                   )}
                 >
                   {bt}
@@ -286,29 +378,24 @@ function ProfileSection() {
           )}
         </div>
 
-        <div>
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Φράση Αναφοράς</label>
-          <textarea
-            value={form.reportingPhrase}
-            onChange={(e) => setForm({ ...form, reportingPhrase: e.target.value })}
-            placeholder="Π.χ. Στρατιώτης Παπαδόπουλος αναφέρομαι..."
-            className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[60px] border border-border resize-none placeholder:text-muted-foreground/50"
-          />
-        </div>
+        <FormField
+          label="Φράση Αναφοράς"
+          value={form.reportingPhrase}
+          onChange={(v) => setForm({ ...form, reportingPhrase: v })}
+          placeholder="Π.χ. Στρατιώτης [Όνομα], Λόχος [Λόχος]"
+        />
 
         <div className="flex gap-2 pt-2">
           <button
             onClick={() => setIsEditing(false)}
-            className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] flex items-center justify-center gap-1"
+            className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary/80 transition-colors"
           >
-            <X className="h-3.5 w-3.5" />
             Ακύρωση
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] flex items-center justify-center gap-1"
+            className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-primary/90 transition-colors active:scale-95"
           >
-            <Check className="h-3.5 w-3.5" />
             Αποθήκευση
           </button>
         </div>
@@ -319,91 +406,98 @@ function ProfileSection() {
 
 function SuperiorsSection() {
   const [superiors, setSuperiors] = useLocalStorage<SuperiorEntry[]>('fantaros-superiors', [])
-  const [showAdd, setShowAdd] = useState(false)
+  const [showAddForm, setShowAddForm] = useState(false)
 
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest">Ανώτεροι</h2>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setShowAdd(true)
-          }}
-          className="p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center"
-          aria-label="Προσθήκη ανωτέρου"
-        >
-          <Plus className="h-4 w-4 text-primary" />
-        </button>
-      </div>
+  const handleAdd = (superior: SuperiorEntry) => {
+    hapticFeedback('heavy')
+    setSuperiors([...superiors, superior])
+    setShowAddForm(false)
+  }
 
+  const handleDelete = (id: string) => {
+    hapticFeedback('heavy')
+    setSuperiors(superiors.filter((s) => s.id !== id))
+  }
+
+  if (showAddForm) {
+    return (
       <FullscreenModal
-        isOpen={showAdd}
-        onClose={() => setShowAdd(false)}
-        title="Νέος Ανώτερος"
+        isOpen={showAddForm}
+        onClose={() => setShowAddForm(false)}
+        title="Προσθήκη Ανώτερου"
       >
         <AddSuperiorForm
-          onAdd={(sup) => {
-            setSuperiors([...superiors, sup])
-            setShowAdd(false)
-          }}
-          onCancel={() => setShowAdd(false)}
+          onAdd={handleAdd}
+          onCancel={() => setShowAddForm(false)}
         />
       </FullscreenModal>
+    )
+  }
+
+  return (
+    <div className="space-y-3 pb-4">
+      <button
+        onClick={() => {
+          hapticFeedback('light')
+          setShowAddForm(true)
+        }}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-primary/50 bg-primary/5 hover:bg-primary/10 transition-colors active:scale-95"
+      >
+        <Plus className="h-4 w-4 text-primary" />
+        <span className="text-[10px] font-bold uppercase tracking-wider text-primary">Προσθήκη Ανώτερου</span>
+      </button>
 
       {superiors.length === 0 ? (
-        <div className="glass-card rounded-xl p-6 text-center border border-white/5">
-          <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">Δεν έχεις καταχωρήσει ανωτέρους</p>
+        <div className="rounded-2xl border border-dashed border-white/10 bg-secondary/20 p-6 text-center">
+          <Users className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+          <p className="text-xs text-muted-foreground font-medium">Δεν έχουν προστεθεί ανώτεροι</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
-          {superiors.map((sup) => (
-            <div key={sup.id} className="glass-card rounded-xl p-2.5 flex items-center gap-3 border border-white/5">
-              <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                <User className="h-4 w-4 text-muted-foreground" />
+        superiors.map((superior) => (
+          <div
+            key={superior.id}
+            className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-4"
+          >
+            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-primary/20" />
+            
+            <div className="flex items-start gap-3">
+              <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center flex-shrink-0">
+                <Shield className="h-5 w-5 text-primary" />
               </div>
+
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <p className="text-sm font-bold text-foreground truncate">{sup.name}</p>
-                  <span className="text-[8px] font-black text-primary uppercase tracking-tight bg-primary/10 px-1 rounded">
-                    {sup.rank}
+                <h3 className="text-sm font-bold text-foreground truncate">{superior.name}</h3>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <span className="px-2 py-1 rounded-lg bg-primary/20 text-primary text-[8px] font-bold uppercase tracking-widest border border-primary/30">
+                    {superior.rank}
                   </span>
-                </div>
-                <div className="flex items-center gap-2 mt-0.5">
-                  {sup.role && (
-                    <p className="text-[10px] text-muted-foreground truncate">{sup.role}</p>
-                  )}
-                  {sup.phone && (
-                    <p className="text-[10px] text-primary font-mono">{sup.phone}</p>
+                  {superior.role && (
+                    <span className="text-[8px] text-muted-foreground font-medium">{superior.role}</span>
                   )}
                 </div>
-              </div>
-              <div className="flex items-center gap-1">
-                {sup.phone && (
-                  <a
-                    href={`tel:${sup.phone}`}
-                    onClick={() => hapticFeedback('medium')}
-                    className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center bg-primary/10 text-primary"
-                    aria-label={`Κλήση ${sup.name}`}
-                  >
-                    <Phone className="h-3.5 w-3.5" />
-                  </a>
+                {superior.phone && (
+                  <div className="flex items-center gap-1.5 mt-2">
+                    <Phone className="h-3 w-3 text-muted-foreground" />
+                    <a
+                      href={`tel:${superior.phone}`}
+                      className="text-[10px] font-medium text-primary hover:underline"
+                    >
+                      {superior.phone}
+                    </a>
+                  </div>
                 )}
-                <button
-                  onClick={() => {
-                    hapticFeedback('medium')
-                    setSuperiors(superiors.filter((s) => s.id !== sup.id))
-                  }}
-                  className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center text-destructive/70 hover:text-destructive"
-                  aria-label="Διαγραφή"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
               </div>
+
+              <button
+                onClick={() => handleDelete(superior.id)}
+                className="flex-shrink-0 p-2 rounded-lg bg-destructive/10 border border-destructive/30 hover:bg-destructive/20 transition-colors active:scale-95"
+                aria-label="Διαγραφή"
+              >
+                <Trash2 className="h-4 w-4 text-destructive" />
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        ))
       )}
     </div>
   )
@@ -411,86 +505,96 @@ function SuperiorsSection() {
 
 function FriendsSection() {
   const [friends, setFriends] = useLocalStorage<FriendEntry[]>('fantaros-friends', [])
-  const [showAdd, setShowAdd] = useState(false)
+  const [showAddForm, setShowAddForm] = useState(false)
 
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xs font-black text-muted-foreground uppercase tracking-widest">Φίλοι</h2>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setShowAdd(true)
-          }}
-          className="p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center"
-          aria-label="Προσθήκη φίλου"
-        >
-          <Plus className="h-4 w-4 text-primary" />
-        </button>
-      </div>
+  const handleAdd = (friend: FriendEntry) => {
+    hapticFeedback('heavy')
+    setFriends([...friends, friend])
+    setShowAddForm(false)
+  }
 
+  const handleDelete = (id: string) => {
+    hapticFeedback('heavy')
+    setFriends(friends.filter((f) => f.id !== id))
+  }
+
+  if (showAddForm) {
+    return (
       <FullscreenModal
-        isOpen={showAdd}
-        onClose={() => setShowAdd(false)}
-        title="Νέος Φίλος"
+        isOpen={showAddForm}
+        onClose={() => setShowAddForm(false)}
+        title="Προσθήκη Φίλου"
       >
         <AddFriendForm
-          onAdd={(friend) => {
-            setFriends([...friends, friend])
-            setShowAdd(false)
-          }}
-          onCancel={() => setShowAdd(false)}
+          onAdd={handleAdd}
+          onCancel={() => setShowAddForm(false)}
         />
       </FullscreenModal>
+    )
+  }
+
+  return (
+    <div className="space-y-3 pb-4">
+      <button
+        onClick={() => {
+          hapticFeedback('light')
+          setShowAddForm(true)
+        }}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-primary/50 bg-primary/5 hover:bg-primary/10 transition-colors active:scale-95"
+      >
+        <Plus className="h-4 w-4 text-primary" />
+        <span className="text-[10px] font-bold uppercase tracking-wider text-primary">Προσθήκη Φίλου</span>
+      </button>
 
       {friends.length === 0 ? (
-        <div className="glass-card rounded-xl p-6 text-center border border-white/5">
-          <UserPlus className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">Δεν έχεις προσθέσει φίλους</p>
+        <div className="rounded-2xl border border-dashed border-white/10 bg-secondary/20 p-6 text-center">
+          <UserPlus className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+          <p className="text-xs text-muted-foreground font-medium">Δεν έχουν προστεθεί φίλοι</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
-          {friends.map((friend) => (
-            <div key={friend.id} className="glass-card rounded-xl p-2.5 flex items-center gap-3 border border-white/5">
-              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <User className="h-4 w-4 text-primary" />
+        friends.map((friend) => (
+          <div
+            key={friend.id}
+            className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-secondary/80 via-secondary/60 to-secondary/40 backdrop-blur-sm p-4"
+          >
+            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-primary/20" />
+            
+            <div className="flex items-start gap-3">
+              <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center flex-shrink-0">
+                <UserPlus className="h-5 w-5 text-primary" />
               </div>
+
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-foreground truncate">{friend.name}</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  {friend.unit && (
-                    <p className="text-[10px] text-primary truncate">{friend.unit}</p>
-                  )}
-                  {friend.phone && (
-                    <p className="text-[10px] text-muted-foreground font-mono">{friend.phone}</p>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                {friend.phone && (
-                  <a
-                    href={`tel:${friend.phone}`}
-                    onClick={() => hapticFeedback('medium')}
-                    className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center bg-primary/10 text-primary"
-                    aria-label={`Κλήση ${friend.name}`}
-                  >
-                    <Phone className="h-3.5 w-3.5" />
-                  </a>
+                <h3 className="text-sm font-bold text-foreground truncate">{friend.name}</h3>
+                {friend.unit && (
+                  <p className="text-[10px] text-muted-foreground font-medium mt-0.5">{friend.unit}</p>
                 )}
-                <button
-                  onClick={() => {
-                    hapticFeedback('medium')
-                    setFriends(friends.filter((f) => f.id !== friend.id))
-                  }}
-                  className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center text-destructive/70 hover:text-destructive"
-                  aria-label="Διαγραφή"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+                {friend.phone && (
+                  <div className="flex items-center gap-1.5 mt-2">
+                    <Phone className="h-3 w-3 text-muted-foreground" />
+                    <a
+                      href={`tel:${friend.phone}`}
+                      className="text-[10px] font-medium text-primary hover:underline"
+                    >
+                      {friend.phone}
+                    </a>
+                  </div>
+                )}
+                {friend.notes && (
+                  <p className="text-[9px] text-muted-foreground/70 mt-2 italic">{friend.notes}</p>
+                )}
               </div>
+
+              <button
+                onClick={() => handleDelete(friend.id)}
+                className="flex-shrink-0 p-2 rounded-lg bg-destructive/10 border border-destructive/30 hover:bg-destructive/20 transition-colors active:scale-95"
+                aria-label="Διαγραφή"
+              >
+                <Trash2 className="h-4 w-4 text-destructive" />
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        ))
       )}
     </div>
   )
@@ -554,14 +658,14 @@ function AddFriendForm({ onAdd, onCancel }: {
       <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px]"
+          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary/80 transition-colors"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!name.trim()}
-          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40 hover:bg-primary/90 transition-colors active:scale-95"
         >
           Προσθήκη
         </button>
@@ -643,27 +747,18 @@ function AddSuperiorForm({ onAdd, onCancel }: {
       <div className="flex gap-2 pt-2">
         <button
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px]"
+          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary/80 transition-colors"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!name.trim()}
-          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40"
+          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40 hover:bg-primary/90 transition-colors active:scale-95"
         >
           Προσθήκη
         </button>
       </div>
-    </div>
-  )
-}
-
-function InfoField({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">{label}</span>
-      <span className="text-xs font-bold text-foreground truncate">{value || '—'}</span>
     </div>
   )
 }
@@ -682,7 +777,7 @@ function FormField({ label, value, onChange, placeholder }: {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50"
+        className="w-full px-3 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none transition-colors"
       />
     </div>
   )
