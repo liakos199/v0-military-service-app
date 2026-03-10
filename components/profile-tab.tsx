@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { User, Trash2, ChevronDown, ChevronUp, Edit3, Plus, UserPlus, Shield } from 'lucide-react'
+import { User, Trash2, ChevronDown, ChevronUp, Edit3, Plus, UserPlus, Shield, Phone } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal } from '@/components/fullscreen-modal'
@@ -175,7 +175,7 @@ function ProfileSection() {
         {profile.reportingPhrase && (
           <div className="glass-card rounded-xl p-3 border border-white/5">
             <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1">Αναφορά</p>
-            <p className="text-xs text-foreground font-bold leading-snug italic">
+            <p className="text-xs text-foreground font-bold leading-snug">
               "{profile.reportingPhrase}"
             </p>
           </div>
@@ -399,7 +399,7 @@ function SuperiorsSection() {
                 <div className="flex items-center gap-1.5">
                   {superior.phone && (
                     <a href={`tel:${superior.phone}`} className="p-2 rounded-lg bg-secondary/50 border border-border text-muted-foreground hover:text-primary transition-colors">
-                      <UserPlus className="h-3.5 w-3.5" />
+                      <Phone className="h-3.5 w-3.5" />
                     </a>
                   )}
                   <button
@@ -484,7 +484,7 @@ function FriendsSection() {
                 <div className="flex items-center gap-1.5">
                   {friend.phone && (
                     <a href={`tel:${friend.phone}`} className="p-2 rounded-lg bg-secondary/50 border border-border text-muted-foreground hover:text-primary transition-colors">
-                      <UserPlus className="h-3.5 w-3.5" />
+                      <Phone className="h-3.5 w-3.5" />
                     </a>
                   )}
                   <button
