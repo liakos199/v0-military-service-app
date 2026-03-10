@@ -13,8 +13,8 @@
   --popover-foreground: #f1f1f1;
   
   /* Tactical Olive/Gold Accents */
-  --primary: #a3e635; /* Lime 400 - High visibility tactical green */
-  --primary-foreground: #052e16;
+  --primary: #06b6d4; /* Cyan 500 - Tactical cyan */
+  --primary-foreground: #082f46;
   
   --secondary: #252529;
   --secondary-foreground: #d1d1d6;
@@ -22,15 +22,15 @@
   --muted: #252529;
   --muted-foreground: #8e8e93;
   
-  --accent: #a3e635;
-  --accent-foreground: #052e16;
+  --accent: #06b6d4;
+  --accent-foreground: #082f46;
   
   --destructive: #ff453a;
   --destructive-foreground: #ffffff;
   
   --border: rgba(255, 255, 255, 0.08);
   --input: #252529;
-  --ring: #a3e635;
+  --ring: #06b6d4;
   
   /* Chart Colors - Gold/Zinc focused */
   --chart-1: #eab308; /* Gold */
