@@ -155,7 +155,6 @@ export function ExpensesTab() {
               items={canteenCatalog}
               onSave={(updated) => {
                 setCanteenCatalog(updated)
-                setShowCatalogManager(false)
               }}
               onCancel={() => setShowCatalogManager(false)}
             />

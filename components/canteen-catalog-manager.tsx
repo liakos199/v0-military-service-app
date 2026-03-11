@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { hapticFeedback, generateId } from '@/lib/helpers'
 import type { CanteenCatalogItem } from '@/lib/types'
@@ -13,18 +13,12 @@ interface CanteenCatalogManagerProps {
 }
 
 export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalogManagerProps) {
-  const [catalogItems, setCatalogItems] = useState<CanteenCatalogItem[]>(items)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editData, setEditData] = useState<CanteenCatalogItem | null>(null)
   const [newLabel, setNewLabel] = useState('')
   const [newPrice, setNewPrice] = useState('')
   const [newCategory, setNewCategory] = useState<'food' | 'beverage' | 'snack' | 'other'>('food')
   const [expandedCategory, setExpandedCategory] = useState<'food' | 'beverage' | 'snack' | 'other' | null>(null)
-
-  // Sync changes back to parent immediately whenever catalogItems changes
-  useEffect(() => {
-    onSave(catalogItems)
-  }, [catalogItems, onSave])
 
   const startEdit = (item: CanteenCatalogItem) => {
     hapticFeedback('light')
@@ -40,9 +34,10 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
   const saveEdit = () => {
     if (!editData || !editData.name.trim() || editData.price <= 0) return
     hapticFeedback('heavy')
-    setCatalogItems(catalogItems.map((item) =>
+    const updatedItems = items.map((item) =>
       item.id === editingId ? editData : item
-    ))
+    )
+    onSave(updatedItems)
     setEditingId(null)
     setEditData(null)
   }
@@ -50,13 +45,13 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
   const handleDelete = (id: string, name: string) => {
     hapticFeedback('medium')
     if (window.confirm(`Είστε σίγουροι ότι θέλετε να διαγράψετε το προϊόν "${name}";`)) {
-      setCatalogItems(catalogItems.filter((item) => item.id !== id))
+      const updatedItems = items.filter((item) => item.id !== id)
+      onSave(updatedItems)
     }
   }
 
   const handleAdd = () => {
     const parsedPrice = parseFloat(newPrice)
-    // Validate both name and price are provided and valid
     if (!newLabel.trim() || isNaN(parsedPrice) || parsedPrice <= 0) {
       hapticFeedback('medium')
       return
@@ -69,17 +64,17 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
       category: newCategory,
       available: true,
     }
-    setCatalogItems([...catalogItems, newItem])
+    onSave([...items, newItem])
     setNewLabel('')
     setNewPrice('')
   }
 
   // Group items by category
   const itemsByCategory = {
-    food: catalogItems.filter((item) => item.category === 'food'),
-    beverage: catalogItems.filter((item) => item.category === 'beverage'),
-    snack: catalogItems.filter((item) => item.category === 'snack'),
-    other: catalogItems.filter((item) => item.category === 'other'),
+    food: items.filter((item) => item.category === 'food'),
+    beverage: items.filter((item) => item.category === 'beverage'),
+    snack: items.filter((item) => item.category === 'snack'),
+    other: items.filter((item) => item.category === 'other'),
   }
 
   return (
@@ -88,7 +83,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         Προσθέστε και διαχειρίστε τα προϊόντα του Κ.Ψ.Μ. που θα εμφανίζονται ως επιλογές κατά την καταχώρηση εξόδων.
       </p>
 
-      {/* Add new item - Redesigned with reduced opacity and better contrast */}
+      {/* Add new item */}
       <div className="glass-card rounded-lg p-3 flex flex-col gap-2 border border-accent/30 bg-gradient-to-br from-accent/5 to-accent/5">
         <h3 className="text-sm font-semibold text-foreground">Προσθήκη προϊόντος</h3>
         
@@ -253,7 +248,6 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         })}
       </div>
 
-      {/* Action buttons - Removed manual save/cancel as requested */}
       <div className="flex gap-2 pt-2 border-t border-border/50">
         <button
           onClick={onCancel}
