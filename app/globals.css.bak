@@ -4,55 +4,55 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Military Professional Theme - Refined */
-  --background: #0f1419; 
-  --foreground: #ffffff;
-  --card: #1a202c;
-  --card-foreground: #ffffff;
-  --popover: #0f1419;
-  --popover-foreground: #ffffff;
+  /* Tactical Slate & Olive Theme */
+  --background: #0a0a0b; 
+  --foreground: #f1f1f1;
+  --card: #1c1c1f;
+  --card-foreground: #f1f1f1;
+  --popover: #121214;
+  --popover-foreground: #f1f1f1;
   
-  /* Military Blue & Emerald Accents */
-  --primary: #0ea5e9; /* Military Blue - Professional cyan */
-  --primary-foreground: #001f3f;
+  /* Tactical Olive/Gold Accents */
+  --primary: #06b6d4; /* Cyan 500 - Tactical cyan */
+  --primary-foreground: #082f46;
   
-  --secondary: #334155;
-  --secondary-foreground: #e2e8f0;
+  --secondary: #252529;
+  --secondary-foreground: #d1d1d6;
   
-  --muted: #475569;
-  --muted-foreground: #cbd5e1;
+  --muted: #252529;
+  --muted-foreground: #8e8e93;
   
-  --accent: #10b981;
-  --accent-foreground: #ffffff;
+  --accent: #06b6d4;
+  --accent-foreground: #082f46;
   
-  --destructive: #ef4444;
+  --destructive: #ff453a;
   --destructive-foreground: #ffffff;
   
-  --border: rgba(148, 163, 184, 0.2);
-  --input: #1e293b;
-  --ring: #0ea5e9;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: #252529;
+  --ring: #06b6d4;
   
-  /* Chart Colors - Emerald/Blue/Slate focused */
-  --chart-1: #10b981; /* Emerald */
-  --chart-2: #0ea5e9; /* Military Blue */
-  --chart-3: #64748b; /* Slate */
-  --chart-4: #f59e0b; /* Amber */
-  --chart-5: #f43f5e; /* Rose */
+  /* Chart Colors - Gold/Zinc focused */
+  --chart-1: #eab308; /* Gold */
+  --chart-2: #ca8a04; /* Dark Gold */
+  --chart-3: #71717a; /* Zinc 500 */
+  --chart-4: #a1a1aa; /* Zinc 400 */
+  --chart-5: #d4d4d8; /* Zinc 300 */
   
   --radius: 0.75rem;
   
-  --sidebar: #0f1419;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #0ea5e9;
-  --sidebar-primary-foreground: #001f3f;
-  --sidebar-accent: #334155;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: rgba(148, 163, 184, 0.15);
-  --sidebar-ring: #0ea5e9;
+  --sidebar: #09090b;
+  --sidebar-foreground: #f4f4f5;
+  --sidebar-primary: #eab308;
+  --sidebar-primary-foreground: #09090b;
+  --sidebar-accent: #27272a;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-ring: #eab308;
   
-  --glass: rgba(15, 20, 25, 0.8);
-  --glass-border: rgba(148, 163, 184, 0.15);
-  --glass-highlight: #0ea5e9;
+  --glass: rgba(24, 24, 27, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: #eab308;
 }
 
 @theme inline {
@@ -100,16 +100,16 @@
 }
 
 .glass-card {
-  background: rgba(26, 32, 44, 0.6);
+  background: rgba(37, 37, 41, 0.6);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
 .glass-card-highlight {
-  background: #0ea5e9;
-  border: 1px solid #0ea5e9;
-  color: #001f3f;
+  background: #eab308;
+  border: 1px solid #eab308;
+  color: #09090b;
 }
 
 /* Hide scrollbar for mobile */
