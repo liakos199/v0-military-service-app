@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { hapticFeedback, generateId } from '@/lib/helpers'
 import type { CanteenCatalogItem } from '@/lib/types'
@@ -20,6 +20,11 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
   const [newPrice, setNewPrice] = useState('')
   const [newCategory, setNewCategory] = useState<'food' | 'beverage' | 'snack' | 'other'>('food')
   const [expandedCategory, setExpandedCategory] = useState<'food' | 'beverage' | 'snack' | 'other' | null>(null)
+
+  // Sync changes back to parent immediately whenever catalogItems changes
+  useEffect(() => {
+    onSave(catalogItems)
+  }, [catalogItems, onSave])
 
   const startEdit = (item: CanteenCatalogItem) => {
     hapticFeedback('light')
@@ -42,9 +47,11 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
     setEditData(null)
   }
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: string, name: string) => {
     hapticFeedback('medium')
-    setCatalogItems(catalogItems.filter((item) => item.id !== id))
+    if (window.confirm(`Είστε σίγουροι ότι θέλετε να διαγράψετε το προϊόν "${name}";`)) {
+      setCatalogItems(catalogItems.filter((item) => item.id !== id))
+    }
   }
 
   const handleAdd = () => {
@@ -65,11 +72,6 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
     setCatalogItems([...catalogItems, newItem])
     setNewLabel('')
     setNewPrice('')
-  }
-
-  const handleSave = () => {
-    hapticFeedback('heavy')
-    onSave(catalogItems)
   }
 
   // Group items by category
@@ -231,7 +233,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                               ✎
                             </button>
                             <button
-                              onClick={() => handleDelete(item.id)}
+                              onClick={() => handleDelete(item.id, item.name)}
                               className="px-2 py-1 rounded text-xs text-destructive hover:bg-destructive/10 transition-colors"
                               aria-label={`Διαγραφή ${item.name}`}
                             >
@@ -251,19 +253,13 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         })}
       </div>
 
-      {/* Action buttons */}
+      {/* Action buttons - Removed manual save/cancel as requested */}
       <div className="flex gap-2 pt-2 border-t border-border/50">
         <button
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-lg bg-secondary/50 text-foreground font-medium text-sm min-h-[44px] hover:bg-secondary transition-colors border border-white/5"
+          className="w-full py-2.5 rounded-lg bg-secondary/50 text-foreground font-medium text-sm min-h-[44px] hover:bg-secondary transition-colors border border-white/5"
         >
-          Ακύρωση
-        </button>
-        <button
-          onClick={handleSave}
-          className="flex-1 py-2.5 rounded-lg bg-accent text-accent-foreground font-semibold text-sm min-h-[44px] hover:bg-accent/90 transition-colors"
-        >
-          Αποθήκευση
+          Κλείσιμο
         </button>
       </div>
     </div>

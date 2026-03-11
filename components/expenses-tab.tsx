@@ -219,7 +219,9 @@ export function ExpensesTab() {
                         <button
                           onClick={() => {
                             hapticFeedback('medium')
-                            setExpenses(expenses.filter((e) => e.id !== expense.id))
+                            if (window.confirm(`Είστε σίγουροι ότι θέλετε να διαγράψετε το έξοδο "${expense.description || 'Έξοδο'}" ύψους ${expense.amount.toFixed(2)}€;`)) {
+                              setExpenses(expenses.filter((e) => e.id !== expense.id))
+                            }
                           }}
                           className="p-1.5 rounded-lg text-destructive/70 hover:text-destructive hover:bg-destructive/10 transition-all"
                           aria-label="Διαγραφή"
