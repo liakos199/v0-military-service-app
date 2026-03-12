@@ -1,11 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { GREEK_MONTHS } from '@/lib/types'
 import { hapticFeedback } from '@/lib/helpers'
-import { FullscreenModal } from '@/components/fullscreen-modal'
 
 interface GreekDatePickerProps {
   value: string
@@ -85,12 +84,16 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
         <CalendarIcon className={cn("text-muted-foreground", compact ? "h-3.5 w-3.5" : "h-4 w-4")} />
       </button>
 
-      <FullscreenModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Επιλογή Ημερομηνίας"
-      >
-        <div className="flex flex-col gap-4">
+      {isOpen && (
+        <div className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4" onClick={() => setIsOpen(false)}>
+          <div className="bg-background rounded-2xl border border-border w-full max-w-sm shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div className="px-4 py-4 border-b border-border">
+              <h3 className="text-lg font-semibold text-foreground text-center">Επιλογή Ημερομηνίας</h3>
+            </div>
+            
+            {/* Content */}
+            <div className="p-4 flex flex-col gap-4">
           {/* Month navigation */}
           <div className="flex items-center justify-between">
             <button
@@ -172,8 +175,21 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
           >
             Σήμερα
           </button>
+            </div>
+            
+            {/* Footer */}
+            <div className="px-4 py-3 border-t border-border flex gap-2">
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="flex-1 py-2 rounded-lg bg-secondary text-foreground font-medium text-sm hover:bg-secondary/80 transition-colors"
+              >
+                Κλείσιμο
+              </button>
+            </div>
+          </div>
         </div>
-      </FullscreenModal>
+      )
     </div>
   )
 }
