@@ -16,7 +16,11 @@ import Image from 'next/image'
 type DeviceType = 'ios' | 'android' | 'other'
 type BrowserType = 'safari' | 'chrome' | 'samsung' | 'firefox' | 'other'
 
-export function WelcomeModal() {
+interface WelcomeModalProps {
+  onNext: () => void;
+}
+
+export function WelcomeModal({ onNext }: WelcomeModalProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [device, setDevice] = useState<DeviceType>('other')
   const [browser, setBrowser] = useState<BrowserType>('other')
@@ -28,11 +32,19 @@ export function WelcomeModal() {
       (window.navigator as any).standalone || 
       document.referrer.includes('android-app://');
 
-    if (isStandalone) return;
+    // If already installed, don't show the install modal, but we still need onboarding if not done
+    const onboardingCompleted = localStorage.getItem('onboarding-completed') === 'true'
+    const welcomeSeen = localStorage.getItem('welcome-modal-seen') === 'true'
+
+    if (isStandalone) {
+      if (!onboardingCompleted) {
+        onNext();
+      }
+      return;
+    }
 
     // Check if first visit
-    const hasVisited = localStorage.getItem('welcome-modal-seen')
-    if (!hasVisited) {
+    if (!welcomeSeen) {
       const ua = navigator.userAgent
       
       // Device detection
@@ -54,12 +66,21 @@ export function WelcomeModal() {
       }
 
       setIsOpen(true)
+    } else if (!onboardingCompleted) {
+      // Welcome seen but onboarding not done
+      onNext();
     }
-  }, [])
+  }, [onNext])
 
   const handleClose = () => {
     localStorage.setItem('welcome-modal-seen', 'true')
     setIsOpen(false)
+    
+    // Check if onboarding is needed
+    const onboardingCompleted = localStorage.getItem('onboarding-completed') === 'true'
+    if (!onboardingCompleted) {
+      onNext();
+    }
   }
 
   const renderInstructions = () => {

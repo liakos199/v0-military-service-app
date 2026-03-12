@@ -9,11 +9,13 @@ import { NotesTab } from '@/components/notes-tab'
 import { ProfileTab } from '@/components/profile-tab'
 import { ExpensesTab } from '@/components/expenses-tab'
 import { WelcomeModal } from '@/components/welcome-modal'
+import { OnboardingFlow } from '@/components/onboarding-flow'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('service')
   const [showSplash, setShowSplash] = useState(true)
   const [splashFading, setSplashFading] = useState(false)
+  const [showOnboarding, setShowOnboarding] = useState(false)
 
   useEffect(() => {
     const fadeTimer = setTimeout(() => setSplashFading(true), 1800)
@@ -63,7 +65,10 @@ export default function Home() {
 
       {/* Bottom Navigation - Always Visible */}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
-      <WelcomeModal />
+      
+      {/* Welcome & Onboarding Flow */}
+      <WelcomeModal onNext={() => setShowOnboarding(true)} />
+      <OnboardingFlow isOpen={showOnboarding} onComplete={() => setShowOnboarding(false)} />
     </main>
   )
 }
