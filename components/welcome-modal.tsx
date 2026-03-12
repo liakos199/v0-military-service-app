@@ -65,22 +65,38 @@ export function WelcomeModal() {
   const renderInstructions = () => {
     if (device === 'ios') {
       return (
-        <div className="space-y-4 mt-4">
-          <p className="text-sm">Για την καλύτερη εμπειρία, πρόσθεσε την εφαρμογή στην αρχική σου οθόνη:</p>
-          <ol className="space-y-3 text-sm list-decimal list-inside">
-            <li className="flex items-center gap-2 flex-wrap">
-              Πάτησε το κουμπί <strong>Κοινοποίηση (Share)</strong> 
-              <Share className="w-4 h-4 inline text-blue-500" /> 
-              στο κάτω μέρος (ή πάνω μέρος) του browser.
-            </li>
-            <li className="flex items-center gap-2 flex-wrap">
-              Σύρε προς τα κάτω και επίλεξε <strong>Προσθήκη στην οθόνη αφετηρίας</strong>
-              <PlusSquare className="w-4 h-4 inline" />.
-            </li>
-            <li>
-              Πάτησε <strong>Προσθήκη</strong> στην πάνω δεξιά γωνία.
-            </li>
-          </ol>
+        <div className="space-y-4 mt-6">
+          <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <span className="text-sm font-semibold text-primary">1</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Πάτησε το κουμπί Κοινοποίηση</p>
+                <p className="text-xs text-muted-foreground mt-1">Βρίσκεται στο κάτω ή πάνω μέρος του browser</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <span className="text-sm font-semibold text-primary">2</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»</p>
+                <p className="text-xs text-muted-foreground mt-1">Ίσως χρειαστεί να σύρεις προς τα κάτω</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <span className="text-sm font-semibold text-primary">3</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Πάτησε «Προσθήκη»</p>
+                <p className="text-xs text-muted-foreground mt-1">Στην πάνω δεξιά γωνία της οθόνης</p>
+              </div>
+            </div>
+          </div>
         </div>
       )
     }
@@ -88,50 +104,84 @@ export function WelcomeModal() {
     if (device === 'android') {
       if (browser === 'samsung') {
         return (
-          <div className="space-y-4 mt-4">
-            <p className="text-sm">Για την καλύτερη εμπειρία, πρόσθεσε την εφαρμογή στην αρχική σου οθόνη:</p>
-            <ol className="space-y-3 text-sm list-decimal list-inside">
-              <li className="flex items-center gap-2 flex-wrap">
-                Πάτησε το <strong>μενού (3 γραμμές)</strong> 
-                <Menu className="w-4 h-4 inline" /> κάτω δεξιά.
-              </li>
-              <li>
-                Επίλεξε <strong>Προσθήκη σελίδας σε</strong>.
-              </li>
-              <li>
-                Επίλεξε <strong>Οθόνη αφετηρίας</strong>.
-              </li>
-            </ol>
+          <div className="space-y-4 mt-6">
+            <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                  <span className="text-sm font-semibold text-primary">1</span>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Πάτησε το μενού (3 γραμμές)</p>
+                  <p className="text-xs text-muted-foreground mt-1">Βρίσκεται κάτω δεξιά</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                  <span className="text-sm font-semibold text-primary">2</span>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Επίλεξε «Προσθήκη σελίδας σε»</p>
+                  <p className="text-xs text-muted-foreground mt-1">Θα εμφανιστεί στο μενού</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                  <span className="text-sm font-semibold text-primary">3</span>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Επίλεξε «Οθόνη αφετηρίας»</p>
+                  <p className="text-xs text-muted-foreground mt-1">Και επιβεβαίωσε την προσθήκη</p>
+                </div>
+              </div>
+            </div>
           </div>
         )
       }
       
       return (
-        <div className="space-y-4 mt-4">
-          <p className="text-sm">Για την καλύτερη εμπειρία, πρόσθεσε την εφαρμογή στην αρχική σου οθόνη:</p>
-          <ol className="space-y-3 text-sm list-decimal list-inside">
-            <li className="flex items-center gap-2 flex-wrap">
-              Πάτησε το <strong>μενού (3 τελείες)</strong> 
-              <MoreVertical className="w-4 h-4 inline" /> πάνω δεξιά.
-            </li>
-            <li className="flex items-center gap-2 flex-wrap">
-              Επίλεξε <strong>Εγκατάσταση εφαρμογής</strong> ή <strong>Προσθήκη στην αρχική οθόνη</strong>
-              <Download className="w-4 h-4 inline" />.
-            </li>
-            <li>
-              Ακολούθησε τις οδηγίες στην οθόνη.
-            </li>
-          </ol>
+        <div className="space-y-4 mt-6">
+          <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <span className="text-sm font-semibold text-primary">1</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Πάτησε το μενού (3 τελείες)</p>
+                <p className="text-xs text-muted-foreground mt-1">Βρίσκεται πάνω δεξιά</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <span className="text-sm font-semibold text-primary">2</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Επίλεξε «Εγκατάσταση εφαρμογής»</p>
+                <p className="text-xs text-muted-foreground mt-1">Ή «Προσθήκη στην αρχική οθόνη»</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <span className="text-sm font-semibold text-primary">3</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Ακολούθησε τις οδηγίες</p>
+                <p className="text-xs text-muted-foreground mt-1">Και επιβεβαίωσε την εγκατάσταση</p>
+              </div>
+            </div>
+          </div>
         </div>
       )
     }
 
     return (
-      <div className="space-y-4 mt-4">
-        <p className="text-sm">Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση και καλύτερη εμπειρία χρήσης.</p>
-        <p className="text-xs text-muted-foreground italic">
-          Αναζήτησε την επιλογή "Προσθήκη στην αρχική οθόνη" στο μενού του browser σου.
-        </p>
+      <div className="space-y-4 mt-6">
+        <div className="bg-secondary/30 rounded-lg p-4">
+          <p className="text-sm">Αναζήτησε την επιλογή «Προσθήκη στην αρχική οθόνη» στο μενού του browser σου για γρήγορη πρόσβαση.</p>
+        </div>
       </div>
     )
   }
@@ -140,7 +190,7 @@ export function WelcomeModal() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-md border-primary/20 bg-zinc-950 text-zinc-100" showCloseButton={false}>
         <DialogHeader className="items-center text-center">
-          <div className="mb-4 p-3 bg-primary/10 rounded-2xl">
+          <div className="mb-4 p-3 bg-primary/10 rounded-2xl w-fit mx-auto">
             <Image
               src="/icon-192.png"
               alt="ΑΠΟΛΕΛΕ PRO"
@@ -149,22 +199,22 @@ export function WelcomeModal() {
               className="rounded-xl shadow-lg"
             />
           </div>
-          <DialogTitle className="text-xl font-bold">Καλώς ήρθες στο ΑΠΟΛΕΛΕ PRO!</DialogTitle>
-          <DialogDescription className="text-zinc-400">
-            Η απόλυτη στρατιωτική εφαρμογή για τη θητεία σου.
+          <DialogTitle className="text-2xl font-bold">Καλώς ήρθες!</DialogTitle>
+          <DialogDescription className="text-zinc-400 text-sm mt-2">
+            Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση
           </DialogDescription>
         </DialogHeader>
         
         {renderInstructions()}
 
-        <DialogFooter className="sm:justify-center mt-4">
+        <DialogFooter className="sm:justify-center mt-6">
           <Button 
             type="button" 
             variant="default" 
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 rounded-xl"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 rounded-lg"
             onClick={handleClose}
           >
-            Εντάξει, το κατάλαβα!
+            Κατανοητό
           </Button>
         </DialogFooter>
       </DialogContent>
