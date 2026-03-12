@@ -8,6 +8,7 @@ import { CalendarTab } from '@/components/calendar-tab'
 import { NotesTab } from '@/components/notes-tab'
 import { ProfileTab } from '@/components/profile-tab'
 import { ExpensesTab } from '@/components/expenses-tab'
+import { WelcomeModal } from '@/components/welcome-modal'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('service')
@@ -62,6 +63,7 @@ export default function Home() {
 
       {/* Bottom Navigation - Always Visible */}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+      <WelcomeModal />
     </main>
   )
 }
