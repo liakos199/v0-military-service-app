@@ -189,7 +189,7 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
             </div>
           </div>
         </div>
-      )
+      )}
     </div>
   )
 }
