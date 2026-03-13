@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { User, ChevronDown, ChevronUp, Edit3, Shield, MapPin, Hash, Droplet, MessageSquare, Save, X } from 'lucide-react'
+import { User, ChevronDown, ChevronUp, Edit3, Shield, MapPin, Hash, Droplet, MessageSquare, Save, X, Palette, RotateCcw } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal } from '@/components/fullscreen-modal'
@@ -22,7 +22,7 @@ const DEFAULT_PROFILE: ProfileData = {
 }
 
 export function ProfileTab() {
-  const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends'>('profile')
+  const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends' | 'settings'>('profile')
 
   return (
     <div className="flex flex-col h-full bg-background">
@@ -36,14 +36,14 @@ export function ProfileTab() {
         </div>
 
         {/* Section Toggle */}
-        <div className="flex gap-1 p-1 rounded-xl bg-secondary/30 border border-white/5">
+        <div className="flex gap-1 p-1 rounded-xl bg-secondary/30 border border-white/5 overflow-x-auto no-scrollbar">
           <button
             onClick={() => {
               hapticFeedback('light')
               setActiveSection('profile')
             }}
             className={cn(
-              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px]',
+              'flex-1 px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px] whitespace-nowrap',
               activeSection === 'profile'
                 ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                 : 'text-muted-foreground hover:text-foreground'
@@ -57,7 +57,7 @@ export function ProfileTab() {
               setActiveSection('superiors')
             }}
             className={cn(
-              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px]',
+              'flex-1 px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px] whitespace-nowrap',
               activeSection === 'superiors'
                 ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                 : 'text-muted-foreground hover:text-foreground'
@@ -71,13 +71,27 @@ export function ProfileTab() {
               setActiveSection('friends')
             }}
             className={cn(
-              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px]',
+              'flex-1 px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px] whitespace-nowrap',
               activeSection === 'friends'
                 ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
             Φίλοι
+          </button>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setActiveSection('settings')
+            }}
+            className={cn(
+              'flex-1 px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px] whitespace-nowrap',
+              activeSection === 'settings'
+                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            Ρυθμίσεις
           </button>
         </div>
       </div>
@@ -87,6 +101,7 @@ export function ProfileTab() {
         {activeSection === 'profile' && <ProfileSection />}
         {activeSection === 'superiors' && <SuperiorsSection />}
         {activeSection === 'friends' && <FriendsSection />}
+        {activeSection === 'settings' && <SettingsSection />}
       </div>
     </div>
   )
@@ -372,6 +387,83 @@ function FormField({ label, value, onChange, placeholder }: { label: string, val
         placeholder={placeholder}
         className="w-full px-4 py-3 rounded-xl bg-secondary text-foreground text-xs border border-white/5 placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[46px] font-bold"
       />
+    </div>
+  )
+}
+
+function SettingsSection() {
+  const [color, setColor] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('app-primary-color') || '#0ea5e9'
+    }
+    return '#0ea5e9'
+  })
+
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor)
+    const event = new CustomEvent('app-color-change', { detail: newColor })
+    window.dispatchEvent(event)
+  }
+
+  const resetColor = () => {
+    const defaultColor = '#0ea5e9'
+    handleColorChange(defaultColor)
+  }
+
+  return (
+    <div className="space-y-6 pb-10">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Εμφάνιση</h3>
+      </div>
+
+      <div className="glass-card rounded-3xl p-6 border border-white/5 space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+            <Palette className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <h4 className="text-sm font-black text-foreground leading-tight">Χρώμα Εφαρμογής</h4>
+            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
+              Επιλέξτε το κύριο χρώμα (RGB)
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            <div 
+              className="w-16 h-16 rounded-2xl shadow-inner border border-white/10 flex-shrink-0 transition-colors duration-200"
+              style={{ backgroundColor: color }}
+            />
+            <div className="flex-1 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Επιλεγμένο:</span>
+                <span className="text-[10px] font-mono font-bold text-primary uppercase">{color}</span>
+              </div>
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="w-full h-10 rounded-xl bg-secondary border border-white/5 cursor-pointer appearance-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-xl"
+              />
+            </div>
+          </div>
+
+          <button
+            onClick={resetColor}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-secondary/50 text-muted-foreground hover:text-foreground hover:bg-secondary border border-white/5 transition-all text-[10px] font-black uppercase tracking-widest"
+          >
+            <RotateCcw size={14} />
+            Επαναφορά Προεπιλογής
+          </button>
+        </div>
+      </div>
+
+      <div className="glass-card rounded-2xl p-5 border border-white/5">
+        <p className="text-[9px] text-muted-foreground font-bold leading-relaxed text-center">
+          Το επιλεγμένο χρώμα θα αποθηκευτεί στη συσκευή σας και θα εφαρμόζεται αυτόματα κάθε φορά που ανοίγετε την εφαρμογή.
+        </p>
+      </div>
     </div>
   )
 }
