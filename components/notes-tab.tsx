@@ -353,7 +353,7 @@ export function NotesTab() {
             className={cn(
               'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'notes'
-                ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
+                ? 'bg-primary text-primary-foreground '
                 : 'text-muted-foreground/60'
             )}
           >
@@ -368,7 +368,7 @@ export function NotesTab() {
             className={cn(
               'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'guides'
-                ? 'bg-primary text-primary-foreground shadow-[0_0_12px_rgba(163,230,53,0.3)]'
+                ? 'bg-primary text-primary-foreground '
                 : 'text-muted-foreground/60'
             )}
           >

@@ -214,7 +214,7 @@ export function CalendarTab() {
                 className={cn(
                   'relative aspect-square w-full rounded-xl text-xs flex flex-col items-center justify-center transition-all duration-300',
                   isSelected
-                    ? 'bg-primary text-primary-foreground font-black shadow-[0_0_15px_rgba(163,230,53,0.4)]'
+                    ? 'bg-primary text-primary-foreground font-black'
                     : isToday
                       ? 'bg-primary text-primary-foreground font-black border border-primary'
                       : 'text-foreground/80 hover:bg-secondary/50'
@@ -250,11 +250,11 @@ export function CalendarTab() {
         {/* Legend */}
         <div className="flex items-center justify-center gap-6 pt-3 border-t border-white/5">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-chart-3 shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-chart-3" />
             <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Υπηρεσία</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(56,189,248,0.5)]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Άδεια</span>
           </div>
         </div>

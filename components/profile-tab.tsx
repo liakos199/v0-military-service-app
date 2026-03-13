@@ -129,14 +129,14 @@ function ProfileSection() {
   return (
     <div className="space-y-6 pb-10">
       {/* Identity Card */}
-      <div className="zinc-card p-6 relative overflow-hidden group shadow-2xl shadow-black/40">
+      <div className="zinc-card p-6 relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-8 opacity-[0.05] pointer-events-none group-hover:scale-110 transition-transform duration-700">
           <Shield size={140} />
         </div>
         
         <div className="flex items-start justify-between relative z-10">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 shadow-inner">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
               <User className="h-8 w-8 text-primary" />
             </div>
             <div className="min-w-0">
@@ -144,7 +144,7 @@ function ProfileSection() {
                 {profile.fullName || 'Ονοματεπώνυμο'}
               </h2>
               <div className="flex flex-wrap items-center gap-2 mt-2.5">
-                <span className="px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest shadow-sm">
+                <span className="px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest">
                   {profile.rank}
                 </span>
                 {profile.serviceNumber && (
@@ -243,7 +243,7 @@ function ProfileSection() {
                 {showRanks ? <ChevronUp className="h-4 w-4 text-primary" /> : <ChevronDown className="h-4 w-4" />}
               </button>
               {showRanks && (
-                <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-white/10 no-scrollbar shadow-2xl animate-in fade-in slide-in-from-bottom-2">
+                <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-white/10 no-scrollbar animate-in fade-in slide-in-from-bottom-2">
                   {RANKS.map((r) => (
                     <button
                       key={r}
@@ -297,7 +297,7 @@ function ProfileSection() {
                 {showBloodTypes ? <ChevronUp className="h-4 w-4 text-primary" /> : <ChevronDown className="h-4 w-4" />}
               </button>
               {showBloodTypes && (
-                <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-white/10 no-scrollbar shadow-2xl animate-in fade-in slide-in-from-bottom-2">
+                <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-white/10 no-scrollbar animate-in fade-in slide-in-from-bottom-2">
                   {BLOOD_TYPES.map((bt) => (
                     <button
                       key={bt}
@@ -433,7 +433,7 @@ function SettingsSection() {
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <div 
-              className="w-16 h-16 rounded-2xl shadow-inner border border-white/10 flex-shrink-0 transition-colors duration-200"
+              className="w-16 h-16 rounded-2xl border border-white/10 flex-shrink-0 transition-colors duration-200"
               style={{ backgroundColor: color }}
             />
             <div className="flex-1 space-y-2">
