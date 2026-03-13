@@ -181,7 +181,7 @@ export function ServiceTab() {
 
           {/* Main Progress Ring - LELEmeter */}
           <div
-            className="zinc-card p-5 flex flex-col items-center gap-5 shadow-xl shadow-black/20"
+            className="zinc-card p-5 flex flex-col items-center gap-5"
           >
             <div className="flex items-center justify-between w-full mb-1">
               <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em]">
