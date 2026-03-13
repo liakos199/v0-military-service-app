@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { User, Trash2, ChevronDown, ChevronUp, Edit3, Plus, UserPlus, Shield, Phone } from 'lucide-react'
+import { User, ChevronDown, ChevronUp, Edit3, Shield, MapPin, Hash, Droplet, MessageSquare, Save, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal } from '@/components/fullscreen-modal'
-import { hapticFeedback, generateId } from '@/lib/helpers'
+import { hapticFeedback } from '@/lib/helpers'
 import type { ProfileData, SuperiorEntry, FriendEntry } from '@/lib/types'
 import { RANKS, BLOOD_TYPES } from '@/lib/types'
 
@@ -15,7 +15,7 @@ const DEFAULT_PROFILE: ProfileData = {
   barracks: '',
   bloodType: '',
   reportingPhrase: '',
-  rank: 'ΝΕΟΣΥΛΛΕΚΤΟΣ',
+  rank: 'ΣΤΡΑΤΙΩΤΗΣ',
   serviceNumber: '',
   weaponCode: '',
   weaponCell: '',
@@ -25,27 +25,27 @@ export function ProfileTab() {
   const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends'>('profile')
 
   return (
-    <div className="flex flex-col h-full">
-      {/* HEADER - Compact */}
-      <div className="flex-shrink-0 bg-background px-4 pt-3 pb-2 border-b border-border/50 safe-top">
-        <div className="flex items-center justify-between">
+    <div className="flex flex-col h-full bg-background">
+      {/* HEADER */}
+      <div className="flex-shrink-0 px-4 pt-6 pb-4 border-b border-border/50 safe-top">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-lg font-bold text-foreground leading-tight">Άτομα</h1>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Στοιχεία & ιεραρχία</p>
+            <h1 className="text-2xl font-black text-foreground tracking-tight">Προφίλ</h1>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold">Διαχείριση Στοιχείων</p>
           </div>
         </div>
 
-        {/* Section Toggle - Compact */}
-        <div className="flex gap-1 p-0.5 rounded-lg bg-secondary/50 border border-border mt-2">
+        {/* Section Toggle */}
+        <div className="flex gap-1 p-1 rounded-xl bg-secondary/30 border border-white/5">
           <button
             onClick={() => {
               hapticFeedback('light')
               setActiveSection('profile')
             }}
             className={cn(
-              'flex-1 py-1.5 rounded-md text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[32px]',
+              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px]',
               activeSection === 'profile'
-                ? 'bg-primary text-primary-foreground shadow-sm'
+                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
@@ -57,9 +57,9 @@ export function ProfileTab() {
               setActiveSection('superiors')
             }}
             className={cn(
-              'flex-1 py-1.5 rounded-md text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[32px]',
+              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px]',
               activeSection === 'superiors'
-                ? 'bg-primary text-primary-foreground shadow-sm'
+                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
@@ -71,9 +71,9 @@ export function ProfileTab() {
               setActiveSection('friends')
             }}
             className={cn(
-              'flex-1 py-1.5 rounded-md text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[32px]',
+              'flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px]',
               activeSection === 'friends'
-                ? 'bg-primary text-primary-foreground shadow-sm'
+                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
@@ -82,8 +82,8 @@ export function ProfileTab() {
         </div>
       </div>
 
-      {/* CONTENT - Compact padding */}
-      <div className="flex-1 overflow-y-auto px-3 py-3 no-scrollbar">
+      {/* CONTENT */}
+      <div className="flex-1 overflow-y-auto px-4 py-6 no-scrollbar">
         {activeSection === 'profile' && <ProfileSection />}
         {activeSection === 'superiors' && <SuperiorsSection />}
         {activeSection === 'friends' && <FriendsSection />}
@@ -97,6 +97,7 @@ function ProfileSection() {
   const [isEditing, setIsEditing] = useState(false)
   const [form, setForm] = useState<ProfileData>(profile)
   const [showRanks, setShowRanks] = useState(false)
+  const [showBloodTypes, setShowBloodTypes] = useState(false)
 
   const handleSave = () => {
     hapticFeedback('heavy')
@@ -110,403 +111,420 @@ function ProfileSection() {
     setIsEditing(true)
   }
 
-  if (!isEditing) {
-    return (
-      <div className="space-y-2.5 pb-6">
-        {/* Main Profile Card - Compact */}
-        <div className="glass-card rounded-xl p-3 border border-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-secondary/50 border border-border flex items-center justify-center flex-shrink-0">
-              <User className="h-6 w-6 text-primary" />
+  return (
+    <div className="space-y-6 pb-10">
+      {/* Identity Card */}
+      <div className="glass-card rounded-3xl p-6 border border-white/5 relative overflow-hidden group">
+        <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-500">
+          <Shield size={120} />
+        </div>
+        
+        <div className="flex items-start justify-between relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 shadow-inner">
+              <User className="h-8 w-8 text-primary" />
             </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-base font-black text-foreground tracking-tight truncate leading-tight">
+            <div className="min-w-0">
+              <h2 className="text-xl font-black text-foreground tracking-tight truncate leading-tight">
                 {profile.fullName || 'Ονοματεπώνυμο'}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1">
-                <span className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[8px] font-black uppercase tracking-widest">
+              <div className="flex flex-wrap items-center gap-2 mt-2">
+                <span className="px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest shadow-sm">
                   {profile.rank}
                 </span>
                 {profile.serviceNumber && (
-                  <span className="text-[8px] text-muted-foreground font-bold">
+                  <span className="px-2 py-1 rounded-lg bg-secondary/50 text-muted-foreground text-[9px] font-bold border border-white/5">
                     #{profile.serviceNumber}
                   </span>
                 )}
               </div>
             </div>
-            <button
-              onClick={startEdit}
-              className="p-2 rounded-lg bg-secondary/50 border border-border hover:bg-secondary transition-colors"
-            >
-              <Edit3 className="h-3.5 w-3.5 text-foreground" />
-            </button>
           </div>
+          <button
+            onClick={startEdit}
+            className="p-2.5 rounded-xl bg-secondary/50 border border-white/10 hover:bg-secondary hover:scale-105 active:scale-95 transition-all"
+          >
+            <Edit3 className="h-4 w-4 text-foreground" />
+          </button>
         </div>
-
-        {/* Info Grid - Compact */}
-        <div className="grid grid-cols-2 gap-2">
-          {profile.company && (
-            <div className="glass-card rounded-xl p-2.5 border border-white/5">
-              <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest leading-none">Λόχος</span>
-              <p className="text-sm font-black text-foreground leading-tight mt-1">{profile.company}</p>
-            </div>
-          )}
-          {profile.barracks && (
-            <div className="glass-card rounded-xl p-2.5 border border-white/5">
-              <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest leading-none">Θάλαμος</span>
-              <p className="text-sm font-black text-foreground leading-tight mt-1">{profile.barracks}</p>
-            </div>
-          )}
-          {profile.bloodType && (
-            <div className="glass-card rounded-xl p-2.5 border border-white/5">
-              <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest leading-none">Αίμα</span>
-              <p className="text-sm font-black text-foreground leading-tight mt-1">{profile.bloodType}</p>
-            </div>
-          )}
-          {profile.weaponCode && (
-            <div className="glass-card rounded-xl p-2.5 border border-white/5">
-              <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest leading-none">Όπλο</span>
-              <p className="text-sm font-black text-foreground leading-tight mt-1">{profile.weaponCode}</p>
-            </div>
-          )}
-        </div>
-
-        {/* Reporting Phrase - Compact */}
-        {profile.reportingPhrase && (
-          <div className="glass-card rounded-xl p-3 border border-white/5">
-            <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1">Αναφορά</p>
-            <p className="text-xs text-foreground font-bold leading-snug">
-              "{profile.reportingPhrase}"
-            </p>
-          </div>
-        )}
-
-        {/* Empty State - Compact */}
-        {!profile.fullName && (
-          <div className="py-8 text-center border-2 border-dashed border-border rounded-xl">
-            <p className="text-[10px] text-muted-foreground font-bold mb-3">Κενό προφίλ</p>
-            <button
-              onClick={startEdit}
-              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest hover:opacity-90 transition-opacity"
-            >
-              Προσθήκη
-            </button>
-          </div>
-        )}
       </div>
-    )
-  }
 
-  return (
-    <FullscreenModal
-      isOpen={isEditing}
-      onClose={() => setIsEditing(false)}
-      title="Επεξεργασία"
-    >
-      <div className="flex flex-col gap-3">
-        <FormField
-          label="Ονοματεπώνυμο"
-          value={form.fullName}
-          onChange={(v) => setForm({ ...form, fullName: v })}
+      {/* Details Grid */}
+      <div className="grid grid-cols-2 gap-3">
+        <InfoTile 
+          icon={MapPin} 
+          label="Λόχος" 
+          value={profile.company} 
+          placeholder="Δεν ορίστηκε"
         />
+        <InfoTile 
+          icon={Hash} 
+          label="Θάλαμος" 
+          value={profile.barracks} 
+          placeholder="Δεν ορίστηκε"
+        />
+        <InfoTile 
+          icon={Droplet} 
+          label="Ομάδα Αίματος" 
+          value={profile.bloodType} 
+          placeholder="Άγνωστο"
+        />
+        <InfoTile 
+          icon={Shield} 
+          label="Σειρά / ΕΣΣΟ" 
+          value={profile.weaponCode} 
+          placeholder="Δεν ορίστηκε"
+        />
+      </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <FormField
-            label="Αριθμός Μητρώου"
-            value={form.serviceNumber}
-            onChange={(v) => setForm({ ...form, serviceNumber: v })}
-          />
-          <div>
-            <label className="block text-[9px] font-black uppercase tracking-wider text-muted-foreground mb-1">Βαθμός</label>
-            <button
-              type="button"
-              onClick={() => {
-                hapticFeedback('light')
-                setShowRanks(!showRanks)
-              }}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-secondary text-foreground text-xs border border-border font-bold min-h-[38px]"
-            >
-              <span className="truncate">{form.rank}</span>
-              {showRanks ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-            </button>
-            {showRanks && (
-              <div className="mt-1 max-h-32 overflow-y-auto rounded-lg bg-secondary border border-border no-scrollbar shadow-xl">
-                {RANKS.map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => {
-                      hapticFeedback('light')
-                      setForm({ ...form, rank: r })
-                      setShowRanks(false)
-                    }}
-                    className={cn(
-                      'w-full text-left px-3 py-2 text-[11px] font-bold border-b border-border/50 last:border-0',
-                      form.rank === r ? 'text-primary bg-secondary/80' : 'text-foreground/70 hover:bg-secondary/80'
-                    )}
-                  >
-                    {r}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+      {/* Reporting Phrase */}
+      <div className="glass-card rounded-2xl p-5 border border-white/5">
+        <div className="flex items-center gap-2 mb-3">
+          <MessageSquare size={14} className="text-primary" />
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Φράση Αναφοράς</span>
         </div>
+        <p className={cn(
+          "text-sm font-bold leading-relaxed italic",
+          profile.reportingPhrase ? "text-foreground" : "text-muted-foreground/40"
+        )}>
+          {profile.reportingPhrase ? `"${profile.reportingPhrase}"` : "Προσθέστε τη φράση αναφοράς σας..."}
+        </p>
+      </div>
 
-        <div className="grid grid-cols-2 gap-3">
+      {/* Edit Modal */}
+      <FullscreenModal
+        isOpen={isEditing}
+        onClose={() => setIsEditing(false)}
+        title="Επεξεργασία Προφίλ"
+      >
+        <div className="flex flex-col gap-5 py-2">
           <FormField
-            label="Λόχος"
-            value={form.company}
-            onChange={(v) => setForm({ ...form, company: v })}
+            label="Ονοματεπώνυμο"
+            value={form.fullName}
+            onChange={(v) => setForm({ ...form, fullName: v })}
+            placeholder="π.χ. Ιωάννης Παπαδόπουλος"
           />
-          <FormField
-            label="Θάλαμος"
-            value={form.barracks}
-            onChange={(v) => setForm({ ...form, barracks: v })}
-          />
-        </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <FormField
-            label="Κωδικός Όπλου"
-            value={form.weaponCode}
-            onChange={(v) => setForm({ ...form, weaponCode: v })}
-          />
-          <FormField
-            label="Κελί Όπλου"
-            value={form.weaponCell}
-            onChange={(v) => setForm({ ...form, weaponCell: v })}
-          />
-        </div>
-
-        {/* Blood Type Selector - Compact */}
-        <div>
-          <label className="block text-[9px] font-black uppercase tracking-wider text-muted-foreground mb-1">Αίμα</label>
-          <div className="grid grid-cols-4 gap-1">
-            {BLOOD_TYPES.map((bt) => (
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              label="Αριθμός Μητρώου (ΑΣΜ)"
+              value={form.serviceNumber}
+              onChange={(v) => setForm({ ...form, serviceNumber: v })}
+              placeholder="123/4567/24"
+            />
+            
+            <div className="relative">
+              <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5 ml-1">Βαθμός</label>
               <button
-                key={bt}
                 type="button"
                 onClick={() => {
                   hapticFeedback('light')
-                  setForm({ ...form, bloodType: bt })
+                  setShowRanks(!showRanks)
+                  setShowBloodTypes(false)
                 }}
-                className={cn(
-                  'py-1.5 rounded-md text-[9px] font-black transition-all border min-h-[32px]',
-                  form.bloodType === bt
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-secondary text-foreground border-border'
-                )}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary text-foreground text-xs border border-white/5 font-bold min-h-[46px] hover:bg-secondary/80 transition-colors"
               >
-                {bt}
+                <span className="truncate">{form.rank}</span>
+                {showRanks ? <ChevronUp className="h-4 w-4 text-primary" /> : <ChevronDown className="h-4 w-4" />}
               </button>
-            ))}
+              {showRanks && (
+                <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-white/10 no-scrollbar shadow-2xl animate-in fade-in slide-in-from-bottom-2">
+                  {RANKS.map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => {
+                        hapticFeedback('light')
+                        setForm({ ...form, rank: r })
+                        setShowRanks(false)
+                      }}
+                      className={cn(
+                        'w-full text-left px-4 py-3 text-[11px] font-bold border-b border-white/5 last:border-0 transition-colors',
+                        form.rank === r ? 'text-primary bg-primary/5' : 'text-foreground/70 hover:bg-white/5'
+                      )}
+                    >
+                      {r}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              label="Λόχος"
+              value={form.company}
+              onChange={(v) => setForm({ ...form, company: v })}
+              placeholder="π.χ. 1ος"
+            />
+            <FormField
+              label="Θάλαμος"
+              value={form.barracks}
+              onChange={(v) => setForm({ ...form, barracks: v })}
+              placeholder="π.χ. 102"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="relative">
+              <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5 ml-1">Ομάδα Αίματος</label>
+              <button
+                type="button"
+                onClick={() => {
+                  hapticFeedback('light')
+                  setShowBloodTypes(!showBloodTypes)
+                  setShowRanks(false)
+                }}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary text-foreground text-xs border border-white/5 font-bold min-h-[46px] hover:bg-secondary/80 transition-colors"
+              >
+                <span className="truncate">{form.bloodType || "Επιλέξτε"}</span>
+                {showBloodTypes ? <ChevronUp className="h-4 w-4 text-primary" /> : <ChevronDown className="h-4 w-4" />}
+              </button>
+              {showBloodTypes && (
+                <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-white/10 no-scrollbar shadow-2xl animate-in fade-in slide-in-from-bottom-2">
+                  {BLOOD_TYPES.map((bt) => (
+                    <button
+                      key={bt}
+                      type="button"
+                      onClick={() => {
+                        hapticFeedback('light')
+                        setForm({ ...form, bloodType: bt })
+                        setShowBloodTypes(false)
+                      }}
+                      className={cn(
+                        'w-full text-left px-4 py-3 text-[11px] font-bold border-b border-white/5 last:border-0 transition-colors',
+                        form.bloodType === bt ? 'text-primary bg-primary/5' : 'text-foreground/70 hover:bg-white/5'
+                      )}
+                    >
+                      {bt}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <FormField
+              label="Σειρά / ΕΣΣΟ"
+              value={form.weaponCode}
+              onChange={(v) => setForm({ ...form, weaponCode: v })}
+              placeholder="π.χ. 2024 Α'"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5 ml-1">Φράση Αναφοράς</label>
+            <textarea
+              value={form.reportingPhrase}
+              onChange={(e) => setForm({ ...form, reportingPhrase: e.target.value })}
+              placeholder="π.χ. Στρατιώτης Παπαδόπουλος Ιωάννης, 1ος Λόχος..."
+              className="w-full px-4 py-3 rounded-xl bg-secondary text-foreground text-xs border border-white/5 placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[80px] resize-none font-bold"
+            />
+          </div>
+
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={() => setIsEditing(false)}
+              className="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl bg-secondary text-foreground font-black text-[10px] uppercase tracking-widest border border-white/5 hover:bg-secondary/80 transition-all"
+            >
+              <X size={14} />
+              Ακύρωση
+            </button>
+            <button
+              onClick={handleSave}
+              className="flex-[2] flex items-center justify-center gap-2 py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+            >
+              <Save size={14} />
+              Αποθήκευση
+            </button>
           </div>
         </div>
-
-        <FormField
-          label="Φράση Αναφοράς"
-          value={form.reportingPhrase}
-          onChange={(v) => setForm({ ...form, reportingPhrase: v })}
-          placeholder="Στρατιώτης..."
-        />
-
-        <div className="flex gap-2 pt-2">
-          <button
-            onClick={() => setIsEditing(false)}
-            className="flex-1 py-2.5 rounded-lg bg-secondary text-foreground font-black text-[9px] uppercase tracking-widest border border-border min-h-[38px]"
-          >
-            Ακύρωση
-          </button>
-          <button
-            onClick={handleSave}
-            className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-black text-[9px] uppercase tracking-widest shadow-md min-h-[38px]"
-          >
-            Αποθήκευση
-          </button>
-        </div>
-      </div>
-    </FullscreenModal>
+      </    </div>
   )
 }
 
+function InfoTile({ icon: Icon, label, value, placeholder }: { icon: any, label: string, value: string, placeholder: string }) {
+  return (
+    <div className="glass-card rounded-2xl p-4 border border-white/5 flex flex-col gap-2 hover:bg-white/5 transition-colors">
+      <div className="flex items-center gap-2">
+        <div className="p-1.5 rounded-lg bg-secondary/50">
+          <Icon size={12} className="text-primary" />
+        </div>
+        <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest leading-none">{label}</span>
+      </div>
+      <p className={cn(
+        "text-sm font-black leading-none truncate",
+        value ? "text-foreground" : "text-muted-foreground/30"
+      )}>
+        {value || placeholder}
+      </p>
+    </div>
+  )
+}
+
+function FormField({ label, value, onChange, placeholder }: { label: string, value: string, onChange: (v: string) => void, placeholder?: string }) {
+  return (
+    <div className="space-y-1.5">
+      <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5 ml-1">{label}</label>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full px-4 py-3 rounded-xl bg-secondary text-foreground text-xs border border-white/5 placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[46px] font-bold"
+      />
+    </div>
+  )
+}
+
+/* ---------- SUPERIORS SECTION ---------- */
 function SuperiorsSection() {
   const [superiors, setSuperiors] = useLocalStorage<SuperiorEntry[]>('fantaros-superiors', [])
-  const [showAddForm, setShowAddForm] = useState(false)
+  const [isAdding, setIsAdding] = useState(false)
 
-  const handleAdd = (superior: SuperiorEntry) => {
-    hapticFeedback('heavy')
-    setSuperiors([...superiors, superior])
-    setShowAddForm(false)
+  const handleAdd = (sup: SuperiorEntry) => {
+    setSuperiors([...superiors, sup])
+    setIsAdding(false)
   }
 
   const handleDelete = (id: string) => {
-    hapticFeedback('heavy')
+    hapticFeedback('medium')
     setSuperiors(superiors.filter((s) => s.id !== id))
   }
 
-  if (showAddForm) {
-    return (
-      <FullscreenModal
-        isOpen={showAddForm}
-        onClose={() => setShowAddForm(false)}
-        title="Προσθήκη"
-      >
-        <AddSuperiorForm
-          onAdd={handleAdd}
-          onCancel={() => setShowAddForm(false)}
-        />
-      </FullscreenModal>
-    )
-  }
-
   return (
-    <div className="space-y-2.5 pb-6">
-      <button
-        onClick={() => {
-          hapticFeedback('light')
-          setShowAddForm(true)
-        }}
-        className="w-full py-2.5 rounded-xl border-2 border-dashed border-border text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary hover:border-primary/40 transition-all min-h-[38px]"
-      >
-        + Προσθήκη Ανώτερου
-      </button>
+    <div className="space-y-4 pb-10">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Ιεραρχία</h3>
+        <button
+          onClick={() => setIsAdding(true)}
+          className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-[9px] font-black uppercase tracking-widest border border-primary/20 hover:bg-primary/20 transition-all"
+        >
+          Προσθήκη
+        </button>
+      </div>
 
       {superiors.length === 0 ? (
-        <div className="py-8 text-center border-2 border-dashed border-border rounded-xl">
-          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Κενό</p>
+        <div className="py-12 flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-3xl gap-4">
+          <div className="w-16 h-16 rounded-full bg-secondary/30 flex items-center justify-center">
+            <Shield className="h-8 w-8 text-muted-foreground/20" />
+          </div>
+          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Δεν υπάρχουν ανώτεροι</p>
         </div>
       ) : (
-        <div className="space-y-2">
-          {superiors.map((superior) => (
-            <div
-              key={superior.id}
-              className="glass-card rounded-xl p-3 border border-white/5"
-            >
+        <div className="grid gap-3">
+          {superiors.map((sup) => (
+            <div key={sup.id} className="glass-card rounded-2xl p-4 border border-white/5 flex items-center justify-between group">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-secondary/50 border border-border flex items-center justify-center flex-shrink-0">
-                  <Shield className="h-4 w-4 text-primary" />
+                <div className="w-10 h-10 rounded-xl bg-secondary/50 flex items-center justify-center border border-white/5">
+                  <Shield className="h-5 w-5 text-primary" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-black text-foreground leading-none truncate">{superior.name}</h3>
-                  <div className="flex items-center gap-1.5 mt-1">
-                    <span className="text-[8px] font-black text-primary uppercase tracking-widest">{superior.rank}</span>
-                    {superior.role && (
-                      <span className="text-[8px] text-muted-foreground font-bold uppercase tracking-widest truncate">{superior.role}</span>
-                    )}
-                  </div>
+                <div>
+                  <h4 className="text-sm font-black text-foreground leading-tight">{sup.name}</h4>
+                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
+                    {sup.rank} {sup.role && `• ${sup.role}`}
+                  </p>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  {superior.phone && (
-                    <a href={`tel:${superior.phone}`} className="p-2 rounded-lg bg-secondary/50 border border-border text-muted-foreground hover:text-primary transition-colors">
-                      <Phone className="h-3.5 w-3.5" />
-                    </a>
-                  )}
-                  <button
-                    onClick={() => handleDelete(superior.id)}
-                    className="p-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {sup.phone && (
+                  <a href={`tel:${sup.phone}`} className="p-2 rounded-lg bg-secondary/50 text-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+                    <Edit3 size={14} />
+                  </a>
+                )}
+                <button
+                  onClick={() => handleDelete(sup.id)}
+                  className="p-2 rounded-lg bg-secondary/50 text-muted-foreground hover:bg-destructive hover:text-destructive-foreground transition-all"
+                >
+                  <X size={14} />
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <FullscreenModal isOpen={isAdding} onClose={() => setIsAdding(false)} title="Προσθήκη Ανωτέρου">
+        <AddSuperiorForm onAdd={handleAdd} onCancel={() => setIsAdding(false)} />
+      </FullscreenModal>
     </div>
   )
 }
 
+/* ---------- FRIENDS SECTION ---------- */
 function FriendsSection() {
   const [friends, setFriends] = useLocalStorage<FriendEntry[]>('fantaros-friends', [])
-  const [showAddForm, setShowAddForm] = useState(false)
+  const [isAdding, setIsAdding] = useState(false)
 
   const handleAdd = (friend: FriendEntry) => {
-    hapticFeedback('heavy')
     setFriends([...friends, friend])
-    setShowAddForm(false)
+    setIsAdding(false)
   }
 
   const handleDelete = (id: string) => {
-    hapticFeedback('heavy')
+    hapticFeedback('medium')
     setFriends(friends.filter((f) => f.id !== id))
   }
 
-  if (showAddForm) {
-    return (
-      <FullscreenModal
-        isOpen={showAddForm}
-        onClose={() => setShowAddForm(false)}
-        title="Προσθήκη"
-      >
-        <AddFriendForm
-          onAdd={handleAdd}
-          onCancel={() => setShowAddForm(false)}
-        />
-      </FullscreenModal>
-    )
-  }
-
   return (
-    <div className="space-y-2.5 pb-6">
-      <button
-        onClick={() => {
-          hapticFeedback('light')
-          setShowAddForm(true)
-        }}
-        className="w-full py-2.5 rounded-xl border-2 border-dashed border-border text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary hover:border-primary/40 transition-all min-h-[38px]"
-      >
-        + Προσθήκη Φίλου
-      </button>
+    <div className="space-y-4 pb-10">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Συνάδελφοι</h3>
+        <button
+          onClick={() => setIsAdding(true)}
+          className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-[9px] font-black uppercase tracking-widest border border-primary/20 hover:bg-primary/20 transition-all"
+        >
+          Προσθήκη
+        </button>
+      </div>
 
       {friends.length === 0 ? (
-        <div className="py-8 text-center border-2 border-dashed border-border rounded-xl">
-          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Κενό</p>
+        <div className="py-12 flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-3xl gap-4">
+          <div className="w-16 h-16 rounded-full bg-secondary/30 flex items-center justify-center">
+            <User className="h-8 w-8 text-muted-foreground/20" />
+          </div>
+          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Δεν υπάρχουν φίλοι</p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="grid gap-3">
           {friends.map((friend) => (
-            <div
-              key={friend.id}
-              className="glass-card rounded-xl p-3 border border-white/5"
-            >
+            <div key={friend.id} className="glass-card rounded-2xl p-4 border border-white/5 flex items-center justify-between group">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-secondary/50 border border-border flex items-center justify-center flex-shrink-0">
-                  <UserPlus className="h-4 w-4 text-primary" />
+                <div className="w-10 h-10 rounded-xl bg-secondary/50 flex items-center justify-center border border-white/5">
+                  <User className="h-5 w-5 text-primary" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-black text-foreground leading-none truncate">{friend.name}</h3>
-                  {friend.unit && (
-                    <p className="text-[8px] text-muted-foreground font-black uppercase tracking-widest mt-1 truncate">{friend.unit}</p>
-                  )}
+                <div>
+                  <h4 className="text-sm font-black text-foreground leading-tight">{friend.name}</h4>
+                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
+                    {friend.unit || 'Χωρίς Μονάδα'}
+                  </p>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  {friend.phone && (
-                    <a href={`tel:${friend.phone}`} className="p-2 rounded-lg bg-secondary/50 border border-border text-muted-foreground hover:text-primary transition-colors">
-                      <Phone className="h-3.5 w-3.5" />
-                    </a>
-                  )}
-                  <button
-                    onClick={() => handleDelete(friend.id)}
-                    className="p-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {friend.phone && (
+                  <a href={`tel:${friend.phone}`} className="p-2 rounded-lg bg-secondary/50 text-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+                    <Edit3 size={14} />
+                  </a>
+                )}
+                <button
+                  onClick={() => handleDelete(friend.id)}
+                  className="p-2 rounded-lg bg-secondary/50 text-muted-foreground hover:bg-destructive hover:text-destructive-foreground transition-all"
+                >
+                  <X size={14} />
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <FullscreenModal isOpen={isAdding} onClose={() => setIsAdding(false)} title="Προσθήκη Φίλου">
+        <AddFriendForm onAdd={handleAdd} onCancel={() => setIsAdding(false)} />
+      </FullscreenModal>
     </div>
   )
 }
 
-function AddFriendForm({ onAdd, onCancel }: {
-  onAdd: (friend: FriendEntry) => void
-  onCancel: () => void
-}) {
+function AddFriendForm({ onAdd, onCancel }: { onAdd: (friend: FriendEntry) => void, onCancel: () => void }) {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [unit, setUnit] = useState('')
@@ -514,30 +532,30 @@ function AddFriendForm({ onAdd, onCancel }: {
 
   const handleSubmit = () => {
     if (!name.trim()) return
-    hapticFeedback('heavy')
-    onAdd({
-      id: generateId(),
-      name: name.trim(),
-      phone: phone.trim(),
-      unit: unit.trim(),
-      notes: notes.trim(),
-    })
+    onAdd({ id: Math.random().toString(36).substr(2, 9), name: name.trim(), phone: phone.trim(), unit: unit.trim(), notes: notes.trim() })
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
-      <div className="grid grid-cols-2 gap-3">
+    <div className="flex flex-col gap-4">
+      <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} placeholder="π.χ. Κώστας Παππάς" />
+      <div className="grid grid-cols-2 gap-4">
         <FormField label="Τηλέφωνο" value={phone} onChange={setPhone} placeholder="69..." />
-        <FormField label="Μονάδα" value={unit} onChange={setUnit} />
+        <FormField label="Μονάδα" value={unit} onChange={setUnit} placeholder="π.χ. 123 ΤΠ" />
       </div>
-      <FormField label="Σημειώσεις" value={notes} onChange={setNotes} placeholder="Προαιρετικό..." />
-
-      <div className="flex gap-2 pt-2">
-        <button onClick={onCancel} className="flex-1 py-2.5 rounded-lg bg-secondary text-foreground font-black text-[9px] uppercase tracking-widest border border-border min-h-[38px]">
+      <div className="space-y-1.5">
+        <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5 ml-1">Σημειώσεις</label>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Προαιρετικά..."
+          className="w-full px-4 py-3 rounded-xl bg-secondary text-foreground text-xs border border-white/5 placeholder:text-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[80px] resize-none font-bold"
+        />
+      </div>
+      <div className="flex gap-3 pt-2">
+        <button onClick={onCancel} className="flex-1 py-4 rounded-2xl bg-secondary text-foreground font-black text-[10px] uppercase tracking-widest border border-white/5 transition-all">
           Ακύρωση
         </button>
-        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-black text-[9px] uppercase tracking-widest disabled:opacity-40 min-h-[38px]">
+        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-[2] py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest disabled:opacity-40 transition-all shadow-lg shadow-primary/20">
           Προσθήκη
         </button>
       </div>
@@ -545,41 +563,37 @@ function AddFriendForm({ onAdd, onCancel }: {
   )
 }
 
-function AddSuperiorForm({ onAdd, onCancel }: {
-  onAdd: (sup: SuperiorEntry) => void
-  onCancel: () => void
-}) {
+function AddSuperiorForm({ onAdd, onCancel }: { onAdd: (sup: SuperiorEntry) => void, onCancel: () => void }) {
   const [name, setName] = useState('')
-  const [rank, setRank] = useState('Λοχαγός')
+  const [rank, setRank] = useState('ΛΟΧΑΓΟΣ')
   const [role, setRole] = useState('')
   const [phone, setPhone] = useState('')
   const [showRanks, setShowRanks] = useState(false)
 
   const handleSubmit = () => {
     if (!name.trim()) return
-    hapticFeedback('heavy')
-    onAdd({ id: generateId(), name: name.trim(), rank, role: role.trim(), phone: phone.trim() })
+    onAdd({ id: Math.random().toString(36).substr(2, 9), name: name.trim(), rank, role: role.trim(), phone: phone.trim() })
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} />
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-[9px] font-black uppercase tracking-wider text-muted-foreground mb-1">Βαθμός</label>
+    <div className="flex flex-col gap-4">
+      <FormField label="Ονοματεπώνυμο" value={name} onChange={setName} placeholder="π.χ. Γεώργιος Νικολάου" />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="relative">
+          <label className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1.5 ml-1">Βαθμός</label>
           <button
             type="button"
             onClick={() => {
               hapticFeedback('light')
               setShowRanks(!showRanks)
             }}
-            className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-secondary text-foreground text-xs border border-border font-bold min-h-[38px]"
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary text-foreground text-xs border border-white/5 font-bold min-h-[46px] hover:bg-secondary/80 transition-colors"
           >
             <span className="truncate">{rank}</span>
-            {showRanks ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            {showRanks ? <ChevronUp className="h-4 w-4 text-primary" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           {showRanks && (
-            <div className="mt-1 max-h-32 overflow-y-auto rounded-lg bg-secondary border border-border no-scrollbar shadow-xl">
+            <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-white/10 no-scrollbar shadow-2xl animate-in fade-in slide-in-from-bottom-2">
               {RANKS.map((r) => (
                 <button
                   key={r}
@@ -590,8 +604,8 @@ function AddSuperiorForm({ onAdd, onCancel }: {
                     setShowRanks(false)
                   }}
                   className={cn(
-                    'w-full text-left px-3 py-2 text-[11px] font-bold border-b border-border/50 last:border-0',
-                    rank === r ? 'text-primary bg-secondary/80' : 'text-foreground/70 hover:bg-secondary/80'
+                    'w-full text-left px-4 py-3 text-[11px] font-bold border-b border-white/5 last:border-0 transition-colors',
+                    rank === r ? 'text-primary bg-primary/5' : 'text-foreground/70 hover:bg-white/5'
                   )}
                 >
                   {r}
@@ -602,40 +616,15 @@ function AddSuperiorForm({ onAdd, onCancel }: {
         </div>
         <FormField label="Τηλέφωνο" value={phone} onChange={setPhone} placeholder="69..." />
       </div>
-      <FormField label="Ρόλος" value={role} onChange={setRole} placeholder="Διοικητής..." />
-
-      <div className="flex gap-2 pt-2">
-        <button onClick={onCancel} className="flex-1 py-2.5 rounded-lg bg-secondary text-foreground font-black text-[9px] uppercase tracking-widest border border-border min-h-[38px]">
+      <FormField label="Ρόλος" value={role} onChange={setRole} placeholder="π.χ. Διοικητής" />
+      <div className="flex gap-3 pt-2">
+        <button onClick={onCancel} className="flex-1 py-4 rounded-2xl bg-secondary text-foreground font-black text-[10px] uppercase tracking-widest border border-white/5 transition-all">
           Ακύρωση
         </button>
-        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-black text-[9px] uppercase tracking-widest disabled:opacity-40 min-h-[38px]">
+        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-[2] py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest disabled:opacity-40 transition-all shadow-lg shadow-primary/20">
           Προσθήκη
         </button>
       </div>
-    </div>
-  )
-}
-
-interface FormFieldProps {
-  label: string
-  value: string
-  onChange: (value: string) => void
-  placeholder?: string
-}
-
-function FormField({ label, value, onChange, placeholder }: FormFieldProps) {
-  return (
-    <div>
-      <label className="block text-[9px] font-black uppercase tracking-wider text-muted-foreground mb-1">
-        {label}
-      </label>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-xs border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50 min-h-[38px]"
-      />
     </div>
   )
 }
