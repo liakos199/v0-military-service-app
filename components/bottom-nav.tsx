@@ -22,11 +22,11 @@ const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
     <nav
-      className="w-full flex-shrink-0 border-t border-zinc-800/50 safe-bottom bg-zinc-950/80 backdrop-blur-xl"
+      className="w-full flex-shrink-0 border-t border-neutral-800 safe-bottom bg-black/90 backdrop-blur-2xl"
       role="tablist"
       aria-label="Κύρια πλοήγηση"
     >
-      <div className="flex items-center justify-around px-2 py-1.5">
+      <div className="flex items-center justify-around px-3 py-2">
         {tabs.map((tab) => {
           const Icon = tab.icon
           const isActive = activeTab === tab.id
@@ -55,8 +55,8 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 )} />
               </div>
               <span className={cn(
-                'text-[8px] font-black uppercase tracking-widest transition-colors duration-300 truncate w-full text-center',
-                isActive ? 'text-primary' : 'text-zinc-500'
+                'text-[9px] font-black uppercase tracking-widest transition-colors duration-300 truncate w-full text-center',
+                isActive ? 'text-primary' : 'text-neutral-400'
               )}>
                 {tab.label}
               </span>
