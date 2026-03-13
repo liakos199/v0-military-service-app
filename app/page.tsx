@@ -41,11 +41,18 @@ export default function Home() {
             className="rounded-3xl"
             priority
           />
-          <h1 className="text-2xl font-bold tracking-wide text-foreground font-sans">
-            {'ΑΠΟΛΕΛΕ PRO'}
-          </h1>
-          <p className="text-xs text-muted-foreground tracking-widest uppercase font-sans">
-            {'Στρατιωτική Εφαρμογή'}
+          <div className="text-center space-y-1">
+            <h1 className="text-2xl font-bold tracking-wide text-foreground font-sans">
+              ΑΠΟΛΕΛΕ PRO
+            </h1>
+            <p className="text-xs text-muted-foreground tracking-widest uppercase font-sans">
+              ΣΤΡΑΤΙΩΤΙΚΗ ΕΦΑΡΜΟΓΗ
+            </p>
+          </div>
+        </div>
+        <div className="absolute bottom-10 left-0 right-0 text-center">
+          <p className="text-sm font-medium tracking-wide text-orange-400/90 font-sans">
+            Made by Η.Π.
           </p>
         </div>
       </div>

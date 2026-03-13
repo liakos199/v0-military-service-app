@@ -238,8 +238,8 @@ export function WelcomeModal() {
           </h1>
           <p className="text-sm text-muted-foreground">
             {step === 'install' 
-              ? 'Made by Η.Π.'
-              : 'Made by Η.Π.'
+              ? 'Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση'
+              : 'Όλα όσα χρειάζεσαι για τη θητεία σου'
             }
           </p>
         </div>
