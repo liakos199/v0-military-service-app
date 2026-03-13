@@ -353,7 +353,8 @@ function ProfileSection() {
             </button>
           </div>
         </div>
-      </    </div>
+      </FullscreenModal>
+    </div>
   )
 }
 
