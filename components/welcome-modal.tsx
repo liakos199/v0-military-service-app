@@ -207,15 +207,14 @@ export function WelcomeModal() {
 
   const renderFeatures = () => {
     return (
-      <div className="space-y-3 mt-6">
+      <div className="grid grid-cols-1 gap-2 mt-6">
         {FEATURES.map((feature, index) => {
-          const Icon = feature.icon
           return (
-            <div key={index} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20 border border-white/5">
+            <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-secondary/10 border border-white/5">
               <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
                 <Check className="w-3.5 h-3.5 text-green-400" strokeWidth={3} />
               </div>
-              <span className="text-sm font-medium text-foreground">{feature.label}</span>
+              <span className="text-xs font-medium text-foreground">{feature.label}</span>
             </div>
           )
         })}
@@ -253,8 +252,8 @@ export function WelcomeModal() {
           {step === 'features' && (
             <Button 
               type="button" 
-              variant="secondary"
-              className="flex-1 font-bold py-6 rounded-lg"
+              variant="ghost"
+              className="flex-1 font-medium py-4 rounded-lg text-zinc-400 hover:text-zinc-100"
               onClick={() => setStep('install')}
             >
               Πίσω
@@ -263,10 +262,10 @@ export function WelcomeModal() {
           <Button 
             type="button" 
             variant="default" 
-            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 rounded-lg"
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-lg"
             onClick={step === 'install' ? handleNextStep : handleClose}
           >
-            {step === 'install' ? 'Επόμενο' : 'Κατανοητό'}
+            {step === 'install' ? 'Επόμενο' : 'Ξεκινάμε'}
           </Button>
         </DialogFooter>
       </DialogContent>
