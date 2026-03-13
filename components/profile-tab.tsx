@@ -129,13 +129,13 @@ function ProfileSection() {
   return (
     <div className="space-y-6 pb-10">
       {/* Identity Card */}
-      <div className="glass-card rounded-3xl p-6 border border-white/5 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-500">
-          <Shield size={120} />
+      <div className="zinc-card p-6 relative overflow-hidden group shadow-2xl shadow-black/40">
+        <div className="absolute top-0 right-0 p-8 opacity-[0.05] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+          <Shield size={140} />
         </div>
         
         <div className="flex items-start justify-between relative z-10">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 shadow-inner">
               <User className="h-8 w-8 text-primary" />
             </div>
@@ -143,12 +143,12 @@ function ProfileSection() {
               <h2 className="text-xl font-black text-foreground tracking-tight truncate leading-tight">
                 {profile.fullName || 'Ονοματεπώνυμο'}
               </h2>
-              <div className="flex flex-wrap items-center gap-2 mt-2">
-                <span className="px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest shadow-sm">
+              <div className="flex flex-wrap items-center gap-2 mt-2.5">
+                <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground text-[8px] font-black uppercase tracking-widest shadow-lg shadow-primary/20">
                   {profile.rank}
                 </span>
                 {profile.serviceNumber && (
-                  <span className="px-2 py-1 rounded-lg bg-secondary/50 text-muted-foreground text-[9px] font-bold border border-white/5">
+                  <span className="px-2.5 py-1 rounded-full bg-zinc-800/80 text-zinc-400 text-[8px] font-bold border border-zinc-700/30 uppercase tracking-widest">
                     #{profile.serviceNumber}
                   </span>
                 )}
@@ -157,9 +157,9 @@ function ProfileSection() {
           </div>
           <button
             onClick={startEdit}
-            className="p-2.5 rounded-xl bg-secondary/50 border border-white/10 hover:bg-secondary hover:scale-105 active:scale-95 transition-all"
+            className="p-2.5 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all"
           >
-            <Edit3 className="h-4 w-4 text-foreground" />
+            <Edit3 className="h-4 w-4 text-zinc-300" />
           </button>
         </div>
       </div>
@@ -193,14 +193,14 @@ function ProfileSection() {
       </div>
 
       {/* Reporting Phrase */}
-      <div className="glass-card rounded-2xl p-5 border border-white/5">
-        <div className="flex items-center gap-2 mb-3">
+      <div className="zinc-card p-5 border-zinc-800/50">
+        <div className="flex items-center gap-2 mb-3.5">
           <MessageSquare size={14} className="text-primary" />
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Φράση Αναφοράς</span>
+          <span className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em]">Φράση Αναφοράς</span>
         </div>
         <p className={cn(
-          "text-sm font-bold leading-relaxed italic",
-          profile.reportingPhrase ? "text-foreground" : "text-muted-foreground/40"
+          "text-sm font-bold leading-relaxed italic tracking-tight",
+          profile.reportingPhrase ? "text-zinc-200" : "text-zinc-700"
         )}>
           {profile.reportingPhrase ? `"${profile.reportingPhrase}"` : "Προσθέστε τη φράση αναφοράς σας..."}
         </p>

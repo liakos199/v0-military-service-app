@@ -134,11 +134,11 @@ export function CalendarTab() {
   return (
     <div className="flex flex-col h-full">
       {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
+      <div className="flex-shrink-0 bg-background/80 backdrop-blur-md px-4 pt-4 pb-3 border-b border-zinc-800/50 safe-top sticky top-0 z-30">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-foreground">Ημερολόγιο</h1>
-            <p className="text-xs text-muted-foreground">Βάρδιες, άδειες & υπηρεσίες</p>
+            <h1 className="text-lg font-black text-foreground tracking-tight">Ημερολόγιο</h1>
+            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">Βάρδιες & άδειες</p>
           </div>
           <button
             onClick={() => {
@@ -146,10 +146,10 @@ export function CalendarTab() {
               setSelectedDate(today)
               setShowActionSheet(true)
             }}
-            className="p-3 rounded-xl glass-card min-h-[44px] min-w-[44px] flex items-center justify-center border border-white/5 hover:border-primary transition-colors"
+            className="p-2.5 rounded-xl zinc-card-hover bg-zinc-900/50 border border-zinc-800/50 flex items-center justify-center transition-all"
             aria-label="Προσθήκη"
           >
-            <Plus className="h-5 w-5 text-primary" />
+            <Plus className="h-4 w-4 text-primary" />
           </button>
         </div>
       </div>
@@ -159,25 +159,25 @@ export function CalendarTab() {
       <div className="flex flex-col gap-4">
 
       {/* Calendar Card */}
-      <div className="glass-card rounded-2xl p-4 border border-white/5 flex flex-col gap-4">
+      <div className="zinc-card p-4 flex flex-col gap-4 shadow-xl shadow-black/20">
         {/* Month Navigation */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-1">
           <button
             onClick={prevMonth}
-            className="p-2 rounded-xl bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
+            className="p-2 rounded-xl bg-zinc-800/50 border border-zinc-700/30 hover:bg-zinc-800 transition-all"
             aria-label="Προηγούμενος μήνας"
           >
-            <ChevronLeft className="h-4 w-4 text-foreground" />
+            <ChevronLeft className="h-3.5 w-3.5 text-zinc-400" />
           </button>
-          <span className="text-sm font-black text-foreground uppercase tracking-widest">
+          <span className="text-[11px] font-black text-foreground uppercase tracking-[0.2em]">
             {GREEK_MONTHS[viewMonth]} {viewYear}
           </span>
           <button
             onClick={nextMonth}
-            className="p-2 rounded-xl bg-secondary/50 border border-white/5 hover:bg-secondary transition-colors"
+            className="p-2 rounded-xl bg-zinc-800/50 border border-zinc-700/30 hover:bg-zinc-800 transition-all"
             aria-label="Επόμενος μήνας"
           >
-            <ChevronRight className="h-4 w-4 text-foreground" />
+            <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
           </button>
         </div>
 
@@ -212,12 +212,12 @@ export function CalendarTab() {
                 key={day}
                 onClick={() => handleDayPress(day)}
                 className={cn(
-                  'relative aspect-square w-full rounded-xl text-xs flex flex-col items-center justify-center transition-all duration-300',
+                  'relative aspect-square w-full rounded-xl text-[11px] flex flex-col items-center justify-center transition-all duration-300',
                   isSelected
-                    ? 'bg-primary text-primary-foreground font-black shadow-[0_0_15px_rgba(163,230,53,0.4)]'
+                    ? 'bg-primary text-primary-foreground font-black shadow-lg shadow-primary/30'
                     : isToday
-                      ? 'bg-primary text-primary-foreground font-black border border-primary'
-                      : 'text-foreground/80 hover:bg-secondary/50'
+                      ? 'bg-zinc-800 text-primary font-black border border-primary/50'
+                      : 'text-zinc-300 hover:bg-zinc-800/50'
                 )}
               >
                 <span className="leading-none">{day}</span>

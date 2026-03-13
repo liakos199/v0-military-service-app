@@ -82,34 +82,34 @@ export function WelcomeModal() {
     if (device === 'ios') {
       return (
         <div className="space-y-4">
-          <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
-                <span className="text-sm font-semibold text-primary">1</span>
+          <div className="zinc-card p-5 space-y-4 border-zinc-800/50">
+            <div className="flex items-start gap-4">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 shadow-lg shadow-primary/20">
+                <span className="text-[10px] font-black">1</span>
               </div>
               <div>
-                <p className="text-sm font-medium">Πάτησε το κουμπί Κοινοποίηση</p>
-                <p className="text-xs text-muted-foreground mt-1">Βρίσκεται στο κάτω ή πάνω μέρος του browser</p>
+                <p className="text-sm font-bold text-zinc-200">Πάτησε το κουμπί Κοινοποίηση</p>
+                <p className="text-[10px] text-zinc-500 font-medium mt-1">Βρίσκεται στο κάτω ή πάνω μέρος του browser</p>
               </div>
             </div>
             
-            <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
-                <span className="text-sm font-semibold text-primary">2</span>
+            <div className="flex items-start gap-4">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 shadow-lg shadow-primary/20">
+                <span className="text-[10px] font-black">2</span>
               </div>
               <div>
-                <p className="text-sm font-medium">Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»</p>
-                <p className="text-xs text-muted-foreground mt-1">Ίσως χρειαστεί να σύρεις προς τα κάτω</p>
+                <p className="text-sm font-bold text-zinc-200">Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»</p>
+                <p className="text-[10px] text-zinc-500 font-medium mt-1">Ίσως χρειαστεί να σύρεις προς τα κάτω</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
-                <span className="text-sm font-semibold text-primary">3</span>
+            <div className="flex items-start gap-4">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 shadow-lg shadow-primary/20">
+                <span className="text-[10px] font-black">3</span>
               </div>
               <div>
-                <p className="text-sm font-medium">Πάτησε «Προσθήκη»</p>
-                <p className="text-xs text-muted-foreground mt-1">Στην πάνω δεξιά γωνία της οθόνης</p>
+                <p className="text-sm font-bold text-zinc-200">Πάτησε «Προσθήκη»</p>
+                <p className="text-[10px] text-zinc-500 font-medium mt-1">Στην πάνω δεξιά γωνία της οθόνης</p>
               </div>
             </div>
           </div>
@@ -224,19 +224,19 @@ export function WelcomeModal() {
       <div className="flex flex-col h-full">
         {/* Icon and Title */}
         <div className="text-center mb-6 pb-4 border-b border-border">
-          <div className="mb-4 p-3 bg-primary/10 rounded-2xl w-fit mx-auto">
+          <div className="mb-6 p-4 bg-zinc-900/50 border border-zinc-800/50 rounded-3xl w-fit mx-auto shadow-2xl">
             <Image
               src="/icon-192.png"
               alt="ΑΠΟΛΕΛΕ PRO"
-              width={64}
-              height={64}
-              className="rounded-xl shadow-lg"
+              width={72}
+              height={72}
+              className="rounded-2xl shadow-xl"
             />
           </div>
-          <h1 className="text-2xl font-bold mb-2">
+          <h1 className="text-2xl font-black text-foreground tracking-tight mb-2">
             {step === 'install' ? 'Καλώς ήρθες!' : 'Δυνατότητες'}
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-[11px] text-zinc-500 font-bold uppercase tracking-widest leading-relaxed px-4">
             {step === 'install' 
               ? 'Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση'
               : 'Όλα όσα χρειάζεσαι για τη θητεία σου'

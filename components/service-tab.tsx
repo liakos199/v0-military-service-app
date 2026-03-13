@@ -96,21 +96,21 @@ export function ServiceTab() {
   return (
     <div className="flex flex-col h-full">
       {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
+      <div className="flex-shrink-0 bg-background/80 backdrop-blur-md px-4 pt-4 pb-3 border-b border-zinc-800/50 safe-top sticky top-0 z-30">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-foreground">Θητεία</h1>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Αντίστροφη μέτρηση & σήμερα</p>
+            <h1 className="text-lg font-black text-foreground tracking-tight">Θητεία</h1>
+            <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">Αντίστροφη μέτρηση</p>
           </div>
           <button
             onClick={() => {
               hapticFeedback('light')
               setShowConfig(true)
             }}
-            className="p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center"
+            className="p-2 rounded-xl zinc-card-hover bg-zinc-900/50 border border-zinc-800/50 flex items-center justify-center transition-all"
             aria-label="Ρυθμίσεις θητείας"
           >
-            <Settings className="h-4 w-4 text-muted-foreground" />
+            <Settings className="h-4 w-4 text-zinc-400" />
           </button>
         </div>
       </div>
@@ -181,16 +181,16 @@ export function ServiceTab() {
 
           {/* Main Progress Ring - LELEmeter */}
           <div
-            className="glass-card rounded-2xl p-4 flex flex-col items-center gap-4 border border-white/5"
+            className="zinc-card p-5 flex flex-col items-center gap-5 shadow-xl shadow-black/20"
           >
-            <div className="flex items-center justify-between w-full">
-              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+            <div className="flex items-center justify-between w-full mb-1">
+              <p className="text-[8px] font-black text-zinc-500 uppercase tracking-[0.3em]">
                 Λελέμετρο
               </p>
               {dischargeDate && (
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 border border-primary/20">
-                  <CalendarDays className="h-3 w-3 text-primary" />
-                  <span className="text-[9px] font-black text-primary uppercase tracking-wider">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20">
+                  <CalendarDays className="h-2.5 w-2.5 text-primary" />
+                  <span className="text-[8px] font-black text-primary uppercase tracking-widest">
                     {formatGreekDate(dischargeDate)}
                   </span>
                 </div>
@@ -302,16 +302,16 @@ function StatCard({
 }) {
   return (
     <div
-      className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl bg-secondary/30 border border-white/5 hover:bg-secondary/50 transition-colors group"
+      className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-zinc-900/40 border border-zinc-800/30 hover:bg-zinc-800/40 transition-all group"
     >
       <div>
-        <span className="text-[9px] font-black text-primary">{label}</span>
+        <span className="text-[8px] font-black text-primary uppercase tracking-widest">{label}</span>
       </div>
       <div className="flex flex-col items-center">
-        <span className="text-lg font-black text-foreground leading-none tracking-tighter">
+        <span className="text-xl font-black text-foreground leading-none tracking-tighter">
           <Counter value={parseInt(value)} duration={1.5} />
         </span>
-        <span className="text-[7px] font-black text-muted-foreground leading-none mt-1 tracking-[0.1em] uppercase">{unit}</span>
+        <span className="text-[6px] font-black text-zinc-500 leading-none mt-1 tracking-[0.2em] uppercase">{unit}</span>
       </div>
     </div>
   )
@@ -340,15 +340,15 @@ function TodayStatus({
 
       {/* Active Leave */}
       {leave && (
-        <div className="glass-card rounded-2xl p-3 flex items-center gap-3 border border-primary/20 bg-primary/5 relative overflow-hidden">
+        <div className="zinc-card p-4 flex items-center gap-4 border-primary/20 relative overflow-hidden shadow-lg shadow-primary/5">
           <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
             <Palmtree className="h-5 w-5 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[9px] font-black text-primary uppercase tracking-widest">ΣΕ ΑΔΕΙΑ</p>
-            <h3 className="text-sm font-bold text-foreground truncate">{LEAVE_TYPE_LABELS[leave.type]}</h3>
-            <p className="text-[10px] text-muted-foreground">
+            <p className="text-[8px] font-black text-primary uppercase tracking-widest mb-0.5">ΣΕ ΑΔΕΙΑ</p>
+            <h3 className="text-sm font-bold text-foreground truncate tracking-tight">{LEAVE_TYPE_LABELS[leave.type]}</h3>
+            <p className="text-[10px] text-zinc-500 font-medium">
               Έως {formatGreekDate(leave.endDate)}
             </p>
           </div>
@@ -357,27 +357,27 @@ function TodayStatus({
 
       {/* Today's Duties */}
       {duties.length > 0 ? (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2.5">
           {duties.map((duty) => {
             const Icon = DUTY_ICONS[duty.type] || Shield
             const hasPasswords = duty.password || duty.countersign
 
             return (
-              <div key={duty.id} className="glass-card rounded-2xl p-3 border border-white/5 flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
-                    <Icon className="h-5 w-5 text-muted-foreground" />
+              <div key={duty.id} className="zinc-card p-4 border-zinc-800/50 flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-zinc-800/50 flex items-center justify-center flex-shrink-0 border border-zinc-700/30">
+                    <Icon className="h-5 w-5 text-zinc-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold text-foreground">{DUTY_TYPE_LABELS[duty.type]}</h3>
-                    <p className="text-[10px] text-muted-foreground font-mono">
-                      {duty.startTime} - {duty.endTime}
+                    <h3 className="text-sm font-bold text-foreground tracking-tight">{DUTY_TYPE_LABELS[duty.type]}</h3>
+                    <p className="text-[10px] text-zinc-500 font-mono tracking-tighter">
+                      {duty.startTime} — {duty.endTime}
                     </p>
                   </div>
                   {hasPasswords && (
                     <button
                       onClick={() => togglePassword(duty.id)}
-                      className="p-2 rounded-lg bg-secondary/50 text-muted-foreground hover:text-primary transition-colors"
+                      className="p-2 rounded-xl bg-zinc-800/50 text-zinc-500 hover:text-primary hover:bg-zinc-800 transition-all"
                     >
                       {showPasswords[duty.id] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -385,14 +385,14 @@ function TodayStatus({
                 </div>
 
                 {hasPasswords && showPasswords[duty.id] && (
-                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/5">
-                    <div className="bg-secondary/50 p-2 rounded-lg">
-                      <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-0.5">Σύνθημα</p>
-                      <p className="text-xs font-bold text-primary tracking-wider">{duty.password || '—'}</p>
+                  <div className="grid grid-cols-2 gap-2.5 pt-3 border-t border-zinc-800/50">
+                    <div className="bg-zinc-950/50 p-2.5 rounded-xl border border-zinc-800/30">
+                      <p className="text-[7px] font-black text-zinc-600 uppercase tracking-widest mb-1">Σύνθημα</p>
+                      <p className="text-xs font-black text-primary tracking-widest">{duty.password || '—'}</p>
                     </div>
-                    <div className="bg-secondary/50 p-2 rounded-lg">
-                      <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-0.5">Παρασύνθημα</p>
-                      <p className="text-xs font-bold text-primary tracking-wider">{duty.countersign || '—'}</p>
+                    <div className="bg-zinc-950/50 p-2.5 rounded-xl border border-zinc-800/30">
+                      <p className="text-[7px] font-black text-zinc-600 uppercase tracking-widest mb-1">Παρασύνθημα</p>
+                      <p className="text-xs font-black text-primary tracking-widest">{duty.countersign || '—'}</p>
                     </div>
                   </div>
                 )}
@@ -402,9 +402,11 @@ function TodayStatus({
         </div>
       ) : (
         !leave && (
-          <div className="glass-card rounded-2xl p-6 text-center border border-white/5 flex flex-col items-center gap-2">
-            <Shield className="h-6 w-6 text-muted-foreground/30" />
-            <p className="text-xs text-muted-foreground">Καμία υπηρεσία για σήμερα</p>
+          <div className="zinc-card p-8 text-center border-dashed border-zinc-800/50 flex flex-col items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-zinc-900/50 flex items-center justify-center border border-zinc-800/30">
+              <Shield className="h-5 w-5 text-zinc-700" />
+            </div>
+            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Καμία υπηρεσία</p>
           </div>
         )
       )}

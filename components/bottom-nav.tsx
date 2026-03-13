@@ -22,12 +22,11 @@ const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
     <nav
-      className="w-full flex-shrink-0 border-t border-white/5 safe-bottom"
-      style={{ background: 'rgba(5, 7, 5, 0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+      className="w-full flex-shrink-0 border-t border-zinc-800/50 safe-bottom bg-zinc-950/80 backdrop-blur-xl"
       role="tablist"
       aria-label="Κύρια πλοήγηση"
     >
-      <div className="flex items-center justify-around px-4 py-2">
+      <div className="flex items-center justify-around px-2 py-1.5">
         {tabs.map((tab) => {
           const Icon = tab.icon
           const isActive = activeTab === tab.id
@@ -42,22 +41,22 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 onTabChange(tab.id)
               }}
               className={cn(
-                'flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-xl transition-colors duration-300 relative'
+                'flex flex-col items-center justify-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-300 relative flex-1 min-w-0'
               )}
             >
               <div className={cn(
-                "p-2 rounded-xl transition-colors duration-300",
-                isActive ? "bg-primary" : "bg-transparent"
+                "p-1.5 rounded-lg transition-all duration-300",
+                isActive ? "bg-primary shadow-lg shadow-primary/20" : "bg-transparent"
               )}>
                 <Icon className={cn(
-                  'h-5 w-5 transition-all duration-300',
-                  isActive ? 'text-primary-foreground drop-shadow-[0_0_8px_var(--primary)]' : 'text-muted-foreground/60',
+                  'h-4.5 w-4.5 transition-all duration-300',
+                  isActive ? 'text-primary-foreground' : 'text-zinc-500',
                   isActive ? 'stroke-[2.5]' : 'stroke-[2]'
                 )} />
               </div>
               <span className={cn(
-                'text-[9px] font-bold uppercase tracking-tighter transition-colors duration-300',
-                isActive ? 'text-primary' : 'text-muted-foreground/60'
+                'text-[8px] font-black uppercase tracking-widest transition-colors duration-300 truncate w-full text-center',
+                isActive ? 'text-primary' : 'text-zinc-500'
               )}>
                 {tab.label}
               </span>

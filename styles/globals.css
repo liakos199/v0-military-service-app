@@ -4,75 +4,49 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Tactical Dark Theme - High Contrast & Professional */
-  --background: #0A0C0A;
-  --foreground: #F8FAFC;
-  --card: #161A16;
-  --card-foreground: #F8FAFC;
-  --popover: #161A16;
-  --popover-foreground: #F8FAFC;
-  --primary: #4ADE80;
-  --primary-foreground: #0A0C0A;
-  --secondary: #2D362D;
-  --secondary-foreground: #E2E8F0;
-  --muted: #1E293B;
-  --muted-foreground: #94A3B8;
-  --accent: #4ADE80;
-  --accent-foreground: #0A0C0A;
-  --destructive: #EF4444;
-  --destructive-foreground: #FAFAFA;
-  --border: #1E293B;
-  --input: #1F2937;
-  --ring: #4ADE80;
-  --chart-1: #4ADE80;
-  --chart-2: #60A5FA;
-  --chart-3: #FBBF24;
-  --chart-4: #F87171;
-  --chart-5: #A78BFA;
-  --radius: 0.625rem;
-  --sidebar: #0F1210;
-  --sidebar-foreground: #F8FAFC;
-  --sidebar-primary: #4ADE80;
-  --sidebar-primary-foreground: #0A0C0A;
-  --sidebar-accent: #2D362D;
-  --sidebar-accent-foreground: #E2E8F0;
-  --sidebar-border: #1E293B;
-  --sidebar-ring: #4ADE80;
+  /* Professional Zinc Theme - Serious & Clean */
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #18181b;
+  --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
+  --primary: #fb923c; /* Light Orange */
+  --primary-foreground: #09090b;
+  --secondary: #27272a;
+  --secondary-foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #fb923c;
+  --radius: 0.5rem;
 }
 
 .dark {
-  --background: #0A0C0A;
-  --foreground: #F8FAFC;
-  --card: #161A16;
-  --card-foreground: #F8FAFC;
-  --popover: #161A16;
-  --popover-foreground: #F8FAFC;
-  --primary: #4ADE80;
-  --primary-foreground: #0A0C0A;
-  --secondary: #2D362D;
-  --secondary-foreground: #E2E8F0;
-  --muted: #1E293B;
-  --muted-foreground: #94A3B8;
-  --accent: #4ADE80;
-  --accent-foreground: #0A0C0A;
-  --destructive: #EF4444;
-  --destructive-foreground: #FAFAFA;
-  --border: #1E293B;
-  --input: #1F2937;
-  --ring: #4ADE80;
-  --chart-1: #4ADE80;
-  --chart-2: #60A5FA;
-  --chart-3: #FBBF24;
-  --chart-4: #F87171;
-  --chart-5: #A78BFA;
-  --sidebar: #0F1210;
-  --sidebar-foreground: #F8FAFC;
-  --sidebar-primary: #4ADE80;
-  --sidebar-primary-foreground: #0A0C0A;
-  --sidebar-accent: #2D362D;
-  --sidebar-accent-foreground: #E2E8F0;
-  --sidebar-border: #1E293B;
-  --sidebar-ring: #4ADE80;
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #18181b;
+  --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
+  --primary: #fb923c;
+  --primary-foreground: #09090b;
+  --secondary: #27272a;
+  --secondary-foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #fb923c;
 }
 
 @theme inline {
@@ -121,6 +95,37 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/30;
+  }
+
+  .zinc-card {
+    @apply bg-zinc-900/50 border border-zinc-800/50 rounded-xl overflow-hidden shadow-sm transition-all;
+    background: linear-gradient(145deg, rgba(39, 39, 42, 0.4) 0%, rgba(24, 24, 27, 0.6) 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .zinc-card-hover {
+    @apply hover:border-zinc-700/50 hover:shadow-md active:scale-[0.98];
+  }
+
+  .glass-card {
+    @apply bg-zinc-900/40 border border-zinc-800/40 rounded-xl overflow-hidden backdrop-blur-md;
+    background: linear-gradient(145deg, rgba(39, 39, 42, 0.3) 0%, rgba(24, 24, 27, 0.5) 100%);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
