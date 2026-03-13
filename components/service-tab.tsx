@@ -197,61 +197,82 @@ export function ServiceTab() {
               )}
             </div>
 
-            <div className="relative w-32 h-32">
-              <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
-                <circle
-                  cx="80"
-                  cy="80"
-                  r="74"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.05)"
-                  strokeWidth="8"
-                />
-                <circle
-                  cx="80"
-                  cy="80"
-                  r="74"
-                  fill="none"
-                  stroke="var(--primary)"
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                  strokeDasharray={`${(percentage / 100) * (2 * Math.PI * 74)} ${(2 * Math.PI * 74)}`}
-                  className="transition-all duration-1000 ease-out"
-                  style={{
-                    filter: 'drop-shadow(0 0 8px var(--primary))',
+            {!config.enlistmentDate ? (
+              <div className="flex flex-col items-center justify-center py-6 gap-4 w-full">
+                <div className="w-20 h-20 rounded-full bg-secondary/30 flex items-center justify-center border border-dashed border-border">
+                  <CalendarDays className="h-8 w-8 text-muted-foreground/40" />
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-bold text-foreground">Δεν έχει οριστεί ημερομηνία</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">Ορίστε την ημερομηνία κατάταξης για να ξεκινήσει η μέτρηση</p>
+                </div>
+                <button
+                  onClick={() => {
+                    hapticFeedback('medium')
+                    setShowConfig(true)
                   }}
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-black text-foreground tracking-tighter">
-                  <Counter value={percentage} duration={1.5} decimals={1} /><span className="text-sm text-muted-foreground ml-0.5">%</span>
-                </span>
-                <span className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-0.5">ΠΡΟΟΔΟΣ</span>
+                  className="px-6 py-2 rounded-xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-wider shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+                >
+                  Προσθήκη Ημερομηνίας
+                </button>
               </div>
-            </div>
+            ) : (
+              <>
+                <div className="relative w-32 h-32">
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="74"
+                      fill="none"
+                      stroke="rgba(255,255,255,0.05)"
+                      strokeWidth="8"
+                    />
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="74"
+                      fill="none"
+                      stroke="var(--primary)"
+                      strokeWidth="8"
+                      strokeLinecap="round"
+                      strokeDasharray={`${(percentage / 100) * (2 * Math.PI * 74)} ${(2 * Math.PI * 74)}`}
+                      className="transition-all duration-1000 ease-out"
+                      style={{
+                        filter: 'drop-shadow(0 0 8px var(--primary))',
+                      }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-3xl font-black text-foreground tracking-tighter">
+                      <Counter value={percentage} duration={1.5} decimals={1} /><span className="text-sm text-muted-foreground ml-0.5">%</span>
+                    </span>
+                    <span className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-0.5">ΠΡΟΟΔΟΣ</span>
+                  </div>
+                </div>
 
-
-
-            <div className="grid grid-cols-3 gap-2 w-full">
-              <StatCard
-                icon={Clock}
-                label="Υπηρέτησες"
-                value={`${daysServed}`}
-                unit="ΗΜΕΡΕΣ"
-              />
-              <StatCard
-                icon={CalendarDays}
-                label="Απομένουν"
-                value={`${effectiveDaysRemaining}`}
-                unit="ΗΜΕΡΕΣ"
-              />
-              <StatCard
-                icon={Percent}
-                label="Άδειες"
-                value={`${totalLeaveDays}`}
-                unit="ΗΜΕΡΕΣ"
-              />
-            </div>
+                <div className="grid grid-cols-3 gap-2 w-full">
+                  <StatCard
+                    icon={Clock}
+                    label="Υπηρέτησες"
+                    value={`${daysServed}`}
+                    unit="ΗΜΕΡΕΣ"
+                  />
+                  <StatCard
+                    icon={CalendarDays}
+                    label="Απομένουν"
+                    value={`${effectiveDaysRemaining}`}
+                    unit="ΗΜΕΡΕΣ"
+                  />
+                  <StatCard
+                    icon={Percent}
+                    label="Άδειες"
+                    value={`${totalLeaveDays}`}
+                    unit="ΗΜΕΡΕΣ"
+                  />
+                </div>
+              </>
+            )}
           </div>
 
 
