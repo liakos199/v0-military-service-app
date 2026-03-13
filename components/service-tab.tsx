@@ -96,11 +96,11 @@ export function ServiceTab() {
   return (
     <div className="flex flex-col h-full">
       {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background/90 backdrop-blur-xl px-4 pt-4 pb-3 border-b border-neutral-800 safe-top sticky top-0 z-30">
+      <div className="flex-shrink-0 bg-background/80 backdrop-blur-md px-4 pt-4 pb-3 border-b border-border/50 safe-top sticky top-0 z-30">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-black text-foreground tracking-tight">Θητεία</h1>
-            <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest">Αντίστροφη μέτρηση</p>
+            <h1 className="text-xl font-bold text-foreground">Θητεία</h1>
+            <p className="text-xs text-muted-foreground">Αντίστροφη μέτρηση</p>
           </div>
           <button
             onClick={() => {
@@ -184,7 +184,7 @@ export function ServiceTab() {
             className="zinc-card p-5 flex flex-col items-center gap-5 shadow-xl shadow-black/20"
           >
             <div className="flex items-center justify-between w-full mb-1">
-              <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.3em]">
+              <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em]">
                 Λελέμετρο
               </p>
               {dischargeDate && (
@@ -311,7 +311,7 @@ function StatCard({
         <span className="text-xl font-black text-foreground leading-none tracking-tighter">
           <Counter value={parseInt(value)} duration={1.5} />
         </span>
-        <span className="text-[8px] font-black text-neutral-400 leading-none mt-1.5 tracking-[0.2em] uppercase">{unit}</span>
+        <span className="text-[6px] font-black text-muted-foreground leading-none mt-1 tracking-[0.2em] uppercase">{unit}</span>
       </div>
     </div>
   )
@@ -348,7 +348,7 @@ function TodayStatus({
           <div className="flex-1 min-w-0">
             <p className="text-[8px] font-black text-primary uppercase tracking-widest mb-0.5">ΣΕ ΑΔΕΙΑ</p>
             <h3 className="text-sm font-bold text-foreground truncate tracking-tight">{LEAVE_TYPE_LABELS[leave.type]}</h3>
-            <p className="text-xs text-neutral-300 font-medium">
+            <p className="text-[10px] text-muted-foreground font-medium">
               Έως {formatGreekDate(leave.endDate)}
             </p>
           </div>
@@ -370,7 +370,7 @@ function TodayStatus({
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm font-bold text-foreground tracking-tight">{DUTY_TYPE_LABELS[duty.type]}</h3>
-                    <p className="text-xs text-neutral-300 font-mono tracking-tighter">
+                    <p className="text-[10px] text-muted-foreground font-mono tracking-tighter">
                       {duty.startTime} — {duty.endTime}
                     </p>
                   </div>
@@ -386,13 +386,13 @@ function TodayStatus({
 
                 {hasPasswords && showPasswords[duty.id] && (
                   <div className="grid grid-cols-2 gap-2.5 pt-3 border-t border-zinc-800/50">
-                    <div className="bg-black/40 p-3 rounded-xl border border-neutral-800">
-                      <p className="text-[8px] font-black text-neutral-500 uppercase tracking-widest mb-1.5">Σύνθημα</p>
-                      <p className="text-sm font-black text-primary tracking-widest">{duty.password || '—'}</p>
+                    <div className="bg-secondary/30 p-2.5 rounded-xl border border-white/5">
+                      <p className="text-[7px] font-black text-muted-foreground/60 uppercase tracking-widest mb-1">Σύνθημα</p>
+                      <p className="text-xs font-black text-primary tracking-widest">{duty.password || '—'}</p>
                     </div>
-                    <div className="bg-black/40 p-3 rounded-xl border border-neutral-800">
-                      <p className="text-[8px] font-black text-neutral-500 uppercase tracking-widest mb-1.5">Παρασύνθημα</p>
-                      <p className="text-sm font-black text-primary tracking-widest">{duty.countersign || '—'}</p>
+                    <div className="bg-secondary/30 p-2.5 rounded-xl border border-white/5">
+                      <p className="text-[7px] font-black text-muted-foreground/60 uppercase tracking-widest mb-1">Παρασύνθημα</p>
+                      <p className="text-xs font-black text-primary tracking-widest">{duty.countersign || '—'}</p>
                     </div>
                   </div>
                 )}

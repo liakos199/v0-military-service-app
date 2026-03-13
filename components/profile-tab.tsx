@@ -27,11 +27,11 @@ export function ProfileTab() {
   return (
     <div className="flex flex-col h-full bg-background">
       {/* HEADER */}
-      <div className="flex-shrink-0 px-4 pt-6 pb-4 border-b border-neutral-800 safe-top">
+      <div className="flex-shrink-0 px-4 pt-6 pb-4 border-b border-border/50 safe-top">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-black text-foreground tracking-tight">Προφίλ</h1>
-            <p className="text-[11px] text-neutral-400 uppercase tracking-[0.2em] font-bold">Διαχείριση Στοιχείων</p>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold">Διαχείριση Στοιχείων</p>
           </div>
         </div>
 
@@ -144,11 +144,11 @@ function ProfileSection() {
                 {profile.fullName || 'Ονοματεπώνυμο'}
               </h2>
               <div className="flex flex-wrap items-center gap-2 mt-2.5">
-                <span className="px-3.5 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/30">
+                <span className="px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest shadow-sm">
                   {profile.rank}
                 </span>
                 {profile.serviceNumber && (
-                  <span className="px-3 py-1 rounded-full bg-neutral-800 text-neutral-200 text-[10px] font-bold border border-neutral-700 uppercase tracking-widest">
+                  <span className="px-2 py-1 rounded-lg bg-secondary/50 text-muted-foreground text-[9px] font-bold border border-white/5">
                     #{profile.serviceNumber}
                   </span>
                 )}
@@ -196,11 +196,11 @@ function ProfileSection() {
       <div className="zinc-card p-5 border-zinc-800/50">
         <div className="flex items-center gap-2 mb-3.5">
           <MessageSquare size={14} className="text-primary" />
-          <span className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">Φράση Αναφοράς</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Φράση Αναφοράς</span>
         </div>
         <p className={cn(
-          "text-sm font-bold leading-relaxed italic tracking-tight",
-          profile.reportingPhrase ? "text-neutral-100" : "text-neutral-600"
+          "text-sm font-bold leading-relaxed italic",
+          profile.reportingPhrase ? "text-foreground" : "text-muted-foreground/40"
         )}>
           {profile.reportingPhrase ? `"${profile.reportingPhrase}"` : "Προσθέστε τη φράση αναφοράς σας..."}
         </p>

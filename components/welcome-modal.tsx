@@ -88,8 +88,8 @@ export function WelcomeModal() {
                 <span className="text-[10px] font-black">1</span>
               </div>
               <div>
-                <p className="text-sm font-bold text-white">Πάτησε το κουμπί Κοινοποίηση</p>
-                <p className="text-xs text-neutral-400 font-medium mt-1">Βρίσκεται στο κάτω ή πάνω μέρος του browser</p>
+                <p className="text-sm font-medium">Πάτησε το κουμπί Κοινοποίηση</p>
+                <p className="text-xs text-muted-foreground mt-1">Βρίσκεται στο κάτω ή πάνω μέρος του browser</p>
               </div>
             </div>
             
@@ -98,8 +98,8 @@ export function WelcomeModal() {
                 <span className="text-[10px] font-black">2</span>
               </div>
               <div>
-                <p className="text-sm font-bold text-white">Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»</p>
-                <p className="text-xs text-neutral-400 font-medium mt-1">Ίσως χρειαστεί να σύρεις προς τα κάτω</p>
+                <p className="text-sm font-medium">Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»</p>
+                <p className="text-xs text-muted-foreground mt-1">Ίσως χρειαστεί να σύρεις προς τα κάτω</p>
               </div>
             </div>
 
@@ -108,8 +108,8 @@ export function WelcomeModal() {
                 <span className="text-[10px] font-black">3</span>
               </div>
               <div>
-                <p className="text-sm font-bold text-white">Πάτησε «Προσθήκη»</p>
-                <p className="text-xs text-neutral-400 font-medium mt-1">Στην πάνω δεξιά γωνία της οθόνης</p>
+                <p className="text-sm font-medium">Πάτησε «Προσθήκη»</p>
+                <p className="text-xs text-muted-foreground mt-1">Στην πάνω δεξιά γωνία της οθόνης</p>
               </div>
             </div>
           </div>
@@ -236,7 +236,7 @@ export function WelcomeModal() {
           <h1 className="text-2xl font-black text-foreground tracking-tight mb-2">
             {step === 'install' ? 'Καλώς ήρθες!' : 'Δυνατότητες'}
           </h1>
-          <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest leading-relaxed px-6">
+          <p className="text-sm text-muted-foreground">
             {step === 'install' 
               ? 'Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση'
               : 'Όλα όσα χρειάζεσαι για τη θητεία σου'

@@ -134,11 +134,11 @@ export function CalendarTab() {
   return (
     <div className="flex flex-col h-full">
       {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background/90 backdrop-blur-xl px-4 pt-4 pb-3 border-b border-neutral-800 safe-top sticky top-0 z-30">
+      <div className="flex-shrink-0 bg-background/80 backdrop-blur-md px-4 pt-4 pb-3 border-b border-border/50 safe-top sticky top-0 z-30">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-black text-foreground tracking-tight">Ημερολόγιο</h1>
-            <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest">Βάρδιες & άδειες</p>
+            <h1 className="text-lg font-bold text-foreground tracking-tight">Ημερολόγιο</h1>
+            <p className="text-xs text-muted-foreground">Βάρδιες & άδειες</p>
           </div>
           <button
             onClick={() => {
@@ -169,7 +169,7 @@ export function CalendarTab() {
           >
             <ChevronLeft className="h-3.5 w-3.5 text-zinc-400" />
           </button>
-          <span className="text-xs font-black text-foreground uppercase tracking-[0.2em]">
+          <span className="text-[11px] font-black text-foreground uppercase tracking-[0.2em]">
             {GREEK_MONTHS[viewMonth]} {viewYear}
           </span>
           <button
@@ -212,12 +212,12 @@ export function CalendarTab() {
                 key={day}
                 onClick={() => handleDayPress(day)}
                 className={cn(
-                  'relative aspect-square w-full rounded-2xl text-sm flex flex-col items-center justify-center transition-all duration-300',
+                  'relative aspect-square w-full rounded-xl text-xs flex flex-col items-center justify-center transition-all duration-300',
                   isSelected
-                    ? 'bg-primary text-primary-foreground font-black shadow-xl shadow-primary/40'
+                    ? 'bg-primary text-primary-foreground font-black shadow-[0_0_15px_rgba(163,230,53,0.4)]'
                     : isToday
-                      ? 'bg-neutral-800 text-primary font-black border border-primary/60'
-                      : 'text-neutral-200 hover:bg-neutral-800'
+                      ? 'bg-primary text-primary-foreground font-black border border-primary'
+                      : 'text-foreground/80 hover:bg-secondary/50'
                 )}
               >
                 <span className="leading-none">{day}</span>
