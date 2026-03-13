@@ -1,16 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from '@/components/ui/dialog'
+import { FullscreenModal } from '@/components/fullscreen-modal'
 import { Button } from '@/components/ui/button'
-import { Share, PlusSquare, MoreVertical, Menu, Download, Check, Calendar, Clock, Zap, FileText, Users } from 'lucide-react'
+import { Check, Clock, Calendar, Zap, FileText, Users } from 'lucide-react'
 import Image from 'next/image'
 
 type DeviceType = 'ios' | 'android' | 'other'
@@ -81,10 +74,14 @@ export function WelcomeModal() {
     setStep('features')
   }
 
+  const handleBack = () => {
+    setStep('install')
+  }
+
   const renderInstructions = () => {
     if (device === 'ios') {
       return (
-        <div className="space-y-4 mt-6">
+        <div className="space-y-4">
           <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
             <div className="flex items-start gap-3">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
@@ -123,7 +120,7 @@ export function WelcomeModal() {
     if (device === 'android') {
       if (browser === 'samsung') {
         return (
-          <div className="space-y-4 mt-6">
+          <div className="space-y-4">
             <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
               <div className="flex items-start gap-3">
                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
@@ -160,7 +157,7 @@ export function WelcomeModal() {
       }
       
       return (
-        <div className="space-y-4 mt-6">
+        <div className="space-y-4">
           <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
             <div className="flex items-start gap-3">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
@@ -197,7 +194,7 @@ export function WelcomeModal() {
     }
 
     return (
-      <div className="space-y-4 mt-6">
+      <div className="space-y-4">
         <div className="bg-secondary/30 rounded-lg p-4">
           <p className="text-sm">Αναζήτησε την επιλογή «Προσθήκη στην αρχική οθόνη» στο μενού του browser σου για γρήγορη πρόσβαση.</p>
         </div>
@@ -207,7 +204,7 @@ export function WelcomeModal() {
 
   const renderFeatures = () => {
     return (
-      <div className="grid grid-cols-1 gap-2 mt-6">
+      <div className="grid grid-cols-1 gap-2">
         {FEATURES.map((feature, index) => {
           return (
             <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-secondary/10 border border-white/5">
@@ -222,10 +219,11 @@ export function WelcomeModal() {
     )
   }
 
-  return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-md border-primary/20 bg-zinc-950 text-zinc-100" showCloseButton={false}>
-        <DialogHeader className="items-center text-center">
+  const renderContent = () => {
+    return (
+      <div className="flex flex-col h-full">
+        {/* Icon and Title */}
+        <div className="text-center mb-6 pb-4 border-b border-border">
           <div className="mb-4 p-3 bg-primary/10 rounded-2xl w-fit mx-auto">
             <Image
               src="/icon-192.png"
@@ -235,26 +233,30 @@ export function WelcomeModal() {
               className="rounded-xl shadow-lg"
             />
           </div>
-          <DialogTitle className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold mb-2">
             {step === 'install' ? 'Καλώς ήρθες!' : 'Δυνατότητες'}
-          </DialogTitle>
-          <DialogDescription className="text-zinc-400 text-sm mt-2">
+          </h1>
+          <p className="text-sm text-muted-foreground">
             {step === 'install' 
               ? 'Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση'
               : 'Όλα όσα χρειάζεσαι για τη θητεία σου'
             }
-          </DialogDescription>
-        </DialogHeader>
-        
-        {step === 'install' ? renderInstructions() : renderFeatures()}
+          </p>
+        </div>
 
-        <DialogFooter className="sm:justify-center mt-6 gap-2">
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto">
+          {step === 'install' ? renderInstructions() : renderFeatures()}
+        </div>
+
+        {/* Footer Buttons */}
+        <div className="mt-6 pt-4 border-t border-border flex gap-2">
           {step === 'features' && (
             <Button 
               type="button" 
               variant="ghost"
               className="flex-1 font-medium py-4 rounded-lg text-zinc-400 hover:text-zinc-100"
-              onClick={() => setStep('install')}
+              onClick={handleBack}
             >
               Πίσω
             </Button>
@@ -267,8 +269,20 @@ export function WelcomeModal() {
           >
             {step === 'install' ? 'Επόμενο' : 'Ξεκινάμε'}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <FullscreenModal 
+      isOpen={isOpen} 
+      onClose={handleClose}
+      title={step === 'install' ? 'Καλώς ήρθες!' : 'Δυνατότητες'}
+      showBackButton={step === 'features'}
+      onBack={handleBack}
+    >
+      {renderContent()}
+    </FullscreenModal>
   )
 }
