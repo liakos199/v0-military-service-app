@@ -10,14 +10,25 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Share, PlusSquare, MoreVertical, Menu, Download } from 'lucide-react'
+import { Share, PlusSquare, MoreVertical, Menu, Download, Check, Calendar, Clock, Zap, FileText, Users } from 'lucide-react'
 import Image from 'next/image'
 
 type DeviceType = 'ios' | 'android' | 'other'
 type BrowserType = 'safari' | 'chrome' | 'samsung' | 'firefox' | 'other'
+type ModalStep = 'install' | 'features'
+
+const FEATURES = [
+  { icon: Clock, label: 'Λελέμετρο - Αντίστροφη μέτρηση' },
+  { icon: Calendar, label: 'Ημερολόγιο & Υπηρεσίες' },
+  { icon: FileText, label: 'Σημειώσεις & Εγχειρίδια' },
+  { icon: Users, label: 'Διαχείριση Ατόμων' },
+  { icon: Zap, label: 'Έξοδα & Ανάλυση' },
+  { icon: Zap, label: 'Θέμα & Προσαρμογή' },
+]
 
 export function WelcomeModal() {
   const [isOpen, setIsOpen] = useState(false)
+  const [step, setStep] = useState<ModalStep>('install')
   const [device, setDevice] = useState<DeviceType>('other')
   const [browser, setBrowser] = useState<BrowserType>('other')
 
@@ -64,6 +75,10 @@ export function WelcomeModal() {
   const handleClose = () => {
     localStorage.setItem('welcome-modal-seen', 'true')
     setIsOpen(false)
+  }
+
+  const handleNextStep = () => {
+    setStep('features')
   }
 
   const renderInstructions = () => {
@@ -190,6 +205,24 @@ export function WelcomeModal() {
     )
   }
 
+  const renderFeatures = () => {
+    return (
+      <div className="space-y-3 mt-6">
+        {FEATURES.map((feature, index) => {
+          const Icon = feature.icon
+          return (
+            <div key={index} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20 border border-white/5">
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
+                <Check className="w-3.5 h-3.5 text-green-400" strokeWidth={3} />
+              </div>
+              <span className="text-sm font-medium text-foreground">{feature.label}</span>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-md border-primary/20 bg-zinc-950 text-zinc-100" showCloseButton={false}>
@@ -203,22 +236,37 @@ export function WelcomeModal() {
               className="rounded-xl shadow-lg"
             />
           </div>
-          <DialogTitle className="text-2xl font-bold">Καλώς ήρθες!</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">
+            {step === 'install' ? 'Καλώς ήρθες!' : 'Δυνατότητες'}
+          </DialogTitle>
           <DialogDescription className="text-zinc-400 text-sm mt-2">
-            Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση
+            {step === 'install' 
+              ? 'Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση'
+              : 'Όλα όσα χρειάζεσαι για τη θητεία σου'
+            }
           </DialogDescription>
         </DialogHeader>
         
-        {renderInstructions()}
+        {step === 'install' ? renderInstructions() : renderFeatures()}
 
-        <DialogFooter className="sm:justify-center mt-6">
+        <DialogFooter className="sm:justify-center mt-6 gap-2">
+          {step === 'features' && (
+            <Button 
+              type="button" 
+              variant="secondary"
+              className="flex-1 font-bold py-6 rounded-lg"
+              onClick={() => setStep('install')}
+            >
+              Πίσω
+            </Button>
+          )}
           <Button 
             type="button" 
             variant="default" 
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 rounded-lg"
-            onClick={handleClose}
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 rounded-lg"
+            onClick={step === 'install' ? handleNextStep : handleClose}
           >
-            Κατανοητό
+            {step === 'install' ? 'Επόμενο' : 'Κατανοητό'}
           </Button>
         </DialogFooter>
       </DialogContent>
