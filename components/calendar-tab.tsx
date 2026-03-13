@@ -159,7 +159,7 @@ export function CalendarTab() {
       <div className="flex flex-col gap-4">
 
       {/* Calendar Card */}
-      <div className="zinc-card p-4 flex flex-col gap-4 shadow-xl shadow-black/20">
+      <div className="zinc-card p-5 flex flex-col gap-4">
         {/* Month Navigation */}
         <div className="flex items-center justify-between px-1">
           <button
@@ -270,7 +270,7 @@ export function CalendarTab() {
       />
 
       {/* Monthly Summary */}
-      <div className="glass-card rounded-2xl p-4 border border-white/5">
+      <div className="zinc-card p-4">
         <MonthlySummary
         duties={duties}
         leaves={leaves}
@@ -485,7 +485,7 @@ function UpcomingEvents({
 
   if (upcoming.length === 0) {
     return (
-      <div className="glass-card rounded-2xl p-6 text-center border border-white/5">
+      <div className="zinc-card p-6 text-center">
         <p className="text-sm text-muted-foreground">Δεν υπάρχουν προσεχή γεγονότα</p>
         <p className="text-xs text-muted-foreground mt-1">Πάτησε μια ημερομηνία για να προσθέσεις</p>
       </div>
@@ -503,7 +503,7 @@ function UpcomingEvents({
             <div
               key={duty.id}
               className={cn(
-                'glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5',
+                'zinc-card p-3 flex items-center gap-3 text-left w-full',
                 isToday && 'ring-1 ring-primary'
               )}
             >
@@ -535,7 +535,7 @@ function UpcomingEvents({
           return (
             <div
               key={leave.id}
-              className="glass-card rounded-xl p-3 flex items-center gap-3 text-left w-full border border-white/5"
+              className="zinc-card p-3 flex items-center gap-3 text-left w-full"
             >
               <div className="w-1 h-10 rounded-full flex-shrink-0 bg-chart-2" />
               <div className="flex-1 min-w-0">

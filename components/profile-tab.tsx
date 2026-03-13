@@ -193,7 +193,7 @@ function ProfileSection() {
       </div>
 
       {/* Reporting Phrase */}
-      <div className="zinc-card p-5 border-zinc-800/50">
+      <div className="zinc-card p-5">
         <div className="flex items-center gap-2 mb-3.5">
           <MessageSquare size={14} className="text-primary" />
           <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Φράση Αναφοράς</span>
