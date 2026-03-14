@@ -82,7 +82,7 @@ export function WelcomeModal() {
     if (device === 'ios') {
       return (
         <div className="space-y-4">
-          <div className="professional-card p-5 space-y-4 border-zinc-800/50">
+          <div className="professional-card p-5 space-y-4 border-primary/50">
             <div className="flex items-start gap-4">
               <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 border border-primary/50">
                 <span className="text-[10px] font-black">1</span>
@@ -121,9 +121,9 @@ export function WelcomeModal() {
       if (browser === 'samsung') {
         return (
           <div className="space-y-4">
-            <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
+            <div className="bg-secondary rounded-lg p-4 space-y-3">
               <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
                   <span className="text-sm font-semibold text-primary">1</span>
                 </div>
                 <div>
@@ -133,7 +133,7 @@ export function WelcomeModal() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
                   <span className="text-sm font-semibold text-primary">2</span>
                 </div>
                 <div>
@@ -143,7 +143,7 @@ export function WelcomeModal() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
                   <span className="text-sm font-semibold text-primary">3</span>
                 </div>
                 <div>
@@ -158,9 +158,9 @@ export function WelcomeModal() {
       
       return (
         <div className="space-y-4">
-          <div className="bg-secondary/30 rounded-lg p-4 space-y-3">
+          <div className="bg-secondary rounded-lg p-4 space-y-3">
             <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
                 <span className="text-sm font-semibold text-primary">1</span>
               </div>
               <div>
@@ -170,7 +170,7 @@ export function WelcomeModal() {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
                 <span className="text-sm font-semibold text-primary">2</span>
               </div>
               <div>
@@ -180,7 +180,7 @@ export function WelcomeModal() {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 mt-0.5">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
                 <span className="text-sm font-semibold text-primary">3</span>
               </div>
               <div>
@@ -195,7 +195,7 @@ export function WelcomeModal() {
 
     return (
       <div className="space-y-4">
-        <div className="bg-secondary/30 rounded-lg p-4">
+        <div className="bg-secondary rounded-lg p-4">
           <p className="text-sm">Αναζήτησε την επιλογή «Προσθήκη στην αρχική οθόνη» στο μενού του browser σου για γρήγορη πρόσβαση.</p>
         </div>
       </div>

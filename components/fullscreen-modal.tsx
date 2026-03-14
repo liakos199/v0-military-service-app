@@ -28,10 +28,10 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm animate-modal-fade-in">
+    <div className="fixed inset-0 z-[100] bg-background backdrop-blur-sm animate-modal-fade-in">
       <div className="flex flex-col h-full safe-top animate-modal-slide-up">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-primary/50">
           <div className="flex items-center gap-2 flex-1">
             {showBackButton && onBack && (
               <button
@@ -39,7 +39,7 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
                   hapticFeedback('light')
                   onBack()
                 }}
-                className="p-1.5 rounded-md min-h-[36px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                className="p-1.5 rounded-md min-h-[36px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary transition-colors"
                 aria-label="Πίσω"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -52,7 +52,7 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
               hapticFeedback('light')
               onClose()
             }}
-            className="p-1.5 rounded-md min-h-[36px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors flex-shrink-0 ml-2"
+            className="p-1.5 rounded-md min-h-[36px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary transition-colors flex-shrink-0 ml-2"
             aria-label="Κλείσιμο"
           >
             <X className="h-4 w-4" />
