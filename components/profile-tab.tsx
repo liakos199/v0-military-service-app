@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { 
   User, ChevronDown, ChevronUp, Edit3, Shield, MapPin, Hash, Droplet, 
   MessageSquare, Save, X, Palette, RotateCcw, Users, Pencil, ShieldAlert, 
-  ShieldCheck, SlidersHorizontal, Plus
+  ShieldCheck, SlidersHorizontal, Plus, Phone, UserPlus
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -57,7 +57,7 @@ export function ProfileTab() {
                 setActiveSection(tab.id as any)
               }}
               className={cn(
-                'flex-1 py-2.5 px-4 rounded-xl text-[11px] font-bold tracking-wider transition-all duration-300 whitespace-nowrap',
+                'flex-1 py-2.5 px-2 rounded-xl text-[9px] font-bold tracking-wider transition-all duration-300 whitespace-nowrap',
                 activeSection === tab.id
                   ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-md shadow-emerald-500/10'
                   : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
@@ -225,7 +225,7 @@ function SuperiorsSection() {
   return (
     <div className="animate-fade-in space-y-3">
       <div className="flex items-center justify-between mb-1 px-1">
-        <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Ιεραρχια</h2>
+        <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Υπαρχοντεσ</h2>
         <button 
           onClick={() => setIsAdding(true)}
           className="px-3 py-1.5 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 text-[#34d399] text-[10px] font-extrabold tracking-widest uppercase hover:bg-[#10b981]/20 transition-colors active:scale-95"
@@ -244,7 +244,7 @@ function SuperiorsSection() {
           <div key={sup.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
-                <ShieldAlert size={24} />
+                <User size={24} />
               </div>
               <div className="flex flex-col">
                 <h3 className="text-[15px] font-bold text-white mb-0.5">{sup.name}</h3>
@@ -341,18 +341,49 @@ function FriendsSection() {
       ) : (
         friends.map((friend) => (
           <div key={friend.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
               <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
                 <Users size={24} />
               </div>
-              <div className="flex flex-col">
-                <h3 className="text-[15px] font-bold text-white mb-0.5">{friend.name}</h3>
-                <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">
-                  {friend.unit || 'Χωρις Μοναδα'}{friend.phone ? ` • ${friend.phone}` : ''}
+              <div className="flex flex-col min-w-0">
+                <h3 className="text-[15px] font-bold text-white mb-0.5 truncate">{friend.name}</h3>
+                <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase truncate">
+                  {friend.unit || 'Χωρις Μοναδα'}
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 shrink-0 ml-2">
+              {friend.phone && (
+                <a
+                  href={`tel:${friend.phone}`}
+                  onClick={() => hapticFeedback('light')}
+                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-emerald-400 hover:text-emerald-300 transition-colors"
+                  aria-label="Κλήση"
+                >
+                  <Phone size={14} />
+                </a>
+              )}
+              {friend.phone && (
+                <button
+                  onClick={() => {
+                    hapticFeedback('light')
+                    const vcard = `BEGIN:VCARD\r\nVERSION:3.0\r\nFN:${friend.name}\r\nTEL;TYPE=CELL:${friend.phone}\r\nEND:VCARD`
+                    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' })
+                    const url = URL.createObjectURL(blob)
+                    const a = document.createElement('a')
+                    a.href = url
+                    a.download = `${friend.name.replace(/\s+/g, '_')}.vcf`
+                    document.body.appendChild(a)
+                    a.click()
+                    document.body.removeChild(a)
+                    URL.revokeObjectURL(url)
+                  }}
+                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+                  aria-label="Αποθήκευση επαφής"
+                >
+                  <UserPlus size={14} />
+                </button>
+              )}
               <button
                 onClick={() => { hapticFeedback('light'); setEditingEntry(friend) }}
                 className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
