@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from 'react'
 import {
   Plus,
   Trash2,
-  FileText,
+  NotebookText,
   BookOpen,
   Edit3,
   Check,
@@ -309,55 +309,55 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 export function NotesTab() {
   const [activeSection, setActiveSection] = useState<'notes' | 'guides'>('notes')
-
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
-    <div className="flex flex-col h-full">
-      {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <h1 className="text-xl font-bold text-foreground">Σημειώσεις</h1>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Προσωπικές σημειώσεις & εγχειρίδια</p>
-          </div>
+    <div className="flex flex-col h-full bg-black relative z-10 animate-fade-in">
+      {/* Ambient Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-48 bg-[#10b981]/5 blur-[70px] pointer-events-none rounded-full z-0"></div>
+
+      {/* HEADER */}
+      <header className="px-6 pt-14 pb-4 relative flex flex-col gap-4 shrink-0 z-10">
+        <div>
+          <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Σημειώσεις</h1>
+          <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Προσωπικές & εγχειρίδια</p>
         </div>
 
         {/* Search Bar */}
-        <div className="relative mb-3">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={activeSection === 'notes' ? "Αναζήτηση σημειώσεων..." : "Αναζήτηση εγχειριδίων..."}
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-secondary/50 border border-white/5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 transition-colors"
+            className="w-full pl-11 pr-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-sm text-white placeholder:text-zinc-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
           />
           {searchQuery && (
             <button 
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
             >
-              <X className="h-3 w-3 text-muted-foreground" />
+              <X size={18} />
             </button>
           )}
         </div>
 
         {/* Section Toggle */}
-        <div className="flex gap-1 p-1 rounded-xl bg-secondary/50 border border-white/5 mt-3">
+        <div className="flex gap-2 p-1 rounded-xl bg-zinc-900 border border-zinc-800">
           <button
             onClick={() => {
               hapticFeedback('light')
               setActiveSection('notes')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'notes'
-                ? 'bg-primary text-primary-foreground '
-                : 'text-muted-foreground/60'
+                ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-900/30'
+                : 'text-zinc-400 hover:text-zinc-300'
             )}
           >
-            <FileText className="h-3 w-3" />
+            <NotebookText size={16} />
             Σημειώσεις
           </button>
           <button
@@ -366,20 +366,20 @@ export function NotesTab() {
               setActiveSection('guides')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'guides'
-                ? 'bg-primary text-primary-foreground '
-                : 'text-muted-foreground/60'
+                ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-900/30'
+                : 'text-zinc-400 hover:text-zinc-300'
             )}
           >
-            <BookOpen className="h-3 w-3" />
+            <BookOpen size={16} />
             Εγχειρίδια
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* CONTENT - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
+      {/* CONTENT */}
+      <div className="flex-1 overflow-y-auto px-5 pb-32 pt-4 hide-scrollbar relative z-10">
         {activeSection === 'notes' && <NotesSection searchQuery={searchQuery} />}
         {activeSection === 'guides' && <GuidesSection searchQuery={searchQuery} />}
       </div>
@@ -420,18 +420,18 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
   }, [notes, searchQuery])
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Προσωπικές Σημειώσεις</h2>
+        <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Προσωπικές Σημειώσεις</h2>
         <button
           onClick={() => {
             hapticFeedback('light')
             setShowAdd(true)
           }}
-          className="p-2 rounded-lg glass-card min-h-[40px] min-w-[40px] flex items-center justify-center"
+          className="p-2.5 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-900/30 active:scale-90 transition-all"
           aria-label="Νέα σημείωση"
         >
-          <Plus className="h-4 w-4 text-primary" />
+          <Plus size={18} />
         </button>
       </div>
 
@@ -445,34 +445,34 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
       </FullscreenModal>
 
       {filteredNotes.length === 0 ? (
-        <div className="glass-card rounded-2xl p-6 text-center border border-white/5">
-          <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-8 text-center shadow-xl shadow-black/20">
+          <NotebookText className="h-12 w-12 text-zinc-600 mx-auto mb-3 opacity-50" />
+          <p className="text-[12px] text-zinc-400 font-semibold">
             {searchQuery ? 'Δεν βρέθηκαν σημειώσεις' : 'Δεν υπάρχουν σημειώσεις'}
           </p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           {filteredNotes.map((note) => (
-            <div key={note.id} className="glass-card rounded-xl p-3 border border-white/5">
-              <div className="flex items-start justify-between">
-                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{formatGreekDate(note.date)}</p>
+            <div key={note.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 shadow-lg shadow-black/10">
+              <div className="flex items-start justify-between mb-3">
+                <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">{formatGreekDate(note.date)}</p>
                 <div className="flex items-center gap-1">
                   {editingId === note.id ? (
                     <>
                       <button
                         onClick={() => setEditingId(null)}
-                        className="p-1.5 rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        className="p-2 rounded-lg text-zinc-500 hover:text-zinc-300 transition-colors"
                         aria-label="Ακύρωση"
                       >
-                        <X className="h-3.5 w-3.5 text-muted-foreground" />
+                        <X size={16} />
                       </button>
                       <button
                         onClick={() => handleUpdate(note.id)}
-                        className="p-1.5 rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        className="p-2 rounded-lg text-emerald-400 hover:text-emerald-300 transition-colors"
                         aria-label="Αποθήκευση"
                       >
-                        <Check className="h-3.5 w-3.5 text-primary" />
+                        <Check size={16} />
                       </button>
                     </>
                   ) : (
@@ -484,44 +484,44 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
                           setEditTitle(note.title || '')
                           setEditContent(note.content)
                         }}
-                        className="p-1.5 rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        className="p-2 rounded-lg text-zinc-500 hover:text-zinc-300 transition-colors"
                         aria-label="Επεξεργασία"
                       >
-                        <Edit3 className="h-3.5 w-3.5 text-muted-foreground/60" />
+                        <Edit3 size={16} />
                       </button>
                       <button
                         onClick={() => {
                           hapticFeedback('medium')
                           setNotes(notes.filter((n) => n.id !== note.id))
                         }}
-                        className="p-1.5 rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+                        className="p-2 rounded-lg text-red-400 hover:text-red-300 transition-colors"
                         aria-label="Διαγραφή"
                       >
-                        <Trash2 className="h-3.5 w-3.5 text-destructive/60" />
+                        <Trash2 size={16} />
                       </button>
                     </>
                   )}
                 </div>
               </div>
               {editingId === note.id ? (
-                <div className="flex flex-col gap-2 mt-2">
+                <div className="flex flex-col gap-3">
                   <input
                     type="text"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
                     placeholder="Τίτλος"
-                    className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm font-bold min-h-[40px] border border-border placeholder:text-muted-foreground/50"
+                    className="w-full px-3 py-2 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-700 focus:border-emerald-500 outline-none"
                   />
                   <textarea
                     value={editContent}
                     onChange={(e) => setEditContent(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[80px] border border-border resize-none"
+                    className="w-full px-3 py-2 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-700 focus:border-emerald-500 outline-none resize-none h-24"
                   />
                 </div>
               ) : (
-                <div className="mt-1">
-                  {note.title && <p className="text-sm font-bold text-foreground mb-0.5">{note.title}</p>}
-                  <p className="text-xs text-foreground/80 whitespace-pre-wrap leading-relaxed">{note.content}</p>
+                <div>
+                  {note.title && <p className="text-[12px] font-bold text-white mb-1">{note.title}</p>}
+                  <p className="text-[11px] text-zinc-300 whitespace-pre-wrap leading-relaxed">{note.content}</p>
                 </div>
               )}
             </div>
@@ -550,16 +550,16 @@ function GuidesSection({ searchQuery }: { searchQuery: string }) {
   }, [searchQuery])
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-[10px] text-muted-foreground/70 leading-relaxed uppercase tracking-wider px-1">
+    <div className="flex flex-col gap-4">
+      <p className="text-[10px] text-zinc-500 leading-relaxed uppercase tracking-wider px-1">
         {searchQuery ? `Αποτελέσματα αναζήτησης (${filteredGuides.length})` : 'Βασικές πληροφορίες & εγχειρίδια'}
       </p>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         {filteredGuides.length === 0 ? (
-          <div className="glass-card rounded-2xl p-6 text-center border border-white/5">
-            <BookOpen className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-            <p className="text-sm text-muted-foreground">Δεν βρέθηκαν εγχειρίδια</p>
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-8 text-center shadow-xl shadow-black/20">
+            <BookOpen className="h-12 w-12 text-zinc-600 mx-auto mb-3 opacity-50" />
+            <p className="text-[12px] text-zinc-400 font-semibold">Δεν βρέθηκαν εγχειρίδια</p>
           </div>
         ) : filteredGuides.map((guide) => {
           const Icon = GUIDE_ICONS[guide.icon] || BookOpen
@@ -567,38 +567,38 @@ function GuidesSection({ searchQuery }: { searchQuery: string }) {
           const hasQuiz = !!GUIDE_QUIZZES[guide.id]
 
           return (
-            <div key={guide.id} className="glass-card rounded-xl overflow-hidden border border-white/5">
+            <div key={guide.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] overflow-hidden shadow-lg shadow-black/10">
               <button
                 onClick={() => {
                   hapticFeedback('light')
                   setExpandedGuide(isExpanded ? null : guide.id)
                 }}
-                className="w-full flex items-center gap-3 p-3 min-h-[48px] text-left hover:bg-white/5 transition-colors"
+                className="w-full flex items-center gap-3 p-4 min-h-[56px] text-left hover:bg-zinc-700/30 transition-colors"
               >
-                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                  <Icon className="h-4 w-4 text-primary" />
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                  <Icon className="h-5 w-5 text-emerald-400" />
                 </div>
-                <span className="flex-1 text-sm font-bold text-foreground tracking-tight">{guide.title}</span>
+                <span className="flex-1 text-[13px] font-bold text-white tracking-tight">{guide.title}</span>
                 {isExpanded ? (
-                  <ChevronUp className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                  <ChevronUp className="h-4 w-4 text-zinc-500 flex-shrink-0" />
                 ) : (
-                  <ChevronDown className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                  <ChevronDown className="h-4 w-4 text-zinc-500 flex-shrink-0" />
                 )}
               </button>
 
               {isExpanded && (
-                <div className="px-3 pb-3 flex flex-col gap-3">
+                <div className="px-4 pb-4 flex flex-col gap-4 border-t border-zinc-700/40">
                   {guide.sections.map((section, sIdx) => (
                     <div key={sIdx}>
-                      <h4 className="text-[9px] font-black text-primary uppercase tracking-widest mb-1.5 px-1">{section.heading}</h4>
-                      <div className="flex flex-col gap-1">
+                      <h4 className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-2 px-1">{section.heading}</h4>
+                      <div className="flex flex-col gap-1.5">
                         {section.items.map((item, iIdx) => (
                           <div
                             key={iIdx}
-                            className="flex items-start gap-2 py-1.5 px-2.5 rounded-lg bg-secondary/30 border border-white/5"
+                            className="flex items-start gap-2 py-2 px-3 rounded-lg bg-zinc-900/50 border border-zinc-700/30"
                           >
-                            <span className="w-1 h-1 rounded-full bg-primary/40 mt-1.5 flex-shrink-0" />
-                            <p className="text-[11px] text-foreground/90 leading-relaxed">{item}</p>
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
+                            <p className="text-[11px] text-zinc-300 leading-relaxed">{item}</p>
                           </div>
                         ))}
                       </div>
@@ -612,9 +612,9 @@ function GuidesSection({ searchQuery }: { searchQuery: string }) {
                         hapticFeedback('medium')
                         setActiveQuiz(guide.id)
                       }}
-                      className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[40px] transition-all hover:opacity-90"
+                      className="flex items-center justify-center gap-2 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
                     >
-                      <GraduationCap className="h-3.5 w-3.5" />
+                      <GraduationCap size={16} />
                       Εξέτασε με
                     </button>
                   )}
@@ -686,22 +686,22 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
       <div className="flex flex-col items-center justify-center py-8 text-center gap-4">
         <div className={cn(
           "w-16 h-16 rounded-full flex items-center justify-center mb-2",
-          isPerfect ? "bg-primary/20 text-primary" : "bg-secondary text-muted-foreground"
+          isPerfect ? "bg-emerald-500/20 text-emerald-400" : "bg-zinc-800 text-zinc-500"
         )}>
           {isPerfect ? <CircleCheck className="h-10 w-10" /> : <RotateCcw className="h-8 w-8" />}
         </div>
         <div>
-          <h3 className="text-xl font-black text-foreground">Αποτέλεσμα</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Σκορ: <span className="text-primary font-bold">{score}</span> / {shuffledQuestions.length}
+          <h3 className="text-xl font-bold text-white">Αποτέλεσμα</h3>
+          <p className="text-[12px] text-zinc-400 mt-1">
+            Σκορ: <span className="text-emerald-400 font-bold">{score}</span> / {shuffledQuestions.length}
           </p>
         </div>
-        <p className="text-xs text-muted-foreground max-w-[200px]">
+        <p className="text-[11px] text-zinc-400 max-w-[200px]">
           {isPerfect ? 'Εξαιρετικά! Γνωρίζεις καλά το αντικείμενο.' : 'Μπορείς και καλύτερα. Διάβασε ξανά το εγχειρίδιο.'}
         </p>
         <button
           onClick={onClose}
-          className="mt-4 w-full py-3 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px]"
+          className="mt-4 w-full py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
         >
           Κλείσιμο
         </button>
@@ -710,9 +710,9 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-2">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
           Ερώτηση {currentIndex + 1} / {shuffledQuestions.length}
         </span>
         <div className="flex gap-1">
@@ -721,14 +721,14 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
               key={i}
               className={cn(
                 "w-1.5 h-1.5 rounded-full transition-colors",
-                i === currentIndex ? "bg-primary" : i < currentIndex ? "bg-primary/40" : "bg-secondary"
+                i === currentIndex ? "bg-emerald-500" : i < currentIndex ? "bg-emerald-500/40" : "bg-zinc-700"
               )}
             />
           ))}
         </div>
       </div>
 
-      <h3 className="text-base font-bold text-foreground leading-tight px-1">
+      <h3 className="text-[15px] font-bold text-white leading-tight px-1">
         {currentQuestion.question}
       </h3>
 
@@ -737,11 +737,11 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
           const isCorrect = idx === currentQuestion.correctIndex
           const isSelected = idx === selectedOption
           
-          let stateClasses = "bg-secondary/50 border-white/5 text-foreground"
+          let stateClasses = "bg-zinc-900 border-zinc-800 text-white"
           if (isAnswered) {
-            if (isCorrect) stateClasses = "bg-primary/20 border-primary text-primary"
-            else if (isSelected) stateClasses = "bg-destructive/20 border-destructive text-destructive"
-            else stateClasses = "bg-secondary/30 border-white/5 text-muted-foreground/50"
+            if (isCorrect) stateClasses = "bg-emerald-500/20 border-emerald-500 text-emerald-400"
+            else if (isSelected) stateClasses = "bg-red-500/20 border-red-500 text-red-400"
+            else stateClasses = "bg-zinc-900 border-zinc-800 text-zinc-500"
           }
 
           return (
@@ -750,13 +750,13 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
               onClick={() => handleOptionSelect(idx)}
               disabled={isAnswered}
               className={cn(
-                "w-full text-left p-3.5 rounded-xl border text-sm font-medium transition-all flex items-center justify-between min-h-[52px]",
+                "w-full text-left p-4 rounded-xl border text-[12px] font-medium transition-all flex items-center justify-between min-h-[56px]",
                 stateClasses
               )}
             >
               <span>{opt}</span>
-              {isAnswered && isCorrect && <CircleCheck className="h-4 w-4" />}
-              {isAnswered && isSelected && !isCorrect && <CircleX className="h-4 w-4" />}
+              {isAnswered && isCorrect && <CircleCheck className="h-5 w-5" />}
+              {isAnswered && isSelected && !isCorrect && <CircleX className="h-5 w-5" />}
             </button>
           )
         })}
@@ -765,10 +765,10 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
       {isAnswered && (
         <button
           onClick={handleNext}
-          className="mt-2 w-full py-3 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] flex items-center justify-center gap-2"
+          className="mt-2 w-full py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
         >
           {currentIndex < shuffledQuestions.length - 1 ? 'Επόμενη' : 'Τέλος'}
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight size={16} />
         </button>
       )}
     </div>
@@ -780,37 +780,37 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (t: string, c: string) => voi
   const [content, setContent] = useState('')
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4 p-2">
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Τίτλος</label>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Τίτλος</label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Προαιρετικό..."
-          className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm font-bold min-h-[40px] border border-border placeholder:text-muted-foreground/50"
+          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-800 focus:border-emerald-500 outline-none"
         />
       </div>
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Περιεχόμενο</label>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Περιεχόμενο</label>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Γράψε εδώ..."
-          className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[120px] border border-border resize-none placeholder:text-muted-foreground/50"
+          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-28"
         />
       </div>
-      <div className="flex gap-2 pt-2">
+      <div className="flex gap-3 pt-2">
         <button
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-lg bg-secondary text-secondary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px]"
+          className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
         >
           Ακύρωση
         </button>
         <button
           onClick={() => onAdd(title, content)}
           disabled={!content.trim()}
-          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-40"
+          className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
         >
           Προσθήκη
         </button>
