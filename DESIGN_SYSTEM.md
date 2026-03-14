@@ -15,7 +15,7 @@ We are moving from a generic dark theme to a **Deep Forest Tactical** palette.
 | **Accent** | Stealth Blue | `#38BDF8` | Informational highlights (e.g., leaves) |
 | **Destructive** | Signal Red | `#F87171` | Errors, deletions |
 | **Text Primary** | Frost White | `#F8FAFC` | Main headings and body text |
-| **Text Muted** | Slate Gray | `#94A3B8` | Secondary info, labels |
+| **Text Muted** | Zinc Gray | `#94A3B8` | Secondary info, labels |
 
 ## 3. Typography
 - **Font Family**: `Inter` or `Geist` (Sans-serif) for maximum legibility.
