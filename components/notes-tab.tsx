@@ -350,7 +350,7 @@ export function NotesTab() {
               setActiveSection('notes')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'notes'
                 ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-900/30'
                 : 'text-zinc-400 hover:text-zinc-300'
@@ -365,7 +365,7 @@ export function NotesTab() {
               setActiveSection('guides')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'guides'
                 ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-900/30'
                 : 'text-zinc-400 hover:text-zinc-300'
@@ -468,7 +468,7 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
         <div className="flex flex-col gap-3">
           {filteredNotes.map((note) => (
             <div key={note.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 shadow-lg shadow-black/10">
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between mb-1">
                 <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">{formatGreekDate(note.date)}</p>
                 <div className="flex items-center gap-1">
                   <button
