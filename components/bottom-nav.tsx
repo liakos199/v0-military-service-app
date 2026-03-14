@@ -22,8 +22,8 @@ const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
     <nav
-      className="w-full flex-shrink-0 border-t border-white/5 safe-bottom"
-      style={{ background: 'rgba(5, 7, 5, 0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+      className="w-full flex-shrink-0 border-t border-primary/50 safe-bottom bg-background"
+      style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
       role="tablist"
       aria-label="Κύρια πλοήγηση"
     >
@@ -46,18 +46,18 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               )}
             >
               <div className={cn(
-                "p-2 rounded-xl transition-colors duration-300",
+                "p-2.5 rounded-lg transition-all duration-300",
                 isActive ? "bg-primary" : "bg-transparent"
               )}>
                 <Icon className={cn(
-                  'h-5 w-5 transition-all duration-300',
-                  isActive ? 'text-primary-foreground drop-shadow-[0_0_8px_var(--primary)]' : 'text-muted-foreground/60',
-                  isActive ? 'stroke-[2.5]' : 'stroke-[2]'
+                  'h-6 w-6 transition-all duration-300',
+                  isActive ? 'text-white' : 'text-muted-foreground',
+                  isActive ? 'stroke-[2.5]' : 'stroke-[1.5]'
                 )} />
               </div>
               <span className={cn(
-                'text-[9px] font-bold uppercase tracking-tighter transition-colors duration-300 w-full text-center whitespace-nowrap overflow-visible',
-                isActive ? 'text-primary' : 'text-muted-foreground/60'
+                'text-[8px] font-black uppercase tracking-wider transition-colors duration-300 w-full text-center',
+                isActive ? 'text-primary' : 'text-muted-foreground'
               )}>
                 {tab.label}
               </span>

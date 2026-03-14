@@ -4,55 +4,55 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Military Professional Zinc Theme - Serious & Clean */
-  --background: #09090b; /* Zinc 950 */
-  --foreground: #fafafa; /* Zinc 50 */
-  --card: #18181b; /* Zinc 900 */
-  --card-foreground: #fafafa;
-  --popover: #09090b;
-  --popover-foreground: #fafafa;
+  /* Military Professional Theme - Black, Violet, White, Lime */
+  --background: #000000; /* Pure Black */
+  --foreground: #ffffff; /* Pure White */
+  --card: #0a0a0a; /* Almost Black */
+  --card-foreground: #ffffff;
+  --popover: #000000;
+  --popover-foreground: #ffffff;
   
-  /* Military Blue & Emerald Accents */
-  --primary: #0ea5e9; /* Military Blue */
-  --primary-foreground: #09090b;
+  /* Primary: Violet, Secondary: Lime */
+  --primary: #7E3EBE; /* Violet */
+  --primary-foreground: #ffffff;
   
-  --secondary: #27272a; /* Zinc 800 */
-  --secondary-foreground: #fafafa;
+  --secondary: #1a1a1a; /* Dark Gray */
+  --secondary-foreground: #ffffff;
   
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa; /* Zinc 400 */
+  --muted: #404040; /* Medium Gray */
+  --muted-foreground: #b0b0b0; /* Light Gray */
   
-  --accent: #10b981; /* Emerald */
-  --accent-foreground: #fafafa;
+  --accent: #C6FF34; /* Lime */
+  --accent-foreground: #000000;
   
-  --destructive: #ef4444;
-  --destructive-foreground: #fafafa;
+  --destructive: #ff4444;
+  --destructive-foreground: #ffffff;
   
-  --border: #27272a;
-  --input: #18181b;
-  --ring: #0ea5e9;
+  --border: #7E3EBE; /* Violet borders */
+  --input: #1a1a1a;
+  --ring: #7E3EBE;
   
-  /* Chart Colors - Emerald/Blue/Zinc focused */
-  --chart-1: #10b981;
-  --chart-2: #0ea5e9;
-  --chart-3: #71717a; /* Zinc 500 */
-  --chart-4: #f59e0b;
-  --chart-5: #f43f5e;
+  /* Chart Colors */
+  --chart-1: #C6FF34; /* Lime */
+  --chart-2: #7E3EBE; /* Violet */
+  --chart-3: #ffffff; /* White */
+  --chart-4: #ff9500; /* Orange */
+  --chart-5: #ff4444; /* Red */
   
   --radius: 0.75rem;
   
-  --sidebar: #09090b;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #0ea5e9;
-  --sidebar-primary-foreground: #09090b;
-  --sidebar-accent: #27272a;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #27272a;
-  --sidebar-ring: #0ea5e9;
+  --sidebar: #000000;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #7E3EBE;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #C6FF34;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #7E3EBE;
+  --sidebar-ring: #7E3EBE;
   
-  --glass: rgba(9, 9, 11, 0.8);
-  --glass-border: rgba(39, 39, 42, 0.5);
-  --glass-highlight: #0ea5e9;
+  --glass: rgba(0, 0, 0, 0.9);
+  --glass-border: rgba(126, 62, 190, 0.5);
+  --glass-highlight: #7E3EBE;
 }
 
 @theme inline {
@@ -100,16 +100,22 @@
 }
 
 .glass-card {
-  background: rgba(26, 32, 44, 0.6);
-  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--glass-border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
 .glass-card-highlight {
-  background: #0ea5e9;
-  border: 1px solid #0ea5e9;
-  color: #001f3f;
+  background: #7E3EBE;
+  border: 2px solid #7E3EBE;
+  color: #ffffff;
+}
+
+.professional-card {
+  background: linear-gradient(135deg, rgba(126, 62, 190, 0.1) 0%, rgba(198, 255, 52, 0.05) 100%);
+  border: 2px solid #7E3EBE;
+  border-radius: 0.75rem;
 }
 
 /* Hide scrollbar for mobile */
