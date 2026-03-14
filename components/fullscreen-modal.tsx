@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { X, ChevronLeft } from 'lucide-react'
 import { hapticFeedback } from '@/lib/helpers'
 
@@ -14,6 +15,13 @@ interface FullscreenModalProps {
 }
 
 export function FullscreenModal({ isOpen, onClose, title, children, showBackButton = false, onBack }: FullscreenModalProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    return () => setMounted(false)
+  }, [])
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -25,12 +33,12 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
     }
   }, [isOpen])
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
-  return (
-    <div className="fixed inset-0 z-[200] bg-black backdrop-blur-sm animate-fade-in flex flex-col">
+  return createPortal(
+    <div className="fixed inset-0 z-[200] bg-black animate-fade-in flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80 shrink-0 safe-top">
+      <div className="flex items-center justify-between px-6 pt-14 pb-4 border-b border-zinc-800/80 shrink-0">
         <div className="flex items-center gap-3 flex-1">
           {showBackButton && onBack && (
             <button
@@ -59,9 +67,10 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar safe-bottom">
+      <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar pb-safe">
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
