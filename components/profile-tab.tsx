@@ -203,12 +203,18 @@ function ProfileSection() {
 function SuperiorsSection() {
   const [superiors, setSuperiors] = useLocalStorage<SuperiorEntry[]>('fantaros-superiors', [])
   const [isAdding, setIsAdding] = useState(false)
-  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editingEntry, setEditingEntry] = useState<SuperiorEntry | null>(null)
 
   const handleAdd = (entry: SuperiorEntry) => {
     hapticFeedback('medium')
     setSuperiors([...superiors, { ...entry, id: Date.now().toString() }])
     setIsAdding(false)
+  }
+
+  const handleUpdate = (entry: SuperiorEntry) => {
+    hapticFeedback('medium')
+    setSuperiors(superiors.map(s => s.id === entry.id ? entry : s))
+    setEditingEntry(null)
   }
 
   const handleDelete = (id: string) => {
@@ -247,12 +253,20 @@ function SuperiorsSection() {
                 </span>
               </div>
             </div>
-            <button 
-              onClick={() => handleDelete(sup.id)}
-              className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
-            >
-              <X size={14} />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => { hapticFeedback('light'); setEditingEntry(sup) }}
+                className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+              >
+                <Edit3 size={14} />
+              </button>
+              <button 
+                onClick={() => handleDelete(sup.id)}
+                className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
+              >
+                <X size={14} />
+              </button>
+            </div>
           </div>
         ))
       )}
@@ -267,6 +281,20 @@ function SuperiorsSection() {
           onCancel={() => setIsAdding(false)}
         />
       </FullscreenModal>
+
+      <FullscreenModal
+        isOpen={!!editingEntry}
+        onClose={() => setEditingEntry(null)}
+        title="Επεξεργασία Ανωτέρου"
+      >
+        {editingEntry && (
+          <EditSuperiorForm
+            entry={editingEntry}
+            onSave={handleUpdate}
+            onCancel={() => setEditingEntry(null)}
+          />
+        )}
+      </FullscreenModal>
     </div>
   )
 }
@@ -274,11 +302,18 @@ function SuperiorsSection() {
 function FriendsSection() {
   const [friends, setFriends] = useLocalStorage<FriendEntry[]>('fantaros-friends', [])
   const [isAdding, setIsAdding] = useState(false)
+  const [editingEntry, setEditingEntry] = useState<FriendEntry | null>(null)
 
   const handleAdd = (entry: FriendEntry) => {
     hapticFeedback('medium')
     setFriends([...friends, { ...entry, id: Date.now().toString() }])
     setIsAdding(false)
+  }
+
+  const handleUpdate = (entry: FriendEntry) => {
+    hapticFeedback('medium')
+    setFriends(friends.map(f => f.id === entry.id ? entry : f))
+    setEditingEntry(null)
   }
 
   const handleDelete = (id: string) => {
@@ -317,12 +352,20 @@ function FriendsSection() {
                 </span>
               </div>
             </div>
-            <button 
-              onClick={() => handleDelete(friend.id)}
-              className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
-            >
-              <X size={14} />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => { hapticFeedback('light'); setEditingEntry(friend) }}
+                className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+              >
+                <Edit3 size={14} />
+              </button>
+              <button 
+                onClick={() => handleDelete(friend.id)}
+                className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
+              >
+                <X size={14} />
+              </button>
+            </div>
           </div>
         ))
       )}
@@ -336,6 +379,20 @@ function FriendsSection() {
           onAdd={handleAdd}
           onCancel={() => setIsAdding(false)}
         />
+      </FullscreenModal>
+
+      <FullscreenModal
+        isOpen={!!editingEntry}
+        onClose={() => setEditingEntry(null)}
+        title="Επεξεργασία Συναδέλφου"
+      >
+        {editingEntry && (
+          <EditFriendForm
+            entry={editingEntry}
+            onSave={handleUpdate}
+            onCancel={() => setEditingEntry(null)}
+          />
+        )}
       </FullscreenModal>
     </div>
   )
@@ -638,6 +695,100 @@ function AddFriendForm({ onAdd, onCancel }: { onAdd: (entry: FriendEntry) => voi
           className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
         >
           Προσθηκη
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function EditSuperiorForm({ entry, onSave, onCancel }: { entry: SuperiorEntry; onSave: (entry: SuperiorEntry) => void; onCancel: () => void }) {
+  const [form, setForm] = useState<SuperiorEntry>(entry)
+
+  const handleSubmit = () => {
+    if (!form.name.trim()) return
+    hapticFeedback('heavy')
+    onSave(form)
+  }
+
+  return (
+    <div className="flex flex-col gap-4 h-full">
+      <FormField
+        label="Ονοματεπώνυμο"
+        value={form.name}
+        onChange={(v) => setForm({ ...form, name: v })}
+        placeholder="π.χ. Λοχαγός Παπαδόπουλος"
+      />
+      <FormField
+        label="Βαθμός"
+        value={form.rank}
+        onChange={(v) => setForm({ ...form, rank: v })}
+        placeholder="π.χ. Λοχαγός"
+      />
+      <FormField
+        label="Ρόλος / Θέση"
+        value={form.role}
+        onChange={(v) => setForm({ ...form, role: v })}
+        placeholder="π.χ. Διοικητής Λόχου"
+      />
+      <div className="flex gap-3 pt-4 mt-auto">
+        <button
+          onClick={onCancel}
+          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+        >
+          Ακυρωση
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
+        >
+          Αποθηκευση
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function EditFriendForm({ entry, onSave, onCancel }: { entry: FriendEntry; onSave: (entry: FriendEntry) => void; onCancel: () => void }) {
+  const [form, setForm] = useState<FriendEntry>(entry)
+
+  const handleSubmit = () => {
+    if (!form.name.trim()) return
+    hapticFeedback('heavy')
+    onSave(form)
+  }
+
+  return (
+    <div className="flex flex-col gap-4 h-full">
+      <FormField
+        label="Ονοματεπώνυμο"
+        value={form.name}
+        onChange={(v) => setForm({ ...form, name: v })}
+        placeholder="π.χ. Γιώργος Παπαδόπουλος"
+      />
+      <FormField
+        label="Μονάδα / Λόχος"
+        value={form.unit}
+        onChange={(v) => setForm({ ...form, unit: v })}
+        placeholder="π.χ. 123 ΤΠ"
+      />
+      <FormField
+        label="Τηλέφωνο (Προαιρετικό)"
+        value={form.phone}
+        onChange={(v) => setForm({ ...form, phone: v })}
+        placeholder="69XXXXXXXX"
+      />
+      <div className="flex gap-3 pt-4 mt-auto">
+        <button
+          onClick={onCancel}
+          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+        >
+          Ακυρωση
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
+        >
+          Αποθηκευση
         </button>
       </div>
     </div>

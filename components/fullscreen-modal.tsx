@@ -28,7 +28,7 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black backdrop-blur-sm animate-fade-in flex flex-col">
+    <div className="fixed inset-0 z-[200] bg-black backdrop-blur-sm animate-fade-in flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80 shrink-0 safe-top">
         <div className="flex items-center gap-3 flex-1">

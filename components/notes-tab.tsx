@@ -1,13 +1,12 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo } from 'react'
 import {
   Plus,
   Trash2,
   NotebookText,
   BookOpen,
   Edit3,
-  Check,
   X,
   ChevronDown,
   ChevronUp,
@@ -391,9 +390,7 @@ export function NotesTab() {
 function NotesSection({ searchQuery }: { searchQuery: string }) {
   const [notes, setNotes] = useLocalStorage<NoteEntry[]>('fantaros-notes', [])
   const [showAdd, setShowAdd] = useState(false)
-  const [editingId, setEditingId] = useState<string | null>(null)
-  const [editTitle, setEditTitle] = useState('')
-  const [editContent, setEditContent] = useState('')
+  const [editingNote, setEditingNote] = useState<NoteEntry | null>(null)
 
   const handleAdd = (title: string, content: string) => {
     hapticFeedback('heavy')
@@ -404,17 +401,18 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
     setShowAdd(false)
   }
 
-  const handleUpdate = (id: string) => {
+  const handleUpdate = (title: string, content: string) => {
+    if (!editingNote) return
     hapticFeedback('medium')
-    setNotes(notes.map((n) => (n.id === id ? { ...n, title: editTitle, content: editContent } : n)))
-    setEditingId(null)
+    setNotes(notes.map((n) => (n.id === editingNote.id ? { ...n, title, content } : n)))
+    setEditingNote(null)
   }
 
   const filteredNotes = useMemo(() => {
     if (!searchQuery.trim()) return notes
     const q = searchQuery.toLowerCase()
-    return notes.filter(n => 
-      n.title?.toLowerCase().includes(q) || 
+    return notes.filter(n =>
+      n.title?.toLowerCase().includes(q) ||
       n.content.toLowerCase().includes(q)
     )
   }, [notes, searchQuery])
@@ -444,6 +442,21 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
         <AddNoteForm onAdd={handleAdd} onCancel={() => setShowAdd(false)} />
       </FullscreenModal>
 
+      {/* Edit Note Modal */}
+      <FullscreenModal
+        isOpen={!!editingNote}
+        onClose={() => setEditingNote(null)}
+        title="Επεξεργασία Σημείωσης"
+      >
+        {editingNote && (
+          <EditNoteForm
+            note={editingNote}
+            onSave={handleUpdate}
+            onCancel={() => setEditingNote(null)}
+          />
+        )}
+      </FullscreenModal>
+
       {filteredNotes.length === 0 ? (
         <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-8 text-center shadow-xl shadow-black/20">
           <NotebookText className="h-12 w-12 text-zinc-600 mx-auto mb-3 opacity-50" />
@@ -458,72 +471,32 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
               <div className="flex items-start justify-between mb-3">
                 <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">{formatGreekDate(note.date)}</p>
                 <div className="flex items-center gap-1">
-                  {editingId === note.id ? (
-                    <>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="p-2 rounded-lg text-zinc-500 hover:text-zinc-300 transition-colors"
-                        aria-label="Ακύρωση"
-                      >
-                        <X size={16} />
-                      </button>
-                      <button
-                        onClick={() => handleUpdate(note.id)}
-                        className="p-2 rounded-lg text-emerald-400 hover:text-emerald-300 transition-colors"
-                        aria-label="Αποθήκευση"
-                      >
-                        <Check size={16} />
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          hapticFeedback('light')
-                          setEditingId(note.id)
-                          setEditTitle(note.title || '')
-                          setEditContent(note.content)
-                        }}
-                        className="p-2 rounded-lg text-zinc-500 hover:text-zinc-300 transition-colors"
-                        aria-label="Επεξεργασία"
-                      >
-                        <Edit3 size={16} />
-                      </button>
-                      <button
-                        onClick={() => {
-                          hapticFeedback('medium')
-                          setNotes(notes.filter((n) => n.id !== note.id))
-                        }}
-                        className="p-2 rounded-lg text-red-400 hover:text-red-300 transition-colors"
-                        aria-label="Διαγραφή"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </>
-                  )}
+                  <button
+                    onClick={() => {
+                      hapticFeedback('light')
+                      setEditingNote(note)
+                    }}
+                    className="p-2 rounded-lg text-zinc-500 hover:text-zinc-300 transition-colors"
+                    aria-label="Επεξεργασία"
+                  >
+                    <Edit3 size={16} />
+                  </button>
+                  <button
+                    onClick={() => {
+                      hapticFeedback('medium')
+                      setNotes(notes.filter((n) => n.id !== note.id))
+                    }}
+                    className="p-2 rounded-lg text-red-400 hover:text-red-300 transition-colors"
+                    aria-label="Διαγραφή"
+                  >
+                    <Trash2 size={16} />
+                  </button>
                 </div>
               </div>
-              {editingId === note.id ? (
-                <div className="flex flex-col gap-3">
-                  <input
-                    type="text"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    placeholder="Τίτλος"
-                    className="w-full px-3 py-2 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-700 focus:border-emerald-500 outline-none"
-                  />
-                  <textarea
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-700 focus:border-emerald-500 outline-none resize-none h-24"
-                  />
-                </div>
-              ) : (
-                <div>
-                  {note.title && <p className="text-[12px] font-bold text-white mb-1">{note.title}</p>}
-                  <p className="text-[11px] text-zinc-300 whitespace-pre-wrap leading-relaxed">{note.content}</p>
-                </div>
-              )}
+              <div>
+                {note.title && <p className="text-[12px] font-bold text-white mb-1">{note.title}</p>}
+                <p className="text-[11px] text-zinc-300 whitespace-pre-wrap leading-relaxed">{note.content}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -787,7 +760,7 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (t: string, c: string) => voi
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Προαιρετικό..."
+          placeholder="π.χ. Υποχρεώσεις βάρδιας..."
           className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-800 focus:border-emerald-500 outline-none"
         />
       </div>
@@ -797,7 +770,7 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (t: string, c: string) => voi
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Γράψε εδώ..."
-          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-28"
+          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-48"
         />
       </div>
       <div className="flex gap-3 pt-2">
@@ -813,6 +786,50 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (t: string, c: string) => voi
           className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
         >
           Προσθήκη
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function EditNoteForm({ note, onSave, onCancel }: { note: NoteEntry; onSave: (t: string, c: string) => void; onCancel: () => void }) {
+  const [title, setTitle] = useState(note.title || '')
+  const [content, setContent] = useState(note.content)
+
+  return (
+    <div className="flex flex-col gap-4 p-2">
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Τίτλος</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="π.χ. Υποχρεώσεις βάρδιας..."
+          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-800 focus:border-emerald-500 outline-none"
+        />
+      </div>
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Περιεχόμενο</label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Γράψε εδώ..."
+          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-48"
+        />
+      </div>
+      <div className="flex gap-3 pt-2">
+        <button
+          onClick={onCancel}
+          className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+        >
+          Ακύρωση
+        </button>
+        <button
+          onClick={() => onSave(title, content)}
+          disabled={!content.trim()}
+          className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+        >
+          Αποθήκευση
         </button>
       </div>
     </div>
