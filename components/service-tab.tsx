@@ -310,6 +310,39 @@ export function ServiceTab() {
 }
 
 /* ========== PRISON MANAGER ========== */
+function DeleteConfirmDialog({
+  onConfirm,
+  onCancel,
+}: {
+  onConfirm: () => void
+  onCancel: () => void
+}) {
+  return (
+    <div className="fixed inset-0 z-[400] bg-black/75 flex items-end justify-center pb-8 px-4">
+      <div className="bg-zinc-900 border border-zinc-700/50 rounded-[2rem] w-full max-w-sm shadow-2xl p-6 flex flex-col gap-5">
+        <div className="text-center">
+          <p className="text-white font-bold text-[16px] mb-1">Διαγραφή καταχώρησης;</p>
+          <p className="text-zinc-400 text-[12px]">Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.</p>
+        </div>
+        <div className="flex gap-3">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-3.5 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-300 font-bold text-[11px] uppercase tracking-widest hover:bg-zinc-700 transition-colors"
+          >
+            Ακύρωση
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-1 py-3.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-400 font-bold text-[11px] uppercase tracking-widest hover:bg-rose-500/30 transition-colors"
+          >
+            Διαγραφή
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function PrisonManager({
   prisons,
   setPrisons,
@@ -319,6 +352,7 @@ function PrisonManager({
 }) {
   const [showForm, setShowForm] = useState(false)
   const [editingEntry, setEditingEntry] = useState<PrisonEntry | null>(null)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   const handleSave = (days: number, reason: string) => {
     hapticFeedback('heavy')
@@ -387,36 +421,44 @@ function PrisonManager({
           <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπάρχουν καταχωρήσεις</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
-          {prisons.map((p) => (
-            <div key={p.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex flex-col items-center justify-center shrink-0">
-                  <span className="text-[18px] font-extrabold text-red-400 leading-none">{p.days}</span>
-                  <span className="text-[8px] font-bold text-red-400/60 uppercase">ημ.</span>
+        <>
+          <div className="flex flex-col gap-3">
+            {prisons.map((p) => (
+              <div key={p.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between gap-3 shadow-lg shadow-black/10">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex flex-col items-center justify-center shrink-0">
+                    <span className="text-[18px] font-extrabold text-red-400 leading-none">{p.days}</span>
+                    <span className="text-[8px] font-bold text-red-400/60 uppercase">ημ.</span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[13px] font-bold text-white break-words">{p.reason || 'Χωρίς αιτία'}</p>
+                    <p className="text-[10px] text-zinc-500">{formatGreekDate(p.addedDate)}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[13px] font-bold text-white">{p.reason || 'Χωρίς αιτία'}</p>
-                  <p className="text-[10px] text-zinc-500">{formatGreekDate(p.addedDate)}</p>
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    onClick={() => handleEdit(p)}
+                    className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+                  >
+                    <Edit3 size={14} />
+                  </button>
+                  <button
+                    onClick={() => setPendingDeleteId(p.id)}
+                    className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-rose-500 hover:text-rose-400 transition-colors"
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </div>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => handleEdit(p)}
-                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
-                >
-                  <Edit3 size={14} />
-                </button>
-                <button
-                  onClick={() => handleDelete(p.id)}
-                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
-                >
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          {pendingDeleteId && (
+            <DeleteConfirmDialog
+              onConfirm={() => { handleDelete(pendingDeleteId); setPendingDeleteId(null) }}
+              onCancel={() => setPendingDeleteId(null)}
+            />
+          )}
+        </>
       )}
     </div>
   )
@@ -487,6 +529,7 @@ function DetentionManager({
 }) {
   const [showForm, setShowForm] = useState(false)
   const [editingEntry, setEditingEntry] = useState<DetentionEntry | null>(null)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   const handleSave = (startDate: string, endDate: string, reason: string) => {
     hapticFeedback('heavy')
@@ -555,40 +598,48 @@ function DetentionManager({
           <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπάρχουν κρατήσεις</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
-          {detentions.map((d) => {
-            const days = Math.max(0, daysBetween(d.startDate, d.endDate) + 1)
-            return (
-              <div key={d.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <p className="text-[13px] font-bold text-white mb-1">{d.reason || 'Χωρίς αιτία'}</p>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.startDate)}</span>
-                      <span className="text-zinc-600">→</span>
-                      <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.endDate)}</span>
-                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">{days} ημ.</span>
+        <>
+          <div className="flex flex-col gap-3">
+            {detentions.map((d) => {
+              const days = Math.max(0, daysBetween(d.startDate, d.endDate) + 1)
+              return (
+                <div key={d.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-bold text-white mb-1 break-words">{d.reason || 'Χωρίς αιτία'}</p>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.startDate)}</span>
+                        <span className="text-zinc-600">→</span>
+                        <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.endDate)}</span>
+                        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">{days} ημ.</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 ml-2 shrink-0">
+                      <button
+                        onClick={() => handleEdit(d)}
+                        className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+                      >
+                        <Edit3 size={14} />
+                      </button>
+                      <button
+                        onClick={() => setPendingDeleteId(d.id)}
+                        className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-rose-500 hover:text-rose-400 transition-colors"
+                      >
+                        <Trash2 size={14} />
+                      </button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 ml-2 shrink-0">
-                    <button
-                      onClick={() => handleEdit(d)}
-                      className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
-                    >
-                      <Edit3 size={14} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(d.id)}
-                      className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
                 </div>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
+          {pendingDeleteId && (
+            <DeleteConfirmDialog
+              onConfirm={() => { handleDelete(pendingDeleteId); setPendingDeleteId(null) }}
+              onCancel={() => setPendingDeleteId(null)}
+            />
+          )}
+        </>
       )}
     </div>
   )

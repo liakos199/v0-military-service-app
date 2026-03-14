@@ -11,6 +11,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
+import { InlineDatePicker } from '@/components/inline-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { ActionSheet, ActionSheetItem, ActionSheetCancel } from '@/components/action-sheet'
 import {
@@ -600,16 +601,16 @@ function AddDutyForm({
         </div>
       </div>
 
-      <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
+      <InlineDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         <div>
           <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα έναρξης</label>
           <input
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none"
+            className="w-full px-2 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 outline-none"
           />
         </div>
         <div>
@@ -618,7 +619,7 @@ function AddDutyForm({
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none"
+            className="w-full px-2 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 outline-none"
           />
         </div>
       </div>
@@ -688,7 +689,7 @@ function AddLeaveForm({
           Τύπος άδειας
         </label>
         <div className="grid grid-cols-2 gap-2">
-          {(['regular', 'study', 'sick', 'special'] as LeaveType[]).map((t) => (
+          {(['regular', 'student', 'honorary', 'medical', 'emergency', 'other'] as LeaveType[]).map((t) => (
             <button
               key={t}
               onClick={() => setType(t)}
@@ -705,10 +706,8 @@ function AddLeaveForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <GreekDatePicker value={startDate} onChange={setStartDate} label="Από" />
-        <GreekDatePicker value={endDate} onChange={setEndDate} label="Έως" />
-      </div>
+      <InlineDatePicker value={startDate} onChange={setStartDate} label="Από" />
+      <InlineDatePicker value={endDate} onChange={setEndDate} label="Έως" />
 
       <div>
         <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Σημειώσεις</label>
