@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Search, X, Filter, SlidersHorizontal } from 'lucide-react'
+import { Search, X, Filter, SlidersHorizontal, Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
@@ -18,7 +18,6 @@ export function ExpensesTab() {
   const [showCatalogManager, setShowCatalogManager] = useState(false)
   
   const [searchQuery, setSearchQuery] = useState('')
-  const [showFilters, setShowFilters] = useState(false)
   const [filterCategory, setFilterCategory] = useState<string | 'all'>('all')
 
   const filteredExpenses = useMemo(() => {
@@ -34,207 +33,169 @@ export function ExpensesTab() {
   const grandTotal = filteredExpenses.reduce((sum, e) => sum + e.amount, 0)
 
   return (
-    <div className="flex flex-col h-full">
-      {/* HEADER - Always Visible */}
-      <div className="flex-shrink-0 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-foreground">Έξοδα</h1>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Δαπάνες & καταλόγου</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                hapticFeedback('light')
-                setShowCatalogManager(true)
-              }}
-              className="px-3 py-2 rounded-lg glass-card border border-white/5 text-foreground text-[10px] font-black min-h-[40px] uppercase tracking-wider hover:border-primary transition-colors"
-              aria-label="Διαχείριση καταλόγου Κ.Ψ.Μ."
-            >
-              Κατάλογος
-            </button>
-            <button
-              onClick={() => {
-                hapticFeedback('light')
-                setShowAdd(true)
-              }}
-              className="px-3 py-2 rounded-lg bg-primary text-primary-foreground text-[10px] font-black min-h-[40px] uppercase tracking-wider hover:bg-primary transition-colors"
-              aria-label="Προσθήκη εξόδου"
-            >
-              + Νέο
-            </button>
-          </div>
+    <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in overflow-hidden bg-black">
+      {/* HEADER */}
+      <header className="px-6 pt-14 pb-2 z-10 relative flex justify-between items-start shrink-0">
+        <div>
+          <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Έξοδα</h1>
+          <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Δαπανες & Καταλογος</p>
         </div>
-      </div>
+        <div className="flex items-center gap-2 mt-1">
+          <button 
+            onClick={() => {
+              hapticFeedback('light')
+              setShowCatalogManager(true)
+            }}
+            className="px-3 py-2 rounded-xl bg-zinc-800/80 border border-zinc-700/80 text-[10px] font-extrabold tracking-widest text-zinc-300 uppercase hover:text-white hover:bg-zinc-700 transition-colors shadow-sm active:scale-95"
+          >
+            ΚΑΤΑΛΟΓΟΣ
+          </button>
+          <button 
+            onClick={() => {
+              hapticFeedback('light')
+              setShowAdd(true)
+            }}
+            className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-[10px] font-extrabold tracking-widest text-black uppercase hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(52,211,153,0.2)] active:scale-95 flex items-center gap-1"
+          >
+            <Plus size={14} className="font-bold" /> ΝΕΟ
+          </button>
+        </div>
+      </header>
 
-      {/* CONTENT - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
-        <div className="flex flex-col gap-3">
-          
-          {/* Search and Filter Bar */}
-          <div className="flex gap-2 mb-1">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-              <input
-                type="text"
+      {/* MAIN CONTENT */}
+      <main className="flex-1 overflow-y-auto px-5 pb-32 pt-4 relative hide-scrollbar">
+        {/* Sticky Search & Filter Bar */}
+        <div className="sticky top-0 pt-2 pb-5 z-20 before:absolute before:inset-0 before:bg-gradient-to-b before:from-zinc-900 before:to-zinc-900/0 before:-z-10 before:backdrop-blur-md">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="relative flex-1 group">
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-[#34d399] transition-colors" />
+              <input 
+                type="text" 
+                placeholder="Αναζήτηση εξόδων..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Αναζήτηση εξόδων..."
-                className="w-full pl-9 pr-8 py-2 rounded-xl bg-secondary/50 border border-white/5 text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 transition-colors"
+                className="w-full bg-gradient-to-b from-zinc-800 to-zinc-800/80 border border-zinc-700/50 rounded-[1.25rem] py-3.5 pl-11 pr-4 text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 focus:ring-1 focus:ring-[#34d399]/20 transition-all shadow-lg" 
               />
-              {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                >
-                  <X className="h-3 w-3 text-muted-foreground" />
-                </button>
-              )}
             </div>
-            <button
-              onClick={() => {
-                hapticFeedback('light')
-                setShowFilters(!showFilters)
-              }}
-              className={cn(
-                "p-2 rounded-xl border transition-all flex items-center justify-center min-w-[40px]",
-                showFilters || filterCategory !== 'all' 
-                  ? "bg-primary/20 border-primary/30 text-primary" 
-                  : "bg-secondary/50 border-white/5 text-muted-foreground"
-              )}
-            >
-              <SlidersHorizontal className="h-4 w-4" />
+            <button className="w-[52px] h-[52px] rounded-[1.25rem] bg-zinc-800 border border-zinc-700/50 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-95 shadow-lg shrink-0">
+              <SlidersHorizontal size={22} />
             </button>
           </div>
-
-          {/* Filter Options */}
-          {showFilters && (
-            <div className="glass-card rounded-xl p-3 border border-white/5 flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
-              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest px-1">Φιλτράρισμα ανά κατηγορία</p>
-              <div className="flex flex-wrap gap-1.5">
-                <button
-                  onClick={() => setFilterCategory('all')}
+          
+          {/* Category Filter */}
+          <div>
+            <h3 className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase mb-2 px-1">Φιλτραρισμα Ανα Κατηγορια</h3>
+            <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
+              <button 
+                onClick={() => setFilterCategory('all')}
+                className={cn(
+                  "px-5 py-2 rounded-full text-[11px] font-extrabold tracking-wider shrink-0 active:scale-95",
+                  filterCategory === 'all'
+                    ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
+                    : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
+                )}
+              >
+                ΟΛΑ
+              </button>
+              {['food', 'beverage', 'snack', 'other'].map((cat) => (
+                <button 
+                  key={cat}
+                  onClick={() => setFilterCategory(cat)}
                   className={cn(
-                    "px-2.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all",
-                    filterCategory === 'all' ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+                    "px-5 py-2 rounded-full text-[11px] font-bold tracking-wider shrink-0 active:scale-95",
+                    filterCategory === cat
+                      ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
+                      : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
                   )}
                 >
-                  Όλα
+                  {EXPENSE_CATEGORY_LABELS[cat as keyof typeof EXPENSE_CATEGORY_LABELS]}
                 </button>
-                {Object.entries(EXPENSE_CATEGORY_LABELS).map(([key, label]) => (
-                  <button
-                    key={key}
-                    onClick={() => setFilterCategory(key)}
-                    className={cn(
-                      "px-2.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all",
-                      filterCategory === key ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
-                    )}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
+              ))}
             </div>
-          )}
-
-          {/* Summary Card - Simplified to only show Grand Total */}
-          <div className="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-1 border border-primary/40 bg-primary/5">
-            <span className="text-[10px] font-black text-primary uppercase tracking-widest">
-              {searchQuery || filterCategory !== 'all' ? 'Σύνολο Αναζήτησης' : 'Συνολικά Έξοδα'}
-            </span>
-            <span className="text-3xl font-black text-foreground tracking-tighter">{grandTotal.toFixed(2)}€</span>
           </div>
+        </div>
 
-          {/* Catalog Manager Modal */}
-          <FullscreenModal
-            isOpen={showCatalogManager}
-            onClose={() => setShowCatalogManager(false)}
-            title="Κ.Ψ.Μ. Κατάλογος"
-          >
-            <CanteenCatalogManager
-              items={canteenCatalog}
-              onSave={(updated) => {
-                setCanteenCatalog(updated)
-              }}
-              onCancel={() => setShowCatalogManager(false)}
-            />
-          </FullscreenModal>
+        {/* Total Expenses Card */}
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-6 flex flex-col items-center justify-center shadow-xl shadow-black/20 mb-6 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[#10b981]/5"></div>
+          <span className="text-[11px] font-extrabold tracking-[0.2em] text-[#34d399] uppercase mb-1 relative z-10">Συνολικα Εξοδα</span>
+          <div className="flex items-baseline gap-1 relative z-10">
+            <span className="text-[38px] font-black tracking-tight text-white leading-none">{grandTotal.toFixed(2)}</span>
+            <span className="text-[24px] font-bold text-[#34d399]">€</span>
+          </div>
+        </div>
 
-          {/* Add Expense Modal */}
-          <FullscreenModal
-            isOpen={showAdd}
-            onClose={() => setShowAdd(false)}
-            title="Νέο Έξοδο"
-            showBackButton={true}
-            onBack={() => setShowAdd(false)}
-          >
-            <AddExpenseForm
-              canteenCatalog={canteenCatalog}
-              onAdd={(expense) => {
-                setExpenses([expense, ...expenses])
-                setShowAdd(false)
-              }}
-              onCancel={() => setShowAdd(false)}
-            />
-          </FullscreenModal>
-
-          {/* Expense List */}
+        {/* Expense List */}
+        <div className="space-y-3">
+          <h3 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-1">
+            Ιστορικο ({filteredExpenses.length})
+          </h3>
+          
           {filteredExpenses.length === 0 ? (
-            <div className="glass-card rounded-2xl p-6 text-center flex flex-col items-center gap-2 border border-white/5">
-              <p className="text-sm text-muted-foreground">
+            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-8 flex flex-col items-center justify-center text-center shadow-lg shadow-black/10">
+              <p className="text-[13px] text-zinc-500 font-medium">
                 {searchQuery || filterCategory !== 'all' ? 'Δεν βρέθηκαν έξοδα' : 'Δεν υπάρχουν έξοδα'}
               </p>
-              {!searchQuery && filterCategory === 'all' && (
-                <button
-                  onClick={() => setShowAdd(true)}
-                  className="text-[10px] font-black text-primary uppercase tracking-widest mt-1"
-                >
-                  Προσθήκη πρώτου εξόδου
-                </button>
-              )}
             </div>
           ) : (
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between px-1 mt-1">
-                <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-                  {searchQuery || filterCategory !== 'all' ? 'Αποτελέσματα' : 'Ιστορικό'} ({filteredExpenses.length})
-                </h2>
+            filteredExpenses.map((item) => (
+              <div key={item.id} className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-md transition active:scale-[0.98]">
+                <div className="flex flex-col">
+                  <span className="text-[16px] font-bold text-white leading-tight">{item.description || 'Έξοδο'}</span>
+                  <span className="text-[11px] text-zinc-500 font-medium">{formatGreekDate(item.date)}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-[18px] font-bold text-[#34d399] tracking-tight">{item.amount.toFixed(2)}€</span>
+                  <button 
+                    onClick={() => {
+                      hapticFeedback('medium')
+                      if (window.confirm(`Είστε σίγουροι ότι θέλετε να διαγράψετε το έξοδο "${item.description || 'Έξοδο'}" ύψους ${item.amount.toFixed(2)}€;`)) {
+                        setExpenses(expenses.filter((e) => e.id !== item.id))
+                      }
+                    }}
+                    className="w-7 h-7 rounded-full text-zinc-500 hover:text-red-400 hover:bg-zinc-800 transition-colors flex justify-center items-center"
+                  >
+                    <X size={16}/>
+                  </button>
+                </div>
               </div>
-              <div className="flex flex-col gap-1.5">
-                {filteredExpenses.map((expense) => (
-                    <div key={expense.id} className="glass-card rounded-xl p-2.5 flex items-center justify-between border border-white/5 hover:border-primary/30 transition-colors group">
-                      <div className="flex-1 min-w-0">
-                        <span className="text-sm font-bold text-foreground truncate block">
-                          {expense.description || 'Έξοδο'}
-                        </span>
-                        <p className="text-[10px] text-muted-foreground mt-0.5">
-                          {formatGreekDate(expense.date)}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                        <span className="text-sm font-black text-primary whitespace-nowrap">
-                          {expense.amount.toFixed(2)}€
-                        </span>
-                        <button
-                          onClick={() => {
-                            hapticFeedback('medium')
-                            if (window.confirm(`Είστε σίγουροι ότι θέλετε να διαγράψετε το έξοδο "${expense.description || 'Έξοδο'}" ύψους ${expense.amount.toFixed(2)}€;`)) {
-                              setExpenses(expenses.filter((e) => e.id !== expense.id))
-                            }
-                          }}
-                          className="p-1.5 rounded-lg text-destructive/70 hover:text-destructive hover:bg-destructive/10 transition-all"
-                          aria-label="Διαγραφή"
-                        >
-                          <span className="text-xs">✕</span>
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
+            ))
           )}
         </div>
-      </div>
+      </main>
+
+      {/* Catalog Manager Modal */}
+      <FullscreenModal
+        isOpen={showCatalogManager}
+        onClose={() => setShowCatalogManager(false)}
+        title="Κ.Ψ.Μ. Κατάλογος"
+      >
+        <CanteenCatalogManager
+          items={canteenCatalog}
+          onSave={(updated) => {
+            setCanteenCatalog(updated)
+          }}
+          onCancel={() => setShowCatalogManager(false)}
+        />
+      </FullscreenModal>
+
+      {/* Add Expense Modal */}
+      <FullscreenModal
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+        title="Νέο Έξοδο"
+        showBackButton={true}
+        onBack={() => setShowAdd(false)}
+      >
+        <AddExpenseForm
+          canteenCatalog={canteenCatalog}
+          onAdd={(expense) => {
+            setExpenses([expense, ...expenses])
+            setShowAdd(false)
+          }}
+          onCancel={() => setShowAdd(false)}
+        />
+      </FullscreenModal>
     </div>
   )
 }
@@ -282,12 +243,12 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
     <div className="flex flex-col gap-3">
       {/* Canteen Catalog Selection */}
       {canteenCatalog.length > 0 && (
-        <div className="glass-card rounded-xl p-3 border border-primary/40 flex flex-col gap-2">
-          <h3 className="text-[10px] font-black text-primary uppercase tracking-widest">Κατάλογος Κ.Ψ.Μ.</h3>
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/20">
+          <h3 className="text-[15px] font-bold text-white mb-4">Προσθήκη προϊόντος</h3>
           
           {selectedCatalogCategory === null ? (
             // Show categories
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-2">
               {(Object.keys(CANTEEN_CATEGORY_LABELS) as Array<'food' | 'beverage' | 'snack' | 'other'>).map((cat) => {
                 const itemsInCat = canteenCatalog.filter((item) => item.category === cat)
                 if (itemsInCat.length === 0) return null
@@ -299,10 +260,10 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                       hapticFeedback('light')
                       setSelectedCatalogCategory(cat)
                     }}
-                    className="bg-secondary/50 border border-white/5 rounded-lg p-2 flex items-center justify-between hover:border-primary transition-colors text-sm"
+                    className="bg-zinc-900/80 border border-zinc-700/80 rounded-xl p-3 flex items-center justify-between hover:border-[#34d399]/50 transition-colors text-sm"
                   >
-                    <span className="text-foreground font-bold text-xs">{CANTEEN_CATEGORY_LABELS[cat]}</span>
-                    <span className="text-muted-foreground text-[10px] font-black">
+                    <span className="text-white font-bold text-xs">{CANTEEN_CATEGORY_LABELS[cat]}</span>
+                    <span className="text-zinc-500 text-[10px] font-black">
                       {itemsInCat.length}
                     </span>
                   </button>
@@ -318,7 +279,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                   hapticFeedback('light')
                   setSelectedCatalogCategory(null)
                 }}
-                className="text-primary text-[10px] font-black uppercase tracking-widest hover:text-primary/80 transition-colors py-1 w-fit text-left"
+                className="text-[#34d399] text-[10px] font-black uppercase tracking-widest hover:text-[#34d399]/80 transition-colors py-1 w-fit text-left"
               >
                 ← Πίσω
               </button>
@@ -329,14 +290,14 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                     type="button"
                     onClick={() => handleSelectCatalogItem(item)}
                     className={cn(
-                      'bg-secondary/50 border rounded-lg p-2 flex items-center justify-between hover:border-primary transition-all text-sm',
+                      'bg-zinc-900/80 border rounded-xl p-3 flex items-center justify-between hover:border-[#34d399]/50 transition-all text-sm',
                       description === item.name && amount === item.price.toFixed(2)
-                        ? 'border-primary bg-primary/20 ring-1 ring-primary'
-                        : 'border-white/5'
+                        ? 'border-[#34d399]/50 bg-[#34d399]/10'
+                        : 'border-zinc-700/80'
                     )}
                   >
-                    <span className="font-bold text-foreground text-xs tracking-tight">{item.name}</span>
-                    <span className="font-black text-primary text-xs">{item.price.toFixed(2)}€</span>
+                    <span className="font-bold text-white text-xs tracking-tight">{item.name}</span>
+                    <span className="font-black text-[#34d399] text-xs">{item.price.toFixed(2)}€</span>
                   </button>
                 ))}
               </div>
@@ -347,19 +308,19 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
 
       {/* Name Input */}
       <div>
-        <label className="block text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-widest">Όνομα</label>
+        <label className="block text-[10px] font-bold text-zinc-500 mb-1 uppercase tracking-widest">Όνομα</label>
         <input
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Π.χ. Καφές, Σνακ..."
-          className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none transition-colors"
+          className="w-full px-4 py-3 rounded-xl bg-zinc-800 text-white text-sm border border-zinc-700/50 placeholder:text-zinc-600 focus:border-[#34d399]/50 focus:outline-none focus:ring-1 focus:ring-[#34d399]/20 transition-all font-bold"
         />
       </div>
 
       {/* Amount Input */}
       <div>
-        <label className="block text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-widest">Ποσό (€)</label>
+        <label className="block text-[10px] font-bold text-zinc-500 mb-1 uppercase tracking-widest">Ποσό (€)</label>
         <input
           type="number"
           inputMode="decimal"
@@ -367,13 +328,13 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder="0.00"
-          className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-sm font-bold min-h-[40px] border border-border placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none transition-colors"
+          className="w-full px-4 py-3 rounded-xl bg-zinc-800 text-white text-sm font-bold border border-zinc-700/50 placeholder:text-zinc-600 focus:border-[#34d399]/50 focus:outline-none focus:ring-1 focus:ring-[#34d399]/20 transition-all"
         />
       </div>
 
       {/* Category Selection */}
       <div>
-        <label className="block text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-widest">Κατηγορία</label>
+        <label className="block text-[10px] font-bold text-zinc-500 mb-1 uppercase tracking-widest">Κατηγορία</label>
         <div className="flex gap-1.5">
           {(['food', 'beverage', 'snack', 'other'] as const).map((cat) => (
             <button
@@ -384,10 +345,10 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                 setExpenseCategory(cat)
               }}
               className={cn(
-                'flex-1 px-2 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all min-h-[36px]',
+                'flex-1 px-3 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all min-h-[40px]',
                 expenseCategory === cat
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-muted-foreground border border-white/5'
+                  ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
+                  : 'bg-zinc-800 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
               )}
             >
               {EXPENSE_CATEGORY_LABELS[cat]}
@@ -400,19 +361,19 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
       <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
 
       {/* Action Buttons */}
-      <div className="flex gap-2 pt-2 border-t border-border/50">
+      <div className="flex gap-3 pt-4">
         <button
           onClick={onCancel}
-          className="flex-1 py-2.5 rounded-lg bg-secondary/50 border border-white/5 text-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] hover:bg-secondary transition-colors"
+          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
         >
-          Ακύρωση
+          Ακυρωση
         </button>
         <button
           onClick={handleSubmit}
           disabled={!amount || !date}
-          className="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary transition-colors"
+          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Προσθήκη
+          Προσθηκη
         </button>
       </div>
     </div>
