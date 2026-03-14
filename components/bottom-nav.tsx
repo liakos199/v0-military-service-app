@@ -55,13 +55,13 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 "relative z-10 transition-all duration-300 transform",
                 isActive ? "scale-110 -translate-y-1" : "group-hover:scale-105"
               )}>
-                <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                 {isActive && (
                   <div className="absolute -inset-2 bg-[#34d399]/10 blur-md rounded-full -z-10 animate-pulse"></div>
                 )}
               </div>
               <span className={cn(
-                'text-[9px] font-bold uppercase tracking-[0.15em] mt-1 transition-all duration-300',
+                'text-[8px] font-bold uppercase tracking-[0.03em] mt-1 transition-all duration-300 truncate w-full text-center',
                 isActive ? 'opacity-100' : 'opacity-60'
               )}>
                 {tab.label}
