@@ -170,9 +170,6 @@ export function WelcomeModal() {
               className="rounded-2xl shadow-xl"
             />
           </div>
-          <h1 className="text-[28px] font-black text-white tracking-tight mb-2">
-            {step === 'install' ? 'Καλώς ήρθες!' : 'Δυνατότητες'}
-          </h1>
           <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase">
             {step === 'install' 
               ? 'Προσθεσε την εφαρμογη στην αρχικη σου οθονη'

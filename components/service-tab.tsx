@@ -7,7 +7,6 @@ import {
   Plus,
   Lock,
   CalendarX,
-  ShieldCheck,
   Trash2,
   Edit3,
 } from 'lucide-react'
@@ -103,9 +102,12 @@ export function ServiceTab() {
         <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-5 relative shadow-xl shadow-black/20 overflow-hidden mb-8">
           <div className="flex justify-between items-center mb-6">
             <span className="text-[11px] font-bold tracking-[0.2em] text-zinc-400 uppercase">Λελεμετρο</span>
-            <div className="flex items-center gap-1.5 bg-zinc-950/50 border border-zinc-700/50 text-zinc-300 px-3 py-1.5 rounded-xl text-[10px] font-bold tracking-widest shadow-inner">
-              <CalendarIcon size={14} className="text-[#34d399]" />
-              {dischargeDate ? formatGreekDate(dischargeDate).toUpperCase() : '---'}
+            <div className="flex flex-col items-end gap-0.5 bg-zinc-950/50 border border-zinc-700/50 text-zinc-300 px-3 py-1.5 rounded-xl shadow-inner">
+              <span className="text-[8px] font-bold tracking-[0.15em] text-[#34d399] uppercase">Απολύεσαι</span>
+              <div className="flex items-center gap-1.5">
+                <CalendarIcon size={12} className="text-zinc-400" />
+                <span className="text-[10px] font-bold tracking-widest">{dischargeDate ? formatGreekDate(dischargeDate).toUpperCase() : '---'}</span>
+              </div>
             </div>
           </div>
 
@@ -222,21 +224,6 @@ export function ServiceTab() {
           </div>
         </div>
 
-        {/* Status Card */}
-        <div className="bg-gradient-to-br from-[#10b981] to-[#059669] rounded-[2rem] p-6 text-white shadow-xl shadow-emerald-900/20 relative overflow-hidden group active:scale-[0.98] transition-all">
-          <div className="absolute -right-4 -top-4 w-32 h-32 bg-white/10 blur-3xl rounded-full group-hover:bg-white/20 transition-all"></div>
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shadow-inner">
-                <ShieldCheck size={32} />
-              </div>
-              <div>
-                <p className="text-[11px] font-bold tracking-[0.2em] text-emerald-100 uppercase mb-0.5">Κατασταση</p>
-                <h3 className="text-2xl font-extrabold tracking-tight">Ενεργος</h3>
-              </div>
-            </div>
-          </div>
-        </div>
       </main>
 
       {/* LELEmeter Config Modal */}
@@ -287,7 +274,7 @@ export function ServiceTab() {
                 onChange={(e) =>
                   setConfig({ ...config, totalDays: parseInt(e.target.value) || 0 })
                 }
-                className="w-full pl-24 pr-4 py-4 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+                className="w-full pl-32 pr-4 py-4 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
