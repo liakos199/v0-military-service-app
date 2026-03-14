@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Plus, Trash2, Lock, Calendar } from 'lucide-react'
+import { Plus, X, Lock, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal } from '@/components/fullscreen-modal'
@@ -53,22 +52,25 @@ export function PrisonDetentionManager() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1">
+      <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">
         Επεκτάσεις Θητείας
       </h2>
 
       {/* Prison Card */}
-      <div className="glass-card rounded-2xl p-4 border border-white/5 flex flex-col gap-3">
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col gap-3 shadow-lg shadow-black/10">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center flex-shrink-0">
-              <Lock className="h-5 w-5 text-destructive" />
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+              <Lock size={24} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Φυλακές</p>
-              <h3 className="text-lg font-black text-foreground">
-                <Counter value={totalPrisonDays} duration={1} /> ημ.
-              </h3>
+              <p className="text-[10px] font-bold tracking-[0.15em] text-zinc-400 uppercase mb-0.5">Φυλακές</p>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-[24px] font-bold text-white leading-none">
+                  <Counter value={totalPrisonDays} duration={1} />
+                </span>
+                <span className="text-[12px] font-semibold text-zinc-500">ημ.</span>
+              </div>
             </div>
           </div>
           <button
@@ -76,31 +78,31 @@ export function PrisonDetentionManager() {
               hapticFeedback('light')
               setShowPrisonModal(true)
             }}
-            className="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-90 shrink-0 shadow-sm"
             aria-label="Προσθήκη φυλακής"
           >
-            <Plus className="h-5 w-5" />
+            <Plus size={18} />
           </button>
         </div>
 
         {/* Prison Entries List */}
         {prisons.length > 0 && (
-          <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
+          <div className="flex flex-col gap-2 pt-3 border-t border-zinc-700/40">
             {prisons.map((prison) => (
               <div
                 key={prison.id}
-                className="flex items-center justify-between p-2 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
+                className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/20 hover:border-[#34d399]/20 transition-colors"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-[9px] font-bold text-foreground truncate">{prison.reason || 'Χωρίς αιτιολογία'}</p>
-                  <p className="text-[8px] text-muted-foreground">{prison.days} ημ. • {formatGreekDate(prison.addedDate)}</p>
+                  <p className="text-[13px] font-bold text-white truncate">{prison.reason || 'Χωρίς αιτιολογία'}</p>
+                  <p className="text-[10px] text-zinc-500 mt-0.5">{prison.days} ημ. • {formatGreekDate(prison.addedDate)}</p>
                 </div>
                 <button
                   onClick={() => handleDeletePrison(prison.id)}
-                  className="p-1.5 rounded-lg text-destructive hover:bg-destructive/10 transition-colors flex-shrink-0 ml-2"
+                  className="p-2 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors flex-shrink-0 ml-2"
                   aria-label="Διαγραφή"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <X size={16} />
                 </button>
               </div>
             ))}
@@ -109,17 +111,20 @@ export function PrisonDetentionManager() {
       </div>
 
       {/* Detention Card */}
-      <div className="glass-card rounded-2xl p-4 border border-white/5 flex flex-col gap-3">
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col gap-3 shadow-lg shadow-black/10">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-warning/10 flex items-center justify-center flex-shrink-0">
-              <Calendar className="h-5 w-5 text-warning" />
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 flex items-center justify-center shrink-0">
+              <Calendar size={24} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Κράτηση</p>
-              <h3 className="text-lg font-black text-foreground">
-                <Counter value={totalDetentionDays} duration={1} /> ημ.
-              </h3>
+              <p className="text-[10px] font-bold tracking-[0.15em] text-zinc-400 uppercase mb-0.5">Κράτηση</p>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-[24px] font-bold text-white leading-none">
+                  <Counter value={totalDetentionDays} duration={1} />
+                </span>
+                <span className="text-[12px] font-semibold text-zinc-500">ημ.</span>
+              </div>
             </div>
           </div>
           <button
@@ -127,35 +132,35 @@ export function PrisonDetentionManager() {
               hapticFeedback('light')
               setShowDetentionModal(true)
             }}
-            className="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-90 shrink-0 shadow-sm"
             aria-label="Προσθήκη κράτησης"
           >
-            <Plus className="h-5 w-5" />
+            <Plus size={18} />
           </button>
         </div>
 
         {/* Detention Entries List */}
         {detentions.length > 0 && (
-          <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
+          <div className="flex flex-col gap-2 pt-3 border-t border-zinc-700/40">
             {detentions.map((detention) => {
               const days = daysBetween(detention.startDate, detention.endDate) + 1
               return (
                 <div
                   key={detention.id}
-                  className="flex items-center justify-between p-2 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
+                  className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/20 hover:border-[#34d399]/20 transition-colors"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-[9px] font-bold text-foreground truncate">{detention.reason || 'Χωρίς αιτιολογία'}</p>
-                    <p className="text-[8px] text-muted-foreground">
+                    <p className="text-[13px] font-bold text-white truncate">{detention.reason || 'Χωρίς αιτιολογία'}</p>
+                    <p className="text-[10px] text-zinc-500 mt-0.5">
                       {formatGreekDate(detention.startDate)} - {formatGreekDate(detention.endDate)} • {days} ημ.
                     </p>
                   </div>
                   <button
                     onClick={() => handleDeleteDetention(detention.id)}
-                    className="p-1.5 rounded-lg text-destructive hover:bg-destructive/10 transition-colors flex-shrink-0 ml-2"
+                    className="p-2 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors flex-shrink-0 ml-2"
                     aria-label="Διαγραφή"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <X size={16} />
                   </button>
                 </div>
               )
@@ -217,22 +222,22 @@ function AddPrisonForm({
   }
 
   return (
-    <div className="flex flex-col gap-3 h-full">
+    <div className="flex flex-col gap-4 h-full">
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Αιτιολογία (Προαιρετικό)
         </label>
         <textarea
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="Λόγος φυλάκισης..."
-          className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm resize-none"
+          className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-white text-sm resize-none focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600"
           rows={3}
         />
       </div>
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Αριθμός Ημερών
         </label>
         <input
@@ -241,26 +246,26 @@ function AddPrisonForm({
           min="1"
           value={days}
           onChange={(e) => setDays(e.target.value)}
-          className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm"
+          className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-white text-sm focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600 font-bold"
           placeholder="Αριθμός ημερών"
         />
-        <p className="text-[9px] text-muted-foreground mt-2">
-          Θα προστεθούν <span className="font-bold text-primary">{days}</span> ημέρες στη θητεία σας
+        <p className="text-[10px] text-zinc-500 mt-2 font-medium">
+          Θα προστεθούν <span className="font-bold text-[#34d399]">{days}</span> ημέρες στη θητεία σας
         </p>
       </div>
 
-      <div className="flex gap-2 mt-auto pt-4">
+      <div className="flex gap-3 mt-auto pt-4">
         <button
           onClick={onCancel}
-          className="flex-1 px-4 py-3 rounded-xl bg-secondary text-foreground font-semibold text-sm min-h-[44px] hover:bg-secondary/80 transition-colors"
+          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
         >
-          Ακύρωση
+          Ακυρωση
         </button>
         <button
           onClick={handleSubmit}
-          className="flex-1 px-4 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[44px] hover:bg-primary/90 transition-colors"
+          className="flex-1 px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
         >
-          Προσθήκη
+          Προσθηκη
         </button>
       </div>
     </div>
@@ -298,53 +303,53 @@ function AddDetentionForm({
   const days = daysBetween(startDate, endDate) + 1
 
   return (
-    <div className="flex flex-col gap-3 h-full">
+    <div className="flex flex-col gap-4 h-full">
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Αιτιολογία (Προαιρετικό)
         </label>
         <textarea
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="Λόγος κράτησης..."
-          className="w-full px-3 py-2 rounded-lg bg-secondary border border-white/5 text-foreground text-sm resize-none"
+          className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-white text-sm resize-none focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600"
           rows={2}
         />
       </div>
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Ημερομηνία Έναρξης
         </label>
         <GreekDatePicker value={startDate} onChange={setStartDate} />
       </div>
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Ημερομηνία Λήξης
         </label>
         <GreekDatePicker value={endDate} onChange={setEndDate} />
       </div>
 
       {startDate && endDate && startDate <= endDate && (
-        <div className="p-2.5 rounded-lg bg-primary/20 border border-primary/40">
-          <p className="text-[9px] text-muted-foreground">Διάρκεια</p>
-          <p className="text-sm font-bold text-primary">{days} ημέρες</p>
+        <div className="p-4 rounded-xl bg-[#10b981]/10 border border-[#10b981]/20 shadow-lg shadow-black/10">
+          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Διάρκεια</p>
+          <p className="text-[20px] font-bold text-[#34d399]">{days} ημέρες</p>
         </div>
       )}
 
-      <div className="flex gap-2 mt-auto pt-4">
+      <div className="flex gap-3 mt-auto pt-4">
         <button
           onClick={onCancel}
-          className="flex-1 px-4 py-3 rounded-xl bg-secondary text-foreground font-semibold text-sm min-h-[44px] hover:bg-secondary/80 transition-colors"
+          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
         >
-          Ακύρωση
+          Ακυρωση
         </button>
         <button
           onClick={handleSubmit}
-          className="flex-1 px-4 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm min-h-[44px] hover:bg-primary/90 transition-colors"
+          className="flex-1 px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
         >
-          Προσθήκη
+          Προσθηκη
         </button>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { hapticFeedback, generateId } from '@/lib/helpers'
 import type { CanteenCatalogItem } from '@/lib/types'
 import { CANTEEN_CATEGORY_LABELS } from '@/lib/types'
+import { ChevronDown, Pencil, X } from 'lucide-react'
 
 interface CanteenCatalogManagerProps {
   items: CanteenCatalogItem[]
@@ -78,24 +79,24 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-xs text-muted-foreground">
+    <div className="flex flex-col gap-4">
+      <p className="text-[13px] text-zinc-400 font-medium leading-relaxed">
         Προσθέστε και διαχειρίστε τα προϊόντα του Κ.Ψ.Μ. που θα εμφανίζονται ως επιλογές κατά την καταχώρηση εξόδων.
       </p>
 
       {/* Add new item */}
-      <div className="glass-card rounded-lg p-3 flex flex-col gap-2 border border-accent/30 bg-gradient-to-br from-accent/5 to-accent/5">
-        <h3 className="text-sm font-semibold text-foreground">Προσθήκη προϊόντος</h3>
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/20">
+        <h3 className="text-[15px] font-bold text-white mb-4">Προσθήκη προϊόντος</h3>
         
-        <div className="flex gap-2">
+        <div className="flex gap-3 mb-4">
           <input
             type="text"
             value={newLabel}
             onChange={(e) => setNewLabel(e.target.value)}
             placeholder="Όνομα"
-            className="flex-1 px-2.5 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
+            className="flex-1 bg-zinc-900/80 border border-zinc-700/80 rounded-xl px-4 py-3 text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 transition-colors"
           />
-          <div className="relative w-24">
+          <div className="relative w-28">
             <input
               type="number"
               inputMode="decimal"
@@ -103,13 +104,13 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
               value={newPrice}
               onChange={(e) => setNewPrice(e.target.value)}
               placeholder="0.00"
-              className="w-full px-2.5 py-2 rounded-lg bg-secondary text-foreground text-sm min-h-[40px] border border-border placeholder:text-muted-foreground pr-6 focus:border-primary focus:outline-none transition-colors"
+              className="w-full bg-zinc-900/80 border border-zinc-700/80 rounded-xl px-4 py-3 text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 transition-colors text-right pr-8"
             />
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">€</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 font-medium">€</span>
           </div>
         </div>
 
-        <div className="flex gap-1.5">
+        <div className="flex items-center gap-2 mb-4 overflow-x-auto hide-scrollbar">
           {(['food', 'beverage', 'snack', 'other'] as const).map((cat) => (
             <button
               key={cat}
@@ -119,10 +120,10 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                 setNewCategory(cat)
               }}
               className={cn(
-                'flex-1 px-2 py-1.5 rounded text-[11px] font-medium min-h-[32px] transition-colors border',
+                'flex-1 py-2.5 rounded-lg text-[11px] font-bold tracking-wider transition-all min-w-[70px]',
                 newCategory === cat
-                  ? 'bg-accent text-accent-foreground border-accent'
-                  : 'bg-secondary/50 text-foreground border-border'
+                  ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-sm'
+                  : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
               )}
             >
               {CANTEEN_CATEGORY_LABELS[cat]}
@@ -133,59 +134,60 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         <button
           onClick={handleAdd}
           disabled={!newLabel.trim() || !newPrice || isNaN(parseFloat(newPrice)) || parseFloat(newPrice) <= 0}
-          className="w-full py-2 rounded-lg bg-accent text-accent-foreground font-semibold text-sm min-h-[40px] disabled:opacity-50 disabled:cursor-not-allowed transition-opacity hover:bg-accent/90"
+          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Προσθήκη
+          Προσθηκη
         </button>
       </div>
 
       {/* Categories with items */}
-      <div className="flex flex-col gap-2">
-        <h3 className="text-sm font-semibold text-foreground">Προϊόντα</h3>
+      <div className="flex flex-col gap-3">
+        <h3 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">Προϊόντα</h3>
         
         {(Object.keys(itemsByCategory) as Array<'food' | 'beverage' | 'snack' | 'other'>).map((category) => {
           const categoryItems = itemsByCategory[category]
           const isExpanded = expandedCategory === category
           
           return (
-            <div key={category} className="glass-card rounded-lg overflow-hidden border border-white/5">
+            <div key={category} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] overflow-hidden shadow-lg shadow-black/10">
               <button
                 onClick={() => {
                   hapticFeedback('light')
                   setExpandedCategory(isExpanded ? null : category)
                 }}
-                className="w-full px-3 py-2.5 flex items-center justify-between hover:bg-secondary/40 transition-colors"
+                className="w-full px-5 py-4 flex items-center justify-between hover:bg-zinc-700/30 transition-colors"
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-foreground">{CANTEEN_CATEGORY_LABELS[category]}</span>
-                  <span className="text-xs text-muted-foreground bg-secondary/50 px-2 py-0.5 rounded">
+                <div className="flex items-center gap-3">
+                  <span className="text-[15px] font-bold text-white">{CANTEEN_CATEGORY_LABELS[category]}</span>
+                  <span className="text-[10px] text-zinc-400 bg-zinc-900/50 px-2.5 py-1 rounded-lg font-bold">
                     {categoryItems.length}
                   </span>
                 </div>
-                <span className={cn(
-                  'text-lg text-muted-foreground transition-transform',
-                  isExpanded && 'rotate-180'
-                )}>
-                  ▼
-                </span>
+                <ChevronDown 
+                  size={20} 
+                  className={cn(
+                    'text-zinc-500 transition-transform',
+                    isExpanded && 'rotate-180'
+                  )}
+                />
               </button>
 
               {isExpanded && (
-                <div className="border-t border-border/50 px-3 py-2 flex flex-col gap-2 bg-secondary/10">
+                <div className="border-t border-zinc-700/40 px-5 py-3 flex flex-col gap-2 bg-zinc-900/50">
                   {categoryItems.length > 0 ? (
                     categoryItems.map((item) => (
                       <div key={item.id}>
                         {editingId === item.id && editData ? (
-                          <div className="flex flex-col gap-2 p-2 bg-secondary rounded border border-border">
+                          <div className="flex flex-col gap-3 p-4 bg-zinc-800/50 rounded-xl border border-zinc-700/40">
                             <div className="flex gap-2">
                               <input
                                 type="text"
                                 value={editData.name}
                                 onChange={(e) => setEditData({ ...editData, name: e.target.value })}
                                 placeholder="Όνομα"
-                                className="flex-1 px-2 py-1.5 rounded bg-background text-foreground text-sm min-h-[36px] border border-border placeholder:text-muted-foreground focus:border-primary focus:outline-none transition-colors"
+                                className="flex-1 bg-zinc-900/80 border border-zinc-700/80 rounded-lg px-3 py-2 text-[13px] text-white placeholder-zinc-600 focus:outline-none focus:border-[#34d399]/50 transition-colors"
                               />
-                              <div className="relative w-20">
+                              <div className="relative w-24">
                                 <input
                                   type="number"
                                   inputMode="decimal"
@@ -193,53 +195,53 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                                   value={editData.price}
                                   onChange={(e) => setEditData({ ...editData, price: parseFloat(e.target.value) || 0 })}
                                   placeholder="0.00"
-                                  className="w-full px-2 py-1.5 rounded bg-background text-foreground text-sm min-h-[36px] border border-border placeholder:text-muted-foreground pr-6 focus:border-primary focus:outline-none transition-colors"
+                                  className="w-full bg-zinc-900/80 border border-zinc-700/80 rounded-lg px-3 py-2 text-[13px] text-white placeholder-zinc-600 focus:outline-none focus:border-[#34d399]/50 transition-colors text-right pr-6"
                                 />
-                                <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">€</span>
+                                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-zinc-600">€</span>
                               </div>
                             </div>
                             <div className="flex gap-2">
                               <button
                                 onClick={cancelEdit}
-                                className="flex-1 py-1.5 rounded bg-secondary text-foreground text-xs font-medium min-h-[32px] hover:bg-secondary/80 transition-colors"
+                                className="flex-1 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 text-[11px] font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
                               >
-                                Ακύρωση
+                                Ακυρωση
                               </button>
                               <button
                                 onClick={saveEdit}
                                 disabled={!editData.name.trim() || editData.price <= 0}
-                                className="flex-1 py-1.5 rounded bg-accent text-accent-foreground text-xs font-semibold min-h-[32px] disabled:opacity-50 transition-opacity hover:bg-accent/90"
+                                className="flex-1 py-2 rounded-lg bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-bold uppercase tracking-widest disabled:opacity-50 transition-opacity"
                               >
-                                Αποθήκευση
+                                Αποθηκευση
                               </button>
                             </div>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-2 p-2 bg-background rounded border border-border/50 hover:border-border transition-colors">
+                          <div className="flex items-center gap-3 p-3 bg-zinc-800/30 rounded-lg border border-zinc-700/30 hover:border-[#34d399]/20 transition-colors">
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-foreground">{item.name}</p>
-                              <p className="text-xs text-muted-foreground">{item.price.toFixed(2)}€</p>
+                              <p className="text-[14px] font-bold text-white">{item.name}</p>
+                              <p className="text-[11px] text-zinc-500 font-medium">{item.price.toFixed(2)}€</p>
                             </div>
                             <button
                               onClick={() => startEdit(item)}
-                              className="px-2 py-1 rounded text-xs text-accent hover:bg-accent/10 transition-colors font-medium"
+                              className="p-2 rounded-lg text-[#34d399] hover:bg-[#34d399]/10 transition-colors flex-shrink-0"
                               aria-label={`Επεξεργασία ${item.name}`}
                             >
-                              ✎
+                              <Pencil size={16} />
                             </button>
                             <button
                               onClick={() => handleDelete(item.id, item.name)}
-                              className="px-2 py-1 rounded text-xs text-destructive hover:bg-destructive/10 transition-colors"
+                              className="p-2 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors flex-shrink-0"
                               aria-label={`Διαγραφή ${item.name}`}
                             >
-                              ✕
+                              <X size={16} />
                             </button>
                           </div>
                         )}
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs text-muted-foreground text-center py-2">Δεν υπάρχουν προϊόντα</p>
+                    <p className="text-[11px] text-zinc-600 text-center py-3 font-medium">Δεν υπάρχουν προϊόντα</p>
                   )}
                 </div>
               )}
@@ -248,12 +250,12 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         })}
       </div>
 
-      <div className="flex gap-2 pt-2 border-t border-border/50">
+      <div className="flex gap-3 pt-4">
         <button
           onClick={onCancel}
-          className="w-full py-2.5 rounded-lg bg-secondary/50 text-foreground font-medium text-sm min-h-[44px] hover:bg-secondary transition-colors border border-white/5"
+          className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
         >
-          Κλείσιμο
+          Κλεισιμο
         </button>
       </div>
     </div>

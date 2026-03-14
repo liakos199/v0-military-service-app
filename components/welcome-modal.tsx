@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { FullscreenModal } from '@/components/fullscreen-modal'
-import { Button } from '@/components/ui/button'
-import { Check, Clock, Calendar, Zap, FileText, Users } from 'lucide-react'
+import { Check } from 'lucide-react'
 import Image from 'next/image'
 
 type DeviceType = 'ios' | 'android' | 'other'
@@ -11,12 +10,12 @@ type BrowserType = 'safari' | 'chrome' | 'samsung' | 'firefox' | 'other'
 type ModalStep = 'install' | 'features'
 
 const FEATURES = [
-  { icon: Clock, label: 'Λελέμετρο - Αντίστροφη μέτρηση' },
-  { icon: Calendar, label: 'Ημερολόγιο & Υπηρεσίες' },
-  { icon: FileText, label: 'Σημειώσεις & Εγχειρίδια' },
-  { icon: Users, label: 'Διαχείριση Ατόμων' },
-  { icon: Zap, label: 'Έξοδα & Ανάλυση' },
-  { icon: Zap, label: 'Θέμα & Προσαρμογή' },
+  { label: 'Λελέμετρο - Αντίστροφη μέτρηση' },
+  { label: 'Ημερολόγιο & Υπηρεσίες' },
+  { label: 'Σημειώσεις & Εγχειρίδια' },
+  { label: 'Διαχείριση Ατόμων' },
+  { label: 'Έξοδα & Ανάλυση' },
+  { label: 'Θέμα & Προσαρμογή' },
 ]
 
 export function WelcomeModal() {
@@ -82,136 +81,74 @@ export function WelcomeModal() {
     if (device === 'ios') {
       return (
         <div className="space-y-4">
-          <div className="professional-card p-5 space-y-4 border-primary/50">
-            <div className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 border border-primary/50">
-                <span className="text-[10px] font-black">1</span>
+          {[
+            { num: 1, title: 'Πάτησε το κουμπί Κοινοποίηση', subtitle: 'Βρίσκεται στο κάτω ή πάνω μέρος του browser' },
+            { num: 2, title: 'Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»', subtitle: 'Ίσως χρειαστεί να σύρεις προς τα κάτω' },
+            { num: 3, title: 'Πάτησε «Προσθήκη»', subtitle: 'Στην πάνω δεξιά γωνία της οθόνης' },
+          ].map((step) => (
+            <div key={step.num} className="flex items-start gap-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#34d399] to-[#10b981] text-black flex-shrink-0 font-bold text-[12px]">
+                {step.num}
               </div>
-              <div>
-                <p className="text-sm font-medium">Πάτησε το κουμπί Κοινοποίηση</p>
-                <p className="text-xs text-muted-foreground mt-1">Βρίσκεται στο κάτω ή πάνω μέρος του browser</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 border border-primary/50">
-                <span className="text-[10px] font-black">2</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»</p>
-                <p className="text-xs text-muted-foreground mt-1">Ίσως χρειαστεί να σύρεις προς τα κάτω</p>
+              <div className="flex-1">
+                <p className="text-[14px] font-bold text-white">{step.title}</p>
+                <p className="text-[12px] text-zinc-500 mt-1 font-medium">{step.subtitle}</p>
               </div>
             </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 border border-primary/50">
-                <span className="text-[10px] font-black">3</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Πάτησε «Προσθήκη»</p>
-                <p className="text-xs text-muted-foreground mt-1">Στην πάνω δεξιά γωνία της οθόνης</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       )
     }
 
     if (device === 'android') {
-      if (browser === 'samsung') {
-        return (
-          <div className="space-y-4">
-            <div className="bg-secondary rounded-lg p-4 space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
-                  <span className="text-sm font-semibold text-primary">1</span>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Πάτησε το μενού (3 γραμμές)</p>
-                  <p className="text-xs text-muted-foreground mt-1">Βρίσκεται κάτω δεξιά</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
-                  <span className="text-sm font-semibold text-primary">2</span>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Επίλεξε «Προσθήκη σελίδας σε»</p>
-                  <p className="text-xs text-muted-foreground mt-1">Θα εμφανιστεί στο μενού</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
-                  <span className="text-sm font-semibold text-primary">3</span>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Επίλεξε «Οθόνη αφετηρίας»</p>
-                  <p className="text-xs text-muted-foreground mt-1">Και επιβεβαίωσε την προσθήκη</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-      }
+      const steps = browser === 'samsung'
+        ? [
+            { num: 1, title: 'Πάτησε το μενού (3 γραμμές)', subtitle: 'Βρίσκεται κάτω δεξιά' },
+            { num: 2, title: 'Επίλεξε «Προσθήκη σελίδας σε»', subtitle: 'Θα εμφανιστεί στο μενού' },
+            { num: 3, title: 'Επίλεξε «Οθόνη αφετηρίας»', subtitle: 'Και επιβεβαίωσε την προσθήκη' },
+          ]
+        : [
+            { num: 1, title: 'Πάτησε το μενού (3 τελείες)', subtitle: 'Βρίσκεται πάνω δεξιά' },
+            { num: 2, title: 'Επίλεξε «Εγκατάσταση εφαρμογής»', subtitle: 'Ή «Προσθήκη στην αρχική οθόνη»' },
+            { num: 3, title: 'Ακολούθησε τις οδηγίες', subtitle: 'Και επιβεβαίωσε την εγκατάσταση' },
+          ]
       
       return (
         <div className="space-y-4">
-          <div className="bg-secondary rounded-lg p-4 space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
-                <span className="text-sm font-semibold text-primary">1</span>
+          {steps.map((step) => (
+            <div key={step.num} className="flex items-start gap-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#34d399] to-[#10b981] text-black flex-shrink-0 font-bold text-[12px]">
+                {step.num}
               </div>
-              <div>
-                <p className="text-sm font-medium">Πάτησε το μενού (3 τελείες)</p>
-                <p className="text-xs text-muted-foreground mt-1">Βρίσκεται πάνω δεξιά</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
-                <span className="text-sm font-semibold text-primary">2</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Επίλεξε «Εγκατάσταση εφαρμογής»</p>
-                <p className="text-xs text-muted-foreground mt-1">Ή «Προσθήκη στην αρχική οθόνη»</p>
+              <div className="flex-1">
+                <p className="text-[14px] font-bold text-white">{step.title}</p>
+                <p className="text-[12px] text-zinc-500 mt-1 font-medium">{step.subtitle}</p>
               </div>
             </div>
-
-            <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/30 flex-shrink-0 mt-0.5">
-                <span className="text-sm font-semibold text-primary">3</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Ακολούθησε τις οδηγίες</p>
-                <p className="text-xs text-muted-foreground mt-1">Και επιβεβαίωσε την εγκατάσταση</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       )
     }
 
     return (
-      <div className="space-y-4">
-        <div className="bg-secondary rounded-lg p-4">
-          <p className="text-sm">Αναζήτησε την επιλογή «Προσθήκη στην αρχική οθόνη» στο μενού του browser σου για γρήγορη πρόσβαση.</p>
-        </div>
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/10">
+        <p className="text-[14px] text-zinc-300 font-medium leading-relaxed">
+          Αναζήτησε την επιλογή «Προσθήκη στην αρχική οθόνη» στο μενού του browser σου για γρήγορη πρόσβαση.
+        </p>
       </div>
     )
   }
 
   const renderFeatures = () => {
     return (
-      <div className="grid grid-cols-1 gap-2">
+      <div className="grid grid-cols-1 gap-3">
         {FEATURES.map((feature, index) => {
           return (
-            <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-secondary/10 border border-white/5">
-              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
-                <Check className="w-3.5 h-3.5 text-green-400" strokeWidth={3} />
+            <div key={index} className="flex items-center gap-4 p-4 rounded-[1.25rem] bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 shadow-lg shadow-black/10">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#34d399]/20 flex items-center justify-center">
+                <Check className="w-4 h-4 text-[#34d399] font-bold" strokeWidth={3} />
               </div>
-              <span className="text-xs font-medium text-foreground">{feature.label}</span>
+              <span className="text-[14px] font-bold text-white">{feature.label}</span>
             </div>
           )
         })}
@@ -221,10 +158,10 @@ export function WelcomeModal() {
 
   const renderContent = () => {
     return (
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full gap-6">
         {/* Icon and Title */}
-        <div className="text-center mb-6 pb-4 border-b border-border">
-          <div className="mb-6 p-4 bg-secondary border border-primary/50 rounded-3xl w-fit mx-auto shadow-2xl">
+        <div className="text-center">
+          <div className="mb-6 p-4 bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-3xl w-fit mx-auto shadow-2xl">
             <Image
               src="/icon-192.png"
               alt="ΑΠΟΛΕΛΕ PRO"
@@ -233,42 +170,40 @@ export function WelcomeModal() {
               className="rounded-2xl shadow-xl"
             />
           </div>
-          <h1 className="text-2xl font-black text-foreground tracking-tight mb-2">
+          <h1 className="text-[28px] font-black text-white tracking-tight mb-2">
             {step === 'install' ? 'Καλώς ήρθες!' : 'Δυνατότητες'}
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase">
             {step === 'install' 
-              ? 'Πρόσθεσε την εφαρμογή στην αρχική σου οθόνη για γρήγορη πρόσβαση'
-              : 'Όλα όσα χρειάζεσαι για τη θητεία σου'
+              ? 'Προσθεσε την εφαρμογη στην αρχικη σου οθονη'
+              : 'Ολα οσα χρειαζεσαι για τη θητεια σου'
             }
           </p>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto hide-scrollbar">
           {step === 'install' ? renderInstructions() : renderFeatures()}
         </div>
 
         {/* Footer Buttons */}
-        <div className="mt-6 pt-4 border-t border-border flex gap-2">
+        <div className="flex gap-3 pt-4">
           {step === 'features' && (
-            <Button 
+            <button 
               type="button" 
-              variant="ghost"
-              className="flex-1 font-medium py-4 rounded-lg text-muted-foreground hover:text-zinc-100"
               onClick={handleBack}
+              className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
             >
-              Πίσω
-            </Button>
+              Πισω
+            </button>
           )}
-          <Button 
+          <button 
             type="button" 
-            variant="default" 
-            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-lg"
             onClick={step === 'install' ? handleNextStep : handleClose}
+            className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
           >
-            {step === 'install' ? 'Επόμενο' : 'Ξεκινάμε'}
-          </Button>
+            {step === 'install' ? 'Επομενο' : 'Ξεκιναμε'}
+          </button>
         </div>
       </div>
     )

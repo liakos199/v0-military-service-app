@@ -28,41 +28,39 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100] bg-background backdrop-blur-sm animate-modal-fade-in">
-      <div className="flex flex-col h-full safe-top animate-modal-slide-up">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-primary/50">
-          <div className="flex items-center gap-2 flex-1">
-            {showBackButton && onBack && (
-              <button
-                onClick={() => {
-                  hapticFeedback('light')
-                  onBack()
-                }}
-                className="p-1.5 rounded-md min-h-[36px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary transition-colors"
-                aria-label="Πίσω"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-            )}
-            <h2 className="text-sm font-semibold text-foreground truncate">{title}</h2>
-          </div>
-          <button
-            onClick={() => {
-              hapticFeedback('light')
-              onClose()
-            }}
-            className="p-1.5 rounded-md min-h-[36px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary transition-colors flex-shrink-0 ml-2"
-            aria-label="Κλείσιμο"
-          >
-            <X className="h-4 w-4" />
-          </button>
+    <div className="fixed inset-0 z-[100] bg-black backdrop-blur-sm animate-fade-in flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80 shrink-0 safe-top">
+        <div className="flex items-center gap-3 flex-1">
+          {showBackButton && onBack && (
+            <button
+              onClick={() => {
+                hapticFeedback('light')
+                onBack()
+              }}
+              className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors active:scale-95"
+              aria-label="Πίσω"
+            >
+              <ChevronLeft size={20} />
+            </button>
+          )}
+          <h2 className="text-[20px] font-bold text-white truncate">{title}</h2>
         </div>
+        <button
+          onClick={() => {
+            hapticFeedback('light')
+            onClose()
+          }}
+          className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors active:scale-95 flex-shrink-0 ml-2"
+          aria-label="Κλείσιμο"
+        >
+          <X size={20} />
+        </button>
+      </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto px-4 py-3 no-scrollbar">
-          {children}
-        </div>
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar safe-bottom">
+        {children}
       </div>
     </div>
   )
