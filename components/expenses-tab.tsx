@@ -99,7 +99,7 @@ export function ExpensesTab() {
               className={cn(
                 "p-2 rounded-xl border transition-all flex items-center justify-center min-w-[40px]",
                 showFilters || filterCategory !== 'all' 
-                  ? "bg-primary/10 border-primary/30 text-primary" 
+                  ? "bg-primary/20 border-primary/30 text-primary" 
                   : "bg-secondary/50 border-white/5 text-muted-foreground"
               )}
             >
@@ -138,7 +138,7 @@ export function ExpensesTab() {
           )}
 
           {/* Summary Card - Simplified to only show Grand Total */}
-          <div className="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-1 border border-primary/20 bg-primary/5">
+          <div className="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-1 border border-primary/40 bg-primary/5">
             <span className="text-[10px] font-black text-primary uppercase tracking-widest">
               {searchQuery || filterCategory !== 'all' ? 'Σύνολο Αναζήτησης' : 'Συνολικά Έξοδα'}
             </span>
@@ -282,7 +282,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
     <div className="flex flex-col gap-3">
       {/* Canteen Catalog Selection */}
       {canteenCatalog.length > 0 && (
-        <div className="glass-card rounded-xl p-3 border border-primary/20 flex flex-col gap-2">
+        <div className="glass-card rounded-xl p-3 border border-primary/40 flex flex-col gap-2">
           <h3 className="text-[10px] font-black text-primary uppercase tracking-widest">Κατάλογος Κ.Ψ.Μ.</h3>
           
           {selectedCatalogCategory === null ? (
@@ -331,7 +331,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                     className={cn(
                       'bg-secondary/50 border rounded-lg p-2 flex items-center justify-between hover:border-primary transition-all text-sm',
                       description === item.name && amount === item.price.toFixed(2)
-                        ? 'border-primary bg-primary/10 ring-1 ring-primary'
+                        ? 'border-primary bg-primary/20 ring-1 ring-primary'
                         : 'border-white/5'
                     )}
                   >

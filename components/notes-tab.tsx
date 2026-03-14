@@ -575,7 +575,7 @@ function GuidesSection({ searchQuery }: { searchQuery: string }) {
                 }}
                 className="w-full flex items-center gap-3 p-3 min-h-[48px] text-left hover:bg-white/5 transition-colors"
               >
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
                   <Icon className="h-4 w-4 text-primary" />
                 </div>
                 <span className="flex-1 text-sm font-bold text-foreground tracking-tight">{guide.title}</span>

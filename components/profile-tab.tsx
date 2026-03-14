@@ -45,7 +45,7 @@ export function ProfileTab() {
             className={cn(
               'flex-1 px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px] whitespace-nowrap',
               activeSection === 'profile'
-                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                ? 'bg-primary text-primary-foreground border border-primary/50'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
@@ -59,7 +59,7 @@ export function ProfileTab() {
             className={cn(
               'flex-1 px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px] whitespace-nowrap',
               activeSection === 'superiors'
-                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                ? 'bg-primary text-primary-foreground border border-primary/50'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
@@ -73,7 +73,7 @@ export function ProfileTab() {
             className={cn(
               'flex-1 px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px] whitespace-nowrap',
               activeSection === 'friends'
-                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                ? 'bg-primary text-primary-foreground border border-primary/50'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
@@ -87,7 +87,7 @@ export function ProfileTab() {
             className={cn(
               'flex-1 px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 min-h-[36px] whitespace-nowrap',
               activeSection === 'settings'
-                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                ? 'bg-primary text-primary-foreground border border-primary/50'
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
@@ -129,14 +129,14 @@ function ProfileSection() {
   return (
     <div className="space-y-6 pb-10">
       {/* Identity Card */}
-      <div className="zinc-card p-6 relative overflow-hidden group">
+      <div className="professional-card p-6 relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-8 opacity-[0.05] pointer-events-none group-hover:scale-110 transition-transform duration-700">
           <Shield size={140} />
         </div>
         
         <div className="flex items-start justify-between relative z-10">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+            <div className="w-16 h-16 rounded-2xl bg-primary/20 border border-primary/40 flex items-center justify-center flex-shrink-0">
               <User className="h-8 w-8 text-primary" />
             </div>
             <div className="min-w-0">
@@ -193,7 +193,7 @@ function ProfileSection() {
       </div>
 
       {/* Reporting Phrase */}
-      <div className="zinc-card p-5">
+      <div className="professional-card p-5">
         <div className="flex items-center gap-2 mb-3.5">
           <MessageSquare size={14} className="text-primary" />
           <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Φράση Αναφοράς</span>
@@ -346,7 +346,7 @@ function ProfileSection() {
             </button>
             <button
               onClick={handleSave}
-              className="flex-[2] flex items-center justify-center gap-2 py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+              className="flex-[2] flex items-center justify-center gap-2 py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest border border-primary/50 hover:scale-[1.02] active:scale-95 transition-all"
             >
               <Save size={14} />
               Αποθήκευση
@@ -419,7 +419,7 @@ function SettingsSection() {
 
       <div className="glass-card rounded-3xl p-6 border border-white/5 space-y-6">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-primary/20 border border-primary/40 flex items-center justify-center flex-shrink-0">
             <Palette className="h-6 w-6 text-primary" />
           </div>
           <div>
@@ -490,7 +490,7 @@ function SuperiorsSection() {
         <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Ιεραρχία</h3>
         <button
           onClick={() => setIsAdding(true)}
-          className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-[9px] font-black uppercase tracking-widest border border-primary/20 hover:bg-primary/20 transition-all"
+          className="px-3 py-1.5 rounded-lg bg-primary/20 text-primary text-[9px] font-black uppercase tracking-widest border border-primary/40 hover:bg-primary/20 transition-all"
         >
           Προσθήκη
         </button>
@@ -564,7 +564,7 @@ function FriendsSection() {
         <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Συνάδελφοι</h3>
         <button
           onClick={() => setIsAdding(true)}
-          className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-[9px] font-black uppercase tracking-widest border border-primary/20 hover:bg-primary/20 transition-all"
+          className="px-3 py-1.5 rounded-lg bg-primary/20 text-primary text-[9px] font-black uppercase tracking-widest border border-primary/40 hover:bg-primary/20 transition-all"
         >
           Προσθήκη
         </button>
@@ -648,7 +648,7 @@ function AddFriendForm({ onAdd, onCancel }: { onAdd: (friend: FriendEntry) => vo
         <button onClick={onCancel} className="flex-1 py-4 rounded-2xl bg-secondary text-foreground font-black text-[10px] uppercase tracking-widest border border-white/5 transition-all">
           Ακύρωση
         </button>
-        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-[2] py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest disabled:opacity-40 transition-all shadow-lg shadow-primary/20">
+        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-[2] py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest disabled:opacity-40 transition-all border border-primary/50">
           Προσθήκη
         </button>
       </div>
@@ -714,7 +714,7 @@ function AddSuperiorForm({ onAdd, onCancel }: { onAdd: (sup: SuperiorEntry) => v
         <button onClick={onCancel} className="flex-1 py-4 rounded-2xl bg-secondary text-foreground font-black text-[10px] uppercase tracking-widest border border-white/5 transition-all">
           Ακύρωση
         </button>
-        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-[2] py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest disabled:opacity-40 transition-all shadow-lg shadow-primary/20">
+        <button onClick={handleSubmit} disabled={!name.trim()} className="flex-[2] py-4 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest disabled:opacity-40 transition-all border border-primary/50">
           Προσθήκη
         </button>
       </div>

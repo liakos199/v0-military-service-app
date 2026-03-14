@@ -146,7 +146,7 @@ export function CalendarTab() {
               setSelectedDate(today)
               setShowActionSheet(true)
             }}
-            className="p-2.5 rounded-xl zinc-card-hover bg-zinc-900/50 border border-zinc-800/50 flex items-center justify-center transition-all"
+            className="p-2.5 rounded-xl professional-card-hover bg-secondary border border-primary/50 flex items-center justify-center transition-all"
             aria-label="Προσθήκη"
           >
             <Plus className="h-4 w-4 text-primary" />
@@ -159,7 +159,7 @@ export function CalendarTab() {
       <div className="flex flex-col gap-4">
 
       {/* Calendar Card */}
-      <div className="zinc-card p-5 flex flex-col gap-4">
+      <div className="professional-card p-5 flex flex-col gap-4">
         {/* Month Navigation */}
         <div className="flex items-center justify-between px-1">
           <button
@@ -167,7 +167,7 @@ export function CalendarTab() {
             className="p-2 rounded-xl bg-zinc-800/50 border border-zinc-700/30 hover:bg-zinc-800 transition-all"
             aria-label="Προηγούμενος μήνας"
           >
-            <ChevronLeft className="h-3.5 w-3.5 text-zinc-400" />
+            <ChevronLeft className="h-3.5 w-3.5 text-muted-foreground" />
           </button>
           <span className="text-[11px] font-black text-foreground uppercase tracking-[0.2em]">
             {GREEK_MONTHS[viewMonth]} {viewYear}
@@ -177,7 +177,7 @@ export function CalendarTab() {
             className="p-2 rounded-xl bg-zinc-800/50 border border-zinc-700/30 hover:bg-zinc-800 transition-all"
             aria-label="Επόμενος μήνας"
           >
-            <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
+            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
           </button>
         </div>
 
@@ -270,7 +270,7 @@ export function CalendarTab() {
       />
 
       {/* Monthly Summary */}
-      <div className="zinc-card p-4">
+      <div className="professional-card p-4">
         <MonthlySummary
         duties={duties}
         leaves={leaves}
@@ -485,7 +485,7 @@ function UpcomingEvents({
 
   if (upcoming.length === 0) {
     return (
-      <div className="zinc-card p-6 text-center">
+      <div className="professional-card p-6 text-center">
         <p className="text-sm text-muted-foreground">Δεν υπάρχουν προσεχή γεγονότα</p>
         <p className="text-xs text-muted-foreground mt-1">Πάτησε μια ημερομηνία για να προσθέσεις</p>
       </div>
@@ -503,7 +503,7 @@ function UpcomingEvents({
             <div
               key={duty.id}
               className={cn(
-                'zinc-card p-3 flex items-center gap-3 text-left w-full',
+                'professional-card p-3 flex items-center gap-3 text-left w-full',
                 isToday && 'ring-1 ring-primary'
               )}
             >
@@ -535,7 +535,7 @@ function UpcomingEvents({
           return (
             <div
               key={leave.id}
-              className="zinc-card p-3 flex items-center gap-3 text-left w-full"
+              className="professional-card p-3 flex items-center gap-3 text-left w-full"
             >
               <div className="w-1 h-10 rounded-full flex-shrink-0 bg-chart-2" />
               <div className="flex-1 min-w-0">

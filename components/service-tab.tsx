@@ -107,10 +107,10 @@ export function ServiceTab() {
               hapticFeedback('light')
               setShowConfig(true)
             }}
-            className="p-2 rounded-xl zinc-card-hover bg-zinc-900/50 border border-zinc-800/50 flex items-center justify-center transition-all"
+            className="p-2 rounded-xl professional-card-hover bg-secondary border border-primary/50 flex items-center justify-center transition-all"
             aria-label="Ρυθμίσεις θητείας"
           >
-            <Settings className="h-4 w-4 text-zinc-400" />
+            <Settings className="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
       </div>
@@ -181,14 +181,14 @@ export function ServiceTab() {
 
           {/* Main Progress Ring - LELEmeter */}
           <div
-            className="zinc-card p-5 flex flex-col items-center gap-5"
+            className="professional-card p-5 flex flex-col items-center gap-5"
           >
             <div className="flex items-center justify-between w-full mb-1">
               <p className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.3em]">
                 Λελέμετρο
               </p>
               {dischargeDate && (
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/20 border border-primary/40">
                   <CalendarDays className="h-2.5 w-2.5 text-primary" />
                   <span className="text-[8px] font-black text-primary uppercase tracking-widest">
                     {formatGreekDate(dischargeDate)}
@@ -211,7 +211,7 @@ export function ServiceTab() {
                     hapticFeedback('medium')
                     setShowConfig(true)
                   }}
-                  className="px-6 py-2 rounded-xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-wider shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+                  className="px-6 py-2 rounded-xl bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-wider border border-primary/50 active:scale-95 transition-transform"
                 >
                   Προσθήκη Ημερομηνίας
                 </button>
@@ -340,9 +340,9 @@ function TodayStatus({
 
       {/* Active Leave */}
       {leave && (
-        <div className="zinc-card p-4 flex items-center gap-4 border-primary/20 relative overflow-hidden shadow-lg shadow-primary/5">
+        <div className="professional-card p-4 flex items-center gap-4 border-primary/40 relative overflow-hidden shadow-lg shadow-primary/5">
           <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
-          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
             <Palmtree className="h-5 w-5 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
@@ -363,10 +363,10 @@ function TodayStatus({
             const hasPasswords = duty.password || duty.countersign
 
             return (
-              <div key={duty.id} className="zinc-card p-4 border-zinc-800/50 flex flex-col gap-4">
+              <div key={duty.id} className="professional-card p-4 border-zinc-800/50 flex flex-col gap-4">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl bg-zinc-800/50 flex items-center justify-center flex-shrink-0 border border-zinc-700/30">
-                    <Icon className="h-5 w-5 text-zinc-400" />
+                    <Icon className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm font-bold text-foreground tracking-tight">{DUTY_TYPE_LABELS[duty.type]}</h3>
@@ -402,7 +402,7 @@ function TodayStatus({
         </div>
       ) : (
         !leave && (
-          <div className="zinc-card p-8 text-center border-dashed border-zinc-800/50 flex flex-col items-center gap-3">
+          <div className="professional-card p-8 text-center border-dashed border-zinc-800/50 flex flex-col items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-zinc-900/50 flex items-center justify-center border border-zinc-800/30">
               <Shield className="h-5 w-5 text-zinc-700" />
             </div>

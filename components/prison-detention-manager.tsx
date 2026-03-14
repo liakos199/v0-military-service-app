@@ -76,7 +76,7 @@ export function PrisonDetentionManager() {
               hapticFeedback('light')
               setShowPrisonModal(true)
             }}
-            className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Προσθήκη φυλακής"
           >
             <Plus className="h-5 w-5" />
@@ -127,7 +127,7 @@ export function PrisonDetentionManager() {
               hapticFeedback('light')
               setShowDetentionModal(true)
             }}
-            className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary/20 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Προσθήκη κράτησης"
           >
             <Plus className="h-5 w-5" />
@@ -327,7 +327,7 @@ function AddDetentionForm({
       </div>
 
       {startDate && endDate && startDate <= endDate && (
-        <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20">
+        <div className="p-2.5 rounded-lg bg-primary/20 border border-primary/40">
           <p className="text-[9px] text-muted-foreground">Διάρκεια</p>
           <p className="text-sm font-bold text-primary">{days} ημέρες</p>
         </div>

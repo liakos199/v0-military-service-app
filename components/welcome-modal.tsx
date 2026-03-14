@@ -82,9 +82,9 @@ export function WelcomeModal() {
     if (device === 'ios') {
       return (
         <div className="space-y-4">
-          <div className="zinc-card p-5 space-y-4 border-zinc-800/50">
+          <div className="professional-card p-5 space-y-4 border-zinc-800/50">
             <div className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 shadow-lg shadow-primary/20">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 border border-primary/50">
                 <span className="text-[10px] font-black">1</span>
               </div>
               <div>
@@ -94,7 +94,7 @@ export function WelcomeModal() {
             </div>
             
             <div className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 shadow-lg shadow-primary/20">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 border border-primary/50">
                 <span className="text-[10px] font-black">2</span>
               </div>
               <div>
@@ -104,7 +104,7 @@ export function WelcomeModal() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 shadow-lg shadow-primary/20">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground flex-shrink-0 mt-0.5 border border-primary/50">
                 <span className="text-[10px] font-black">3</span>
               </div>
               <div>
@@ -224,7 +224,7 @@ export function WelcomeModal() {
       <div className="flex flex-col h-full">
         {/* Icon and Title */}
         <div className="text-center mb-6 pb-4 border-b border-border">
-          <div className="mb-6 p-4 bg-zinc-900/50 border border-zinc-800/50 rounded-3xl w-fit mx-auto shadow-2xl">
+          <div className="mb-6 p-4 bg-secondary border border-primary/50 rounded-3xl w-fit mx-auto shadow-2xl">
             <Image
               src="/icon-192.png"
               alt="ΑΠΟΛΕΛΕ PRO"
@@ -255,7 +255,7 @@ export function WelcomeModal() {
             <Button 
               type="button" 
               variant="ghost"
-              className="flex-1 font-medium py-4 rounded-lg text-zinc-400 hover:text-zinc-100"
+              className="flex-1 font-medium py-4 rounded-lg text-muted-foreground hover:text-zinc-100"
               onClick={handleBack}
             >
               Πίσω
