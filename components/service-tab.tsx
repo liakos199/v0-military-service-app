@@ -10,11 +10,10 @@ import {
   ShieldCheck,
   Trash2,
   Edit3,
-  X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
-import { GreekDatePicker } from '@/components/greek-date-picker'
+import { InlineDatePicker } from '@/components/inline-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import {
   hapticFeedback,
@@ -247,7 +246,7 @@ export function ServiceTab() {
         title="Ρυθμίσεις Θητείας"
       >
         <div className="flex flex-col gap-6 p-2">
-          <GreekDatePicker
+          <InlineDatePicker
             value={config.enlistmentDate}
             onChange={(d) => setConfig({ ...config, enlistmentDate: d })}
             label="Ημερομηνία κατάταξης"
@@ -625,12 +624,12 @@ function DetentionForm({
 
   return (
     <div className="flex flex-col gap-5 p-2">
-      <GreekDatePicker
+      <InlineDatePicker
         value={startDate}
         onChange={setStartDate}
         label="Ημερομηνία έναρξης"
       />
-      <GreekDatePicker
+      <InlineDatePicker
         value={endDate}
         onChange={setEndDate}
         label="Ημερομηνία λήξης"
