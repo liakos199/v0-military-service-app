@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState } from 'react'
+import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { GREEK_MONTHS } from '@/lib/types'
 import { hapticFeedback } from '@/lib/helpers'
@@ -26,22 +26,14 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
 
   const prevMonth = () => {
     hapticFeedback('light')
-    if (viewMonth === 0) {
-      setViewMonth(11)
-      setViewYear(viewYear - 1)
-    } else {
-      setViewMonth(viewMonth - 1)
-    }
+    if (viewMonth === 0) { setViewMonth(11); setViewYear(viewYear - 1) }
+    else setViewMonth(viewMonth - 1)
   }
 
   const nextMonth = () => {
     hapticFeedback('light')
-    if (viewMonth === 11) {
-      setViewMonth(0)
-      setViewYear(viewYear + 1)
-    } else {
-      setViewMonth(viewMonth + 1)
-    }
+    if (viewMonth === 11) { setViewMonth(0); setViewYear(viewYear + 1) }
+    else setViewMonth(viewMonth + 1)
   }
 
   const handleSelectDay = (day: number) => {
@@ -65,124 +57,117 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
     <div>
       {label && (
         <label className={cn(
-          "block font-bold uppercase tracking-wider text-muted-foreground mb-1",
-          compact ? "text-[10px]" : "text-xs"
+          'block font-bold uppercase tracking-wider text-zinc-400 mb-2',
+          compact ? 'text-[10px]' : 'text-[11px]'
         )}>{label}</label>
       )}
       <button
         type="button"
-        onClick={() => {
-          hapticFeedback('light')
-          setIsOpen(true)
-        }}
+        onClick={() => { hapticFeedback('light'); setIsOpen(true) }}
         className={cn(
-          "w-full flex items-center justify-between rounded-md bg-secondary text-secondary-foreground border border-border transition-colors hover:bg-secondary/80",
-          compact ? "px-2 py-2 text-xs min-h-[36px]" : "px-3 py-3 text-sm min-h-[48px]"
+          'w-full flex items-center justify-between rounded-xl bg-zinc-900 border border-zinc-800 text-white transition-colors hover:border-zinc-700 focus:border-emerald-500',
+          compact ? 'px-3 py-2 text-xs min-h-[36px]' : 'px-4 py-3.5 text-sm min-h-[48px]'
         )}
       >
-        <span className={cn(!value && 'text-muted-foreground/50')}>{displayText}</span>
-        <CalendarIcon className={cn("text-muted-foreground", compact ? "h-3.5 w-3.5" : "h-4 w-4")} />
+        <span className={cn('font-semibold', !value && 'text-zinc-500')}>{displayText}</span>
+        <CalendarDays className={cn('text-zinc-500', compact ? 'h-3.5 w-3.5' : 'h-4 w-4')} />
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4" onClick={() => setIsOpen(false)}>
-          <div className="bg-background rounded-2xl border border-border w-full max-w-sm shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            {/* Header */}
-            <div className="px-4 py-4 border-b border-border">
-              <h3 className="text-lg font-semibold text-foreground text-center">Επιλογή Ημερομηνίας</h3>
-            </div>
-            
-            {/* Content */}
-            <div className="p-4 flex flex-col gap-4">
-          {/* Month navigation */}
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              onClick={prevMonth}
-              className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center"
-              aria-label="Προηγούμενος μήνας"
-            >
-              <ChevronLeft className="h-5 w-5 text-foreground" />
-            </button>
-            <span className="text-lg font-semibold text-foreground">
-              {GREEK_MONTHS[viewMonth]} {viewYear}
-            </span>
-            <button
-              type="button"
-              onClick={nextMonth}
-              className="p-3 rounded-xl bg-secondary min-h-[48px] min-w-[48px] flex items-center justify-center"
-              aria-label="Επόμενος μήνας"
-            >
-              <ChevronRight className="h-5 w-5 text-foreground" />
-            </button>
-          </div>
-
-          {/* Day names */}
-          <div className="grid grid-cols-7 gap-1">
-            {greekDaysStartMonday.map((d) => (
-              <div key={d} className="text-center text-xs text-muted-foreground font-medium py-2">
-                {d}
-              </div>
-            ))}
-          </div>
-
-          {/* Calendar grid */}
-          <div className="grid grid-cols-7 gap-1">
-            {Array.from({ length: startDay }).map((_, i) => (
-              <div key={`empty-${i}`} />
-            ))}
-            {Array.from({ length: daysInMonth }).map((_, i) => {
-              const day = i + 1
-              const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-              const isSelected = dateStr === value
-              const isToday = dateStr === todayStr
-              const isDisabled = minDate ? dateStr < minDate : false
-
-              return (
-                <button
-                  key={day}
-                  type="button"
-                  onClick={() => !isDisabled && handleSelectDay(day)}
-                  disabled={isDisabled}
-                  className={cn(
-                    'aspect-square w-full rounded-xl text-sm flex items-center justify-center transition-colors min-h-[44px]',
-                    isDisabled
-                      ? 'text-muted-foreground/30 cursor-not-allowed'
-                      : isSelected
-                        ? 'bg-primary text-primary-foreground font-bold'
-                        : isToday
-                          ? 'bg-secondary text-primary font-semibold ring-1 ring-primary'
-                          : 'text-foreground active:bg-secondary'
-                  )}
-                >
-                  {day}
-                </button>
-              )
-            })}
-          </div>
-
-          {/* Today shortcut */}
-          <button
-            type="button"
-            onClick={() => {
-              hapticFeedback('medium')
-              const now = new Date()
-              setViewMonth(now.getMonth())
-              setViewYear(now.getFullYear())
-              handleSelectDay(now.getDate())
-            }}
-            className="w-full py-3 rounded-xl bg-secondary text-foreground font-medium text-sm min-h-[48px]"
+        <div
+          className="fixed inset-0 z-[300] bg-black/70 flex items-end justify-center pb-8 px-4"
+          onClick={() => setIsOpen(false)}
+        >
+          <div
+            className="bg-zinc-900 border border-zinc-700/50 rounded-[2rem] w-full max-w-sm shadow-2xl shadow-black/60 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
           >
-            Σήμερα
-          </button>
+            {/* Header */}
+            <div className="px-5 pt-5 pb-4">
+              <p className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase mb-4">Επιλογή Ημερομηνίας</p>
+
+              {/* Month Navigation */}
+              <div className="flex items-center justify-between mb-5">
+                <button
+                  type="button"
+                  onClick={prevMonth}
+                  className="p-2 rounded-lg bg-zinc-800 border border-zinc-700/50 hover:border-zinc-600 transition-all active:scale-90"
+                >
+                  <ChevronLeft size={18} className="text-zinc-400" />
+                </button>
+                <span className="text-[13px] font-bold tracking-[0.2em] text-white uppercase">
+                  {GREEK_MONTHS[viewMonth]} {viewYear}
+                </span>
+                <button
+                  type="button"
+                  onClick={nextMonth}
+                  className="p-2 rounded-lg bg-zinc-800 border border-zinc-700/50 hover:border-zinc-600 transition-all active:scale-90"
+                >
+                  <ChevronRight size={18} className="text-zinc-400" />
+                </button>
+              </div>
+
+              {/* Day Names */}
+              <div className="grid grid-cols-7 gap-1 mb-3">
+                {greekDaysStartMonday.map((d) => (
+                  <div key={d} className="text-center text-[10px] font-bold text-zinc-500 uppercase tracking-wider py-1">
+                    {d}
+                  </div>
+                ))}
+              </div>
+
+              {/* Calendar Grid */}
+              <div className="grid grid-cols-7 gap-1.5">
+                {Array.from({ length: startDay }).map((_, i) => <div key={`empty-${i}`} />)}
+                {Array.from({ length: daysInMonth }).map((_, i) => {
+                  const day = i + 1
+                  const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+                  const isSelected = dateStr === value
+                  const isToday = dateStr === todayStr
+                  const isDisabled = minDate ? dateStr < minDate : false
+
+                  return (
+                    <button
+                      key={day}
+                      type="button"
+                      onClick={() => !isDisabled && handleSelectDay(day)}
+                      disabled={isDisabled}
+                      className={cn(
+                        'aspect-square w-full rounded-xl text-sm flex items-center justify-center transition-all duration-200 font-bold',
+                        isDisabled
+                          ? 'text-zinc-700 cursor-not-allowed'
+                          : isSelected
+                            ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-900/30'
+                            : isToday
+                              ? 'bg-zinc-800 text-emerald-400 ring-1 ring-emerald-500/50'
+                              : 'bg-zinc-800/50 text-zinc-300 hover:bg-zinc-700 border border-zinc-700/30 active:scale-90'
+                      )}
+                    >
+                      {day}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-            
+
             {/* Footer */}
-            <div className="px-4 py-3 border-t border-border flex gap-2">
+            <div className="px-5 pb-5 flex gap-2 mt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  hapticFeedback('medium')
+                  setViewMonth(today.getMonth())
+                  setViewYear(today.getFullYear())
+                  handleSelectDay(today.getDate())
+                }}
+                className="flex-1 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-zinc-300 font-bold text-[11px] uppercase tracking-wider hover:border-zinc-600 transition-colors active:scale-95"
+              >
+                Σήμερα
+              </button>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="flex-1 py-2 rounded-lg bg-secondary text-foreground font-medium text-sm hover:bg-secondary/80 transition-colors"
+                className="flex-1 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-zinc-400 font-bold text-[11px] uppercase tracking-wider hover:border-zinc-600 transition-colors active:scale-95"
               >
                 Κλείσιμο
               </button>
@@ -191,16 +176,5 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
         </div>
       )}
     </div>
-  )
-}
-
-function CalendarIcon(props: React.SVGProps<SVGSVGElement> & { className?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-      <line x1="16" x2="16" y1="2" y2="6" />
-      <line x1="8" x2="8" y1="2" y2="6" />
-      <line x1="3" x2="21" y1="10" y2="10" />
-    </svg>
   )
 }

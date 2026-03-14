@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Settings,
   Calendar as CalendarIcon,
@@ -8,6 +8,9 @@ import {
   Lock,
   CalendarX,
   ShieldCheck,
+  Trash2,
+  Edit3,
+  X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -18,11 +21,10 @@ import {
   formatGreekDate,
   daysBetween,
   toLocalDateString,
+  generateId,
 } from '@/lib/helpers'
 import type { ServiceConfig, LeaveEntry, PrisonEntry, DetentionEntry } from '@/lib/types'
-import {
-  SERVICE_DURATION_PRESETS,
-} from '@/lib/types'
+import { SERVICE_DURATION_PRESETS } from '@/lib/types'
 
 export function ServiceTab() {
   const [config, setConfig] = useLocalStorage<ServiceConfig>('fantaros-config', {
@@ -30,9 +32,11 @@ export function ServiceTab() {
     totalDays: 365,
   })
   const [leaves] = useLocalStorage<LeaveEntry[]>('fantaros-leaves', [])
-  const [prisons] = useLocalStorage<PrisonEntry[]>('fantaros-prisons', [])
-  const [detentions] = useLocalStorage<DetentionEntry[]>('fantaros-detentions', [])
+  const [prisons, setPrisons] = useLocalStorage<PrisonEntry[]>('fantaros-prisons', [])
+  const [detentions, setDetentions] = useLocalStorage<DetentionEntry[]>('fantaros-detentions', [])
   const [showConfig, setShowConfig] = useState(false)
+  const [showPrison, setShowPrison] = useState(false)
+  const [showDetention, setShowDetention] = useState(false)
   const [ringOffset, setRingOffset] = useState(276.46)
 
   const today = toLocalDateString()
@@ -45,7 +49,7 @@ export function ServiceTab() {
     const days = daysBetween(d.startDate, d.endDate) + 1
     return sum + Math.max(0, days)
   }, 0)
-  
+
   const effectiveTotalDays = config.totalDays + totalPrisonDays + totalDetentionDays
   const effectiveDaysRemaining = Math.max(0, effectiveTotalDays - daysServed)
   const percentage = config.enlistmentDate
@@ -71,7 +75,6 @@ export function ServiceTab() {
 
   return (
     <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in bg-black">
-      {/* Global Gradients Definition for SVG Icons */}
       <svg width="0" height="0" className="absolute">
         <defs>
           <linearGradient id="emerald-ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -81,7 +84,6 @@ export function ServiceTab() {
         </defs>
       </svg>
 
-      {/* Ambient Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-48 bg-[#10b981]/5 blur-[70px] pointer-events-none rounded-full z-0"></div>
 
       <header className="px-6 pt-14 pb-2 relative flex justify-between items-start shrink-0">
@@ -89,11 +91,8 @@ export function ServiceTab() {
           <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Θητεία</h1>
           <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Αντιστροφη μετρηση</p>
         </div>
-        <button 
-          onClick={() => {
-            hapticFeedback('light')
-            setShowConfig(true)
-          }}
+        <button
+          onClick={() => { hapticFeedback('light'); setShowConfig(true) }}
           className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] hover:border-[#34d399]/30 transition-all active:scale-95 shadow-md"
         >
           <Settings size={20} />
@@ -113,12 +112,12 @@ export function ServiceTab() {
 
           {!config.enlistmentDate ? (
             <div className="flex flex-col items-center justify-center py-10 gap-4">
-               <div className="w-20 h-20 rounded-full bg-zinc-800 border border-dashed border-zinc-700 flex items-center justify-center">
-                <CalendarIcon className="h-8 w-8 text-zinc-600" />
+              <div className="w-20 h-20 rounded-full bg-zinc-800 border border-dashed border-zinc-700 flex items-center justify-center">
+                <CalendarIcon size={32} className="text-zinc-600" />
               </div>
               <button
                 onClick={() => setShowConfig(true)}
-                className="px-6 py-2 rounded-xl bg-primary text-white font-bold text-[11px] uppercase tracking-widest active:scale-95 transition-transform"
+                className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-widest active:scale-95 transition-transform"
               >
                 ΟΡΙΣΜΟΣ ΗΜΕΡΟΜΗΝΙΑΣ
               </button>
@@ -130,15 +129,15 @@ export function ServiceTab() {
                 <div className="relative w-[180px] h-[180px] flex items-center justify-center">
                   <svg className="w-full h-full" viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r="44" fill="transparent" stroke="#1f1f22" strokeWidth="4.5" />
-                    <circle 
-                      cx="50" cy="50" r="44" 
-                      fill="transparent" 
-                      stroke="url(#emerald-ring-grad)" 
-                      strokeWidth="5" 
-                      strokeDasharray="276.46" 
-                      strokeDashoffset={ringOffset} 
-                      strokeLinecap="round" 
-                      className="progress-ring__circle filter drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]" 
+                    <circle
+                      cx="50" cy="50" r="44"
+                      fill="transparent"
+                      stroke="url(#emerald-ring-grad)"
+                      strokeWidth="5"
+                      strokeDasharray="276.46"
+                      strokeDashoffset={ringOffset}
+                      strokeLinecap="round"
+                      className="progress-ring__circle filter drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]"
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center mt-2">
@@ -178,7 +177,11 @@ export function ServiceTab() {
         <div className="mb-8">
           <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Επεκτασεις Θητειας</h2>
           <div className="space-y-3">
-            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
+            {/* Prison Card — entire card is pressable */}
+            <button
+              onClick={() => { hapticFeedback('light'); setShowPrison(true) }}
+              className="w-full bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98] text-left"
+            >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center shrink-0">
                   <Lock size={24} />
@@ -191,15 +194,16 @@ export function ServiceTab() {
                   </div>
                 </div>
               </div>
-              <button 
-                onClick={() => setShowConfig(true)}
-                className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-90 shrink-0 shadow-sm"
-              >
+              <div className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] shrink-0 shadow-sm">
                 <Plus size={18} />
-              </button>
-            </div>
-            
-            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
+              </div>
+            </button>
+
+            {/* Detention Card — entire card is pressable */}
+            <button
+              onClick={() => { hapticFeedback('light'); setShowDetention(true) }}
+              className="w-full bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98] text-left"
+            >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700/50 text-zinc-300 flex items-center justify-center shrink-0">
                   <CalendarX size={24} />
@@ -212,13 +216,10 @@ export function ServiceTab() {
                   </div>
                 </div>
               </div>
-              <button 
-                onClick={() => setShowConfig(true)}
-                className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-90 shrink-0 shadow-sm"
-              >
+              <div className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] shrink-0 shadow-sm">
                 <Plus size={18} />
-              </button>
-            </div>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -239,7 +240,7 @@ export function ServiceTab() {
         </div>
       </main>
 
-      {/* Config Modal */}
+      {/* LELEmeter Config Modal */}
       <FullscreenModal
         isOpen={showConfig}
         onClose={() => setShowConfig(false)}
@@ -251,12 +252,13 @@ export function ServiceTab() {
             onChange={(d) => setConfig({ ...config, enlistmentDate: d })}
             label="Ημερομηνία κατάταξης"
           />
-          
+
           <div>
             <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-3 px-1">
               Διάρκεια θητείας
             </label>
-            <div className="grid grid-cols-2 gap-2 mb-4">
+            {/* Single row, no wrap */}
+            <div className="flex gap-2 mb-4">
               {SERVICE_DURATION_PRESETS.map((preset) => (
                 <button
                   key={preset.days}
@@ -266,9 +268,9 @@ export function ServiceTab() {
                     setConfig({ ...config, totalDays: preset.days })
                   }}
                   className={cn(
-                    'py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border',
+                    'flex-1 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border whitespace-nowrap',
                     config.totalDays === preset.days
-                      ? 'bg-primary text-white border-primary shadow-lg shadow-emerald-900/20'
+                      ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white border-emerald-500 shadow-lg shadow-emerald-900/30'
                       : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
                   )}
                 >
@@ -276,8 +278,8 @@ export function ServiceTab() {
                 </button>
               ))}
             </div>
-            
-            <div className="relative mt-4">
+
+            <div className="relative mt-2">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Χειροκινητα:</span>
               <input
                 type="number"
@@ -286,22 +288,386 @@ export function ServiceTab() {
                 onChange={(e) =>
                   setConfig({ ...config, totalDays: parseInt(e.target.value) || 0 })
                 }
-                className="w-full pl-24 pr-4 py-4 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                className="w-full pl-24 pr-4 py-4 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
 
           <button
-            onClick={() => {
-              hapticFeedback('medium')
-              setShowConfig(false)
-            }}
+            onClick={() => { hapticFeedback('medium'); setShowConfig(false) }}
             className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[13px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all mt-4"
           >
             Αποθήκευση
           </button>
         </div>
       </FullscreenModal>
+
+      {/* Prison Modal */}
+      <FullscreenModal
+        isOpen={showPrison}
+        onClose={() => setShowPrison(false)}
+        title="Φυλακές"
+      >
+        <PrisonManager prisons={prisons} setPrisons={setPrisons} />
+      </FullscreenModal>
+
+      {/* Detention Modal */}
+      <FullscreenModal
+        isOpen={showDetention}
+        onClose={() => setShowDetention(false)}
+        title="Κρατήσεις"
+      >
+        <DetentionManager detentions={detentions} setDetentions={setDetentions} />
+      </FullscreenModal>
+    </div>
+  )
+}
+
+/* ========== PRISON MANAGER ========== */
+function PrisonManager({
+  prisons,
+  setPrisons,
+}: {
+  prisons: PrisonEntry[]
+  setPrisons: (v: PrisonEntry[]) => void
+}) {
+  const [showForm, setShowForm] = useState(false)
+  const [editingEntry, setEditingEntry] = useState<PrisonEntry | null>(null)
+
+  const handleSave = (days: number, reason: string) => {
+    hapticFeedback('heavy')
+    if (editingEntry) {
+      setPrisons(prisons.map(p => p.id === editingEntry.id ? { ...editingEntry, days, reason } : p))
+      setEditingEntry(null)
+    } else {
+      setPrisons([...prisons, { id: generateId(), days, reason, addedDate: toLocalDateString() }])
+    }
+    setShowForm(false)
+  }
+
+  const handleDelete = (id: string) => {
+    hapticFeedback('medium')
+    setPrisons(prisons.filter(p => p.id !== id))
+  }
+
+  const handleEdit = (entry: PrisonEntry) => {
+    hapticFeedback('light')
+    setEditingEntry(entry)
+    setShowForm(true)
+  }
+
+  const handleCancel = () => {
+    setEditingEntry(null)
+    setShowForm(false)
+  }
+
+  const totalDays = prisons.reduce((sum, p) => sum + p.days, 0)
+
+  if (showForm) {
+    return (
+      <PrisonForm
+        initial={editingEntry}
+        onSave={handleSave}
+        onCancel={handleCancel}
+      />
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Summary */}
+      <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] font-bold tracking-widest text-red-400 uppercase mb-1">Συνολο Ημερων</p>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-[32px] font-extrabold text-white leading-none">{totalDays}</span>
+            <span className="text-[13px] font-semibold text-zinc-400">ημέρες</span>
+          </div>
+        </div>
+        <Lock size={32} className="text-red-400/40" />
+      </div>
+
+      <button
+        onClick={() => { hapticFeedback('light'); setShowForm(true) }}
+        className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+      >
+        <Plus size={16} />
+        Προσθήκη Καταχώρησης
+      </button>
+
+      {prisons.length === 0 ? (
+        <div className="py-10 flex flex-col items-center justify-center text-center opacity-40">
+          <Lock size={40} className="text-zinc-500 mb-3" />
+          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπάρχουν καταχωρήσεις</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {prisons.map((p) => (
+            <div key={p.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex flex-col items-center justify-center shrink-0">
+                  <span className="text-[18px] font-extrabold text-red-400 leading-none">{p.days}</span>
+                  <span className="text-[8px] font-bold text-red-400/60 uppercase">ημ.</span>
+                </div>
+                <div>
+                  <p className="text-[13px] font-bold text-white">{p.reason || 'Χωρίς αιτία'}</p>
+                  <p className="text-[10px] text-zinc-500">{formatGreekDate(p.addedDate)}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => handleEdit(p)}
+                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+                >
+                  <Edit3 size={14} />
+                </button>
+                <button
+                  onClick={() => handleDelete(p.id)}
+                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PrisonForm({
+  initial,
+  onSave,
+  onCancel,
+}: {
+  initial: PrisonEntry | null
+  onSave: (days: number, reason: string) => void
+  onCancel: () => void
+}) {
+  const [days, setDays] = useState(initial?.days ?? 1)
+  const [reason, setReason] = useState(initial?.reason ?? '')
+
+  return (
+    <div className="flex flex-col gap-5 p-2">
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ημέρες Φυλακής</label>
+        <input
+          type="number"
+          inputMode="numeric"
+          min={1}
+          value={days}
+          onChange={(e) => setDays(Math.max(1, parseInt(e.target.value) || 1))}
+          className="w-full px-4 py-4 rounded-xl bg-zinc-900 text-white text-2xl font-extrabold text-center border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+        />
+        <p className="text-[10px] text-zinc-500 text-center mt-1.5">Αυτές οι μέρες προστίθενται στο σύνολο της θητείας</p>
+      </div>
+
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Αιτία (προαιρετικό)</label>
+        <textarea
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          placeholder="π.χ. Αδικαιολόγητη απουσία..."
+          className="w-full px-4 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
+        />
+      </div>
+
+      <div className="flex gap-3 pt-2">
+        <button
+          onClick={onCancel}
+          className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+        >
+          Ακύρωση
+        </button>
+        <button
+          onClick={() => onSave(days, reason)}
+          className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform"
+        >
+          {initial ? 'Αποθήκευση' : 'Προσθήκη'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/* ========== DETENTION MANAGER ========== */
+function DetentionManager({
+  detentions,
+  setDetentions,
+}: {
+  detentions: DetentionEntry[]
+  setDetentions: (v: DetentionEntry[]) => void
+}) {
+  const [showForm, setShowForm] = useState(false)
+  const [editingEntry, setEditingEntry] = useState<DetentionEntry | null>(null)
+
+  const handleSave = (startDate: string, endDate: string, reason: string) => {
+    hapticFeedback('heavy')
+    if (editingEntry) {
+      setDetentions(detentions.map(d => d.id === editingEntry.id ? { ...editingEntry, startDate, endDate, reason } : d))
+      setEditingEntry(null)
+    } else {
+      setDetentions([...detentions, { id: generateId(), startDate, endDate, reason, createdAt: toLocalDateString() }])
+    }
+    setShowForm(false)
+  }
+
+  const handleDelete = (id: string) => {
+    hapticFeedback('medium')
+    setDetentions(detentions.filter(d => d.id !== id))
+  }
+
+  const handleEdit = (entry: DetentionEntry) => {
+    hapticFeedback('light')
+    setEditingEntry(entry)
+    setShowForm(true)
+  }
+
+  const handleCancel = () => {
+    setEditingEntry(null)
+    setShowForm(false)
+  }
+
+  const totalDays = detentions.reduce((sum, d) => sum + Math.max(0, daysBetween(d.startDate, d.endDate) + 1), 0)
+
+  if (showForm) {
+    return (
+      <DetentionForm
+        initial={editingEntry}
+        onSave={handleSave}
+        onCancel={handleCancel}
+      />
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Summary */}
+      <div className="bg-zinc-800/60 border border-zinc-700/40 rounded-2xl p-4 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase mb-1">Συνολο Ημερων</p>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-[32px] font-extrabold text-white leading-none">{totalDays}</span>
+            <span className="text-[13px] font-semibold text-zinc-400">ημέρες</span>
+          </div>
+        </div>
+        <CalendarX size={32} className="text-zinc-500/40" />
+      </div>
+
+      <button
+        onClick={() => { hapticFeedback('light'); setShowForm(true) }}
+        className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+      >
+        <Plus size={16} />
+        Προσθήκη Κράτησης
+      </button>
+
+      {detentions.length === 0 ? (
+        <div className="py-10 flex flex-col items-center justify-center text-center opacity-40">
+          <CalendarX size={40} className="text-zinc-500 mb-3" />
+          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπάρχουν κρατήσεις</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {detentions.map((d) => {
+            const days = Math.max(0, daysBetween(d.startDate, d.endDate) + 1)
+            return (
+              <div key={d.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <p className="text-[13px] font-bold text-white mb-1">{d.reason || 'Χωρίς αιτία'}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.startDate)}</span>
+                      <span className="text-zinc-600">→</span>
+                      <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.endDate)}</span>
+                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">{days} ημ.</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 ml-2 shrink-0">
+                    <button
+                      onClick={() => handleEdit(d)}
+                      className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+                    >
+                      <Edit3 size={14} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(d.id)}
+                      className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DetentionForm({
+  initial,
+  onSave,
+  onCancel,
+}: {
+  initial: DetentionEntry | null
+  onSave: (startDate: string, endDate: string, reason: string) => void
+  onCancel: () => void
+}) {
+  const [startDate, setStartDate] = useState(initial?.startDate ?? toLocalDateString())
+  const [endDate, setEndDate] = useState(initial?.endDate ?? toLocalDateString())
+  const [reason, setReason] = useState(initial?.reason ?? '')
+
+  const days = startDate && endDate ? Math.max(0, daysBetween(startDate, endDate) + 1) : 0
+
+  return (
+    <div className="flex flex-col gap-5 p-2">
+      <GreekDatePicker
+        value={startDate}
+        onChange={setStartDate}
+        label="Ημερομηνία έναρξης"
+      />
+      <GreekDatePicker
+        value={endDate}
+        onChange={setEndDate}
+        label="Ημερομηνία λήξης"
+        minDate={startDate}
+      />
+
+      {days > 0 && (
+        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-3 text-center">
+          <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">Διάρκεια: {days} ημέρ{days === 1 ? 'α' : 'ες'}</span>
+        </div>
+      )}
+
+      <div>
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Αιτία</label>
+        <textarea
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          placeholder="π.χ. Απουσία από σκοπιά..."
+          className="w-full px-4 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
+        />
+      </div>
+
+      <div className="flex gap-3 pt-2">
+        <button
+          onClick={onCancel}
+          className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+        >
+          Ακύρωση
+        </button>
+        <button
+          onClick={() => onSave(startDate, endDate, reason)}
+          disabled={!startDate || !endDate}
+          className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform disabled:opacity-50"
+        >
+          {initial ? 'Αποθήκευση' : 'Προσθήκη'}
+        </button>
+      </div>
     </div>
   )
 }
