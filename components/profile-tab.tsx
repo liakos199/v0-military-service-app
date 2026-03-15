@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { 
   User, ChevronDown, ChevronUp, Edit3, Shield, MapPin, Hash, Droplet, 
   MessageSquare, Save, X, Palette, RotateCcw, Users, Pencil, ShieldAlert, 
-  ShieldCheck, SlidersHorizontal, Plus, Phone, UserPlus
+  ShieldCheck, Plus, Phone, UserPlus, MoreVertical, Trash2
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -31,14 +31,9 @@ export function ProfileTab() {
   return (
     <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in overflow-hidden bg-black">
       {/* HEADER */}
-      <header className="px-6 pt-14 pb-2 relative flex justify-between items-start shrink-0">
-        <div>
-          <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Άτομα</h1>
-          <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Στοιχεια & Επαφες</p>
-        </div>
-        <button className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] hover:border-[#34d399]/30 transition-all active:scale-95 shadow-md">
-          <SlidersHorizontal size={20} />
-        </button>
+      <header className="px-6 pt-14 pb-2 relative shrink-0">
+        <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Άτομα</h1>
+        <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Στοιχεια & Επαφες</p>
       </header>
 
       {/* SECTION TOGGLE */}
@@ -299,10 +294,24 @@ function SuperiorsSection() {
   )
 }
 
+function saveContactVcf(name: string, phone: string) {
+  const vcard = `BEGIN:VCARD\r\nVERSION:3.0\r\nFN:${name}\r\nTEL;TYPE=CELL:${phone}\r\nEND:VCARD`
+  const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${name.replace(/\s+/g, '_')}.vcf`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
 function FriendsSection() {
   const [friends, setFriends] = useLocalStorage<FriendEntry[]>('fantaros-friends', [])
   const [isAdding, setIsAdding] = useState(false)
   const [editingEntry, setEditingEntry] = useState<FriendEntry | null>(null)
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null)
 
   const handleAdd = (entry: FriendEntry) => {
     hapticFeedback('medium')
@@ -317,12 +326,17 @@ function FriendsSection() {
   }
 
   const handleDelete = (id: string) => {
-    hapticFeedback('light')
+    hapticFeedback('medium')
     setFriends(friends.filter(f => f.id !== id))
+    setOpenMenuId(null)
   }
 
   return (
     <div className="animate-fade-in space-y-3">
+      {openMenuId && (
+        <div className="fixed inset-0 z-10" onClick={() => setOpenMenuId(null)} />
+      )}
+
       <div className="flex items-center justify-between mb-1 px-1">
         <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Συναδελφοι</h2>
         <button 
@@ -340,7 +354,7 @@ function FriendsSection() {
         </div>
       ) : (
         friends.map((friend) => (
-          <div key={friend.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
+          <div key={friend.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10">
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
                 <Users size={24} />
@@ -352,50 +366,64 @@ function FriendsSection() {
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-1 shrink-0 ml-2">
+            <div className="flex items-center gap-1.5 shrink-0 ml-2">
               {friend.phone && (
                 <a
                   href={`tel:${friend.phone}`}
                   onClick={() => hapticFeedback('light')}
-                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-emerald-400 hover:text-emerald-300 transition-colors"
+                  className="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 active:scale-90 transition-all"
                   aria-label="Κλήση"
                 >
-                  <Phone size={14} />
+                  <Phone size={15} />
                 </a>
               )}
-              {friend.phone && (
+              <div className="relative">
                 <button
                   onClick={() => {
                     hapticFeedback('light')
-                    const vcard = `BEGIN:VCARD\r\nVERSION:3.0\r\nFN:${friend.name}\r\nTEL;TYPE=CELL:${friend.phone}\r\nEND:VCARD`
-                    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' })
-                    const url = URL.createObjectURL(blob)
-                    const a = document.createElement('a')
-                    a.href = url
-                    a.download = `${friend.name.replace(/\s+/g, '_')}.vcf`
-                    document.body.appendChild(a)
-                    a.click()
-                    document.body.removeChild(a)
-                    URL.revokeObjectURL(url)
+                    setOpenMenuId(openMenuId === friend.id ? null : friend.id)
                   }}
-                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
-                  aria-label="Αποθήκευση επαφής"
+                  className="w-9 h-9 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white active:scale-90 transition-all"
+                  aria-label="Περισσότερα"
                 >
-                  <UserPlus size={14} />
+                  <MoreVertical size={15} />
                 </button>
-              )}
-              <button
-                onClick={() => { hapticFeedback('light'); setEditingEntry(friend) }}
-                className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
-              >
-                <Edit3 size={14} />
-              </button>
-              <button 
-                onClick={() => handleDelete(friend.id)}
-                className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
-              >
-                <X size={14} />
-              </button>
+                {openMenuId === friend.id && (
+                  <div className="absolute right-0 top-full mt-2 z-20 bg-zinc-900 border border-zinc-700/60 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden min-w-[170px]">
+                    {friend.phone && (
+                      <button
+                        onClick={() => {
+                          hapticFeedback('light')
+                          saveContactVcf(friend.name, friend.phone!)
+                          setOpenMenuId(null)
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-[12px] font-bold text-zinc-300 hover:bg-zinc-800 transition-colors border-b border-zinc-800"
+                      >
+                        <UserPlus size={14} className="text-[#34d399]" />
+                        Αποθ. Επαφής
+                      </button>
+                    )}
+                    <button
+                      onClick={() => {
+                        hapticFeedback('light')
+                        setEditingEntry(friend)
+                        setOpenMenuId(null)
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-[12px] font-bold text-zinc-300 hover:bg-zinc-800 transition-colors border-b border-zinc-800"
+                    >
+                      <Edit3 size={14} className="text-zinc-400" />
+                      Επεξεργασία
+                    </button>
+                    <button
+                      onClick={() => handleDelete(friend.id)}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-[12px] font-bold text-rose-400 hover:bg-zinc-800 transition-colors"
+                    >
+                      <Trash2 size={14} />
+                      Διαγραφή
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ))
@@ -527,7 +555,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
             {showRanks ? <ChevronUp className="h-4 w-4 text-[#34d399]" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           {showRanks && (
-            <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-zinc-700/50 no-scrollbar animate-in fade-in slide-in-from-bottom-2">
+            <div className="absolute z-50 top-full mt-1 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-zinc-700/50 no-scrollbar shadow-xl shadow-black/40">
               {RANKS.map((r) => (
                 <button
                   key={r}
@@ -581,7 +609,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
             {showBloodTypes ? <ChevronUp className="h-4 w-4 text-[#34d399]" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           {showBloodTypes && (
-            <div className="absolute z-50 bottom-full mb-2 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-zinc-700/50 no-scrollbar animate-in fade-in slide-in-from-bottom-2">
+            <div className="absolute z-50 top-full mt-1 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-zinc-700/50 no-scrollbar shadow-xl shadow-black/40">
               {BLOOD_TYPES.map((b) => (
                 <button
                   key={b}
