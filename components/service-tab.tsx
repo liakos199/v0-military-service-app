@@ -45,7 +45,8 @@ export function ServiceTab() {
     return sum + Math.max(0, days)
   }, 0)
 
-  const effectiveTotalDays = config.totalDays + totalPrisonDays + totalDetentionDays
+  // Only Prison extends the service duration. Detention restricts leave but does not extend service.
+  const effectiveTotalDays = config.totalDays + totalPrisonDays
   
   const daysServed = config.enlistmentDate
     ? Math.min(effectiveTotalDays, Math.max(0, daysBetween(config.enlistmentDate, today)))
