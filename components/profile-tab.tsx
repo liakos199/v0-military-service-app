@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { 
   User, ChevronDown, ChevronUp, Edit3, Shield, MapPin, Hash, Droplet, 
   MessageSquare, Save, X, Palette, RotateCcw, Users, Pencil, ShieldAlert, 
-  ShieldCheck, Plus, Phone, UserPlus, MoreVertical, Trash2, Crosshair, LayoutGrid, Users2
+  ShieldCheck, Plus, Phone, UserPlus, MoreVertical, Trash2, Crosshair, LayoutGrid, Users2, Bookmark
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -27,6 +27,7 @@ const DEFAULT_PROFILE: ProfileData = {
   reportingPhrase: '',
   rank: 'ΣΤΡΑΤΙΩΤΗΣ',
   serviceNumber: '',
+  series: '',
   weaponCode: '',
   weaponCell: '',
   platoon: '',
@@ -166,6 +167,15 @@ function ProfileSection() {
           </div>
           <span className="text-[22px] font-extrabold text-white">
             {profile.bloodType || '-'}
+          </span>
+        </div>
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
+          <div className="flex items-center gap-2 mb-2">
+            <Bookmark size={18} className="text-[#34d399]" />
+            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Σειρα / ΕΣΣΟ</span>
+          </div>
+          <span className="text-[22px] font-extrabold text-white truncate">
+            {profile.series || '-'}
           </span>
         </div>
         <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
@@ -573,8 +583,8 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
       <div className="grid grid-cols-2 gap-4">
         <FormField
           label="Σειρά / ΕΣΣΟ"
-          value={form.weaponCode}
-          onChange={(v) => setForm({ ...form, weaponCode: v })}
+          value={form.series}
+          onChange={(v) => setForm({ ...form, series: v })}
           placeholder="π.χ. 2024 Α ΕΣΣΟ"
         />
         <FormField

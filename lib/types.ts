@@ -102,6 +102,7 @@ export interface ProfileData {
   reportingPhrase: string
   rank: string
   serviceNumber: string
+  series: string       // Σειρά / ΕΣΣΟ
   weaponCode: string   // Κωδικός Όπλου
   weaponCell: string   // Κελί Όπλου
   platoon: string      // Διμοιρία
