@@ -42,8 +42,11 @@ export function generateId(): string {
 export function daysBetween(date1: string, date2: string): number {
   const d1 = new Date(date1)
   const d2 = new Date(date2)
+  // Set to midnight to avoid DST issues
+  d1.setHours(0, 0, 0, 0)
+  d2.setHours(0, 0, 0, 0)
   const diff = d2.getTime() - d1.getTime()
-  return Math.floor(diff / (1000 * 60 * 60 * 24))
+  return Math.round(diff / (1000 * 60 * 60 * 24))
 }
 
 export function toLocalDateString(date: Date = new Date()): string {

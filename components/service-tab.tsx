@@ -38,9 +38,6 @@ export function ServiceTab() {
   const [ringOffset, setRingOffset] = useState(276.46)
 
   const today = toLocalDateString()
-  const daysServed = config.enlistmentDate
-    ? Math.max(0, daysBetween(config.enlistmentDate, today))
-    : 0
   const totalLeaveDays = leaves.reduce((sum, l) => sum + l.days, 0)
   const totalPrisonDays = prisons.reduce((sum, p) => sum + p.days, 0)
   const totalDetentionDays = detentions.reduce((sum, d) => {
@@ -49,6 +46,11 @@ export function ServiceTab() {
   }, 0)
 
   const effectiveTotalDays = config.totalDays + totalPrisonDays + totalDetentionDays
+  
+  const daysServed = config.enlistmentDate
+    ? Math.min(effectiveTotalDays, Math.max(0, daysBetween(config.enlistmentDate, today)))
+    : 0
+
   const effectiveDaysRemaining = Math.max(0, effectiveTotalDays - daysServed)
   const percentage = config.enlistmentDate
     ? Math.min(100, Math.max(0, (daysServed / effectiveTotalDays) * 100))
@@ -57,6 +59,8 @@ export function ServiceTab() {
   const dischargeDate = config.enlistmentDate
     ? (() => {
         const d = new Date(config.enlistmentDate)
+        // If enlistment is 2024-01-01 and duration is 365 days, 
+        // discharge is 2025-01-01 (enlistment + duration)
         d.setDate(d.getDate() + effectiveTotalDays)
         return toLocalDateString(d)
       })()
