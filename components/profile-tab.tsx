@@ -12,6 +12,12 @@ import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback } from '@/lib/helpers'
 import type { ProfileData, SuperiorEntry, FriendEntry } from '@/lib/types'
 import { RANKS, BLOOD_TYPES } from '@/lib/types'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const DEFAULT_PROFILE: ProfileData = {
   fullName: '',
@@ -363,28 +369,49 @@ function FriendsSection() {
                 <h3 className="text-[15px] font-bold text-white leading-tight">{friend.name}</h3>
                 <div className="flex items-center gap-2 mt-0.5">
                   <span className="text-[9px] font-bold tracking-widest text-[#34d399] uppercase">{friend.unit}</span>
-                  {friend.phone && (
-                    <>
-                      <span className="w-1 h-1 rounded-full bg-zinc-700"></span>
-                      <span className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">{friend.phone}</span>
-                    </>
-                  )}
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              <button 
-                onClick={() => setEditingEntry(friend)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors"
-              >
-                <Edit3 size={16} />
-              </button>
-              <button 
-                onClick={() => handleDelete(friend.id)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-red-400 transition-colors"
-              >
-                <Trash2 size={16} />
-              </button>
+            <div className="flex items-center gap-2">
+              {friend.phone && (
+                <a 
+                  href={`tel:${friend.phone}`}
+                  onClick={() => hapticFeedback('medium')}
+                  className="w-9 h-9 rounded-full bg-[#10b981]/10 border border-[#10b981]/20 flex items-center justify-center text-[#34d399] hover:bg-[#10b981]/20 transition-colors"
+                >
+                  <Phone size={16} />
+                </a>
+              )}
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="w-9 h-9 rounded-full flex items-center justify-center text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors">
+                    <MoreVertical size={18} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="bg-zinc-900 border-zinc-800 text-white">
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      hapticFeedback('light')
+                      setEditingEntry(friend)
+                    }}
+                    className="flex items-center gap-2 focus:bg-zinc-800 focus:text-[#34d399] cursor-pointer"
+                  >
+                    <Edit3 size={14} />
+                    <span>Επεξεργασία</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      hapticFeedback('medium')
+                      handleDelete(friend.id)
+                    }}
+                    className="flex items-center gap-2 focus:bg-red-500/10 focus:text-red-400 text-red-400 cursor-pointer"
+                  >
+                    <Trash2 size={14} />
+                    <span>Διαγραφή</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         ))
@@ -689,7 +716,7 @@ function EditSuperiorForm({ entry, onUpdate, onCancel }: { entry: SuperiorEntry;
 }
 
 function AddFriendForm({ onAdd, onCancel }: { onAdd: (entry: FriendEntry) => void; onCancel: () => void }) {
-  const [form, setForm] = useState<FriendEntry>({ id: '', name: '', unit: '', phone: '' })
+  const [form, setForm] = useState<FriendEntry>({ id: '', name: '', unit: '', phone: '', notes: '' })
 
   const handleSubmit = () => {
     if (!form.name.trim()) return
