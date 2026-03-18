@@ -159,20 +159,20 @@ export function ServiceTab() {
               </div>
 
               <div className="grid grid-cols-3 gap-2 mt-4">
-                <div className="bg-zinc-800/50 border border-zinc-700/30 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-inner">
-                  <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase mb-1">Υπηρετησες</span>
+                <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
+                  <span className="text-[9px] font-bold tracking-[0.1em] text-[#34d399] uppercase mb-1">Υπηρετησες</span>
                   <span className="text-[22px] font-extrabold text-white leading-none mb-1">{daysServed}</span>
-                  <span className="text-[9px] font-semibold text-zinc-600 uppercase tracking-widest">Ημερες</span>
+                  <span className="text-[9px] font-semibold text-zinc-500 uppercase tracking-widest">Ημερες</span>
                 </div>
                 <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
                   <span className="text-[9px] font-bold tracking-[0.1em] text-[#34d399] uppercase mb-1">Απομενουν</span>
                   <span className="text-[22px] font-extrabold text-white leading-none mb-1">{effectiveDaysRemaining}</span>
                   <span className="text-[9px] font-semibold text-zinc-500 uppercase tracking-widest">Ημερες</span>
                 </div>
-                <div className="bg-zinc-800/50 border border-zinc-700/30 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-inner">
-                  <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase mb-1">Αδειες</span>
+                <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
+                  <span className="text-[9px] font-bold tracking-[0.1em] text-[#34d399] uppercase mb-1">Αδειες</span>
                   <span className="text-[22px] font-extrabold text-white leading-none mb-1">{totalLeaveDays}</span>
-                  <span className="text-[9px] font-semibold text-zinc-600 uppercase tracking-widest">Ημερες</span>
+                  <span className="text-[9px] font-semibold text-zinc-500 uppercase tracking-widest">Ημερες</span>
                 </div>
               </div>
             </>
@@ -181,7 +181,7 @@ export function ServiceTab() {
 
         {/* Extensions Section */}
         <div className="mb-8">
-          <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Επεκτασεις Θητειας</h2>
+          <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Καμπανες</h2>
           <div className="space-y-3">
             {/* Prison Card — entire card is pressable */}
             <button
