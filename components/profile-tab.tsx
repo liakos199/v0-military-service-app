@@ -26,7 +26,7 @@ const DEFAULT_PROFILE: ProfileData = {
 }
 
 export function ProfileTab() {
-  const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends' | 'settings'>('profile')
+  const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends'>('profile')
 
   return (
     <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in overflow-hidden bg-black">
@@ -42,8 +42,7 @@ export function ProfileTab() {
           {[
             { id: 'profile', label: 'ΣΤΟΙΧΕΙΑ' },
             { id: 'superiors', label: 'ΑΝΩΤΕΡΟΙ' },
-            { id: 'friends', label: 'ΦΙΛΟΙ' },
-            { id: 'settings', label: 'ΡΥΘΜΙΣΕΙΣ' }
+            { id: 'friends', label: 'ΦΙΛΟΙ' }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -69,7 +68,6 @@ export function ProfileTab() {
         {activeSection === 'profile' && <ProfileSection />}
         {activeSection === 'superiors' && <SuperiorsSection />}
         {activeSection === 'friends' && <FriendsSection />}
-        {activeSection === 'settings' && <SettingsSection />}
       </main>
     </div>
   )
@@ -239,27 +237,29 @@ function SuperiorsSection() {
           <div key={sup.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
-                <User size={24} />
+                <ShieldCheck size={24} />
               </div>
               <div className="flex flex-col">
-                <h3 className="text-[15px] font-bold text-white mb-0.5">{sup.name}</h3>
-                <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">
-                  {sup.rank}{sup.role ? ` • ${sup.role}` : ''}
-                </span>
+                <h3 className="text-[15px] font-bold text-white leading-tight">{sup.name}</h3>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="text-[9px] font-bold tracking-widest text-[#34d399] uppercase">{sup.rank}</span>
+                  <span className="w-1 h-1 rounded-full bg-zinc-700"></span>
+                  <span className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">{sup.role}</span>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-1">
-              <button
-                onClick={() => { hapticFeedback('light'); setEditingEntry(sup) }}
-                className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+              <button 
+                onClick={() => setEditingEntry(sup)}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors"
               >
-                <Edit3 size={14} />
+                <Edit3 size={16} />
               </button>
               <button 
                 onClick={() => handleDelete(sup.id)}
-                className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-red-400 transition-colors"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-red-400 transition-colors"
               >
-                <X size={14} />
+                <Trash2 size={16} />
               </button>
             </div>
           </div>
@@ -278,14 +278,14 @@ function SuperiorsSection() {
       </FullscreenModal>
 
       <FullscreenModal
-        isOpen={!!editingEntry}
+        isOpen={editingEntry !== null}
         onClose={() => setEditingEntry(null)}
         title="Επεξεργασία Ανωτέρου"
       >
         {editingEntry && (
           <EditSuperiorForm
             entry={editingEntry}
-            onSave={handleUpdate}
+            onUpdate={handleUpdate}
             onCancel={() => setEditingEntry(null)}
           />
         )}
@@ -294,24 +294,10 @@ function SuperiorsSection() {
   )
 }
 
-function saveContactVcf(name: string, phone: string) {
-  const vcard = `BEGIN:VCARD\r\nVERSION:3.0\r\nFN:${name}\r\nTEL;TYPE=CELL:${phone}\r\nEND:VCARD`
-  const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `${name.replace(/\s+/g, '_')}.vcf`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
-
 function FriendsSection() {
   const [friends, setFriends] = useLocalStorage<FriendEntry[]>('fantaros-friends', [])
   const [isAdding, setIsAdding] = useState(false)
   const [editingEntry, setEditingEntry] = useState<FriendEntry | null>(null)
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null)
 
   const handleAdd = (entry: FriendEntry) => {
     hapticFeedback('medium')
@@ -326,19 +312,14 @@ function FriendsSection() {
   }
 
   const handleDelete = (id: string) => {
-    hapticFeedback('medium')
+    hapticFeedback('light')
     setFriends(friends.filter(f => f.id !== id))
-    setOpenMenuId(null)
   }
 
   return (
     <div className="animate-fade-in space-y-3">
-      {openMenuId && (
-        <div className="fixed inset-0 z-10" onClick={() => setOpenMenuId(null)} />
-      )}
-
       <div className="flex items-center justify-between mb-1 px-1">
-        <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Συναδελφοι</h2>
+        <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Υπαρχοντεσ</h2>
         <button 
           onClick={() => setIsAdding(true)}
           className="px-3 py-1.5 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 text-[#34d399] text-[10px] font-extrabold tracking-widest uppercase hover:bg-[#10b981]/20 transition-colors active:scale-95"
@@ -349,81 +330,42 @@ function FriendsSection() {
 
       {friends.length === 0 ? (
         <div className="py-12 flex flex-col items-center justify-center text-center opacity-40">
-          <Users size={48} className="text-zinc-500 mb-4" />
-          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπαρχουν συναδελφοι</p>
+          <UserPlus size={48} className="text-zinc-500 mb-4" />
+          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπαρχουν καταχωρησεις</p>
         </div>
       ) : (
         friends.map((friend) => (
-          <div key={friend.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10">
-            <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div key={friend.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
+            <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
-                <Users size={24} />
+                <User size={24} />
               </div>
-              <div className="flex flex-col min-w-0">
-                <h3 className="text-[15px] font-bold text-white mb-0.5 truncate">{friend.name}</h3>
-                <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase truncate">
-                  {friend.unit || 'Χωρις Μοναδα'}
-                </span>
+              <div className="flex flex-col">
+                <h3 className="text-[15px] font-bold text-white leading-tight">{friend.name}</h3>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="text-[9px] font-bold tracking-widest text-[#34d399] uppercase">{friend.unit}</span>
+                  {friend.phone && (
+                    <>
+                      <span className="w-1 h-1 rounded-full bg-zinc-700"></span>
+                      <span className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">{friend.phone}</span>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 shrink-0 ml-2">
-              {friend.phone && (
-                <a
-                  href={`tel:${friend.phone}`}
-                  onClick={() => hapticFeedback('light')}
-                  className="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 active:scale-90 transition-all"
-                  aria-label="Κλήση"
-                >
-                  <Phone size={15} />
-                </a>
-              )}
-              <div className="relative">
-                <button
-                  onClick={() => {
-                    hapticFeedback('light')
-                    setOpenMenuId(openMenuId === friend.id ? null : friend.id)
-                  }}
-                  className="w-9 h-9 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white active:scale-90 transition-all"
-                  aria-label="Περισσότερα"
-                >
-                  <MoreVertical size={15} />
-                </button>
-                {openMenuId === friend.id && (
-                  <div className="absolute right-0 top-full mt-2 z-20 bg-zinc-900 border border-zinc-700/60 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden min-w-[170px]">
-                    {friend.phone && (
-                      <button
-                        onClick={() => {
-                          hapticFeedback('light')
-                          saveContactVcf(friend.name, friend.phone!)
-                          setOpenMenuId(null)
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-[12px] font-bold text-zinc-300 hover:bg-zinc-800 transition-colors border-b border-zinc-800"
-                      >
-                        <UserPlus size={14} className="text-[#34d399]" />
-                        Αποθ. Επαφής
-                      </button>
-                    )}
-                    <button
-                      onClick={() => {
-                        hapticFeedback('light')
-                        setEditingEntry(friend)
-                        setOpenMenuId(null)
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-[12px] font-bold text-zinc-300 hover:bg-zinc-800 transition-colors border-b border-zinc-800"
-                    >
-                      <Edit3 size={14} className="text-zinc-400" />
-                      Επεξεργασία
-                    </button>
-                    <button
-                      onClick={() => handleDelete(friend.id)}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-[12px] font-bold text-rose-400 hover:bg-zinc-800 transition-colors"
-                    >
-                      <Trash2 size={14} />
-                      Διαγραφή
-                    </button>
-                  </div>
-                )}
-              </div>
+            <div className="flex items-center gap-1">
+              <button 
+                onClick={() => setEditingEntry(friend)}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors"
+              >
+                <Edit3 size={16} />
+              </button>
+              <button 
+                onClick={() => handleDelete(friend.id)}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-red-400 transition-colors"
+              >
+                <Trash2 size={16} />
+              </button>
             </div>
           </div>
         ))
@@ -432,7 +374,7 @@ function FriendsSection() {
       <FullscreenModal
         isOpen={isAdding}
         onClose={() => setIsAdding(false)}
-        title="Προσθήκη Συναδέλφου"
+        title="Προσθήκη Φίλου"
       >
         <AddFriendForm
           onAdd={handleAdd}
@@ -441,75 +383,18 @@ function FriendsSection() {
       </FullscreenModal>
 
       <FullscreenModal
-        isOpen={!!editingEntry}
+        isOpen={editingEntry !== null}
         onClose={() => setEditingEntry(null)}
-        title="Επεξεργασία Συναδέλφου"
+        title="Επεξεργασία Φίλου"
       >
         {editingEntry && (
           <EditFriendForm
             entry={editingEntry}
-            onSave={handleUpdate}
+            onUpdate={handleUpdate}
             onCancel={() => setEditingEntry(null)}
           />
         )}
       </FullscreenModal>
-    </div>
-  )
-}
-
-function SettingsSection() {
-  const [primaryColor, setPrimaryColor] = useLocalStorage('fantaros-primary-color', '#10b981')
-
-  const resetColor = () => {
-    hapticFeedback('medium')
-    setPrimaryColor('#10b981')
-    document.documentElement.style.setProperty('--primary', '#10b981')
-  }
-
-  return (
-    <div className="animate-fade-in space-y-4">
-      <div className="flex items-center justify-between mb-1 px-1">
-        <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Εμφανιση</h2>
-      </div>
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/10">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 rounded-[14px] bg-[#10b981]/10 border border-[#10b981]/20 text-[#34d399] flex items-center justify-center shrink-0 shadow-inner">
-            <Palette size={24} className="fill-[#34d399]" />
-          </div>
-          <div className="flex flex-col">
-            <h3 className="text-[16px] font-bold text-white leading-tight">Χρώμα Εφαρμογής</h3>
-            <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase mt-0.5">Επιλεξτε το Κυριο Χρωμα (RGB)</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 mb-6">
-          <div 
-            className="w-16 h-16 rounded-2xl shrink-0 shadow-[0_0_15px_rgba(52,211,153,0.3)] border border-emerald-500/50"
-            style={{ backgroundColor: primaryColor }}
-          ></div>
-          <div className="flex-1 flex flex-col">
-            <div className="flex justify-between items-center mb-1.5 px-1">
-              <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">Επιλεγμενο:</span>
-              <span className="text-[10px] font-bold tracking-widest text-[#34d399] uppercase">{primaryColor.toUpperCase()}</span>
-            </div>
-            <input 
-              type="color" 
-              value={primaryColor}
-              onChange={(e) => {
-                setPrimaryColor(e.target.value)
-                document.documentElement.style.setProperty('--primary', e.target.value)
-              }}
-              className="w-full h-10 rounded-xl bg-zinc-900 border border-zinc-700/50 cursor-pointer"
-            />
-          </div>
-        </div>
-        <button 
-          onClick={resetColor}
-          className="w-full py-3.5 rounded-xl bg-zinc-800/80 border border-zinc-700 flex items-center justify-center gap-2 text-[12px] font-bold tracking-widest text-zinc-300 hover:text-white hover:bg-zinc-700/50 transition-colors active:scale-[0.98]"
-        >
-          <RotateCcw size={16} />
-          ΕΠΑΝΑΦΟΡΑ ΠΡΟΕΠΙΛΟΓΗΣ
-        </button>
-      </div>
     </div>
   )
 }
@@ -713,60 +598,12 @@ function AddSuperiorForm({ onAdd, onCancel }: { onAdd: (entry: SuperiorEntry) =>
   )
 }
 
-function AddFriendForm({ onAdd, onCancel }: { onAdd: (entry: FriendEntry) => void; onCancel: () => void }) {
-  const [form, setForm] = useState<FriendEntry>({ id: '', name: '', unit: '', phone: '' })
-
-  const handleSubmit = () => {
-    if (!form.name.trim()) return
-    hapticFeedback('heavy')
-    onAdd(form)
-  }
-
-  return (
-    <div className="flex flex-col gap-4 h-full">
-      <FormField
-        label="Ονοματεπώνυμο"
-        value={form.name}
-        onChange={(v) => setForm({ ...form, name: v })}
-        placeholder="π.χ. Γιώργος Παπαδόπουλος"
-      />
-      <FormField
-        label="Μονάδα / Λόχος"
-        value={form.unit}
-        onChange={(v) => setForm({ ...form, unit: v })}
-        placeholder="π.χ. 123 ΤΠ"
-      />
-      <FormField
-        label="Τηλέφωνο (Προαιρετικό)"
-        value={form.phone}
-        onChange={(v) => setForm({ ...form, phone: v })}
-        placeholder="69XXXXXXXX"
-      />
-      <div className="flex gap-3 pt-4 mt-auto">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-        >
-          Προσθηκη
-        </button>
-      </div>
-    </div>
-  )
-}
-
-function EditSuperiorForm({ entry, onSave, onCancel }: { entry: SuperiorEntry; onSave: (entry: SuperiorEntry) => void; onCancel: () => void }) {
+function EditSuperiorForm({ entry, onUpdate, onCancel }: { entry: SuperiorEntry; onUpdate: (entry: SuperiorEntry) => void; onCancel: () => void }) {
   const [form, setForm] = useState<SuperiorEntry>(entry)
 
   const handleSubmit = () => {
     if (!form.name.trim()) return
-    hapticFeedback('heavy')
-    onSave(form)
+    onUpdate(form)
   }
 
   return (
@@ -800,20 +637,20 @@ function EditSuperiorForm({ entry, onSave, onCancel }: { entry: SuperiorEntry; o
           onClick={handleSubmit}
           className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
         >
-          Αποθηκευση
+          Ενημερωση
         </button>
       </div>
     </div>
   )
 }
 
-function EditFriendForm({ entry, onSave, onCancel }: { entry: FriendEntry; onSave: (entry: FriendEntry) => void; onCancel: () => void }) {
-  const [form, setForm] = useState<FriendEntry>(entry)
+function AddFriendForm({ onAdd, onCancel }: { onAdd: (entry: FriendEntry) => void; onCancel: () => void }) {
+  const [form, setForm] = useState<FriendEntry>({ id: '', name: '', unit: '', phone: '' })
 
   const handleSubmit = () => {
     if (!form.name.trim()) return
     hapticFeedback('heavy')
-    onSave(form)
+    onAdd(form)
   }
 
   return (
@@ -822,16 +659,16 @@ function EditFriendForm({ entry, onSave, onCancel }: { entry: FriendEntry; onSav
         label="Ονοματεπώνυμο"
         value={form.name}
         onChange={(v) => setForm({ ...form, name: v })}
-        placeholder="π.χ. Γιώργος Παπαδόπουλος"
+        placeholder="π.χ. Γιάννης"
       />
       <FormField
         label="Μονάδα / Λόχος"
         value={form.unit}
         onChange={(v) => setForm({ ...form, unit: v })}
-        placeholder="π.χ. 123 ΤΠ"
+        placeholder="π.χ. 305 ΤΠ"
       />
       <FormField
-        label="Τηλέφωνο (Προαιρετικό)"
+        label="Τηλέφωνο"
         value={form.phone}
         onChange={(v) => setForm({ ...form, phone: v })}
         placeholder="69XXXXXXXX"
@@ -847,14 +684,60 @@ function EditFriendForm({ entry, onSave, onCancel }: { entry: FriendEntry; onSav
           onClick={handleSubmit}
           className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
         >
-          Αποθηκευση
+          Προσθηκη
         </button>
       </div>
     </div>
   )
 }
 
-function FormField({ label, value, onChange, placeholder, type = 'text' }: { label: string, value: string, onChange: (v: string) => void, placeholder?: string, type?: string }) {
+function EditFriendForm({ entry, onUpdate, onCancel }: { entry: FriendEntry; onUpdate: (entry: FriendEntry) => void; onCancel: () => void }) {
+  const [form, setForm] = useState<FriendEntry>(entry)
+
+  const handleSubmit = () => {
+    if (!form.name.trim()) return
+    onUpdate(form)
+  }
+
+  return (
+    <div className="flex flex-col gap-4 h-full">
+      <FormField
+        label="Ονοματεπώνυμο"
+        value={form.name}
+        onChange={(v) => setForm({ ...form, name: v })}
+        placeholder="π.χ. Γιάννης"
+      />
+      <FormField
+        label="Μονάδα / Λόχος"
+        value={form.unit}
+        onChange={(v) => setForm({ ...form, unit: v })}
+        placeholder="π.χ. 305 ΤΠ"
+      />
+      <FormField
+        label="Τηλέφωνο"
+        value={form.phone}
+        onChange={(v) => setForm({ ...form, phone: v })}
+        placeholder="69XXXXXXXX"
+      />
+      <div className="flex gap-3 pt-4 mt-auto">
+        <button
+          onClick={onCancel}
+          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+        >
+          Ακυρωση
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
+        >
+          Ενημερωση
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function FormField({ label, value, onChange, placeholder, type = "text" }: { label: string; value: string; onChange: (v: string) => void; placeholder: string; type?: string }) {
   return (
     <div className="flex flex-col gap-1.5">
       <label className="block text-[10px] font-black uppercase tracking-wider text-zinc-500 mb-1 ml-1">{label}</label>
@@ -862,8 +745,8 @@ function FormField({ label, value, onChange, placeholder, type = 'text' }: { lab
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-zinc-800 text-white text-xs border border-zinc-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 focus:border-[#34d399]/50 transition-all font-bold placeholder:text-zinc-600"
         placeholder={placeholder}
+        className="w-full bg-zinc-800 text-white text-xs border border-zinc-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 focus:border-[#34d399]/50 transition-all font-bold placeholder:text-zinc-600 h-[46px]"
       />
     </div>
   )
