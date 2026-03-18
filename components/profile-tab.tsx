@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { 
   User, ChevronDown, ChevronUp, Edit3, Shield, MapPin, Hash, Droplet, 
   MessageSquare, Save, X, Palette, RotateCcw, Users, Pencil, ShieldAlert, 
-  ShieldCheck, Plus, Phone, UserPlus, MoreVertical, Trash2
+  ShieldCheck, Plus, Phone, UserPlus, MoreVertical, Trash2, Crosshair, LayoutGrid, Users2
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -23,6 +23,7 @@ const DEFAULT_PROFILE: ProfileData = {
   serviceNumber: '',
   weaponCode: '',
   weaponCell: '',
+  platoon: '',
 }
 
 export function ProfileTab() {
@@ -136,6 +137,15 @@ function ProfileSection() {
         </div>
         <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
           <div className="flex items-center gap-2 mb-2">
+            <Users2 size={18} className="text-[#34d399]" />
+            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Διμοιρια</span>
+          </div>
+          <span className="text-[22px] font-extrabold text-white">
+            {profile.platoon || '-'}
+          </span>
+        </div>
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
+          <div className="flex items-center gap-2 mb-2">
             <Hash size={18} className="text-[#34d399]" />
             <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Θαλαμος</span>
           </div>
@@ -154,11 +164,20 @@ function ProfileSection() {
         </div>
         <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
           <div className="flex items-center gap-2 mb-2">
-            <ShieldCheck size={18} className="text-[#34d399]" />
-            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Σειρα / ΕΣΣΟ</span>
+            <Crosshair size={18} className="text-[#34d399]" />
+            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Κωδικοσ Οπλου</span>
           </div>
-          <span className="text-[20px] font-extrabold text-white truncate">
+          <span className="text-[22px] font-extrabold text-white">
             {profile.weaponCode || '-'}
+          </span>
+        </div>
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
+          <div className="flex items-center gap-2 mb-2">
+            <LayoutGrid size={18} className="text-[#34d399]" />
+            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Θεση Οπλου</span>
+          </div>
+          <span className="text-[22px] font-extrabold text-white">
+            {profile.weaponCell || '-'}
           </span>
         </div>
       </div>
@@ -471,14 +490,21 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
           placeholder="π.χ. 3ος Λόχος"
         />
         <FormField
+          label="Διμοιρία"
+          type="number"
+          value={form.platoon}
+          onChange={(v) => setForm({ ...form, platoon: v })}
+          placeholder="π.χ. 1"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
           label="Θάλαμος"
           value={form.barracks}
           onChange={(v) => setForm({ ...form, barracks: v })}
           placeholder="π.χ. 7"
         />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
         <div className="relative">
           <label className="block text-[10px] font-black uppercase tracking-wider text-zinc-500 mb-1.5 ml-1">Ομάδα Αίματος</label>
           <button
@@ -515,11 +541,29 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
             </div>
           )}
         </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
         <FormField
           label="Σειρά / ΕΣΣΟ"
           value={form.weaponCode}
           onChange={(v) => setForm({ ...form, weaponCode: v })}
           placeholder="π.χ. 2024 Α ΕΣΣΟ"
+        />
+        <FormField
+          label="Κωδικός Όπλου"
+          value={form.weaponCode}
+          onChange={(v) => setForm({ ...form, weaponCode: v })}
+          placeholder="π.χ. 123456"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          label="Θέση Όπλου"
+          value={form.weaponCell}
+          onChange={(v) => setForm({ ...form, weaponCell: v })}
+          placeholder="π.χ. Α1"
         />
       </div>
 

@@ -104,6 +104,7 @@ export interface ProfileData {
   serviceNumber: string
   weaponCode: string   // Κωδικός Όπλου
   weaponCell: string   // Κελί Όπλου
+  platoon: string      // Διμοιρία
 }
 
 export interface SuperiorEntry {
