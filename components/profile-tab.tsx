@@ -81,6 +81,20 @@ export function ProfileTab() {
   )
 }
 
+function InfoCard({ icon: Icon, label, value }: { icon: any, label: string, value: string | undefined }) {
+  return (
+    <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1rem] p-3 flex flex-col shadow-lg shadow-black/10">
+      <div className="flex items-center gap-1.5 mb-1.5">
+        <Icon size={14} className="text-[#34d399]" />
+        <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase truncate">{label}</span>
+      </div>
+      <span className="text-lg font-extrabold text-white truncate">
+        {value || '-'}
+      </span>
+    </div>
+  )
+}
+
 function ProfileSection() {
   const [profile, setProfile] = useLocalStorage<ProfileData>('fantaros-profile', DEFAULT_PROFILE)
   const [isEditing, setIsEditing] = useState(false)
@@ -121,11 +135,6 @@ function ProfileSection() {
               <span className="bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[10px] font-extrabold tracking-widest px-2.5 py-1 rounded-md shadow-sm uppercase">
                 {profile.rank}
               </span>
-              {profile.serviceNumber && (
-                <span className="bg-zinc-800 border border-zinc-700 text-zinc-400 text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-md">
-                  #{profile.serviceNumber}
-                </span>
-              )}
             </div>
           </div>
         </div>
@@ -133,79 +142,56 @@ function ProfileSection() {
 
       {/* Details Grid */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-          <div className="flex items-center gap-2 mb-2">
-            <MapPin size={18} className="text-[#34d399]" />
-            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Λοχος</span>
-          </div>
-          <span className="text-[22px] font-extrabold text-white">
-            {profile.company || '-'}
-          </span>
-        </div>
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-          <div className="flex items-center gap-2 mb-2">
-            <Users2 size={18} className="text-[#34d399]" />
-            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Διμοιρια</span>
-          </div>
-          <span className="text-[22px] font-extrabold text-white">
-            {profile.platoon || '-'}
-          </span>
-        </div>
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-          <div className="flex items-center gap-2 mb-2">
-            <Hash size={18} className="text-[#34d399]" />
-            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Θαλαμος</span>
-          </div>
-          <span className="text-[22px] font-extrabold text-white">
-            {profile.barracks || '-'}
-          </span>
-        </div>
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-          <div className="flex items-center gap-2 mb-2">
-            <Droplet size={18} className="text-[#34d399]" />
-            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Ομαδα Αιματος</span>
-          </div>
-          <span className="text-[22px] font-extrabold text-white">
-            {profile.bloodType || '-'}
-          </span>
-        </div>
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-          <div className="flex items-center gap-2 mb-2">
-            <Bookmark size={18} className="text-[#34d399]" />
-            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Σειρα / ΕΣΣΟ</span>
-          </div>
-          <span className="text-[22px] font-extrabold text-white truncate">
-            {profile.series || '-'}
-          </span>
-        </div>
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-          <div className="flex items-center gap-2 mb-2">
-            <Crosshair size={18} className="text-[#34d399]" />
-            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Κωδικοσ Οπλου</span>
-          </div>
-          <span className="text-[22px] font-extrabold text-white">
-            {profile.weaponCode || '-'}
-          </span>
-        </div>
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-          <div className="flex items-center gap-2 mb-2">
-            <LayoutGrid size={18} className="text-[#34d399]" />
-            <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Θεση Οπλου</span>
-          </div>
-          <span className="text-[22px] font-extrabold text-white">
-            {profile.weaponCell || '-'}
-          </span>
-        </div>
+        <InfoCard 
+          icon={Shield} 
+          label="ΑΡΙΘΜΟΣ ΜΗΤΡΟΟΥ" 
+          value={profile.serviceNumber} 
+        />
+        <InfoCard 
+          icon={MapPin} 
+          label="ΛΟΧΟΣ" 
+          value={profile.company} 
+        />
+        <InfoCard 
+          icon={Users2} 
+          label="ΔΙΜΟΙΡΙΑ" 
+          value={profile.platoon} 
+        />
+        <InfoCard 
+          icon={Hash} 
+          label="ΘΑΛΑΜΟΣ" 
+          value={profile.barracks} 
+        />
+        <InfoCard 
+          icon={Droplet} 
+          label="ΟΜΑΔΑ ΑΙΜΑΤΟΣ" 
+          value={profile.bloodType} 
+        />
+        <InfoCard 
+          icon={Bookmark} 
+          label="ΣΕΙΡΑ / ΕΣΣΟ" 
+          value={profile.series} 
+        />
+        <InfoCard 
+          icon={Crosshair} 
+          label="ΚΩΔΙΚΟΣ ΟΠΛΟΥ" 
+          value={profile.weaponCode} 
+        />
+        <InfoCard 
+          icon={LayoutGrid} 
+          label="ΘΕΣΗ ΟΠΛΟΥ" 
+          value={profile.weaponCell} 
+        />
       </div>
 
       {/* Reporting Phrase */}
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/10">
-        <div className="flex items-center gap-2 mb-3">
-          <MessageSquare size={18} className="text-[#34d399]" />
-          <span className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase">Φραση Αναφορας</span>
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
+        <div className="flex items-center gap-2 mb-2">
+          <MessageSquare size={16} className="text-[#34d399]" />
+          <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Φραση Αναφορας</span>
         </div>
         <p className={cn(
-          "text-[16px] font-medium italic leading-relaxed",
+          "text-[15px] font-medium italic leading-relaxed",
           profile.reportingPhrase ? "text-zinc-300" : "text-zinc-500"
         )}>
           {profile.reportingPhrase ? `"${profile.reportingPhrase}"` : "Προσθέστε τη φράση αναφοράς σας..."}
