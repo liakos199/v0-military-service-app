@@ -8,6 +8,8 @@ import {
   Trash2,
   Calendar as CalendarIcon,
   Edit2,
+  History,
+  ArrowRight,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -42,6 +44,9 @@ export function CalendarTab() {
   const [showDateDetails, setShowDateDetails] = useState(false)
   const [showAddDuty, setShowAddDuty] = useState(false)
   const [showAddLeave, setShowAddLeave] = useState(false)
+  const [showFullHistory, setShowFullHistory] = useState(false)
+  const [showSummaryModal, setShowSummaryModal] = useState<{ type: 'duty' | 'leave', isOpen: boolean }>({ type: 'duty', isOpen: false })
+  
   const [initialDutyType, setInitialDutyType] = useState<DutyType>('guard')
   const [editingDutyId, setEditingDutyId] = useState<string | null>(null)
   const [editingLeaveId, setEditingLeaveId] = useState<string | null>(null)
@@ -162,6 +167,8 @@ export function CalendarTab() {
     setDutyModalMode('edit')
     setShowAddDuty(true)
     setShowDateDetails(false)
+    setShowFullHistory(false)
+    setShowSummaryModal({ ...showSummaryModal, isOpen: false })
   }
 
   const handleEditLeave = (leaveId: string) => {
@@ -169,6 +176,8 @@ export function CalendarTab() {
     setLeaveModalMode('edit')
     setShowAddLeave(true)
     setShowDateDetails(false)
+    setShowFullHistory(false)
+    setShowSummaryModal({ ...showSummaryModal, isOpen: false })
   }
 
   const handleCloseModals = () => {
@@ -195,16 +204,27 @@ export function CalendarTab() {
           <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Ημερολόγιο</h1>
           <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Βάρδιες & άδειες</p>
         </div>
-        <button
-          onClick={() => {
-            hapticFeedback('light')
-            setSelectedDate(today)
-            setShowActionSheet(true)
-          }}
-          className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] hover:border-[#34d399]/30 transition-all active:scale-95 shadow-md"
-        >
-          <Plus size={20} />
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setShowFullHistory(true)
+            }}
+            className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-all active:scale-95 shadow-md"
+          >
+            <History size={18} />
+          </button>
+          <button
+            onClick={() => {
+              hapticFeedback('light')
+              setSelectedDate(today)
+              setShowActionSheet(true)
+            }}
+            className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] hover:border-[#34d399]/30 transition-all active:scale-95 shadow-md"
+          >
+            <Plus size={20} />
+          </button>
+        </div>
       </header>
 
       {/* CONTENT */}
@@ -316,6 +336,18 @@ export function CalendarTab() {
             </div>
           </div>
 
+          {/* Monthly Summary */}
+          <MonthlySummary
+            duties={duties}
+            leaves={leaves}
+            viewMonth={viewMonth}
+            viewYear={viewYear}
+            onShowSummary={(type) => {
+              hapticFeedback('medium')
+              setShowSummaryModal({ type, isOpen: true })
+            }}
+          />
+
           {/* Upcoming Events */}
           <UpcomingEvents
             duties={duties}
@@ -326,18 +358,10 @@ export function CalendarTab() {
             onEditDuty={handleEditDuty}
             onEditLeave={handleEditLeave}
           />
-
-          {/* Monthly Summary */}
-          <MonthlySummary
-            duties={duties}
-            leaves={leaves}
-            viewMonth={viewMonth}
-            viewYear={viewYear}
-          />
         </div>
       </main>
 
-      {/* Action Sheet - for adding entries to empty dates or today */}
+      {/* Action Sheet */}
       <ActionSheet
         isOpen={showActionSheet}
         onClose={() => setShowActionSheet(false)}
@@ -366,7 +390,7 @@ export function CalendarTab() {
         <ActionSheetCancel onClick={() => setShowActionSheet(false)} />
       </ActionSheet>
 
-      {/* Date Details Modal - for viewing and managing entries on a specific date */}
+      {/* Date Details Modal */}
       <DateDetailsModal
         isOpen={showDateDetails}
         selectedDate={selectedDate}
@@ -387,6 +411,42 @@ export function CalendarTab() {
         onDeleteDuty={handleDeleteDuty}
         onDeleteLeave={handleDeleteLeave}
       />
+
+      {/* Summary List Modal */}
+      <FullscreenModal
+        isOpen={showSummaryModal.isOpen}
+        onClose={() => setShowSummaryModal({ ...showSummaryModal, isOpen: false })}
+        title={showSummaryModal.type === 'duty' ? 'ΥΠΗΡΕΣΙΕΣ ΜΗΝΑ' : 'ΑΔΕΙΕΣ ΜΗΝΑ'}
+      >
+        <SummaryList
+          type={showSummaryModal.type}
+          duties={duties.filter(d => d.date.startsWith(`${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`))}
+          leaves={leaves.filter(l => {
+            const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
+            return l.startDate.startsWith(monthPrefix) || l.endDate.startsWith(monthPrefix)
+          })}
+          onEditDuty={handleEditDuty}
+          onEditLeave={handleEditLeave}
+          onDeleteDuty={handleDeleteDuty}
+          onDeleteLeave={handleDeleteLeave}
+        />
+      </FullscreenModal>
+
+      {/* Full History Modal */}
+      <FullscreenModal
+        isOpen={showFullHistory}
+        onClose={() => setShowFullHistory(false)}
+        title="ΠΛΗΡΕΣ ΙΣΤΟΡΙΚΟ"
+      >
+        <FullHistoryView
+          duties={duties}
+          leaves={leaves}
+          onEditDuty={handleEditDuty}
+          onEditLeave={handleEditLeave}
+          onDeleteDuty={handleDeleteDuty}
+          onDeleteLeave={handleDeleteLeave}
+        />
+      </FullscreenModal>
 
       {/* Add Duty Modal */}
       <FullscreenModal
@@ -426,6 +486,276 @@ export function CalendarTab() {
           }
         />
       </FullscreenModal>
+    </div>
+  )
+}
+
+/* ---------- Monthly Summary ---------- */
+function MonthlySummary({
+  duties,
+  leaves,
+  viewMonth,
+  viewYear,
+  onShowSummary,
+}: {
+  duties: DutyEntry[]
+  leaves: LeaveEntry[]
+  viewMonth: number
+  viewYear: number
+  onShowSummary: (type: 'duty' | 'leave') => void
+}) {
+  const stats = useMemo(() => {
+    const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
+    const monthStart = `${monthPrefix}-01`
+    const monthEnd = `${monthPrefix}-${String(daysInMonth).padStart(2, '0')}`
+
+    const monthDuties = duties.filter((d) => d.date.startsWith(monthPrefix))
+    
+    let leaveDays = 0
+    leaves.forEach((l) => {
+      const lStart = l.startDate < monthStart ? monthStart : l.startDate
+      const lEnd = l.endDate > monthEnd ? monthEnd : l.endDate
+      if (lStart <= lEnd) {
+        const days = daysBetween(lStart, lEnd) + 1
+        leaveDays += days
+      }
+    })
+
+    return {
+      totalDuties: monthDuties.length,
+      leaveDays,
+    }
+  }, [duties, leaves, viewMonth, viewYear])
+
+  return (
+    <div className="flex flex-col gap-3">
+      <h3 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">
+        {GREEK_MONTHS[viewMonth]} - Σύνοψη
+      </h3>
+
+      <div className="flex gap-3">
+        {/* Duties card */}
+        <button
+          onClick={() => onShowSummary('duty')}
+          className="flex-1 rounded-[1.5rem] bg-emerald-500/10 p-4 border border-emerald-500/20 text-left transition-all active:scale-95 group relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
+            <ArrowRight size={16} className="text-emerald-400" />
+          </div>
+          <span className="text-[10px] font-bold text-emerald-400/80 uppercase tracking-widest block mb-1">
+            ΥΠΗΡΕΣΙΕΣ
+          </span>
+          <div className="flex items-baseline gap-1">
+            <span className="text-2xl font-bold text-white">{stats.totalDuties}</span>
+            <span className="text-[10px] text-zinc-400 font-medium uppercase">Γεγονότα</span>
+          </div>
+        </button>
+
+        {/* Leave card */}
+        <button
+          onClick={() => onShowSummary('leave')}
+          className="flex-1 rounded-[1.5rem] bg-amber-500/10 p-4 border border-amber-500/20 text-left transition-all active:scale-95 group relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
+            <ArrowRight size={16} className="text-amber-400" />
+          </div>
+          <span className="text-[10px] font-bold text-amber-400/80 uppercase tracking-widest block mb-1">
+            ΑΔΕΙΕΣ
+          </span>
+          <div className="flex items-baseline gap-1">
+            <span className="text-2xl font-bold text-white">{stats.leaveDays}</span>
+            <span className="text-[10px] text-zinc-400 font-medium uppercase">Ημέρες</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/* ---------- Summary List Component ---------- */
+function SummaryList({
+  type,
+  duties,
+  leaves,
+  onEditDuty,
+  onEditLeave,
+  onDeleteDuty,
+  onDeleteLeave,
+}: {
+  type: 'duty' | 'leave'
+  duties: DutyEntry[]
+  leaves: LeaveEntry[]
+  onEditDuty: (id: string) => void
+  onEditLeave: (id: string) => void
+  onDeleteDuty: (id: string) => void
+  onDeleteLeave: (id: string) => void
+}) {
+  if (type === 'duty') {
+    if (duties.length === 0) {
+      return (
+        <div className="text-center py-12">
+          <CalendarIcon className="h-12 w-12 text-zinc-700 mx-auto mb-4 opacity-30" />
+          <p className="text-zinc-500 text-sm font-medium">Καμία υπηρεσία για αυτόν τον μήνα</p>
+        </div>
+      )
+    }
+    return (
+      <div className="flex flex-col gap-3 p-2">
+        {duties.sort((a, b) => a.date.localeCompare(b.date)).map((duty) => (
+          <div
+            key={duty.id}
+            className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4"
+          >
+            <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-bold text-white">{DUTY_TYPE_LABELS[duty.type]}</p>
+              <p className="text-[10px] text-zinc-400 mt-0.5">
+                {formatGreekDate(duty.date)} • {duty.startTime} - {duty.endTime}
+              </p>
+            </div>
+            <div className="flex gap-1">
+              <button onClick={() => onEditDuty(duty.id)} className="p-2 text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-colors">
+                <Edit2 size={18} />
+              </button>
+              <button onClick={() => onDeleteDuty(duty.id)} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  if (leaves.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <CalendarIcon className="h-12 w-12 text-zinc-700 mx-auto mb-4 opacity-30" />
+        <p className="text-zinc-500 text-sm font-medium">Καμία άδεια για αυτόν τον μήνα</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-3 p-2">
+      {leaves.sort((a, b) => a.startDate.localeCompare(b.startDate)).map((leave) => (
+        <div
+          key={leave.id}
+          className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4"
+        >
+          <div className="w-1.5 h-10 rounded-full bg-amber-500 flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-[13px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
+            <p className="text-[10px] text-zinc-400 mt-0.5">
+              {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} • {leave.days} ημ.
+            </p>
+          </div>
+          <div className="flex gap-1">
+            <button onClick={() => onEditLeave(leave.id)} className="p-2 text-amber-400 hover:bg-amber-500/10 rounded-lg transition-colors">
+              <Edit2 size={18} />
+            </button>
+            <button onClick={() => onDeleteLeave(leave.id)} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+              <Trash2 size={18} />
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/* ---------- Full History View ---------- */
+function FullHistoryView({
+  duties,
+  leaves,
+  onEditDuty,
+  onEditLeave,
+  onDeleteDuty,
+  onDeleteLeave,
+}: {
+  duties: DutyEntry[]
+  leaves: LeaveEntry[]
+  onEditDuty: (id: string) => void
+  onEditLeave: (id: string) => void
+  onDeleteDuty: (id: string) => void
+  onDeleteLeave: (id: string) => void
+}) {
+  const [activeTab, setActiveTab] = useState<'duty' | 'leave'>('duty')
+
+  return (
+    <div className="flex flex-col h-full gap-4">
+      {/* Tab Switcher */}
+      <div className="flex p-1 bg-zinc-900/50 rounded-2xl border border-zinc-800/50 mx-2">
+        <button
+          onClick={() => { hapticFeedback('light'); setActiveTab('duty'); }}
+          className={cn(
+            'flex-1 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all',
+            activeTab === 'duty' ? 'bg-zinc-800 text-emerald-400 shadow-lg' : 'text-zinc-500'
+          )}
+        >
+          Υπηρεσίες ({duties.length})
+        </button>
+        <button
+          onClick={() => { hapticFeedback('light'); setActiveTab('leave'); }}
+          className={cn(
+            'flex-1 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all',
+            activeTab === 'leave' ? 'bg-zinc-800 text-amber-400 shadow-lg' : 'text-zinc-500'
+          )}
+        >
+          Άδειες ({leaves.length})
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-2 pb-10 hide-scrollbar">
+        {activeTab === 'duty' ? (
+          <div className="flex flex-col gap-3">
+            {duties.length === 0 ? (
+              <div className="text-center py-20 opacity-30">
+                <CalendarIcon className="h-16 w-16 mx-auto mb-4" />
+                <p className="text-sm">Δεν υπάρχει ιστορικό υπηρεσιών</p>
+              </div>
+            ) : (
+              duties.sort((a, b) => b.date.localeCompare(a.date)).map(duty => (
+                <div key={duty.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4 flex items-center gap-4">
+                  <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[12px] font-bold text-white">{DUTY_TYPE_LABELS[duty.type]}</p>
+                    <p className="text-[10px] text-zinc-500">{formatGreekDate(duty.date)}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    <button onClick={() => onEditDuty(duty.id)} className="p-2 text-emerald-400/70"><Edit2 size={16} /></button>
+                    <button onClick={() => onDeleteDuty(duty.id)} className="p-2 text-red-400/70"><Trash2 size={16} /></button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {leaves.length === 0 ? (
+              <div className="text-center py-20 opacity-30">
+                <CalendarIcon className="h-16 w-16 mx-auto mb-4" />
+                <p className="text-sm">Δεν υπάρχει ιστορικό αδειών</p>
+              </div>
+            ) : (
+              leaves.sort((a, b) => b.startDate.localeCompare(a.startDate)).map(leave => (
+                <div key={leave.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4 flex items-center gap-4">
+                  <div className="w-1 h-8 rounded-full bg-amber-500/50" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[12px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
+                    <p className="text-[10px] text-zinc-500">{formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    <button onClick={() => onEditLeave(leave.id)} className="p-2 text-amber-400/70"><Edit2 size={16} /></button>
+                    <button onClick={() => onDeleteLeave(leave.id)} className="p-2 text-red-400/70"><Trash2 size={16} /></button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -596,115 +926,6 @@ function DateDetailsModal({
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-/* ---------- Monthly Summary ---------- */
-function MonthlySummary({
-  duties,
-  leaves,
-  viewMonth,
-  viewYear,
-}: {
-  duties: DutyEntry[]
-  leaves: LeaveEntry[]
-  viewMonth: number
-  viewYear: number
-}) {
-  const stats = useMemo(() => {
-    const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
-    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
-    const monthStart = `${monthPrefix}-01`
-    const monthEnd = `${monthPrefix}-${String(daysInMonth).padStart(2, '0')}`
-
-    const monthDuties = duties.filter((d) => d.date.startsWith(monthPrefix))
-    const dutyCountByType: Partial<Record<DutyType, number>> = {}
-    monthDuties.forEach((d) => {
-      const count = d.type === 'prison' ? (d.prisonDays || 1) : 1
-      dutyCountByType[d.type] = (dutyCountByType[d.type] || 0) + count
-    })
-
-    let leaveDays = 0
-    const leaveCountByType: Partial<Record<LeaveType, number>> = {}
-    leaves.forEach((l) => {
-      const lStart = l.startDate < monthStart ? monthStart : l.startDate
-      const lEnd = l.endDate > monthEnd ? monthEnd : l.endDate
-      if (lStart <= lEnd) {
-        const days = daysBetween(lStart, lEnd) + 1
-        leaveDays += days
-        leaveCountByType[l.type] = (leaveCountByType[l.type] || 0) + days
-      }
-    })
-
-    return {
-      totalDuties: monthDuties.length,
-      dutyCountByType,
-      leaveDays,
-      leaveCountByType,
-    }
-  }, [duties, leaves, viewMonth, viewYear])
-
-  const hasDuties = stats.totalDuties > 0
-  const hasLeaves = stats.leaveDays > 0
-
-  if (!hasDuties && !hasLeaves) return null
-
-  return (
-    <div className="flex flex-col gap-3">
-      <h3 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">
-        {GREEK_MONTHS[viewMonth]} - Σύνοψη
-      </h3>
-
-      <div className="flex gap-3">
-        {/* Duties summary */}
-        {hasDuties && (
-          <div className="flex-1 rounded-[1.5rem] bg-emerald-500/10 p-4 border border-emerald-500/20">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">
-                {stats.totalDuties} γεγονότ{stats.totalDuties === 1 ? 'α' : 'α'}
-              </span>
-            </div>
-            <div className="flex flex-col gap-1.5">
-              {(Object.entries(stats.dutyCountByType) as [DutyType, number][]).map(
-                ([type, count]) => (
-                  <div key={type} className="flex items-center justify-between">
-                    <span className="text-[10px] text-zinc-400">
-                      {DUTY_TYPE_LABELS[type]}
-                    </span>
-                    <span className="text-[10px] font-bold text-white">{count} {type === 'prison' ? 'ημ.' : ''}</span>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Leave summary */}
-        {hasLeaves && (
-          <div className="flex-1 rounded-[1.5rem] bg-amber-500/10 p-4 border border-amber-500/20">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider">
-                {stats.leaveDays} ημέρ{stats.leaveDays === 1 ? 'α' : 'ες'}
-              </span>
-            </div>
-            <div className="flex flex-col gap-1.5">
-              {(Object.entries(stats.leaveCountByType) as [LeaveType, number][]).map(
-                ([type, count]) => (
-                  <div key={type} className="flex items-center justify-between">
-                    <span className="text-[10px] text-zinc-400">
-                      {LEAVE_TYPE_LABELS[type]}
-                    </span>
-                    <span className="text-[10px] font-bold text-white">
-                      {count} ημ.
-                    </span>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )
