@@ -204,27 +204,16 @@ export function CalendarTab() {
           <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Ημερολόγιο</h1>
           <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Βάρδιες & άδειες</p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => {
-              hapticFeedback('light')
-              setShowFullHistory(true)
-            }}
-            className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-all active:scale-95 shadow-md"
-          >
-            <History size={18} />
-          </button>
-          <button
-            onClick={() => {
-              hapticFeedback('light')
-              setSelectedDate(today)
-              setShowActionSheet(true)
-            }}
-            className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] hover:border-[#34d399]/30 transition-all active:scale-95 shadow-md"
-          >
-            <Plus size={20} />
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            hapticFeedback('light')
+            setSelectedDate(today)
+            setShowActionSheet(true)
+          }}
+          className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] hover:border-[#34d399]/30 transition-all active:scale-95 shadow-md"
+        >
+          <Plus size={20} />
+        </button>
       </header>
 
       {/* CONTENT */}
@@ -347,6 +336,21 @@ export function CalendarTab() {
               setShowSummaryModal({ type, isOpen: true })
             }}
           />
+
+          {/* Full History Button */}
+          <button
+            onClick={() => {
+              hapticFeedback('medium')
+              setShowFullHistory(true)
+            }}
+            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all active:scale-95 flex items-center justify-between font-bold text-[11px] uppercase tracking-wider"
+          >
+            <span className="flex items-center gap-2">
+              <History size={16} />
+              Πλήρες Ιστορικό
+            </span>
+            <ArrowRight size={14} />
+          </button>
 
           {/* Upcoming Events */}
           <UpcomingEvents
