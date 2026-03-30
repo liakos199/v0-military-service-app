@@ -41,13 +41,22 @@ export function ServiceTab() {
   const [ringOffset, setRingOffset] = useState(276.46)
   const [showPasswordRaw, setShowPasswordRaw] = useState(false)
 
-  // Read duties to find today's guard duty
+  // Read duties to find today's events
   const [duties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
 
   const today = toLocalDateString()
 
+  // Find all of today's events
+  const todaysDuties = duties.filter(d => d.date === today).sort((a, b) => {
+    const aStart = a.startTime || '00:00'
+    const bStart = b.startTime || '00:00'
+    return aStart.localeCompare(bStart)
+  })
+
+  const todaysLeaves = leaves.filter(l => l.startDate <= today && l.endDate >= today)
+
   // Check if there is a guard duty today with a password
-  const todaysGuardDuty = duties.find(d => d.date === today && d.type === 'guard' && (d.password || d.countersign))
+  const todaysGuardDuty = todaysDuties.find(d => d.type === 'guard' && (d.password || d.countersign))
   const totalLeaveDays = leaves.reduce((sum, l) => sum + l.days, 0)
   const totalPrisonDays = prisons.reduce((sum, p) => sum + p.days, 0)
   const totalDetentionDays = detentions.reduce((sum, d) => {
@@ -205,6 +214,38 @@ export function ServiceTab() {
             </>
           )}
         </div>
+
+        {/* Today's Events Section */}
+        {(todaysDuties.length > 0 || todaysLeaves.length > 0) && (
+          <div className="mb-8">
+            <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Σημερα</h2>
+            <div className="space-y-3">
+              {todaysDuties.map(duty => (
+                <div key={duty.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center gap-4 shadow-lg shadow-black/10 ring-1 ring-emerald-500/50">
+                  <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-bold text-white">{DUTY_TYPE_LABELS[duty.type]}</p>
+                    <p className="text-[10px] text-zinc-400 mt-0.5">
+                      {duty.startTime && duty.endTime ? `${duty.startTime} - ${duty.endTime}` : 'Χωρίς ώρα'}
+                    </p>
+                  </div>
+                </div>
+              ))}
+
+              {todaysLeaves.map(leave => (
+                <div key={leave.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center gap-4 shadow-lg shadow-black/10 ring-1 ring-amber-500/50">
+                  <div className="w-1.5 h-10 rounded-full bg-amber-500 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
+                    <p className="text-[10px] text-zinc-400 mt-0.5">
+                      Έως {formatGreekDate(leave.endDate)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Daily Password Section (Only shows if there is a guard duty today with a password) */}
         {todaysGuardDuty && (
