@@ -25,7 +25,7 @@ import {
   generateId,
 } from '@/lib/helpers'
 import type { ServiceConfig, LeaveEntry, PrisonEntry, DetentionEntry, DutyEntry } from '@/lib/types'
-import { SERVICE_DURATION_PRESETS } from '@/lib/types'
+import { SERVICE_DURATION_PRESETS, DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS } from '@/lib/types'
 
 export function ServiceTab() {
   const [config, setConfig] = useLocalStorage<ServiceConfig>('fantaros-config', {
