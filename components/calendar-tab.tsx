@@ -375,6 +375,7 @@ export function CalendarTab() {
         <ActionSheetItem
           title="Προσθήκη Υπηρεσίας"
           subtitle="Σκοπιά, Θαλαμοφύλακας, κ.ά."
+          variant="duty"
           onClick={() => {
             setInitialDutyType('guard')
             setDutyModalMode('add')
@@ -385,6 +386,7 @@ export function CalendarTab() {
         <ActionSheetItem
           title="Προσθήκη Άδειας"
           subtitle="Κανονική, Σπουδαστική, κ.ά."
+          variant="leave"
           onClick={() => {
             setLeaveModalMode('add')
             setEditingLeaveId(null)

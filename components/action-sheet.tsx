@@ -80,24 +80,37 @@ interface ActionSheetItemProps {
   title: string
   subtitle?: string
   onClick: () => void
-  variant?: 'default' | 'destructive'
+  variant?: 'default' | 'destructive' | 'duty' | 'leave'
 }
 
 export function ActionSheetItem({ icon, title, subtitle, onClick, variant = 'default' }: ActionSheetItemProps) {
+  let variantClasses = ''
+  let iconColorClass = ''
+
+  if (variant === 'destructive') {
+    variantClasses = 'bg-red-500/10 border-red-500/20 hover:bg-red-500/20 text-red-400'
+    iconColorClass = 'text-red-400'
+  } else if (variant === 'duty') {
+    variantClasses = 'bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20 text-emerald-400'
+    iconColorClass = 'text-emerald-400'
+  } else if (variant === 'leave') {
+    variantClasses = 'bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20 text-amber-400'
+    iconColorClass = 'text-amber-400'
+  } else {
+    variantClasses = 'bg-gradient-to-br from-zinc-800 to-zinc-900/90 border-zinc-700/40 hover:border-[#34d399]/30 text-white'
+    iconColorClass = 'text-[#34d399]'
+  }
+
   return (
     <button
       onClick={() => {
         hapticFeedback('light')
         onClick()
       }}
-      className={`flex items-center gap-4 p-4 rounded-[1.25rem] min-h-[60px] transition-all active:scale-[0.98] border ${
-        variant === 'destructive'
-          ? 'bg-red-500/10 border-red-500/20 hover:bg-red-500/20 text-red-400'
-          : 'bg-gradient-to-br from-zinc-800 to-zinc-900/90 border-zinc-700/40 hover:border-[#34d399]/30 text-white'
-      }`}
+      className={`flex items-center gap-4 p-4 rounded-[1.25rem] min-h-[60px] transition-all active:scale-[0.98] border ${variantClasses}`}
     >
       {icon && (
-        <div className={`flex-shrink-0 ${variant === 'destructive' ? 'text-red-400' : 'text-[#34d399]'}`}>
+        <div className={`flex-shrink-0 ${iconColorClass}`}>
           {icon}
         </div>
       )}
