@@ -25,7 +25,7 @@ import {
   generateId,
 } from '@/lib/helpers'
 import type { ServiceConfig, LeaveEntry, PrisonEntry, DetentionEntry, DutyEntry } from '@/lib/types'
-import { SERVICE_DURATION_PRESETS } from '@/lib/types'
+import { SERVICE_DURATION_PRESETS, DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS } from '@/lib/types'
 
 export function ServiceTab() {
   const [config, setConfig] = useLocalStorage<ServiceConfig>('fantaros-config', {
@@ -48,6 +48,11 @@ export function ServiceTab() {
 
   // Check if there is a guard duty today with a password
   const todaysGuardDuty = duties.find(d => d.date === today && d.type === 'guard' && (d.password || d.countersign))
+
+  const todaysDuties = duties.filter(d => d.date === today)
+  const todaysLeaves = leaves.filter(l => l.startDate <= today && l.endDate >= today)
+  const hasEventsToday = todaysDuties.length > 0 || todaysLeaves.length > 0
+
   const totalLeaveDays = leaves.reduce((sum, l) => sum + l.days, 0)
   const totalPrisonDays = prisons.reduce((sum, p) => sum + p.days, 0)
   const totalDetentionDays = detentions.reduce((sum, d) => {
@@ -205,6 +210,58 @@ export function ServiceTab() {
             </>
           )}
         </div>
+
+        {/* Today's Events Section */}
+        {hasEventsToday && (
+          <div className="mb-8">
+            <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Σημερα</h2>
+            <div className="space-y-3">
+              {todaysLeaves.map(leave => (
+                <div key={leave.id} className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                      <CalendarIcon size={20} />
+                    </div>
+                    <div>
+                      <h3 className="text-[13px] font-bold text-white leading-none mb-1">{LEAVE_TYPE_LABELS[leave.type]}</h3>
+                      <p className="text-[10px] text-zinc-400 font-semibold tracking-wide">
+                        {leave.startDate === leave.endDate ? 'ΜΟΝΟΗΜΕΡΗ' : `${formatGreekDate(leave.startDate)} - ${formatGreekDate(leave.endDate)}`}
+                      </p>
+                    </div>
+                  </div>
+                  {leave.notes && (
+                    <div className="mt-3 pl-13 pr-2">
+                      <p className="text-[11px] text-zinc-300 bg-black/20 rounded-lg p-2 border border-white/5">{leave.notes}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {todaysDuties.map(duty => (
+                <div key={duty.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-zinc-800 border border-zinc-700/50 text-zinc-300 flex items-center justify-center shrink-0">
+                      <CalendarIcon size={20} />
+                    </div>
+                    <div>
+                      <h3 className="text-[13px] font-bold text-white leading-none mb-1">{DUTY_TYPE_LABELS[duty.type] || duty.type}</h3>
+                      {(duty.startTime || duty.endTime) && (
+                        <p className="text-[10px] text-zinc-400 font-semibold tracking-wide">
+                          {duty.startTime || '--:--'} - {duty.endTime || '--:--'}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {duty.notes && (
+                    <div className="mt-3 pl-13 pr-2">
+                      <p className="text-[11px] text-zinc-300 bg-black/20 rounded-lg p-2 border border-white/5">{duty.notes}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Daily Password Section (Only shows if there is a guard duty today with a password) */}
         {todaysGuardDuty && (
