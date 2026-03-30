@@ -59,14 +59,27 @@ export function CalendarTab() {
       if (!map[d.date]) map[d.date] = { duties: [], leaves: [] }
       map[d.date].duties.push(d)
     })
+
+    const leavesSet = new Map<string, Set<string>>()
+
     leaves.forEach((l) => {
       const start = new Date(l.startDate)
       const end = new Date(l.endDate)
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         const key = toLocalDateString(d)
-        if (!map[key]) map[key] = { duties: [], leaves: [] }
-        if (!map[key].leaves.find((le) => le.id === l.id)) {
+        if (!map[key]) {
+          map[key] = { duties: [], leaves: [] }
+        }
+
+        let set = leavesSet.get(key)
+        if (!set) {
+          set = new Set(map[key].leaves.map((le) => le.id))
+          leavesSet.set(key, set)
+        }
+
+        if (!set.has(l.id)) {
           map[key].leaves.push(l)
+          set.add(l.id)
         }
       }
     })
