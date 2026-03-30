@@ -3,6 +3,7 @@
 export interface ServiceConfig {
   enlistmentDate: string // ISO date string
   totalDays: number
+  durationMonths?: number // Added for precise discharge calculation (6, 9, 12)
 }
 
 export interface LeaveEntry {
@@ -165,9 +166,9 @@ export const DEFAULT_EXPENSE_PRESETS: ExpensePreset[] = [
 export const EXPENSE_PRESETS = DEFAULT_EXPENSE_PRESETS
 
 export const SERVICE_DURATION_PRESETS = [
-  { label: '6 μήνες', days: 183 },
-  { label: '9 μήνες', days: 274 },
-  { label: '12 μήνες', days: 365 },
+  { label: '6 μήνες', days: 183, months: 6 },
+  { label: '9 μήνες', days: 274, months: 9 },
+  { label: '12 μήνες', days: 365, months: 12 },
 ]
 
 export interface ExpenseEntry {

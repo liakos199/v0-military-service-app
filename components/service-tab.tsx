@@ -9,6 +9,9 @@ import {
   CalendarX,
   Trash2,
   Edit3,
+  KeyRound,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -21,7 +24,7 @@ import {
   toLocalDateString,
   generateId,
 } from '@/lib/helpers'
-import type { ServiceConfig, LeaveEntry, PrisonEntry, DetentionEntry } from '@/lib/types'
+import type { ServiceConfig, LeaveEntry, PrisonEntry, DetentionEntry, DutyEntry } from '@/lib/types'
 import { SERVICE_DURATION_PRESETS } from '@/lib/types'
 
 export function ServiceTab() {
@@ -36,8 +39,15 @@ export function ServiceTab() {
   const [showPrison, setShowPrison] = useState(false)
   const [showDetention, setShowDetention] = useState(false)
   const [ringOffset, setRingOffset] = useState(276.46)
+  const [showPasswordRaw, setShowPasswordRaw] = useState(false)
+
+  // Read duties to find today's guard duty
+  const [duties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
 
   const today = toLocalDateString()
+
+  // Check if there is a guard duty today with a password
+  const todaysGuardDuty = duties.find(d => d.date === today && d.type === 'guard' && (d.password || d.countersign))
   const totalLeaveDays = leaves.reduce((sum, l) => sum + l.days, 0)
   const totalPrisonDays = prisons.reduce((sum, p) => sum + p.days, 0)
   const totalDetentionDays = detentions.reduce((sum, d) => {
@@ -46,7 +56,26 @@ export function ServiceTab() {
   }, 0)
 
   // Only Prison extends the service duration. Detention restricts leave but does not extend service.
-  const effectiveTotalDays = config.totalDays + totalPrisonDays
+
+  // Calculate precise base discharge date using months if available
+  const baseDischargeDate = config.enlistmentDate
+    ? (() => {
+        const d = new Date(config.enlistmentDate)
+        if (config.durationMonths) {
+          d.setMonth(d.getMonth() + config.durationMonths)
+        } else {
+          d.setDate(d.getDate() + config.totalDays)
+        }
+        return d
+      })()
+    : null
+
+  // Calculate the exact total days based on enlistment and base discharge (before prisons)
+  const exactBaseTotalDays = baseDischargeDate && config.enlistmentDate
+    ? daysBetween(config.enlistmentDate, toLocalDateString(baseDischargeDate))
+    : config.totalDays
+
+  const effectiveTotalDays = exactBaseTotalDays + totalPrisonDays
   
   const daysServed = config.enlistmentDate
     ? Math.min(effectiveTotalDays, Math.max(0, daysBetween(config.enlistmentDate, today)))
@@ -57,12 +86,10 @@ export function ServiceTab() {
     ? Math.min(100, Math.max(0, (daysServed / effectiveTotalDays) * 100))
     : 0
 
-  const dischargeDate = config.enlistmentDate
+  const dischargeDate = baseDischargeDate
     ? (() => {
-        const d = new Date(config.enlistmentDate)
-        // If enlistment is 2024-01-01 and duration is 365 days, 
-        // discharge is 2025-01-01 (enlistment + duration)
-        d.setDate(d.getDate() + effectiveTotalDays)
+        const d = new Date(baseDischargeDate)
+        d.setDate(d.getDate() + totalPrisonDays)
         return toLocalDateString(d)
       })()
     : ''
@@ -179,6 +206,47 @@ export function ServiceTab() {
           )}
         </div>
 
+        {/* Daily Password Section (Only shows if there is a guard duty today with a password) */}
+        {todaysGuardDuty && (
+          <div className="mb-8">
+            <div className="flex items-center justify-between px-1 mb-3">
+              <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Συνθημα Ημερας (Σκοπια)</h2>
+              <button
+                onClick={() => { hapticFeedback('light'); setShowPasswordRaw(!showPasswordRaw) }}
+                className="flex items-center justify-center text-zinc-500 hover:text-zinc-300 transition-colors"
+              >
+                {showPasswordRaw ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+
+            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+                  <KeyRound size={24} />
+                </div>
+                <div className="flex flex-col gap-1">
+                  {todaysGuardDuty.password && (
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase w-10">Σ:</span>
+                      <span className={cn("text-[15px] font-bold tracking-wider", showPasswordRaw ? "text-white" : "text-zinc-400 font-mono")}>
+                        {showPasswordRaw ? todaysGuardDuty.password : '••••••••'}
+                      </span>
+                    </div>
+                  )}
+                  {todaysGuardDuty.countersign && (
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase w-10">Π:</span>
+                      <span className={cn("text-[15px] font-bold tracking-wider", showPasswordRaw ? "text-[#34d399]" : "text-zinc-400 font-mono")}>
+                        {showPasswordRaw ? todaysGuardDuty.countersign : '••••••••'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Extensions Section */}
         <div className="mb-8">
           <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Καμπανες</h2>
@@ -256,11 +324,11 @@ export function ServiceTab() {
                   type="button"
                   onClick={() => {
                     hapticFeedback('light')
-                    setConfig({ ...config, totalDays: preset.days })
+                    setConfig({ ...config, totalDays: preset.days, durationMonths: preset.months })
                   }}
                   className={cn(
                     'flex-1 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border whitespace-nowrap',
-                    config.totalDays === preset.days
+                    config.durationMonths === preset.months || (!config.durationMonths && config.totalDays === preset.days)
                       ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white border-emerald-500 shadow-lg shadow-emerald-900/30'
                       : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
                   )}
@@ -276,9 +344,12 @@ export function ServiceTab() {
                 type="number"
                 inputMode="numeric"
                 value={config.totalDays}
-                onChange={(e) =>
-                  setConfig({ ...config, totalDays: parseInt(e.target.value) || 0 })
-                }
+                onChange={(e) => {
+                  const val = parseInt(e.target.value) || 0
+                  // If manual input matches a preset days roughly, don't clear durationMonths
+                  const matchedPreset = SERVICE_DURATION_PRESETS.find(p => p.days === val)
+                  setConfig({ ...config, totalDays: val, durationMonths: matchedPreset ? matchedPreset.months : undefined })
+                }}
                 className="w-full pl-32 pr-4 py-4 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
               />
             </div>

@@ -375,6 +375,7 @@ export function CalendarTab() {
         <ActionSheetItem
           title="Προσθήκη Υπηρεσίας"
           subtitle="Σκοπιά, Θαλαμοφύλακας, κ.ά."
+          variant="duty"
           onClick={() => {
             setInitialDutyType('guard')
             setDutyModalMode('add')
@@ -385,6 +386,7 @@ export function CalendarTab() {
         <ActionSheetItem
           title="Προσθήκη Άδειας"
           subtitle="Κανονική, Σπουδαστική, κ.ά."
+          variant="leave"
           onClick={() => {
             setLeaveModalMode('add')
             setEditingLeaveId(null)
@@ -1119,6 +1121,31 @@ function AddDutyForm({
       </div>
 
       <InlineDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
+
+      {type === 'guard' && (
+        <div className="grid grid-cols-2 gap-2 bg-indigo-500/5 border border-indigo-500/10 p-3 rounded-2xl">
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Σύνθημα</label>
+            <input
+              type="text"
+              value={password}
+              onChange={(e) => setPassword(e.target.value.toUpperCase())}
+              placeholder="π.χ. ΑΕΤΟΣ"
+              className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Παρασύνθημα</label>
+            <input
+              type="text"
+              value={countersign}
+              onChange={(e) => setCountersign(e.target.value.toUpperCase())}
+              placeholder="π.χ. ΒΟΥΝΟ"
+              className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-[#34d399] text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest"
+            />
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-2">
         <div>
