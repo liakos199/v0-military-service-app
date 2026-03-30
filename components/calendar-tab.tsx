@@ -27,6 +27,7 @@ import {
 } from '@/lib/helpers'
 import type { DutyEntry, DutyType, LeaveEntry, LeaveType } from '@/lib/types'
 import { DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS, GREEK_MONTHS } from '@/lib/types'
+import { addDutyToNativeCalendar } from '@/lib/calendar-export'
 
 type ActionType = 'duty' | 'leave'
 type ModalMode = 'add' | 'edit'
@@ -1079,12 +1080,13 @@ function AddDutyForm({
   const [notes, setNotes] = useState(editingDuty?.notes || '')
   const [password, setPassword] = useState(editingDuty?.password || '')
   const [countersign, setCountersign] = useState(editingDuty?.countersign || '')
+  const [addToCalendar, setAddToCalendar] = useState(true)
 
   const handleSubmit = () => {
     if (!date || !startTime || !endTime) return
     
     hapticFeedback('heavy')
-    onAdd({
+    const newDuty: DutyEntry = {
       id: editingDuty?.id || generateId(),
       type,
       date,
@@ -1093,7 +1095,12 @@ function AddDutyForm({
       notes,
       password,
       countersign,
-    })
+    }
+    onAdd(newDuty)
+
+    if (addToCalendar && mode !== 'edit') {
+      setTimeout(() => addDutyToNativeCalendar(newDuty), 300)
+    }
   }
 
   return (
@@ -1178,7 +1185,22 @@ function AddDutyForm({
         />
       </div>
 
-      <div className="flex gap-3">
+      {mode !== 'edit' && (
+        <div className="flex items-center gap-3 bg-zinc-900/50 border border-zinc-800/50 rounded-xl p-3">
+          <input
+            type="checkbox"
+            id="add-to-calendar"
+            checked={addToCalendar}
+            onChange={(e) => setAddToCalendar(e.target.checked)}
+            className="w-4 h-4 rounded bg-zinc-800 border-zinc-700 text-emerald-500 focus:ring-emerald-500/50 focus:ring-offset-zinc-900"
+          />
+          <label htmlFor="add-to-calendar" className="text-[11px] font-bold uppercase tracking-wider text-zinc-300 select-none">
+            Προσθήκη στο Ημερολόγιο Συσκευής
+          </label>
+        </div>
+      )}
+
+      <div className="flex gap-3 pt-2">
         <button
           onClick={onCancel}
           className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
