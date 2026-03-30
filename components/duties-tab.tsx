@@ -59,7 +59,9 @@ export function DutiesTab() {
     .sort((a, b) => {
       const dateCompare = a.date.localeCompare(b.date)
       if (dateCompare !== 0) return dateCompare
-      return a.startTime.localeCompare(b.startTime)
+      const aStart = a.startTime || '00:00'
+      const bStart = b.startTime || '00:00'
+      return aStart.localeCompare(bStart)
     })
     .reduce<Record<string, DutyEntry[]>>((groups, duty) => {
       if (!groups[duty.date]) groups[duty.date] = []
@@ -258,9 +260,8 @@ function AddDutyForm({ onAdd, onCancel }: {
 
       <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
 
-      {(type !== 'prison' && type !== 'detention') && (
-        <div className="flex gap-1.5">
-          <div className="flex-1 min-w-0">
+      <div className="flex gap-1.5">
+        <div className="flex-1 min-w-0">
             <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Αρχή</label>
             <input
               type="time"
@@ -269,17 +270,16 @@ function AddDutyForm({ onAdd, onCancel }: {
               className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
-          <div className="flex-1 min-w-0">
-            <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Τέλος</label>
-            <input
-              type="time"
-              value={endTime || ''}
-              onChange={(e) => setEndTime(e.target.value)}
-              className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
+        <div className="flex-1 min-w-0">
+          <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Τέλος</label>
+          <input
+            type="time"
+            value={endTime || ''}
+            onChange={(e) => setEndTime(e.target.value)}
+            className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+          />
         </div>
-      )}
+      </div>
 
       <div>
         <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Σημειώσεις</label>
