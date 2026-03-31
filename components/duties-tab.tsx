@@ -9,11 +9,13 @@ import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { DutyEntry, DutyType } from '@/lib/types'
 import { DUTY_TYPE_LABELS } from '@/lib/types'
+import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 
 export function DutiesTab() {
   const [duties, setDuties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
   const [showAdd, setShowAdd] = useState(false)
   const [notificationsEnabled, setNotificationsEnabled] = useState(false)
+  const [deletePendingId, setDeletePendingId] = useState<string | null>(null)
 
   const today = toLocalDateString()
 
@@ -187,7 +189,7 @@ export function DutiesTab() {
                         <button
                           onClick={() => {
                             hapticFeedback('medium')
-                            setDuties(duties.filter((d) => d.id !== duty.id))
+                            setDeletePendingId(duty.id)
                           }}
                           className="p-2 rounded-lg min-h-[36px] min-w-[36px] flex items-center justify-center text-destructive/70 hover:text-destructive"
                           aria-label="Διαγραφή υπηρεσίας"
@@ -203,6 +205,16 @@ export function DutiesTab() {
           )}
         </div>
       </div>
+
+      {deletePendingId && (
+        <DeleteConfirmDialog
+          onConfirm={() => {
+            setDuties(duties.filter((d) => d.id !== deletePendingId))
+            setDeletePendingId(null)
+          }}
+          onCancel={() => setDeletePendingId(null)}
+        />
+      )}
     </div>
   )
 }

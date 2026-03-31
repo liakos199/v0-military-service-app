@@ -15,12 +15,14 @@ import {
   daysBetween,
 } from '@/lib/helpers'
 import type { PrisonEntry, DetentionEntry } from '@/lib/types'
+import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 
 export function PrisonDetentionManager() {
   const [prisons, setPrisons] = useLocalStorage<PrisonEntry[]>('fantaros-prisons', [])
   const [detentions, setDetentions] = useLocalStorage<DetentionEntry[]>('fantaros-detentions', [])
   const [showPrisonModal, setShowPrisonModal] = useState(false)
   const [showDetentionModal, setShowDetentionModal] = useState(false)
+  const [deletePending, setDeletePending] = useState<{ id: string; type: 'prison' | 'detention' } | null>(null)
 
   const totalPrisonDays = prisons.reduce((sum, p) => sum + p.days, 0)
   const totalDetentionDays = detentions.reduce((sum, d) => {
@@ -36,7 +38,7 @@ export function PrisonDetentionManager() {
 
   const handleDeletePrison = (id: string) => {
     hapticFeedback('medium')
-    setPrisons(prisons.filter((p) => p.id !== id))
+    setDeletePending({ id, type: 'prison' })
   }
 
   const handleAddDetention = (detention: DetentionEntry) => {
@@ -47,7 +49,17 @@ export function PrisonDetentionManager() {
 
   const handleDeleteDetention = (id: string) => {
     hapticFeedback('medium')
-    setDetentions(detentions.filter((d) => d.id !== id))
+    setDeletePending({ id, type: 'detention' })
+  }
+
+  const executeDelete = () => {
+    if (!deletePending) return
+    if (deletePending.type === 'prison') {
+      setPrisons(prisons.filter((p) => p.id !== deletePending.id))
+    } else {
+      setDetentions(detentions.filter((d) => d.id !== deletePending.id))
+    }
+    setDeletePending(null)
   }
 
   return (
@@ -192,6 +204,13 @@ export function PrisonDetentionManager() {
           onCancel={() => setShowDetentionModal(false)}
         />
       </FullscreenModal>
+
+      {deletePending && (
+        <DeleteConfirmDialog
+          onConfirm={executeDelete}
+          onCancel={() => setDeletePending(null)}
+        />
+      )}
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { hapticFeedback, generateId } from '@/lib/helpers'
 import type { CanteenCatalogItem } from '@/lib/types'
 import { CANTEEN_CATEGORY_LABELS } from '@/lib/types'
 import { ChevronDown, Pencil, X } from 'lucide-react'
+import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 
 interface CanteenCatalogManagerProps {
   items: CanteenCatalogItem[]
@@ -20,6 +21,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
   const [newPrice, setNewPrice] = useState('')
   const [newCategory, setNewCategory] = useState<'food' | 'beverage' | 'snack' | 'other'>('food')
   const [expandedCategory, setExpandedCategory] = useState<'food' | 'beverage' | 'snack' | 'other' | null>(null)
+  const [deletePendingId, setDeletePendingId] = useState<string | null>(null)
 
   const startEdit = (item: CanteenCatalogItem) => {
     hapticFeedback('light')
@@ -45,10 +47,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
 
   const handleDelete = (id: string, name: string) => {
     hapticFeedback('medium')
-    if (window.confirm(`Είστε σίγουροι ότι θέλετε να διαγράψετε το προϊόν "${name}";`)) {
-      const updatedItems = items.filter((item) => item.id !== id)
-      onSave(updatedItems)
-    }
+    setDeletePendingId(id)
   }
 
   const handleAdd = () => {
@@ -258,6 +257,17 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
           Κλεισιμο
         </button>
       </div>
+
+      {deletePendingId && (
+        <DeleteConfirmDialog
+          onConfirm={() => {
+            const updatedItems = items.filter((item) => item.id !== deletePendingId)
+            onSave(updatedItems)
+            setDeletePendingId(null)
+          }}
+          onCancel={() => setDeletePendingId(null)}
+        />
+      )}
     </div>
   )
 }
