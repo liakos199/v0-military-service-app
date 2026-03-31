@@ -67,7 +67,7 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar pb-safe">
+      <div className="flex-1 flex flex-col min-h-0">
         {children}
       </div>
     </div>,

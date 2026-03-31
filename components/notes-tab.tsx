@@ -880,27 +880,29 @@ function AddNoteForm({ onAdd, onCancel }: { onAdd: (t: string, c: string) => voi
   const [content, setContent] = useState('')
 
   return (
-    <div className="flex flex-col gap-4 p-2">
-      <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Τίτλος</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="π.χ. Υποχρεώσεις βάρδιας..."
-          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-800 focus:border-emerald-500 outline-none"
-        />
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar flex flex-col gap-4">
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Τίτλος</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="π.χ. Υποχρεώσεις βάρδιας..."
+            className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-800 focus:border-emerald-500 outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Περιεχόμενο</label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Γράψε εδώ..."
+            className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none min-h-[12rem]"
+          />
+        </div>
       </div>
-      <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Περιεχόμενο</label>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Γράψε εδώ..."
-          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-48"
-        />
-      </div>
-      <div className="flex gap-3 pt-2">
+      <div className="shrink-0 px-6 py-4 border-t border-zinc-800/80 bg-black pb-safe flex gap-3">
         <button
           onClick={onCancel}
           className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
@@ -924,27 +926,29 @@ function EditNoteForm({ note, onSave, onCancel }: { note: NoteEntry; onSave: (t:
   const [content, setContent] = useState(note.content)
 
   return (
-    <div className="flex flex-col gap-4 p-2">
-      <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Τίτλος</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="π.χ. Υποχρεώσεις βάρδιας..."
-          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-800 focus:border-emerald-500 outline-none"
-        />
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar flex flex-col gap-4">
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Τίτλος</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="π.χ. Υποχρεώσεις βάρδιας..."
+            className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold border border-zinc-800 focus:border-emerald-500 outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Περιεχόμενο</label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Γράψε εδώ..."
+            className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none min-h-[12rem]"
+          />
+        </div>
       </div>
-      <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Περιεχόμενο</label>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Γράψε εδώ..."
-          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-48"
-        />
-      </div>
-      <div className="flex gap-3 pt-2">
+      <div className="shrink-0 px-6 py-4 border-t border-zinc-800/80 bg-black pb-safe flex gap-3">
         <button
           onClick={onCancel}
           className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
