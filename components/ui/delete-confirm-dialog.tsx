@@ -1,3 +1,7 @@
+'use client'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
+
 export function DeleteConfirmDialog({
   onConfirm,
   onCancel,
@@ -5,8 +9,16 @@ export function DeleteConfirmDialog({
   onConfirm: () => void
   onCancel: () => void
 }) {
-  return (
-    <div className="fixed inset-0 z-[9999] bg-black/75 flex items-end justify-center pb-8 px-4">
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] bg-black/75 flex items-end justify-center pb-8 px-4 pointer-events-auto">
       <div className="bg-zinc-900 border border-zinc-700/50 rounded-[2rem] w-full max-w-sm shadow-2xl p-6 flex flex-col gap-5 mb-24">
         <div className="text-center">
           <p className="text-white font-bold text-[16px] mb-1">Διαγραφή καταχώρησης;</p>
@@ -27,6 +39,7 @@ export function DeleteConfirmDialog({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
