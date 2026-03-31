@@ -12,6 +12,7 @@ import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback } from '@/lib/helpers'
 import type { ProfileData, SuperiorEntry, FriendEntry } from '@/lib/types'
 import { RANKS, BLOOD_TYPES } from '@/lib/types'
+import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -218,6 +219,7 @@ function SuperiorsSection() {
   const [superiors, setSuperiors] = useLocalStorage<SuperiorEntry[]>('fantaros-superiors', [])
   const [isAdding, setIsAdding] = useState(false)
   const [editingEntry, setEditingEntry] = useState<SuperiorEntry | null>(null)
+  const [deletePendingId, setDeletePendingId] = useState<string | null>(null)
 
   const handleAdd = (entry: SuperiorEntry) => {
     hapticFeedback('medium')
@@ -233,7 +235,7 @@ function SuperiorsSection() {
 
   const handleDelete = (id: string) => {
     hapticFeedback('light')
-    setSuperiors(superiors.filter(s => s.id !== id))
+    setDeletePendingId(id)
   }
 
   return (
@@ -311,6 +313,16 @@ function SuperiorsSection() {
           />
         )}
       </FullscreenModal>
+
+      {deletePendingId && (
+        <DeleteConfirmDialog
+          onConfirm={() => {
+            setSuperiors(superiors.filter(s => s.id !== deletePendingId))
+            setDeletePendingId(null)
+          }}
+          onCancel={() => setDeletePendingId(null)}
+        />
+      )}
     </div>
   )
 }
@@ -319,6 +331,7 @@ function FriendsSection() {
   const [friends, setFriends] = useLocalStorage<FriendEntry[]>('fantaros-friends', [])
   const [isAdding, setIsAdding] = useState(false)
   const [editingEntry, setEditingEntry] = useState<FriendEntry | null>(null)
+  const [deletePendingId, setDeletePendingId] = useState<string | null>(null)
 
   const handleAdd = (entry: FriendEntry) => {
     hapticFeedback('medium')
@@ -334,7 +347,7 @@ function FriendsSection() {
 
   const handleDelete = (id: string) => {
     hapticFeedback('light')
-    setFriends(friends.filter(f => f.id !== id))
+    setDeletePendingId(id)
   }
 
   return (
@@ -437,6 +450,16 @@ function FriendsSection() {
           />
         )}
       </FullscreenModal>
+
+      {deletePendingId && (
+        <DeleteConfirmDialog
+          onConfirm={() => {
+            setFriends(friends.filter(f => f.id !== deletePendingId))
+            setDeletePendingId(null)
+          }}
+          onCancel={() => setDeletePendingId(null)}
+        />
+      )}
     </div>
   )
 }

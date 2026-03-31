@@ -27,6 +27,7 @@ import {
 } from '@/lib/helpers'
 import type { DutyEntry, DutyType, LeaveEntry, LeaveType } from '@/lib/types'
 import { DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS, GREEK_MONTHS } from '@/lib/types'
+import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 
 type ActionType = 'duty' | 'leave'
 type ModalMode = 'add' | 'edit'
@@ -52,6 +53,7 @@ export function CalendarTab() {
   const [editingLeaveId, setEditingLeaveId] = useState<string | null>(null)
   const [dutyModalMode, setDutyModalMode] = useState<ModalMode>('add')
   const [leaveModalMode, setLeaveModalMode] = useState<ModalMode>('add')
+  const [deletePending, setDeletePending] = useState<{ id: string; type: 'duty' | 'leave' } | null>(null)
 
   const dateEventsMap = useMemo(() => {
     const map: Record<string, { duties: DutyEntry[]; leaves: LeaveEntry[] }> = {}
@@ -162,18 +164,28 @@ export function CalendarTab() {
   const handleDeleteDuty = useCallback(
     (id: string) => {
       hapticFeedback('medium')
-      setDuties(duties.filter((d) => d.id !== id))
+      setDeletePending({ id, type: 'duty' })
     },
-    [duties, setDuties]
+    []
   )
 
   const handleDeleteLeave = useCallback(
     (id: string) => {
       hapticFeedback('medium')
-      setLeaves(leaves.filter((l) => l.id !== id))
+      setDeletePending({ id, type: 'leave' })
     },
-    [leaves, setLeaves]
+    []
   )
+
+  const executeDelete = useCallback(() => {
+    if (!deletePending) return
+    if (deletePending.type === 'duty') {
+      setDuties((prev) => prev.filter((d) => d.id !== deletePending.id))
+    } else {
+      setLeaves((prev) => prev.filter((l) => l.id !== deletePending.id))
+    }
+    setDeletePending(null)
+  }, [deletePending, setDuties, setLeaves])
 
   const handleEditDuty = (dutyId: string) => {
     setEditingDutyId(dutyId)
@@ -505,6 +517,14 @@ export function CalendarTab() {
           }
         />
       </FullscreenModal>
+
+      {/* Shared Delete Confirmation Dialog */}
+      {deletePending && (
+        <DeleteConfirmDialog
+          onConfirm={executeDelete}
+          onCancel={() => setDeletePending(null)}
+        />
+      )}
     </div>
   )
 }

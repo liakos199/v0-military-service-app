@@ -25,6 +25,7 @@ import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { NoteEntry } from '@/lib/types'
+import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 
 /* ========== GUIDE DATA ========== */
 const MILITARY_GUIDES = [
@@ -518,6 +519,7 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
   const [notes, setNotes] = useLocalStorage<NoteEntry[]>('fantaros-notes', [])
   const [showAdd, setShowAdd] = useState(false)
   const [editingNote, setEditingNote] = useState<NoteEntry | null>(null)
+  const [deletePendingId, setDeletePendingId] = useState<string | null>(null)
 
   const handleAdd = (title: string, content: string) => {
     hapticFeedback('heavy')
@@ -611,7 +613,7 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
                   <button
                     onClick={() => {
                       hapticFeedback('medium')
-                      setNotes(notes.filter((n) => n.id !== note.id))
+                      setDeletePendingId(note.id)
                     }}
                     className="p-2 rounded-lg text-red-400 hover:text-red-300 transition-colors"
                     aria-label="Διαγραφή"
@@ -627,6 +629,16 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
             </div>
           ))}
         </div>
+      )}
+
+      {deletePendingId && (
+        <DeleteConfirmDialog
+          onConfirm={() => {
+            setNotes(notes.filter((n) => n.id !== deletePendingId))
+            setDeletePendingId(null)
+          }}
+          onCancel={() => setDeletePendingId(null)}
+        />
       )}
     </div>
   )
@@ -738,6 +750,7 @@ function GuidesSection({ searchQuery }: { searchQuery: string }) {
           />
         </FullscreenModal>
       )}
+
     </div>
   )
 }
