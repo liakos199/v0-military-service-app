@@ -1,10 +1,24 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, createContext, useContext } from 'react'
 import { createPortal } from 'react-dom'
 import { X, ChevronLeft } from 'lucide-react'
 import { hapticFeedback } from '@/lib/helpers'
 import { ModalLayout } from '@/components/modal-layout'
+
+export const ModalFooterContext = createContext<HTMLDivElement | null>(null)
+
+export function ModalFooter({ children }: { children: React.ReactNode }) {
+  const footerNode = useContext(ModalFooterContext)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted || !footerNode) return null
+  return createPortal(children, footerNode)
+}
 
 interface FullscreenModalProps {
   isOpen: boolean
@@ -18,6 +32,7 @@ interface FullscreenModalProps {
 
 export function FullscreenModal({ isOpen, onClose, title, children, footer, showBackButton = false, onBack }: FullscreenModalProps) {
   const [mounted, setMounted] = useState(false)
+  const [footerNode, setFooterNode] = useState<HTMLDivElement | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -38,7 +53,7 @@ export function FullscreenModal({ isOpen, onClose, title, children, footer, show
   if (!isOpen || !mounted) return null
 
   const header = (
-    <div className="flex items-center justify-between px-6 pt-14 pb-4 border-b border-zinc-800/80">
+    <div className="flex items-center justify-between px-6 pt-14 pb-4 border-b border-zinc-800/80 bg-black">
       <div className="flex items-center gap-3 flex-1">
         {showBackButton && onBack && (
           <button
@@ -71,10 +86,17 @@ export function FullscreenModal({ isOpen, onClose, title, children, footer, show
     <div className="fixed inset-0 z-[200] bg-black animate-fade-in flex flex-col">
       <ModalLayout
         header={header}
-        footer={footer}
+        footer={
+          <>
+            {footer}
+            <div ref={setFooterNode} />
+          </>
+        }
         contentClassName="px-6 py-5 pb-safe"
       >
-        {children}
+        <ModalFooterContext.Provider value={footerNode}>
+          {children}
+        </ModalFooterContext.Provider>
       </ModalLayout>
     </div>,
     document.body
