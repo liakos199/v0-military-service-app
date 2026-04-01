@@ -1,3 +1,12 @@
+/**
+ * Enhanced Haptic Feedback System
+ * 
+ * Supports:
+ * - iOS Safari 18+: Uses input[type=checkbox switch] with label click
+ * - Android: Uses navigator.vibrate() API
+ * - Fallback: Silent fail for unsupported devices
+ */
+
 export type HapticType = 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error'
 
 export const hapticPatterns: Record<HapticType, number | number[]> = {
@@ -9,18 +18,108 @@ export const hapticPatterns: Record<HapticType, number | number[]> = {
   error: [50, 50, 50, 50, 50],
 }
 
-export function hapticFeedback(type: HapticType = 'light') {
-  if (typeof window === 'undefined') return
-  if (!('vibrate' in navigator)) return
+/**
+ * Singleton manager for haptic feedback
+ */
+class HapticManager {
+  private static instance: HapticManager
+  private switchInput: HTMLInputElement | null = null
+  private switchLabel: HTMLLabelElement | null = null
+  private isInitialized = false
+  private isiOS = false
 
-  try {
-    navigator.vibrate(hapticPatterns[type])
-  } catch {
-    // Vibration not supported
+  private constructor() {
+    this.detectPlatform()
+  }
+
+  static getInstance(): HapticManager {
+    if (!HapticManager.instance) {
+      HapticManager.instance = new HapticManager()
+    }
+    return HapticManager.instance
+  }
+
+  private detectPlatform(): void {
+    if (typeof window === 'undefined') return
+    const userAgent = navigator.userAgent.toLowerCase()
+    this.isiOS = /iphone|ipad|ipod/.test(userAgent)
+  }
+
+  private initialize(): void {
+    if (this.isInitialized || typeof document === 'undefined') return
+
+    try {
+      // Create hidden checkbox switch input for iOS Safari 18+
+      this.switchInput = document.createElement('input')
+      this.switchInput.type = 'checkbox'
+      this.switchInput.id = 'haptic-switch-' + Date.now()
+      this.switchInput.setAttribute('switch', '')
+      this.switchInput.style.display = 'none'
+      this.switchInput.style.visibility = 'hidden'
+      this.switchInput.style.position = 'absolute'
+      this.switchInput.style.pointerEvents = 'none'
+      document.body.appendChild(this.switchInput)
+
+      // Create associated label (required for haptic feedback to work)
+      this.switchLabel = document.createElement('label')
+      this.switchLabel.htmlFor = this.switchInput.id
+      this.switchLabel.style.display = 'none'
+      this.switchLabel.style.visibility = 'hidden'
+      this.switchLabel.style.position = 'absolute'
+      this.switchLabel.style.pointerEvents = 'none'
+      document.body.appendChild(this.switchLabel)
+
+      this.isInitialized = true
+    } catch (error) {
+      console.debug('Failed to initialize haptic feedback elements:', error)
+    }
+  }
+
+  trigger(type: HapticType = 'light'): void {
+    if (typeof window === 'undefined') return
+
+    try {
+      if (this.isiOS) {
+        // iOS Safari 18+: Click the label to trigger haptic feedback
+        this.initialize()
+        if (this.switchLabel) {
+          this.switchLabel.click()
+        }
+      } else if ('vibrate' in navigator) {
+        // Android and other devices: Use Vibration API
+        const pattern = hapticPatterns[type]
+        navigator.vibrate(pattern)
+      }
+    } catch (error) {
+      console.debug('Haptic feedback failed:', error)
+    }
+  }
+
+  destroy(): void {
+    if (this.switchInput?.parentNode) {
+      this.switchInput.parentNode.removeChild(this.switchInput)
+    }
+    if (this.switchLabel?.parentNode) {
+      this.switchLabel.parentNode.removeChild(this.switchLabel)
+    }
+    this.switchInput = null
+    this.switchLabel = null
+    this.isInitialized = false
   }
 }
 
+export function hapticFeedback(type: HapticType = 'light') {
+  if (typeof window === 'undefined') return
+  const manager = HapticManager.getInstance()
+  manager.trigger(type)
+}
+
 export const triggerHaptic = hapticFeedback
+
+export function cleanupHapticFeedback(): void {
+  const manager = HapticManager.getInstance()
+  manager.destroy()
+}
 
 export function formatGreekDate(dateStr: string): string {
   const date = new Date(dateStr)
