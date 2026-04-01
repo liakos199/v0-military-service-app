@@ -1135,6 +1135,23 @@ function AddDutyForm({
     })
   }
 
+  const footer = (
+    <div className="flex gap-3 px-6 py-5">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+      >
+        Ακύρωση
+      </button>
+      <button
+        onClick={handleSubmit}
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+      >
+        {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
+      </button>
+    </div>
+  )
+
   return (
     <div className="flex flex-col gap-6 p-2">
       <div>
@@ -1143,69 +1160,69 @@ function AddDutyForm({
         </label>
         <div className="grid grid-cols-2 gap-2">
           {(['guard', 'barracks', 'officer', 'patrol', 'kitchen', 'other'] as DutyType[]).map((t) => (
-            <button
-              key={t}
-              onClick={() => setType(t)}
-              className={cn(
-                'py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border',
-                type === t
-                  ? 'bg-emerald-500 text-white border-emerald-500'
-                  : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
-              )}
-            >
-              {DUTY_TYPE_LABELS[t]}
-            </button>
-          ))}
+              <button
+                key={t}
+                onClick={() => setType(t)}
+                className={cn(
+                  'py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border',
+                  type === t
+                    ? 'bg-emerald-500 text-white border-emerald-500'
+                    : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
+                )}
+              >
+                {DUTY_TYPE_LABELS[t]}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <InlineDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
+        <InlineDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
 
-      {type === 'guard' && (
-        <div className="grid grid-cols-2 gap-2 bg-indigo-500/5 border border-indigo-500/10 p-3 rounded-2xl">
+        {type === 'guard' && (
+          <div className="grid grid-cols-2 gap-2 bg-indigo-500/5 border border-indigo-500/10 p-3 rounded-2xl">
+            <div>
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Σύνθημα</label>
+              <input
+                type="text"
+                value={password}
+                onChange={(e) => setPassword(e.target.value.toUpperCase())}
+                placeholder="π.χ. ΑΕΤΟΣ"
+                className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Παρασύνθημα</label>
+              <input
+                type="text"
+                value={countersign}
+                onChange={(e) => setCountersign(e.target.value.toUpperCase())}
+                placeholder="π.χ. ΒΟΥΝΟ"
+                className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-[#34d399] text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest"
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Σύνθημα</label>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα έναρξης</label>
             <input
-              type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value.toUpperCase())}
-              placeholder="π.χ. ΑΕΤΟΣ"
-              className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest"
+              type="time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="w-full px-2 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 outline-none"
             />
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Παρασύνθημα</label>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα λήξης</label>
             <input
-              type="text"
-              value={countersign}
-              onChange={(e) => setCountersign(e.target.value.toUpperCase())}
-              placeholder="π.χ. ΒΟΥΝΟ"
-              className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-[#34d399] text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest"
+              type="time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="w-full px-2 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 outline-none"
             />
           </div>
         </div>
-      )}
-
-      <div className="grid grid-cols-2 gap-2">
-        <div>
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα έναρξης</label>
-          <input
-            type="time"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            className="w-full px-2 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 outline-none"
-          />
-        </div>
-        <div>
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα λήξης</label>
-          <input
-            type="time"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 outline-none"
-          />
-        </div>
-      </div>
 
       <div>
         <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Σημειώσεις</label>
@@ -1215,21 +1232,6 @@ function AddDutyForm({
           placeholder="Προσθήκη σημειώσεων..."
           className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
         />
-      </div>
-
-      <div className="flex gap-3">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
-        >
-          {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
-        </button>
       </div>
     </div>
   )
