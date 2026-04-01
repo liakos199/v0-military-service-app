@@ -507,7 +507,7 @@ export function CalendarTab() {
         title={leaveModalMode === 'edit' ? 'Επεξεργασία Άδειας' : 'Νέα Άδεια'}
         footer={<AddLeaveFormFooter />}
       >
-        <AddLeaveFormContent
+        <AddLeaveForm
           initialDate={selectedDate || today}
           onAdd={handleAddLeave}
           onCancel={handleCloseModals}

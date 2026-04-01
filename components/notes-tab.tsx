@@ -22,7 +22,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
-import { FullscreenModal } from '@/components/fullscreen-modal'
+import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { NoteEntry } from '@/lib/types'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
@@ -892,24 +892,6 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
 function AddNoteFormContent({ onAdd, onCancel }: { onAdd: (t: string, c: string) => void; onCancel: () => void }) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-
-  const footer = (
-    <div className="flex gap-3 px-6 py-5">
-      <button
-        onClick={onCancel}
-        className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
-      >
-        Ακύρωση
-      </button>
-      <button
-        onClick={() => onAdd(title, content)}
-        disabled={!content.trim()}
-        className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
-      >
-        Προσθήκη
-      </button>
-    </div>
-  )
 
   return (
     <div className="flex flex-col gap-4 p-2">
