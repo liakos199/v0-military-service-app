@@ -11,11 +11,12 @@ interface FullscreenModalProps {
   onClose: () => void
   title: string
   children: React.ReactNode
+  footer?: React.ReactNode
   showBackButton?: boolean
   onBack?: () => void
 }
 
-export function FullscreenModal({ isOpen, onClose, title, children, showBackButton = false, onBack }: FullscreenModalProps) {
+export function FullscreenModal({ isOpen, onClose, title, children, footer, showBackButton = false, onBack }: FullscreenModalProps) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export function FullscreenModal({ isOpen, onClose, title, children, showBackButt
     <div className="fixed inset-0 z-[200] bg-black animate-fade-in flex flex-col">
       <ModalLayout
         header={header}
+        footer={footer}
         contentClassName="px-6 py-5 pb-safe"
       >
         {children}
