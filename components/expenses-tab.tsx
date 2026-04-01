@@ -7,6 +7,7 @@ import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { CanteenCatalogManager } from '@/components/canteen-catalog-manager'
+import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { CanteenCatalogItem, ExpenseEntry } from '@/lib/types'
 import { CANTEEN_CATEGORY_LABELS, EXPENSE_CATEGORY_LABELS } from '@/lib/types'
@@ -16,6 +17,7 @@ export function ExpensesTab() {
   const [canteenCatalog, setCanteenCatalog] = useLocalStorage<CanteenCatalogItem[]>('fantaros-canteen-catalog', [])
   const [showAdd, setShowAdd] = useState(false)
   const [showCatalogManager, setShowCatalogManager] = useState(false)
+  const [deletePendingId, setDeletePendingId] = useState<string | null>(null)
   
   const [searchQuery, setSearchQuery] = useState('')
   const [filterCategory, setFilterCategory] = useState<string | 'all'>('all')
@@ -146,17 +148,15 @@ export function ExpensesTab() {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-[18px] font-bold text-[#34d399] tracking-tight">{item.amount.toFixed(2)}€</span>
-                  <button 
-                    onClick={() => {
-                      hapticFeedback('medium')
-                      if (window.confirm(`Είστε σίγουροι ότι θέλετε να διαγράψετε το έξοδο "${item.description || 'Έξοδο'}" ύψους ${item.amount.toFixed(2)}€;`)) {
-                        setExpenses(expenses.filter((e) => e.id !== item.id))
-                      }
-                    }}
-                    className="w-7 h-7 rounded-full text-zinc-500 hover:text-red-400 hover:bg-zinc-800 transition-colors flex justify-center items-center"
-                  >
-                    <X size={16}/>
-                  </button>
+	                  <button 
+	                    onClick={() => {
+	                      hapticFeedback('medium')
+	                      setDeletePendingId(item.id)
+	                    }}
+	                    className="w-7 h-7 rounded-full text-zinc-500 hover:text-red-400 hover:bg-zinc-800 transition-colors flex justify-center items-center"
+	                  >
+	                    <X size={16}/>
+	                  </button>
                 </div>
               </div>
             ))
@@ -196,6 +196,16 @@ export function ExpensesTab() {
           onCancel={() => setShowAdd(false)}
         />
       </FullscreenModal>
+
+      {deletePendingId && (
+        <DeleteConfirmDialog
+          onConfirm={() => {
+            setExpenses(expenses.filter((e) => e.id !== deletePendingId))
+            setDeletePendingId(null)
+          }}
+          onCancel={() => setDeletePendingId(null)}
+        />
+      )}
     </div>
   )
 }
