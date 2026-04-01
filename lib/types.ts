@@ -166,8 +166,8 @@ export const DEFAULT_EXPENSE_PRESETS: ExpensePreset[] = [
 export const EXPENSE_PRESETS = DEFAULT_EXPENSE_PRESETS
 
 export const SERVICE_DURATION_PRESETS = [
-  { label: '6 μήνες', days: 183, months: 6 },
-  { label: '9 μήνες', days: 274, months: 9 },
+  { label: '6 μήνες', days: 182, months: 6 },
+  { label: '9 μήνες', days: 273, months: 9 },
   { label: '12 μήνες', days: 365, months: 12 },
 ]
 

@@ -68,7 +68,15 @@ export function ServiceTab() {
     ? (() => {
         const d = new Date(config.enlistmentDate)
         if (config.durationMonths) {
-          d.setMonth(d.getMonth() + config.durationMonths)
+          // Add months precisely to get the same day of the month
+          const targetMonth = d.getMonth() + config.durationMonths
+          d.setMonth(targetMonth)
+          
+          // Handle cases where the target month has fewer days (e.g., Jan 31 + 1 month -> Feb 28/29)
+          // If the day overflowed to the next month, set it to the last day of the intended month
+          if (d.getMonth() > (targetMonth % 12)) {
+            d.setDate(0)
+          }
         } else {
           d.setDate(d.getDate() + config.totalDays)
         }
