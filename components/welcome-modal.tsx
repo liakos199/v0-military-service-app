@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { FullscreenModal } from '@/components/fullscreen-modal'
+import { ModalLayout } from '@/components/modal-layout'
 import { Check } from 'lucide-react'
 import Image from 'next/image'
 
@@ -158,51 +159,50 @@ export function WelcomeModal() {
 
   const renderContent = () => {
     return (
-      <div className="flex flex-col h-full gap-6">
-        {/* Icon and Title */}
-        <div className="text-center">
-          <div className="mb-6 p-4 bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-3xl w-fit mx-auto shadow-2xl">
-            <Image
-              src="/icon-192.png"
-              alt="ΑΠΟΛΕΛΕ PRO"
-              width={72}
-              height={72}
-              className="rounded-2xl shadow-xl"
-            />
+      <ModalLayout
+        header={
+          <div className="text-center">
+            <div className="mb-6 p-4 bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-3xl w-fit mx-auto shadow-2xl">
+              <Image
+                src="/icon-192.png"
+                alt="ΑΠΟΛΕΛΕ PRO"
+                width={72}
+                height={72}
+                className="rounded-2xl shadow-xl"
+              />
+            </div>
+            <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase">
+              {step === 'install' 
+                ? 'Προσθεσε την εφαρμογη στην αρχικη σου οθονη'
+                : 'Ολα οσα χρειαζεσαι για τη θητεια σου'
+              }
+            </p>
           </div>
-          <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase">
-            {step === 'install' 
-              ? 'Προσθεσε την εφαρμογη στην αρχικη σου οθονη'
-              : 'Ολα οσα χρειαζεσαι για τη θητεια σου'
-            }
-          </p>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto hide-scrollbar">
-          {step === 'install' ? renderInstructions() : renderFeatures()}
-        </div>
-
-        {/* Footer Buttons */}
-        <div className="flex gap-3 pt-4">
-          {step === 'features' && (
+        }
+        contentClassName="px-6 py-5"
+        footer={
+          <div className="flex gap-3 px-6 py-5 pt-4">
+            {step === 'features' && (
+              <button 
+                type="button" 
+                onClick={handleBack}
+                className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
+              >
+                Πισω
+              </button>
+            )}
             <button 
               type="button" 
-              onClick={handleBack}
-              className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
+              onClick={step === 'install' ? handleNextStep : handleClose}
+              className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
             >
-              Πισω
+              {step === 'install' ? 'Επομενο' : 'Ξεκιναμε'}
             </button>
-          )}
-          <button 
-            type="button" 
-            onClick={step === 'install' ? handleNextStep : handleClose}
-            className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-          >
-            {step === 'install' ? 'Επομενο' : 'Ξεκιναμε'}
-          </button>
-        </div>
-      </div>
+          </div>
+        }
+      >
+        {step === 'install' ? renderInstructions() : renderFeatures()}
+      </ModalLayout>
     )
   }
 

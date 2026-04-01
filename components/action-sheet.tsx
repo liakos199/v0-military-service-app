@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import { hapticFeedback } from '@/lib/helpers'
+import { ModalLayout } from '@/components/modal-layout'
 
 interface ActionSheetProps {
   isOpen: boolean
@@ -26,6 +27,33 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
 
   if (!isOpen) return null
 
+  const header = (
+    <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
+      <div className="flex-1">
+        {title && (
+          <h2 className="text-[20px] font-bold text-white">
+            {title}
+          </h2>
+        )}
+        {subtitle && (
+          <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
+            {subtitle}
+          </p>
+        )}
+      </div>
+      <button
+        onClick={() => {
+          hapticFeedback('light')
+          onClose()
+        }}
+        className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors active:scale-95 flex-shrink-0 ml-2"
+        aria-label="Κλείσιμο"
+      >
+        <X size={20} />
+      </button>
+    </div>
+  )
+
   return (
     <div
       className="fixed inset-0 z-[90] bg-black backdrop-blur-sm animate-fade-in flex flex-col"
@@ -38,38 +66,14 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
         className="flex-1 flex flex-col w-full h-full safe-top safe-bottom"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80 shrink-0">
-          <div className="flex-1">
-            {title && (
-              <h2 className="text-[20px] font-bold text-white">
-                {title}
-              </h2>
-            )}
-            {subtitle && (
-              <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
-                {subtitle}
-              </p>
-            )}
-          </div>
-          <button
-            onClick={() => {
-              hapticFeedback('light')
-              onClose()
-            }}
-            className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors active:scale-95 flex-shrink-0 ml-2"
-            aria-label="Κλείσιμο"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar">
+        <ModalLayout
+          header={header}
+          contentClassName="px-6 py-5"
+        >
           <div className="flex flex-col gap-3">
             {children}
           </div>
-        </div>
+        </ModalLayout>
       </div>
     </div>
   )

@@ -16,6 +16,7 @@ import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { InlineDatePicker } from '@/components/inline-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
+import { ModalLayout } from '@/components/modal-layout'
 import { ActionSheet, ActionSheetItem, ActionSheetCancel } from '@/components/action-sheet'
 import {
   hapticFeedback,
@@ -829,6 +830,43 @@ function DateDetailsModal({
   const duties = events?.duties || []
   const leaves = events?.leaves || []
 
+  const header = (
+    <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
+      <div className="flex-1">
+        <h2 className="text-[20px] font-bold text-white">
+          {formatGreekDateFull(selectedDate)}
+        </h2>
+        <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
+          {duties.length + leaves.length} γεγονότ{duties.length + leaves.length === 1 ? 'α' : 'α'}
+        </p>
+      </div>
+      <button
+        onClick={onClose}
+        className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors active:scale-95 flex-shrink-0 ml-2"
+        aria-label="Κλείσιμο"
+      >
+        <Plus size={20} className="rotate-45" />
+      </button>
+    </div>
+  )
+
+  const footer = (
+    <div className="flex gap-2 px-6 py-5 border-t border-zinc-700/30">
+      <button
+        onClick={onAddDuty}
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+      >
+        + Υπηρεσία
+      </button>
+      <button
+        onClick={onAddLeave}
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+      >
+        + Άδεια
+      </button>
+    </div>
+  )
+
   return (
     <div
       className="fixed inset-0 z-[85] bg-black/80 backdrop-blur-sm animate-fade-in flex flex-col"
@@ -838,27 +876,11 @@ function DateDetailsModal({
         className="flex-1 flex flex-col w-full h-full safe-top safe-bottom"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80 shrink-0">
-          <div className="flex-1">
-            <h2 className="text-[20px] font-bold text-white">
-              {formatGreekDateFull(selectedDate)}
-            </h2>
-            <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
-              {duties.length + leaves.length} γεγονότ{duties.length + leaves.length === 1 ? 'α' : 'α'}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors active:scale-95 flex-shrink-0 ml-2"
-            aria-label="Κλείσιμο"
-          >
-            <Plus size={20} className="rotate-45" />
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar">
+        <ModalLayout
+          header={header}
+          footer={footer}
+          contentClassName="px-6 py-5"
+        >
           <div className="flex flex-col gap-4">
             {/* Duties */}
             {duties.length > 0 && (
@@ -947,24 +969,8 @@ function DateDetailsModal({
                 <p className="text-[12px] text-zinc-400 font-semibold">Δεν υπάρχουν γεγονότα</p>
               </div>
             )}
-
-            {/* Add Buttons */}
-            <div className="flex gap-2 pt-4 border-t border-zinc-700/30">
-              <button
-                onClick={onAddDuty}
-                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
-              >
-                + Υπηρεσία
-              </button>
-              <button
-                onClick={onAddLeave}
-                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
-              >
-                + Άδεια
-              </button>
-            </div>
           </div>
-        </div>
+        </ModalLayout>
       </div>
     </div>
   )
