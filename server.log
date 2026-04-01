@@ -1,0 +1,11 @@
+
+> my-project@0.1.0 start /home/ubuntu/v0-military-service-app
+> next start -p 5000 -H 0.0.0.0
+
+▲ Next.js 16.1.6
+- Local:         http://localhost:5000
+- Network:       http://0.0.0.0:5000
+
+✓ Starting...
+✓ Ready in 215ms
+ ELIFECYCLE  Command failed.
