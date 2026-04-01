@@ -4,6 +4,7 @@ import * as React from 'react'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 
 import { cn } from '@/lib/utils'
+import { triggerHaptic } from '@/lib/helpers'
 
 function Slider({
   className,
@@ -23,6 +24,13 @@ function Slider({
     [value, defaultValue, min, max],
   )
 
+  const handleValueChange = (value: number[]) => {
+    triggerHaptic('light')
+    if (props.onValueChange) {
+      props.onValueChange(value)
+    }
+  }
+
   return (
     <SliderPrimitive.Root
       data-slot="slider"
@@ -35,6 +43,7 @@ function Slider({
         className,
       )}
       {...props}
+      onValueChange={handleValueChange}
     >
       <SliderPrimitive.Track
         data-slot="slider-track"

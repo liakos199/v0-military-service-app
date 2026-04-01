@@ -6,6 +6,7 @@ import { type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 import { toggleVariants } from '@/components/ui/toggle'
+import { triggerHaptic } from '@/lib/helpers'
 
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants>
@@ -50,6 +51,13 @@ function ToggleGroupItem({
   VariantProps<typeof toggleVariants>) {
   const context = React.useContext(ToggleGroupContext)
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    triggerHaptic('light')
+    if (props.onClick) {
+      props.onClick(e)
+    }
+  }
+
   return (
     <ToggleGroupPrimitive.Item
       data-slot="toggle-group-item"
@@ -64,6 +72,7 @@ function ToggleGroupItem({
         className,
       )}
       {...props}
+      onClick={handleClick}
     >
       {children}
     </ToggleGroupPrimitive.Item>

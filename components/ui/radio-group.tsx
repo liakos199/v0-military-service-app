@@ -5,6 +5,7 @@ import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import { CircleIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+import { triggerHaptic } from '@/lib/helpers'
 
 function RadioGroup({
   className,
@@ -23,6 +24,13 @@ function RadioGroupItem({
   className,
   ...props
 }: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    triggerHaptic('light')
+    if (props.onClick) {
+      props.onClick(e)
+    }
+  }
+
   return (
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
@@ -31,6 +39,7 @@ function RadioGroupItem({
         className,
       )}
       {...props}
+      onClick={handleClick}
     >
       <RadioGroupPrimitive.Indicator
         data-slot="radio-group-indicator"

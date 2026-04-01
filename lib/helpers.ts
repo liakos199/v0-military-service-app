@@ -1,19 +1,26 @@
-export function hapticFeedback(type: 'light' | 'medium' | 'heavy' = 'light') {
+export type HapticType = 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error'
+
+export const hapticPatterns: Record<HapticType, number | number[]> = {
+  light: 10,
+  medium: 20,
+  heavy: 40,
+  success: [10, 50, 10],
+  warning: [30, 50, 30],
+  error: [50, 50, 50, 50, 50],
+}
+
+export function hapticFeedback(type: HapticType = 'light') {
   if (typeof window === 'undefined') return
   if (!('vibrate' in navigator)) return
 
-  const durations = {
-    light: 10,
-    medium: 20,
-    heavy: 40,
-  }
-
   try {
-    navigator.vibrate(durations[type])
+    navigator.vibrate(hapticPatterns[type])
   } catch {
     // Vibration not supported
   }
 }
+
+export const triggerHaptic = hapticFeedback
 
 export function formatGreekDate(dateStr: string): string {
   const date = new Date(dateStr)

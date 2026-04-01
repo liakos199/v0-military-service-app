@@ -5,6 +5,7 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+import { triggerHaptic } from '@/lib/helpers'
 
 function Select({
   ...props
@@ -32,6 +33,13 @@ function SelectTrigger({
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: 'sm' | 'default'
 }) {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    triggerHaptic('light')
+    if (props.onClick) {
+      props.onClick(e)
+    }
+  }
+
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -41,6 +49,7 @@ function SelectTrigger({
         className,
       )}
       {...props}
+      onClick={handleClick}
     >
       {children}
       <SelectPrimitive.Icon asChild>
@@ -103,6 +112,13 @@ function SelectItem({
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    triggerHaptic('light')
+    if (props.onClick) {
+      props.onClick(e)
+    }
+  }
+
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
@@ -111,6 +127,7 @@ function SelectItem({
         className,
       )}
       {...props}
+      onClick={handleClick}
     >
       <span className="absolute right-2 flex size-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>

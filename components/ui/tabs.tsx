@@ -4,6 +4,7 @@ import * as React from 'react'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 
 import { cn } from '@/lib/utils'
+import { triggerHaptic } from '@/lib/helpers'
 
 function Tabs({
   className,
@@ -38,6 +39,13 @@ function TabsTrigger({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    triggerHaptic('light')
+    if (props.onClick) {
+      props.onClick(e)
+    }
+  }
+
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
@@ -46,6 +54,7 @@ function TabsTrigger({
         className,
       )}
       {...props}
+      onClick={handleClick}
     />
   )
 }
