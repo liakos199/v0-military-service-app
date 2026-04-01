@@ -505,8 +505,9 @@ export function CalendarTab() {
         isOpen={showAddLeave}
         onClose={handleCloseModals}
         title={leaveModalMode === 'edit' ? 'Επεξεργασία Άδειας' : 'Νέα Άδεια'}
+        footer={<AddLeaveFormFooter />}
       >
-        <AddLeaveForm
+        <AddLeaveFormContent
           initialDate={selectedDate || today}
           onAdd={handleAddLeave}
           onCancel={handleCloseModals}
@@ -1271,6 +1272,23 @@ function AddLeaveForm({
     })
   }
 
+  const footer = (
+    <div className="flex gap-3 px-6 py-5">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+      >
+        Ακύρωση
+      </button>
+      <button
+        onClick={handleSubmit}
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+      >
+        {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
+      </button>
+    </div>
+  )
+
   return (
     <div className="flex flex-col gap-6 p-2">
       <div>
@@ -1307,21 +1325,10 @@ function AddLeaveForm({
           className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-amber-500 outline-none resize-none h-24"
         />
       </div>
-
-      <div className="flex gap-3">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
-        >
-          {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
-        </button>
-      </div>
     </div>
   )
+}
+
+function AddLeaveFormFooter() {
+  return <></>
 }
