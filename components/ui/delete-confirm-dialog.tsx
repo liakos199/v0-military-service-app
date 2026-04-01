@@ -18,8 +18,8 @@ export function DeleteConfirmDialog({
   if (!mounted) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] bg-black/75 flex items-end justify-center pb-8 px-4 pointer-events-auto">
-      <div className="bg-zinc-900 border border-zinc-700/50 rounded-[2rem] w-full max-w-sm shadow-2xl p-6 flex flex-col gap-5 mb-24">
+    <div className="fixed inset-0 bg-black/75 flex items-end justify-center pb-8 px-4 pointer-events-auto" style={{ zIndex: 99999 }}>
+      <div className="bg-zinc-900 border border-zinc-700/50 rounded-[2rem] w-full max-w-sm shadow-2xl p-6 flex flex-col gap-5 mb-24 relative" style={{ zIndex: 100000 }}>
         <div className="text-center">
           <p className="text-white font-bold text-[16px] mb-1">Διαγραφή καταχώρησης;</p>
           <p className="text-zinc-400 text-[12px]">Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.</p>
