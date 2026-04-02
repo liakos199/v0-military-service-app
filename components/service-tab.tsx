@@ -16,7 +16,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { InlineDatePicker } from '@/components/inline-date-picker'
-import { FullscreenModal } from '@/components/fullscreen-modal'
+import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 import {
   hapticFeedback,
@@ -211,8 +211,8 @@ export function ServiceTab() {
                   <span className="text-[9px] font-semibold text-zinc-500 uppercase tracking-widest">Ημερες</span>
                 </div>
                 <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
-                  <span className="text-[9px] font-bold tracking-[0.1em] text-[#34d399] uppercase mb-1">Αδειες</span>
-                  <span className="text-[22px] font-extrabold text-white leading-none mb-1">{totalLeaveDays}</span>
+                  <span className="text-[9px] font-bold tracking-[0.1em] text-[#34d399] uppercase mb-1">Συνολο</span>
+                  <span className="text-[22px] font-extrabold text-white leading-none mb-1">{effectiveTotalDays}</span>
                   <span className="text-[9px] font-semibold text-zinc-500 uppercase tracking-widest">Ημερες</span>
                 </div>
               </div>
@@ -220,81 +220,29 @@ export function ServiceTab() {
           )}
         </div>
 
-        {/* Today's Events Section */}
-        {hasEventsToday && (
-          <div className="mb-8">
-            <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Σημερα</h2>
-            <div className="space-y-3">
-              {todaysLeaves.map(leave => (
-                <div key={leave.id} className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-                      <CalendarIcon size={20} />
-                    </div>
-                    <div>
-                      <h3 className="text-[13px] font-bold text-white leading-none mb-1">{LEAVE_TYPE_LABELS[leave.type]}</h3>
-                      <p className="text-[10px] text-zinc-400 font-semibold tracking-wide">
-                        {leave.startDate === leave.endDate ? 'ΜΟΝΟΗΜΕΡΗ' : `${formatGreekDate(leave.startDate)} - ${formatGreekDate(leave.endDate)}`}
-                      </p>
-                    </div>
-                  </div>
-                  {leave.notes && (
-                    <div className="mt-3 pl-13 pr-2">
-                      <p className="text-[11px] text-zinc-300 bg-black/20 rounded-lg p-2 border border-white/5">{leave.notes}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              {todaysDuties.map(duty => (
-                <div key={duty.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col shadow-lg shadow-black/10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-zinc-800 border border-zinc-700/50 text-zinc-300 flex items-center justify-center shrink-0">
-                      <CalendarIcon size={20} />
-                    </div>
-                    <div>
-                      <h3 className="text-[13px] font-bold text-white leading-none mb-1">{DUTY_TYPE_LABELS[duty.type] || duty.type}</h3>
-                      {(duty.startTime || duty.endTime) && (
-                        <p className="text-[10px] text-zinc-400 font-semibold tracking-wide">
-                          {duty.startTime || '--:--'} - {duty.endTime || '--:--'}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {duty.notes && (
-                    <div className="mt-3 pl-13 pr-2">
-                      <p className="text-[11px] text-zinc-300 bg-black/20 rounded-lg p-2 border border-white/5">{duty.notes}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Daily Password Section (Only shows if there is a guard duty today with a password) */}
+        {/* Password Card (Quick View) */}
         {todaysGuardDuty && (
           <div className="mb-8">
-            <div className="flex items-center justify-between px-1 mb-3">
-              <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Συνθημα Ημερας (Σκοπια)</h2>
-              <button
-                onClick={() => { hapticFeedback('light'); setShowPasswordRaw(!showPasswordRaw) }}
-                className="flex items-center justify-center text-zinc-500 hover:text-zinc-300 transition-colors"
-              >
-                {showPasswordRaw ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-
-            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition">
+            <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Συνθηματικά Ημέρας</h2>
+            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 shadow-lg shadow-black/10 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-3">
+                <button 
+                  onClick={() => { hapticFeedback('light'); setShowPasswordRaw(!showPasswordRaw) }}
+                  className="w-8 h-8 rounded-full bg-zinc-950/40 border border-zinc-700/50 flex items-center justify-center text-zinc-400 active:scale-90 transition-all"
+                >
+                  {showPasswordRaw ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+              </div>
+              
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-[#34d399] shrink-0">
                   <KeyRound size={24} />
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1.5 flex-1 min-w-0 pr-8">
                   {todaysGuardDuty.password && (
                     <div className="flex items-baseline gap-2">
                       <span className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase w-10">Σ:</span>
-                      <span className={cn("text-[15px] font-bold tracking-wider", showPasswordRaw ? "text-white" : "text-zinc-400 font-mono")}>
+                      <span className={cn("text-[15px] font-bold tracking-wider", showPasswordRaw ? "text-[#34d399]" : "text-zinc-400 font-mono")}>
                         {showPasswordRaw ? todaysGuardDuty.password : '••••••••'}
                       </span>
                     </div>
@@ -370,8 +318,18 @@ export function ServiceTab() {
         isOpen={showConfig}
         onClose={() => setShowConfig(false)}
         title="Ρυθμίσεις Θητείας"
+        footer={
+          <div className="px-6 py-5">
+            <button
+              onClick={() => { hapticFeedback('medium'); setShowConfig(false) }}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[13px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+            >
+              Αποθήκευση
+            </button>
+          </div>
+        }
       >
-        <div className="flex flex-col gap-6 p-2">
+        <div className="flex flex-col gap-6">
           <InlineDatePicker
             value={config.enlistmentDate}
             onChange={(d) => setConfig({ ...config, enlistmentDate: d })}
@@ -420,13 +378,6 @@ export function ServiceTab() {
               />
             </div>
           </div>
-
-          <button
-            onClick={() => { hapticFeedback('medium'); setShowConfig(false) }}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[13px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all mt-4"
-          >
-            Αποθήκευση
-          </button>
         </div>
       </FullscreenModal>
 
@@ -516,58 +467,61 @@ function PrisonManager({
         <Lock size={32} className="text-red-400/40" />
       </div>
 
-      <button
-        onClick={() => { hapticFeedback('light'); setShowForm(true) }}
-        className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
-      >
-        <Plus size={16} />
-        Προσθήκη Καταχώρησης
-      </button>
-
-      {prisons.length === 0 ? (
-        <div className="py-10 flex flex-col items-center justify-center text-center opacity-40">
-          <Lock size={40} className="text-zinc-500 mb-3" />
-          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπάρχουν καταχωρήσεις</p>
-        </div>
-      ) : (
-        <>
-          <div className="flex flex-col gap-3">
-            {prisons.map((p) => (
-              <div key={p.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between gap-3 shadow-lg shadow-black/10">
-                <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex flex-col items-center justify-center shrink-0">
-                    <span className="text-[18px] font-extrabold text-red-400 leading-none">{p.days}</span>
-                    <span className="text-[8px] font-bold text-red-400/60 uppercase">ημ.</span>
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[13px] font-bold text-white break-words">{p.reason || 'Χωρίς αιτία'}</p>
-                    <p className="text-[10px] text-zinc-500">{formatGreekDate(p.addedDate)}</p>
-                  </div>
+      <div className="flex flex-col gap-3">
+        {prisons.length === 0 ? (
+          <div className="py-10 flex flex-col items-center justify-center text-center opacity-40">
+            <Lock size={40} className="text-zinc-500 mb-3" />
+            <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπάρχουν καταχωρήσεις</p>
+          </div>
+        ) : (
+          prisons.map((p) => (
+            <div key={p.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between gap-3 shadow-lg shadow-black/10">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex flex-col items-center justify-center shrink-0">
+                  <span className="text-[18px] font-extrabold text-red-400 leading-none">{p.days}</span>
+                  <span className="text-[8px] font-bold text-red-400/60 uppercase">ημ.</span>
                 </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  <button
-                    onClick={() => handleEdit(p)}
-                    className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
-                  >
-                    <Edit3 size={14} />
-                  </button>
-                  <button
-                    onClick={() => setPendingDeleteId(p.id)}
-                    className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-rose-500 hover:text-rose-400 transition-colors"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                <div className="min-w-0">
+                  <p className="text-[13px] font-bold text-white break-words">{p.reason || 'Χωρίς αιτία'}</p>
+                  <p className="text-[10px] text-zinc-500">{formatGreekDate(p.addedDate)}</p>
                 </div>
               </div>
-            ))}
-          </div>
-          {pendingDeleteId && (
-            <DeleteConfirmDialog
-              onConfirm={() => { handleDelete(pendingDeleteId); setPendingDeleteId(null) }}
-              onCancel={() => setPendingDeleteId(null)}
-            />
-          )}
-        </>
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  onClick={() => handleEdit(p)}
+                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+                >
+                  <Edit3 size={14} />
+                </button>
+                <button
+                  onClick={() => setPendingDeleteId(p.id)}
+                  className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-rose-500 hover:text-rose-400 transition-colors"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      <ModalFooter>
+        <div className="px-6 py-5">
+          <button
+            onClick={() => { hapticFeedback('light'); setShowForm(true) }}
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+          >
+            <Plus size={16} />
+            Προσθήκη Καταχώρησης
+          </button>
+        </div>
+      </ModalFooter>
+
+      {pendingDeleteId && (
+        <DeleteConfirmDialog
+          onConfirm={() => { handleDelete(pendingDeleteId); setPendingDeleteId(null) }}
+          onCancel={() => setPendingDeleteId(null)}
+        />
       )}
     </div>
   )
@@ -586,7 +540,7 @@ function PrisonForm({
   const [reason, setReason] = useState(initial?.reason ?? '')
 
   return (
-    <div className="flex flex-col gap-5 p-2">
+    <div className="flex flex-col gap-5">
       <div>
         <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ημέρες Φυλακής</label>
         <input
@@ -610,20 +564,22 @@ function PrisonForm({
         />
       </div>
 
-      <div className="flex gap-3 pt-2">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={() => onSave(days, reason)}
-          className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform"
-        >
-          {initial ? 'Αποθήκευση' : 'Προσθήκη'}
-        </button>
-      </div>
+      <ModalFooter>
+        <div className="flex gap-3 px-6 py-5">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+          >
+            Ακύρωση
+          </button>
+          <button
+            onClick={() => onSave(days, reason)}
+            className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform"
+          >
+            {initial ? 'Αποθήκευση' : 'Προσθήκη'}
+          </button>
+        </div>
+      </ModalFooter>
     </div>
   )
 }
@@ -693,62 +649,65 @@ function DetentionManager({
         <CalendarX size={32} className="text-zinc-500/40" />
       </div>
 
-      <button
-        onClick={() => { hapticFeedback('light'); setShowForm(true) }}
-        className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
-      >
-        <Plus size={16} />
-        Προσθήκη Κράτησης
-      </button>
-
-      {detentions.length === 0 ? (
-        <div className="py-10 flex flex-col items-center justify-center text-center opacity-40">
-          <CalendarX size={40} className="text-zinc-500 mb-3" />
-          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπάρχουν κρατήσεις</p>
-        </div>
-      ) : (
-        <>
-          <div className="flex flex-col gap-3">
-            {detentions.map((d) => {
-              const days = Math.max(0, daysBetween(d.startDate, d.endDate) + 1)
-              return (
-                <div key={d.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-bold text-white mb-1 break-words">{d.reason || 'Χωρίς αιτία'}</p>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.startDate)}</span>
-                        <span className="text-zinc-600">→</span>
-                        <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.endDate)}</span>
-                        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">{days} ημ.</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1 ml-2 shrink-0">
-                      <button
-                        onClick={() => handleEdit(d)}
-                        className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
-                      >
-                        <Edit3 size={14} />
-                      </button>
-                      <button
-                        onClick={() => setPendingDeleteId(d.id)}
-                        className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-rose-500 hover:text-rose-400 transition-colors"
-                      >
-                        <Trash2 size={14} />
-                      </button>
+      <div className="flex flex-col gap-3">
+        {detentions.length === 0 ? (
+          <div className="py-10 flex flex-col items-center justify-center text-center opacity-40">
+            <CalendarX size={40} className="text-zinc-500 mb-3" />
+            <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Δεν υπάρχουν κρατήσεις</p>
+          </div>
+        ) : (
+          detentions.map((d) => {
+            const days = Math.max(0, daysBetween(d.startDate, d.endDate) + 1)
+            return (
+              <div key={d.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-bold text-white mb-1 break-words">{d.reason || 'Χωρίς αιτία'}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.startDate)}</span>
+                      <span className="text-zinc-600">→</span>
+                      <span className="text-[10px] text-zinc-400 font-semibold">{formatGreekDate(d.endDate)}</span>
+                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">{days} ημ.</span>
                     </div>
                   </div>
+                  <div className="flex items-center gap-1 ml-2 shrink-0">
+                    <button
+                      onClick={() => handleEdit(d)}
+                      className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors"
+                    >
+                      <Edit3 size={14} />
+                    </button>
+                    <button
+                      onClick={() => setPendingDeleteId(d.id)}
+                      className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-rose-500 hover:text-rose-400 transition-colors"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
                 </div>
-              )
-            })}
-          </div>
-          {pendingDeleteId && (
-            <DeleteConfirmDialog
-              onConfirm={() => { handleDelete(pendingDeleteId); setPendingDeleteId(null) }}
-              onCancel={() => setPendingDeleteId(null)}
-            />
-          )}
-        </>
+              </div>
+            )
+          })
+        )}
+      </div>
+
+      <ModalFooter>
+        <div className="px-6 py-5">
+          <button
+            onClick={() => { hapticFeedback('light'); setShowForm(true) }}
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+          >
+            <Plus size={16} />
+            Προσθήκη Κράτησης
+          </button>
+        </div>
+      </ModalFooter>
+
+      {pendingDeleteId && (
+        <DeleteConfirmDialog
+          onConfirm={() => { handleDelete(pendingDeleteId); setPendingDeleteId(null) }}
+          onCancel={() => setPendingDeleteId(null)}
+        />
       )}
     </div>
   )
@@ -770,7 +729,7 @@ function DetentionForm({
   const days = startDate && endDate ? Math.max(0, daysBetween(startDate, endDate) + 1) : 0
 
   return (
-    <div className="flex flex-col gap-5 p-2">
+    <div className="flex flex-col gap-5">
       <InlineDatePicker
         value={startDate}
         onChange={setStartDate}
@@ -799,21 +758,23 @@ function DetentionForm({
         />
       </div>
 
-      <div className="flex gap-3 pt-2">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={() => onSave(startDate, endDate, reason)}
-          disabled={!startDate || !endDate}
-          className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform disabled:opacity-50"
-        >
-          {initial ? 'Αποθήκευση' : 'Προσθήκη'}
-        </button>
-      </div>
+      <ModalFooter>
+        <div className="flex gap-3 px-6 py-5">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+          >
+            Ακύρωση
+          </button>
+          <button
+            onClick={() => onSave(startDate, endDate, reason)}
+            disabled={!startDate || !endDate}
+            className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform disabled:opacity-50"
+          >
+            {initial ? 'Αποθήκευση' : 'Προσθήκη'}
+          </button>
+        </div>
+      </ModalFooter>
     </div>
   )
 }
