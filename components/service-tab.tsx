@@ -28,6 +28,7 @@ import {
 import type { ServiceConfig, LeaveEntry, PrisonEntry, DetentionEntry, DutyEntry } from '@/lib/types'
 import { SERVICE_DURATION_PRESETS, DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS } from '@/lib/types'
 
+// Deployment trigger to ensure Vercel reflects the restored version
 export function ServiceTab() {
   const [config, setConfig] = useLocalStorage<ServiceConfig>('fantaros-config', {
     enlistmentDate: '',
