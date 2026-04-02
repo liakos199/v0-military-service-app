@@ -563,22 +563,20 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
       </div>
 
       {/* Add Note Modal */}
-      <FullscreenModal
-        isOpen={showAdd}
-        onClose={() => setShowAdd(false)}
-        title="Νέα Σημείωση"
-        footer={<AddNoteFormFooter />}
-      >
+          <FullscreenModal
+            isOpen={showAdd}
+            onClose={() => setShowAdd(false)}
+            title="Νέα Σημείωση"
+          >
         <AddNoteFormContent onAdd={handleAdd} onCancel={() => setShowAdd(false)} />
       </FullscreenModal>
 
       {/* Edit Note Modal */}
-      <FullscreenModal
-        isOpen={!!editingNote}
-        onClose={() => setEditingNote(null)}
-        title="Επεξεργασία Σημείωσης"
-        footer={<EditNoteFormFooter />}
-      >
+          <FullscreenModal
+            isOpen={!!editingNote}
+            onClose={() => setEditingNote(null)}
+            title="Επεξεργασία Σημείωσης"
+          >
         {editingNote && (
           <EditNoteFormContent
             note={editingNote}
@@ -894,8 +892,27 @@ function AddNoteFormContent({ onAdd, onCancel }: { onAdd: (t: string, c: string)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
+  const footer = (
+    <div className="flex gap-3 px-6 py-5">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+      >
+        Ακύρωση
+      </button>
+      <button
+        onClick={() => onAdd(title, content)}
+        disabled={!content.trim()}
+        className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+      >
+        Προσθήκη
+      </button>
+    </div>
+  )
+
   return (
     <div className="flex flex-col gap-4 p-2">
+      <ModalFooter>{footer}</ModalFooter>
       <div>
         <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Τίτλος</label>
         <input
@@ -919,9 +936,7 @@ function AddNoteFormContent({ onAdd, onCancel }: { onAdd: (t: string, c: string)
   )
 }
 
-function AddNoteFormFooter() {
-  return <></>
-}
+
 
 function EditNoteFormContent({ note, onSave, onCancel }: { note: NoteEntry; onSave: (t: string, c: string) => void; onCancel: () => void }) {
   const [title, setTitle] = useState(note.title || '')
@@ -947,6 +962,7 @@ function EditNoteFormContent({ note, onSave, onCancel }: { note: NoteEntry; onSa
 
   return (
     <div className="flex flex-col gap-4 p-2">
+      <ModalFooter>{footer}</ModalFooter>
       <div>
         <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Τίτλος</label>
         <input
@@ -970,6 +986,4 @@ function EditNoteFormContent({ note, onSave, onCancel }: { note: NoteEntry; onSa
   )
 }
 
-function EditNoteFormFooter() {
-  return <></>
-}
+

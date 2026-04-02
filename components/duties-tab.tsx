@@ -5,7 +5,7 @@ import { Plus, Trash2, Bell, BellOff, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
-import { FullscreenModal } from '@/components/fullscreen-modal'
+import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
 import type { DutyEntry, DutyType } from '@/lib/types'
 import { DUTY_TYPE_LABELS } from '@/lib/types'
@@ -119,7 +119,6 @@ export function DutiesTab() {
             isOpen={showAdd}
             onClose={() => setShowAdd(false)}
             title="Νέα Υπηρεσία"
-            footer={<AddDutyFormFooterDuties />}
             contentClassName="px-6 py-5 pb-safe overflow-y-auto"
           >
             <AddDutyForm
@@ -244,8 +243,26 @@ function AddDutyForm({ onAdd, onCancel }: {
     })
   }
 
+  const footer = (
+    <div className="flex gap-3 px-6 py-5">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+      >
+        Ακύρωση
+      </button>
+      <button
+        onClick={handleSubmit}
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+      >
+        Προσθήκη
+      </button>
+    </div>
+  )
+
   return (
     <div className="flex flex-col gap-2.5 h-full">
+      <ModalFooter>{footer}</ModalFooter>
       <div>
         <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Τύπος</label>
         <div className="flex overflow-x-auto gap-1 no-scrollbar pb-0.5 -mx-1 px-1">
@@ -310,6 +327,4 @@ function AddDutyForm({ onAdd, onCancel }: {
   )
 }
 
-function AddDutyFormFooterDuties() {
-  return <></>
-}
+

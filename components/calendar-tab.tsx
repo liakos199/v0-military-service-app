@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { InlineDatePicker } from '@/components/inline-date-picker'
-import { FullscreenModal } from '@/components/fullscreen-modal'
+import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { ModalLayout } from '@/components/modal-layout'
 import { ActionSheet, ActionSheetItem, ActionSheetCancel } from '@/components/action-sheet'
 import {
@@ -506,7 +506,6 @@ export function CalendarTab() {
         isOpen={showAddLeave}
         onClose={handleCloseModals}
         title={leaveModalMode === 'edit' ? 'Επεξεργασία Άδειας' : 'Νέα Άδεια'}
-        footer={<AddLeaveFormFooter />}
       >
         <AddLeaveForm
           initialDate={selectedDate || today}
@@ -1156,6 +1155,7 @@ function AddDutyForm({
 
   return (
     <div className="flex flex-col gap-6 p-2">
+      <ModalFooter>{footer}</ModalFooter>
       <div>
         <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-3 px-1">
           Τύπος υπηρεσίας
@@ -1292,6 +1292,7 @@ function AddLeaveForm({
 
   return (
     <div className="flex flex-col gap-6 p-2">
+      <ModalFooter>{footer}</ModalFooter>
       <div>
         <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-3 px-1">
           Τύπος άδειας
@@ -1330,6 +1331,4 @@ function AddLeaveForm({
   )
 }
 
-function AddLeaveFormFooter() {
-  return <></>
-}
+
