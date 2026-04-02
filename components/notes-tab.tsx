@@ -577,9 +577,10 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
         isOpen={!!editingNote}
         onClose={() => setEditingNote(null)}
         title="Επεξεργασία Σημείωσης"
+        footer={<EditNoteFormFooter />}
       >
         {editingNote && (
-          <EditNoteForm
+          <EditNoteFormContent
             note={editingNote}
             onSave={handleUpdate}
             onCancel={() => setEditingNote(null)}
@@ -922,9 +923,27 @@ function AddNoteFormFooter() {
   return <></>
 }
 
-function EditNoteForm({ note, onSave, onCancel }: { note: NoteEntry; onSave: (t: string, c: string) => void; onCancel: () => void }) {
+function EditNoteFormContent({ note, onSave, onCancel }: { note: NoteEntry; onSave: (t: string, c: string) => void; onCancel: () => void }) {
   const [title, setTitle] = useState(note.title || '')
   const [content, setContent] = useState(note.content)
+
+  const footer = (
+    <div className="flex gap-3 px-6 py-5">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+      >
+        Ακύρωση
+      </button>
+      <button
+        onClick={() => onSave(title, content)}
+        disabled={!content.trim()}
+        className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+      >
+        Αποθήκευση
+      </button>
+    </div>
+  )
 
   return (
     <div className="flex flex-col gap-4 p-2">
@@ -947,21 +966,10 @@ function EditNoteForm({ note, onSave, onCancel }: { note: NoteEntry; onSave: (t:
           className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-48"
         />
       </div>
-      <div className="flex gap-3 pt-2">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={() => onSave(title, content)}
-          disabled={!content.trim()}
-          className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
-        >
-          Αποθήκευση
-        </button>
-      </div>
     </div>
   )
+}
+
+function EditNoteFormFooter() {
+  return <></>
 }
