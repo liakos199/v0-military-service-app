@@ -120,6 +120,7 @@ export function DutiesTab() {
             onClose={() => setShowAdd(false)}
             title="Νέα Υπηρεσία"
             footer={<AddDutyFormFooterDuties />}
+            contentClassName="px-6 py-5 pb-safe overflow-y-auto"
           >
             <AddDutyForm
               onAdd={(duty) => {

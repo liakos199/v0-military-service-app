@@ -485,6 +485,7 @@ export function CalendarTab() {
         isOpen={showAddDuty}
         onClose={handleCloseModals}
         title={dutyModalMode === 'edit' ? 'Επεξεργασία Υπηρεσίας' : 'Νέα Υπηρεσία'}
+        contentClassName="px-6 py-5 pb-safe overflow-y-auto"
       >
         <AddDutyForm
           initialDate={selectedDate || today}

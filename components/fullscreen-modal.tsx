@@ -28,9 +28,19 @@ interface FullscreenModalProps {
   footer?: React.ReactNode
   showBackButton?: boolean
   onBack?: () => void
+  contentClassName?: string
 }
 
-export function FullscreenModal({ isOpen, onClose, title, children, footer, showBackButton = false, onBack }: FullscreenModalProps) {
+export function FullscreenModal({ 
+  isOpen, 
+  onClose, 
+  title, 
+  children, 
+  footer, 
+  showBackButton = false, 
+  onBack,
+  contentClassName = "px-6 py-5 pb-safe"
+}: FullscreenModalProps) {
   const [mounted, setMounted] = useState(false)
   const [footerNode, setFooterNode] = useState<HTMLDivElement | null>(null)
 
@@ -92,7 +102,7 @@ export function FullscreenModal({ isOpen, onClose, title, children, footer, show
             <div ref={setFooterNode} />
           </>
         }
-        contentClassName="px-6 py-5 pb-safe"
+        contentClassName={contentClassName}
       >
         <ModalFooterContext.Provider value={footerNode}>
           {children}
