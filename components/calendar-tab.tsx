@@ -25,7 +25,10 @@ import {
   toLocalDateString,
   daysBetween,
   formatGreekDateFull,
+  generateIcsFile,
+  downloadIcsFile,
 } from '@/lib/helpers'
+import { Switch } from '@/components/ui/switch'
 import type { DutyEntry, DutyType, LeaveEntry, LeaveType } from '@/lib/types'
 import { DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS, GREEK_MONTHS } from '@/lib/types'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
@@ -1119,11 +1122,26 @@ function AddDutyForm({
   const [notes, setNotes] = useState(editingDuty?.notes || '')
   const [password, setPassword] = useState(editingDuty?.password || '')
   const [countersign, setCountersign] = useState(editingDuty?.countersign || '')
+  const [addToCalendar, setAddToCalendar] = useState(false)
 
   const handleSubmit = () => {
     if (!date || !startTime || !endTime) return
     
     hapticFeedback('heavy')
+
+    if (addToCalendar) {
+      const ics = generateIcsFile({
+        title: DUTY_TYPE_LABELS[type],
+        description: notes || `Υπηρεσία: ${DUTY_TYPE_LABELS[type]}`,
+        startDate: date,
+        startTime: startTime,
+        endDate: date,
+        endTime: endTime,
+        reminderMinutes: 30,
+      })
+      downloadIcsFile(ics, `apolele-duty-${date}.ics`)
+    }
+
     onAdd({
       id: editingDuty?.id || generateId(),
       type,
@@ -1137,7 +1155,15 @@ function AddDutyForm({
   }
 
   const footer = (
-    <div className="flex gap-3 px-6 py-5">
+    <div className="flex flex-col gap-4 px-6 py-5">
+      <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-900 border border-zinc-800">
+        <div className="flex flex-col">
+          <span className="text-[11px] font-bold text-white tracking-wider">Προσθήκη στο Ημερολόγιο</span>
+          <span className="text-[9px] text-zinc-500">Λήψη αρχείου .ics για ειδοποιήσεις</span>
+        </div>
+        <Switch checked={addToCalendar} onCheckedChange={setAddToCalendar} />
+      </div>
+      <div className="flex gap-3">
       <button
         onClick={onCancel}
         className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
@@ -1150,6 +1176,7 @@ function AddDutyForm({
       >
         {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
       </button>
+      </div>
     </div>
   )
 
