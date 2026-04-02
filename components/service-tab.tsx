@@ -319,7 +319,7 @@ export function ServiceTab() {
         onClose={() => setShowConfig(false)}
         title="Ρυθμίσεις Θητείας"
         footer={
-          <div className="px-6 py-3">
+          <div className="px-6 py-3 pb-6">
             <button
               onClick={() => { hapticFeedback('medium'); setShowConfig(false) }}
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[13px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
@@ -506,7 +506,7 @@ function PrisonManager({
       </div>
 
       <ModalFooter>
-        <div className="px-6 py-3">
+        <div className="px-6 py-3 pb-6">
           <button
             onClick={() => { hapticFeedback('light'); setShowForm(true) }}
             className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
@@ -565,7 +565,7 @@ function PrisonForm({
       </div>
 
       <ModalFooter>
-        <div className="flex gap-3 px-6 py-3">
+        <div className="flex gap-3 px-6 py-3 pb-6">
           <button
             onClick={onCancel}
             className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
@@ -692,7 +692,7 @@ function DetentionManager({
       </div>
 
       <ModalFooter>
-        <div className="px-6 py-3">
+        <div className="px-6 py-3 pb-6">
           <button
             onClick={() => { hapticFeedback('light'); setShowForm(true) }}
             className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
@@ -759,7 +759,7 @@ function DetentionForm({
       </div>
 
       <ModalFooter>
-        <div className="flex gap-3 px-6 py-3">
+        <div className="flex gap-3 px-6 py-3 pb-6">
           <button
             onClick={onCancel}
             className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
