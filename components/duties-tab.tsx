@@ -119,6 +119,7 @@ export function DutiesTab() {
             isOpen={showAdd}
             onClose={() => setShowAdd(false)}
             title="Νέα Υπηρεσία"
+            footer={<AddDutyFormFooterDuties />}
           >
             <AddDutyForm
               onAdd={(duty) => {
@@ -304,21 +305,10 @@ function AddDutyForm({ onAdd, onCancel }: {
         />
       </div>
 
-      <div className="mt-auto flex gap-2 pt-3">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-2 rounded-lg bg-secondary text-secondary-foreground font-bold text-[9px] uppercase tracking-widest min-h-[40px] hover:bg-secondary/80 transition-colors"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          disabled={!date}
-          className="flex-1 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-[9px] uppercase tracking-widest min-h-[40px] disabled:opacity-40 hover:bg-primary transition-colors"
-        >
-          Προσθήκη
-        </button>
-      </div>
     </div>
   )
+}
+
+function AddDutyFormFooterDuties() {
+  return <></>
 }
