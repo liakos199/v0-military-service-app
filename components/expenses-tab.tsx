@@ -186,6 +186,7 @@ export function ExpensesTab() {
         title="Νέο Έξοδο"
         showBackButton={true}
         onBack={() => setShowAdd(false)}
+        footer={<AddExpenseFormFooter />}
       >
         <AddExpenseForm
           canteenCatalog={canteenCatalog}
@@ -369,23 +370,11 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
 
       {/* Date Picker */}
       <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
-
-      {/* Action Buttons */}
-      <div className="flex gap-3 pt-4">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          disabled={!amount || !date}
-          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Προσθηκη
-        </button>
-      </div>
     </div>
   )
 }
+
+function AddExpenseFormFooter() {
+  return <></>
+}
+
