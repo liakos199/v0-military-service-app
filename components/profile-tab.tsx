@@ -204,6 +204,7 @@ function ProfileSection() {
         isOpen={isEditing}
         onClose={() => setIsEditing(false)}
         title="Επεξεργασία Προφίλ"
+        footer={<EditProfileFormFooter />}
       >
         <EditProfileForm
           profile={profile}
@@ -293,6 +294,7 @@ function SuperiorsSection() {
         isOpen={isAdding}
         onClose={() => setIsAdding(false)}
         title="Προσθήκη Ανωτέρου"
+        footer={<AddSuperiorFormFooter />}
       >
         <AddSuperiorForm
           onAdd={handleAdd}
@@ -304,6 +306,7 @@ function SuperiorsSection() {
         isOpen={editingEntry !== null}
         onClose={() => setEditingEntry(null)}
         title="Επεξεργασία Ανωτέρου"
+        footer={<EditSuperiorFormFooter />}
       >
         {editingEntry && (
           <EditSuperiorForm
@@ -430,6 +433,7 @@ function FriendsSection() {
         isOpen={isAdding}
         onClose={() => setIsAdding(false)}
         title="Προσθήκη Φίλου"
+        footer={<AddFriendFormFooter />}
       >
         <AddFriendForm
           onAdd={handleAdd}
@@ -441,6 +445,7 @@ function FriendsSection() {
         isOpen={editingEntry !== null}
         onClose={() => setEditingEntry(null)}
         title="Επεξεργασία Φίλου"
+        footer={<EditFriendFormFooter />}
       >
         {editingEntry && (
           <EditFriendForm
@@ -623,22 +628,12 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
         />
       </div>
 
-      <div className="flex gap-3 pt-4 mt-auto">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-        >
-          Αποθηκευση
-        </button>
-      </div>
     </div>
   )
+}
+
+function EditProfileFormFooter() {
+  return <></>
 }
 
 function AddSuperiorForm({ onAdd, onCancel }: { onAdd: (entry: SuperiorEntry) => void; onCancel: () => void }) {
@@ -670,22 +665,12 @@ function AddSuperiorForm({ onAdd, onCancel }: { onAdd: (entry: SuperiorEntry) =>
         onChange={(v) => setForm({ ...form, role: v })}
         placeholder="π.χ. Διοικητής Λόχου"
       />
-      <div className="flex gap-3 pt-4 mt-auto">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-        >
-          Προσθηκη
-        </button>
-      </div>
     </div>
   )
+}
+
+function AddSuperiorFormFooter() {
+  return <></>
 }
 
 function EditSuperiorForm({ entry, onUpdate, onCancel }: { entry: SuperiorEntry; onUpdate: (entry: SuperiorEntry) => void; onCancel: () => void }) {
@@ -716,22 +701,12 @@ function EditSuperiorForm({ entry, onUpdate, onCancel }: { entry: SuperiorEntry;
         onChange={(v) => setForm({ ...form, role: v })}
         placeholder="π.χ. Διοικητής Λόχου"
       />
-      <div className="flex gap-3 pt-4 mt-auto">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-        >
-          Ενημερωση
-        </button>
-      </div>
     </div>
   )
+}
+
+function EditSuperiorFormFooter() {
+  return <></>
 }
 
 function AddFriendForm({ onAdd, onCancel }: { onAdd: (entry: FriendEntry) => void; onCancel: () => void }) {
@@ -763,22 +738,12 @@ function AddFriendForm({ onAdd, onCancel }: { onAdd: (entry: FriendEntry) => voi
         onChange={(v) => setForm({ ...form, phone: v })}
         placeholder="69XXXXXXXX"
       />
-      <div className="flex gap-3 pt-4 mt-auto">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-        >
-          Προσθηκη
-        </button>
-      </div>
     </div>
   )
+}
+
+function AddFriendFormFooter() {
+  return <></>
 }
 
 function EditFriendForm({ entry, onUpdate, onCancel }: { entry: FriendEntry; onUpdate: (entry: FriendEntry) => void; onCancel: () => void }) {
@@ -809,22 +774,12 @@ function EditFriendForm({ entry, onUpdate, onCancel }: { entry: FriendEntry; onU
         onChange={(v) => setForm({ ...form, phone: v })}
         placeholder="69XXXXXXXX"
       />
-      <div className="flex gap-3 pt-4 mt-auto">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 text-zinc-400 text-[11px] font-black uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-[2] px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[11px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-        >
-          Ενημερωση
-        </button>
-      </div>
     </div>
   )
+}
+
+function EditFriendFormFooter() {
+  return <></>
 }
 
 function FormField({ label, value, onChange, placeholder, type = "text" }: { label: string; value: string; onChange: (v: string) => void; placeholder: string; type?: string }) {
