@@ -186,6 +186,7 @@ export function PrisonDetentionManager() {
         isOpen={showPrisonModal}
         onClose={() => setShowPrisonModal(false)}
         title="Προσθήκη Φυλακής"
+        footer={<AddPrisonFormFooter />}
       >
         <AddPrisonForm
           onAdd={handleAddPrison}
@@ -198,6 +199,7 @@ export function PrisonDetentionManager() {
         isOpen={showDetentionModal}
         onClose={() => setShowDetentionModal(false)}
         title="Προσθήκη Κράτησης"
+        footer={<AddDetentionFormFooter />}
       >
         <AddDetentionForm
           onAdd={handleAddDetention}
@@ -273,22 +275,12 @@ function AddPrisonForm({
         </p>
       </div>
 
-      <div className="flex gap-3 mt-auto pt-4">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-1 px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-        >
-          Προσθηκη
-        </button>
-      </div>
     </div>
   )
+}
+
+function AddPrisonFormFooter() {
+  return <></>
 }
 
 /* ---------- Add Detention Form ---------- */
@@ -357,20 +349,10 @@ function AddDetentionForm({
         </div>
       )}
 
-      <div className="flex gap-3 mt-auto pt-4">
-        <button
-          onClick={onCancel}
-          className="flex-1 px-4 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
-        >
-          Ακυρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-1 px-4 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
-        >
-          Προσθηκη
-        </button>
-      </div>
     </div>
   )
+}
+
+function AddDetentionFormFooter() {
+  return <></>
 }
