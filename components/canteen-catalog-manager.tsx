@@ -80,12 +80,12 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
   return (
     <div className="flex flex-col gap-4">
       <p className="text-[13px] text-zinc-400 font-medium leading-relaxed">
-        Προσθέστε και διαχειρίστε τα προϊόντα του Κ.Ψ.Μ. που θα εμφανίζονται ως επιλογές κατά την καταχώρηση εξόδων.
+        Διαχειρίστε τα προϊόντα του καταλόγου που θα εμφανίζονται ως επιλογές κατά την καταχώρηση εξόδων.
       </p>
 
       {/* Add new item */}
       <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/20">
-        <h3 className="text-[15px] font-bold text-white mb-4">Προσθήκη προϊόντος</h3>
+        <h3 className="text-[15px] font-bold text-white mb-4">Νέο Προϊόν</h3>
         
         <div className="flex gap-3 mb-4">
           <input
@@ -141,7 +141,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
 
       {/* Categories with items */}
       <div className="flex flex-col gap-3">
-        <h3 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">Προϊόντα</h3>
+        <h3 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">Υπάρχοντα Προϊόντα</h3>
         
         {(Object.keys(itemsByCategory) as Array<'food' | 'beverage' | 'snack' | 'other'>).map((category) => {
           const categoryItems = itemsByCategory[category]

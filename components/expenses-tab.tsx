@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Search, X, Filter, SlidersHorizontal, Plus } from 'lucide-react'
+import { Search, X, Filter, SlidersHorizontal, Plus, Box } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
@@ -48,16 +48,16 @@ export function ExpensesTab() {
               hapticFeedback('light')
               setShowCatalogManager(true)
             }}
-            className="px-3 py-2 rounded-xl bg-zinc-800/80 border border-zinc-700/80 text-[10px] font-extrabold tracking-widest text-zinc-300 uppercase hover:text-white hover:bg-zinc-700 transition-colors shadow-sm active:scale-95"
+            className="flex items-center gap-1 px-3 py-2 rounded-xl bg-blue-700 border border-blue-700 text-[10px] font-extrabold tracking-widest text-white uppercase hover:text-white hover:bg-blue-700 transition-colors shadow-sm active:scale-95"
           >
-            ΚΑΤΑΛΟΓΟΣ
+            <Box size={14} className="font-bold" /> ΚΑΤΑΛΟΓΟΣ
           </button>
           <button 
             onClick={() => {
               hapticFeedback('light')
               setShowAdd(true)
             }}
-            className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-[10px] font-extrabold tracking-widest text-black uppercase hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(52,211,153,0.2)] active:scale-95 flex items-center gap-1"
+            className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-[10px] font-extrabold tracking-widest text-black uppercase hover:opacity-90 transition-opacity active:scale-95 flex items-center gap-1"
           >
             <Plus size={14} className="font-bold" /> ΝΕΟ
           </button>
@@ -67,7 +67,7 @@ export function ExpensesTab() {
       {/* MAIN CONTENT */}
       <main className="flex-1 overflow-y-auto px-5 pb-32 pt-4 relative hide-scrollbar">
         {/* Sticky Search & Filter Bar */}
-        <div className="sticky top-0 pt-2 pb-5 z-20 before:absolute before:inset-0 before:bg-gradient-to-b before:from-zinc-900 before:to-zinc-900/0 before:-z-10 before:backdrop-blur-md">
+        <div className="sticky top-0 pt-2 pb-5 z-20 before:absolute before:inset-0 before:-z-10 before:backdrop-blur-md">
           <div className="flex items-center gap-2 mb-4">
             <div className="relative flex-1 group">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-[#34d399] transition-colors" />
@@ -79,19 +79,16 @@ export function ExpensesTab() {
                 className="w-full bg-gradient-to-b from-zinc-800 to-zinc-800/80 border border-zinc-700/50 rounded-[1.25rem] py-3.5 pl-11 pr-4 text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 focus:ring-1 focus:ring-[#34d399]/20 transition-all shadow-lg" 
               />
             </div>
-            <button className="w-[52px] h-[52px] rounded-[1.25rem] bg-zinc-800 border border-zinc-700/50 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-95 shadow-lg shrink-0">
-              <SlidersHorizontal size={22} />
-            </button>
           </div>
           
           {/* Category Filter */}
           <div>
-            <h3 className="text-[10px] font-bold tracking-[0.15em] text-zinc-500 uppercase mb-2 px-1">Φιλτραρισμα Ανα Κατηγορια</h3>
+            <h3 className="text-[9px] font-bold tracking-[0.15em] text-zinc-500 uppercase mb-2 px-1">Φιλτραρισμα Ανα Κατηγορια</h3>
             <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
               <button 
                 onClick={() => setFilterCategory('all')}
                 className={cn(
-                  "px-5 py-2 rounded-full text-[11px] font-extrabold tracking-wider shrink-0 active:scale-95",
+                  "px-5 py-2 rounded-full text-[9px] font-extrabold tracking-wider shrink-0 active:scale-95",
                   filterCategory === 'all'
                     ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
                     : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
@@ -104,7 +101,7 @@ export function ExpensesTab() {
                   key={cat}
                   onClick={() => setFilterCategory(cat)}
                   className={cn(
-                    "px-5 py-2 rounded-full text-[11px] font-bold tracking-wider shrink-0 active:scale-95",
+                    "px-5 py-2 rounded-full font-bold tracking-wider shrink-0 active:scale-95 text-[9px]",
                     filterCategory === cat
                       ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
                       : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
@@ -168,7 +165,7 @@ export function ExpensesTab() {
       <FullscreenModal
         isOpen={showCatalogManager}
         onClose={() => setShowCatalogManager(false)}
-        title="Κ.Ψ.Μ. Κατάλογος"
+        title="Διαχείριση Καταλόγου"
       >
         <CanteenCatalogManager
           items={canteenCatalog}

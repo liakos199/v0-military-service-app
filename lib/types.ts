@@ -180,10 +180,10 @@ export interface ExpenseEntry {
 }
 
 export const EXPENSE_CATEGORY_LABELS: Record<'food' | 'beverage' | 'snack' | 'other', string> = {
-  food: 'Φαγητό',
-  beverage: 'Ποτό',
-  snack: 'Σνακ',
-  other: 'Άλλο',
+  food: 'ΦΑΓΗΤΟ',
+  beverage: 'ΠΟΤΟ',
+  snack: 'ΣΝΑΚ',
+  other: 'ΑΛΛΟ',
 }
 
 // Greek month names
@@ -205,7 +205,7 @@ export const GREEK_DAYS = [
 
 export const GREEK_DAYS_SHORT = ['Κυ', 'Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα']
 
-// Canteen Catalog (Κ.Ψ.Μ. Κατάλογος)
+// Canteen Catalog (Κατάλογος)
 export interface CanteenCatalogItem {
   id: string
   name: string
@@ -216,8 +216,8 @@ export interface CanteenCatalogItem {
 }
 
 export const CANTEEN_CATEGORY_LABELS: Record<'food' | 'beverage' | 'snack' | 'other', string> = {
-  food: 'Φαγητό',
-  beverage: 'Ποτό',
-  snack: 'Σνακ',
-  other: 'Άλλο',
+  food: 'ΦΑΓΗΤΟ',
+  beverage: 'ΠΟΤΟ',
+  snack: 'ΣΝΑΚ',
+  other: 'ΑΛΛΟ',
 }
