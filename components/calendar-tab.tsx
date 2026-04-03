@@ -1256,7 +1256,7 @@ function AddDutyForm({
         />
       </div>
 
-      <div className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900 border border-zinc-800/50">
+      <div className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900 border border-zinc-800">
         <div className="flex flex-col">
           <span className="text-[11px] font-bold text-white tracking-wider">Προσθήκη στο Ημερολόγιο</span>
           <span className="text-[9px] text-zinc-500">Θα προστεθεί στο ημερολόγιο ως ειδοποίηση</span>
