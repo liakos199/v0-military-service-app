@@ -39,8 +39,8 @@ export function ExpensesTab() {
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 z-10 relative flex justify-between items-start shrink-0">
         <div>
-          <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Έξοδα</h1>
-          <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Δαπανες & Καταλογος</p>
+          <h1 className="text-[30px] font-bold tracking-tight text-white leading-none mb-1">Έξοδα</h1>
+          <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Δαπανες & Καταλογος</p>
         </div>
         <div className="flex items-center gap-2 mt-1">
           <button 
@@ -83,12 +83,12 @@ export function ExpensesTab() {
           
           {/* Category Filter */}
           <div>
-            <h3 className="text-[9px] font-bold tracking-[0.15em] text-zinc-500 uppercase mb-2 px-1">Φιλτραρισμα Ανα Κατηγορια</h3>
+            <h3 className="text-[8px] font-bold tracking-[0.15em] text-zinc-500 uppercase mb-2 px-1">Φιλτραρισμα Ανα Κατηγορια</h3>
             <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
               <button 
                 onClick={() => setFilterCategory('all')}
                 className={cn(
-                  "px-5 py-2 rounded-full text-[9px] font-extrabold tracking-wider shrink-0 active:scale-95",
+                  "px-5 py-2 rounded-full text-[8px] font-extrabold tracking-wider shrink-0 active:scale-95",
                   filterCategory === 'all'
                     ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
                     : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
@@ -101,7 +101,7 @@ export function ExpensesTab() {
                   key={cat}
                   onClick={() => setFilterCategory(cat)}
                   className={cn(
-                    "px-5 py-2 rounded-full font-bold tracking-wider shrink-0 active:scale-95 text-[9px]",
+                    "px-5 py-2 rounded-full font-bold tracking-wider shrink-0 active:scale-95 text-[8px]",
                     filterCategory === cat
                       ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
                       : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
@@ -117,16 +117,16 @@ export function ExpensesTab() {
         {/* Total Expenses Card */}
         <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-6 flex flex-col items-center justify-center shadow-xl shadow-black/20 mb-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-[#10b981]/5"></div>
-          <span className="text-[11px] font-extrabold tracking-[0.2em] text-[#34d399] uppercase mb-1 relative z-10">Συνολικα Εξοδα</span>
+          <span className="text-[10px] font-extrabold tracking-[0.2em] text-[#34d399] uppercase mb-1 relative z-10">Συνολικα Εξοδα</span>
           <div className="flex items-baseline gap-1 relative z-10">
-            <span className="text-[38px] font-black tracking-tight text-white leading-none">{grandTotal.toFixed(2)}</span>
-            <span className="text-[24px] font-bold text-[#34d399]">€</span>
+            <span className="text-[36px] font-black tracking-tight text-white leading-none">{grandTotal.toFixed(2)}</span>
+            <span className="text-[22px] font-bold text-[#34d399]">€</span>
           </div>
         </div>
 
         {/* Expense List */}
         <div className="space-y-3">
-          <h3 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-1">
+          <h3 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-1">
             Ιστορικο ({filteredExpenses.length})
           </h3>
           
@@ -140,11 +140,11 @@ export function ExpensesTab() {
             filteredExpenses.map((item) => (
               <div key={item.id} className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-md transition active:scale-[0.98]">
                 <div className="flex flex-col">
-                  <span className="text-[16px] font-bold text-white leading-tight">{item.description || 'Έξοδο'}</span>
-                  <span className="text-[11px] text-zinc-500 font-medium">{formatGreekDate(item.date)}</span>
+                  <span className="text-[15px] font-bold text-white leading-tight">{item.description || 'Έξοδο'}</span>
+                  <span className="text-[10px] text-zinc-500 font-medium">{formatGreekDate(item.date)}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[18px] font-bold text-[#34d399] tracking-tight">{item.amount.toFixed(2)}€</span>
+                  <span className="text-[17px] font-bold text-[#34d399] tracking-tight">{item.amount.toFixed(2)}€</span>
 	                  <button 
 	                    onClick={() => {
 	                      hapticFeedback('medium')

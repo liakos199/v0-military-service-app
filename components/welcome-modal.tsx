@@ -14,9 +14,9 @@ const FEATURES = [
   { label: 'Λελέμετρο - Αντίστροφη μέτρηση' },
   { label: 'Ημερολόγιο & Υπηρεσίες' },
   { label: 'Σημειώσεις & Εγχειρίδια' },
+  { label: 'Εξέταση Εγχειριδίων' },
   { label: 'Διαχείριση Ατόμων' },
-  { label: 'Έξοδα & Ανάλυση' },
-  { label: 'Θέμα & Προσαρμογή' },
+  { label: 'Έξοδα & Κατάλογος' },
 ]
 
 export function WelcomeModal() {
@@ -88,12 +88,12 @@ export function WelcomeModal() {
             { num: 3, title: 'Πάτησε «Προσθήκη»', subtitle: 'Στην πάνω δεξιά γωνία της οθόνης' },
           ].map((step) => (
             <div key={step.num} className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#34d399] to-[#10b981] text-black flex-shrink-0 font-bold text-[12px]">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#34d399] to-[#10b981] text-black flex-shrink-0 font-bold text-[11px]">
                 {step.num}
               </div>
               <div className="flex-1">
-                <p className="text-[14px] font-bold text-white">{step.title}</p>
-                <p className="text-[12px] text-zinc-500 mt-1 font-medium">{step.subtitle}</p>
+                <p className="text-[13px] font-bold text-white">{step.title}</p>
+                <p className="text-[11px] text-zinc-500 mt-1 font-medium">{step.subtitle}</p>
               </div>
             </div>
           ))}
@@ -118,12 +118,12 @@ export function WelcomeModal() {
         <div className="space-y-4">
           {steps.map((step) => (
             <div key={step.num} className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#34d399] to-[#10b981] text-black flex-shrink-0 font-bold text-[12px]">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#34d399] to-[#10b981] text-black flex-shrink-0 font-bold text-[11px]">
                 {step.num}
               </div>
               <div className="flex-1">
-                <p className="text-[14px] font-bold text-white">{step.title}</p>
-                <p className="text-[12px] text-zinc-500 mt-1 font-medium">{step.subtitle}</p>
+                <p className="text-[13px] font-bold text-white">{step.title}</p>
+                <p className="text-[11px] text-zinc-500 mt-1 font-medium">{step.subtitle}</p>
               </div>
             </div>
           ))}
@@ -133,7 +133,7 @@ export function WelcomeModal() {
 
     return (
       <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/10">
-        <p className="text-[14px] text-zinc-300 font-medium leading-relaxed">
+        <p className="text-[13px] text-zinc-300 font-medium leading-relaxed">
           Αναζήτησε την επιλογή «Προσθήκη στην αρχική οθόνη» στο μενού του browser σου για γρήγορη πρόσβαση.
         </p>
       </div>
@@ -149,7 +149,7 @@ export function WelcomeModal() {
               <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#34d399]/20 flex items-center justify-center">
                 <Check className="w-4 h-4 text-[#34d399] font-bold" strokeWidth={3} />
               </div>
-              <span className="text-[14px] font-bold text-white">{feature.label}</span>
+              <span className="text-[13px] font-bold text-white">{feature.label}</span>
             </div>
           )
         })}
@@ -162,19 +162,18 @@ export function WelcomeModal() {
       <ModalLayout
         header={
           <div className="text-center">
-            <div className="mb-6 p-4 bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-3xl w-fit mx-auto shadow-2xl">
+            <div className="my-4 w-fit mx-auto shadow-2xl">
               <Image
                 src="/icon-192.png"
                 alt="ΑΠΟΛΕΛΕ PRO"
                 width={72}
                 height={72}
-                className="rounded-2xl shadow-xl"
               />
             </div>
-            <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase">
+            <p className="text-[11px] text-zinc-500 font-bold tracking-[0.1em] uppercase">
               {step === 'install' 
-                ? 'Προσθεσε την εφαρμογη στην αρχικη σου οθονη'
-                : 'Ολα οσα χρειαζεσαι για τη θητεια σου'
+                ? 'Βήματα Εγκατάστασης - Πριν κάνεις το οτιδήποτε'
+                : 'ΥΠΑΡΧΟΝ ΛΕΙΤΟΥΡΓΙΕΣ'
               }
             </p>
           </div>
@@ -186,7 +185,7 @@ export function WelcomeModal() {
               <button 
                 type="button" 
                 onClick={handleBack}
-                className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
+                className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
               >
                 Πισω
               </button>
@@ -194,9 +193,9 @@ export function WelcomeModal() {
             <button 
               type="button" 
               onClick={step === 'install' ? handleNextStep : handleClose}
-              className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[12px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
+              className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[11px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
             >
-              {step === 'install' ? 'Επομενο' : 'Ξεκιναμε'}
+              {step === 'install' ? 'Κατάλαβα' : 'Ξεκιναμε'}
             </button>
           </div>
         }
@@ -210,7 +209,7 @@ export function WelcomeModal() {
     <FullscreenModal 
       isOpen={isOpen} 
       onClose={handleClose}
-      title={step === 'install' ? 'Καλώς ήρθες!' : 'Δυνατότητες'}
+      title={step === 'install' ? 'ΟΔΗΓΟΣ ΕΓΚΑΤΑΣΤΑΣΗΣ' : 'Λειτουργίες'}
       showBackButton={step === 'features'}
       onBack={handleBack}
     >

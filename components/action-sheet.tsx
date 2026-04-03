@@ -31,12 +31,12 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
     <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
       <div className="flex-1">
         {title && (
-          <h2 className="text-[20px] font-bold text-white">
+          <h2 className="text-[18px] font-bold text-white">
             {title}
           </h2>
         )}
         {subtitle && (
-          <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
+          <p className="text-[12px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
             {subtitle}
           </p>
         )}
@@ -119,9 +119,9 @@ export function ActionSheetItem({ icon, title, subtitle, onClick, variant = 'def
         </div>
       )}
       <div className="flex-1 text-left">
-        <p className="text-[15px] font-bold">{title}</p>
+        <p className="text-[14px] font-bold">{title}</p>
         {subtitle && (
-          <p className="text-[11px] text-zinc-500 mt-0.5 font-medium">{subtitle}</p>
+          <p className="text-[10px] text-zinc-500 mt-0.5 font-medium">{subtitle}</p>
         )}
       </div>
     </button>
@@ -135,7 +135,7 @@ export function ActionSheetCancel({ onClick }: { onClick: () => void }) {
         hapticFeedback('light')
         onClick()
       }}
-      className="py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[12px] min-h-[48px] mt-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase tracking-widest"
+      className="py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] min-h-[48px] mt-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase tracking-widest"
     >
       Ακύρωση
     </button>

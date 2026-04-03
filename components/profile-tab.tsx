@@ -41,8 +41,8 @@ export function ProfileTab() {
     <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in overflow-hidden bg-black">
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 relative shrink-0">
-        <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Άτομα</h1>
-        <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Στοιχεια & Επαφες</p>
+        <h1 className="text-[30px] font-bold tracking-tight text-white leading-none mb-1">Άτομα</h1>
+        <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Στοιχεια & Επαφες</p>
       </header>
 
       {/* SECTION TOGGLE */}
@@ -60,7 +60,7 @@ export function ProfileTab() {
                 setActiveSection(tab.id as any)
               }}
               className={cn(
-                'flex-1 py-2.5 px-2 rounded-xl text-[9px] font-bold tracking-wider transition-all duration-300 whitespace-nowrap',
+                'flex-1 py-2.5 px-2 rounded-xl text-[8px] font-bold tracking-wider transition-all duration-300 whitespace-nowrap',
                 activeSection === tab.id
                   ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-md shadow-emerald-500/10'
                   : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
@@ -87,9 +87,9 @@ function InfoCard({ icon: Icon, label, value }: { icon: any, label: string, valu
     <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1rem] p-3 flex flex-col shadow-lg shadow-black/10">
       <div className="flex items-center gap-1.5 mb-1.5">
         <Icon size={14} className="text-[#34d399]" />
-        <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase truncate">{label}</span>
+        <span className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase truncate">{label}</span>
       </div>
-      <span className="text-lg font-extrabold text-white truncate">
+      <span className="text-[17px] font-extrabold text-white truncate">
         {value || '-'}
       </span>
     </div>
@@ -125,7 +125,7 @@ function ProfileSection() {
           </div>
           <div className="flex-1">
             <div className="flex justify-between items-start ">
-              <h2 className="text-[20px] font-bold text-white leading-tight">
+              <h2 className="text-[18px] font-bold text-white leading-tight">
                 {profile.fullName || 'Ονοματεπώνυμο'}
               </h2>
               <div 
@@ -135,7 +135,7 @@ function ProfileSection() {
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
-              <span className="text-emerald-500 text-[10px] font-extrabold tracking-widest px-2.5 py-1 rounded-md shadow-sm uppercase">
+              <span className="text-emerald-500 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-md shadow-sm uppercase">
                 {profile.rank}
               </span>
             </div>
@@ -191,10 +191,10 @@ function ProfileSection() {
       <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
         <div className="flex items-center gap-2 mb-2">
           <MessageSquare size={16} className="text-[#34d399]" />
-          <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Φραση Αναφορας</span>
+          <span className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Φραση Αναφορας</span>
         </div>
         <p className={cn(
-          "text-[15px] font-medium italic leading-relaxed",
+          "text-[14px] font-medium italic leading-relaxed",
           profile.reportingPhrase ? "text-zinc-300" : "text-zinc-500"
         )}>
           {profile.reportingPhrase ? `"${profile.reportingPhrase}"` : "Προσθέστε τη φράση αναφοράς σας..."}
@@ -244,10 +244,10 @@ function SuperiorsSection() {
   return (
     <div className="animate-fade-in space-y-3">
       <div className="flex items-center justify-between mb-1 px-1">
-        <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Υπαρχοντεσ</h2>
+        <h2 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Υπαρχοντεσ</h2>
         <button 
           onClick={() => setIsAdding(true)}
-          className="px-3 py-1.5 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 text-[#34d399] text-[10px] font-extrabold tracking-widest uppercase hover:bg-[#10b981]/20 transition-colors active:scale-95"
+          className="px-3 py-1.5 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 text-[#34d399] text-[9px] font-extrabold tracking-widest uppercase hover:bg-[#10b981]/20 transition-colors active:scale-95"
         >
           Προσθηκη
         </button>
@@ -266,11 +266,11 @@ function SuperiorsSection() {
                 <ShieldCheck size={24} />
               </div>
               <div className="flex flex-col">
-                <h3 className="text-[15px] font-bold text-white leading-tight">{sup.name}</h3>
+                <h3 className="text-[14px] font-bold text-white leading-tight">{sup.name}</h3>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[9px] font-bold tracking-widest text-[#34d399] uppercase">{sup.rank}</span>
+                  <span className="text-[8px] font-bold tracking-widest text-[#34d399] uppercase">{sup.rank}</span>
                   <span className="w-1 h-1 rounded-full bg-zinc-700"></span>
-                  <span className="text-[9px] font-bold tracking-widest text-zinc-500 uppercase">{sup.role}</span>
+                  <span className="text-[8px] font-bold tracking-widest text-zinc-500 uppercase">{sup.role}</span>
                 </div>
               </div>
             </div>
@@ -358,10 +358,10 @@ function FriendsSection() {
   return (
     <div className="animate-fade-in space-y-3">
       <div className="flex items-center justify-between mb-1 px-1">
-        <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Υπαρχοντεσ</h2>
+        <h2 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Υπαρχοντεσ</h2>
         <button 
           onClick={() => setIsAdding(true)}
-          className="px-3 py-1.5 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 text-[#34d399] text-[10px] font-extrabold tracking-widest uppercase hover:bg-[#10b981]/20 transition-colors active:scale-95"
+          className="px-3 py-1.5 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 text-[#34d399] text-[9px] font-extrabold tracking-widest uppercase hover:bg-[#10b981]/20 transition-colors active:scale-95"
         >
           Προσθηκη
         </button>
@@ -380,9 +380,9 @@ function FriendsSection() {
                 <User size={24} />
               </div>
               <div className="flex flex-col">
-                <h3 className="text-[15px] font-bold text-white leading-tight">{friend.name}</h3>
+                <h3 className="text-[14px] font-bold text-white leading-tight">{friend.name}</h3>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[9px] font-bold tracking-widest text-[#34d399] uppercase">{friend.unit}</span>
+                  <span className="text-[8px] font-bold tracking-widest text-[#34d399] uppercase">{friend.unit}</span>
                 </div>
               </div>
             </div>
@@ -498,7 +498,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
         />
         
         <div className="relative">
-          <label className="block text-[10px] font-black uppercase tracking-wider text-zinc-500 mb-1.5 ml-1">Βαθμός</label>
+          <label className="block text-[9px] font-black uppercase tracking-wider text-zinc-500 mb-1.5 ml-1">Βαθμός</label>
           <button
             type="button"
             onClick={() => {
@@ -523,7 +523,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
                     setShowRanks(false)
                   }}
                   className={cn(
-                    'w-full text-left px-4 py-3 text-[11px] font-bold border-b border-zinc-700/30 last:border-0 transition-colors',
+                    'w-full text-left px-4 py-3 text-[10px] font-bold border-b border-zinc-700/30 last:border-0 transition-colors',
                     form.rank === r ? 'text-[#34d399] bg-[#34d399]/5' : 'text-zinc-400 hover:bg-zinc-800'
                   )}
                 >
@@ -559,7 +559,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
           placeholder="π.χ. 7"
         />
         <div className="relative">
-          <label className="block text-[10px] font-black uppercase tracking-wider text-zinc-500 mb-1.5 ml-1">Ομάδα Αίματος</label>
+          <label className="block text-[9px] font-black uppercase tracking-wider text-zinc-500 mb-1.5 ml-1">Ομάδα Αίματος</label>
           <button
             type="button"
             onClick={() => {
@@ -584,7 +584,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
                     setShowBloodTypes(false)
                   }}
                   className={cn(
-                    'w-full text-left px-4 py-3 text-[11px] font-bold border-b border-zinc-700/30 last:border-0 transition-colors',
+                    'w-full text-left px-4 py-3 text-[10px] font-bold border-b border-zinc-700/30 last:border-0 transition-colors',
                     form.bloodType === b ? 'text-[#34d399] bg-[#34d399]/5' : 'text-zinc-400 hover:bg-zinc-800'
                   )}
                 >
@@ -621,7 +621,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className="block text-[10px] font-black uppercase tracking-wider text-zinc-500 mb-1 ml-1">Φράση Αναφοράς</label>
+        <label className="block text-[9px] font-black uppercase tracking-wider text-zinc-500 mb-1 ml-1">Φράση Αναφοράς</label>
         <textarea
           value={form.reportingPhrase}
           onChange={(e) => setForm({ ...form, reportingPhrase: e.target.value })}
@@ -787,7 +787,7 @@ function EditFriendFormFooter() {
 function FormField({ label, value, onChange, placeholder, type = "text" }: { label: string; value: string; onChange: (v: string) => void; placeholder: string; type?: string }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="block text-[10px] font-black uppercase tracking-wider text-zinc-500 mb-1 ml-1">{label}</label>
+      <label className="block text-[9px] font-black uppercase tracking-wider text-zinc-500 mb-1 ml-1">{label}</label>
       <input
         type={type}
         value={value}

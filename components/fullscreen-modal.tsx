@@ -77,7 +77,7 @@ export function FullscreenModal({
             <ChevronLeft size={20} />
           </button>
         )}
-        <h2 className="text-[20px] font-bold text-white truncate">{title}</h2>
+        <h2 className="text-[18px] font-bold text-white truncate">{title}</h2>
       </div>
       <button
         onClick={() => {

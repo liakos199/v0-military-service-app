@@ -64,7 +64,7 @@ export function PrisonDetentionManager() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">
+      <h2 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">
         Επεκτάσεις Θητείας
       </h2>
 
@@ -76,12 +76,12 @@ export function PrisonDetentionManager() {
               <Lock size={24} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-bold tracking-[0.15em] text-zinc-400 uppercase mb-0.5">Φυλακές</p>
+              <p className="text-[9px] font-bold tracking-[0.15em] text-zinc-400 uppercase mb-0.5">Φυλακές</p>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-[24px] font-bold text-white leading-none">
+                <span className="text-[22px] font-bold text-white leading-none">
                   <Counter value={totalPrisonDays} duration={1} />
                 </span>
-                <span className="text-[12px] font-semibold text-zinc-500">ημ.</span>
+                <span className="text-[11px] font-semibold text-zinc-500">ημ.</span>
               </div>
             </div>
           </div>
@@ -106,8 +106,8 @@ export function PrisonDetentionManager() {
                 className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/20 hover:border-[#34d399]/20 transition-colors"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-bold text-white truncate">{prison.reason || 'Χωρίς αιτιολογία'}</p>
-                  <p className="text-[10px] text-zinc-500 mt-0.5">{prison.days} ημ. • {formatGreekDate(prison.addedDate)}</p>
+                  <p className="text-[12px] font-bold text-white truncate">{prison.reason || 'Χωρίς αιτιολογία'}</p>
+                  <p className="text-[9px] text-zinc-500 mt-0.5">{prison.days} ημ. • {formatGreekDate(prison.addedDate)}</p>
                 </div>
                 <button
                   onClick={() => handleDeletePrison(prison.id)}
@@ -130,12 +130,12 @@ export function PrisonDetentionManager() {
               <Calendar size={24} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-bold tracking-[0.15em] text-zinc-400 uppercase mb-0.5">Κράτηση</p>
+              <p className="text-[9px] font-bold tracking-[0.15em] text-zinc-400 uppercase mb-0.5">Κράτηση</p>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-[24px] font-bold text-white leading-none">
+                <span className="text-[22px] font-bold text-white leading-none">
                   <Counter value={totalDetentionDays} duration={1} />
                 </span>
-                <span className="text-[12px] font-semibold text-zinc-500">ημ.</span>
+                <span className="text-[11px] font-semibold text-zinc-500">ημ.</span>
               </div>
             </div>
           </div>
@@ -162,8 +162,8 @@ export function PrisonDetentionManager() {
                   className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/20 hover:border-[#34d399]/20 transition-colors"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-bold text-white truncate">{detention.reason || 'Χωρίς αιτιολογία'}</p>
-                    <p className="text-[10px] text-zinc-500 mt-0.5">
+                    <p className="text-[12px] font-bold text-white truncate">{detention.reason || 'Χωρίς αιτιολογία'}</p>
+                    <p className="text-[9px] text-zinc-500 mt-0.5">
                       {formatGreekDate(detention.startDate)} - {formatGreekDate(detention.endDate)} • {days} ημ.
                     </p>
                   </div>
@@ -245,7 +245,7 @@ function AddPrisonForm({
   return (
     <div className="flex flex-col gap-4 h-full">
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
+        <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Αιτιολογία (Προαιρετικό)
         </label>
         <textarea
@@ -258,7 +258,7 @@ function AddPrisonForm({
       </div>
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
+        <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Αριθμός Ημερών
         </label>
         <input
@@ -270,7 +270,7 @@ function AddPrisonForm({
           className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-white text-sm focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600 font-bold"
           placeholder="Αριθμός ημερών"
         />
-        <p className="text-[10px] text-zinc-500 mt-2 font-medium">
+        <p className="text-[9px] text-zinc-500 mt-2 font-medium">
           Θα προστεθούν <span className="font-bold text-[#34d399]">{days}</span> ημέρες στη θητεία σας
         </p>
       </div>
@@ -316,7 +316,7 @@ function AddDetentionForm({
   return (
     <div className="flex flex-col gap-4 h-full">
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
+        <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Αιτιολογία (Προαιρετικό)
         </label>
         <textarea
@@ -329,14 +329,14 @@ function AddDetentionForm({
       </div>
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
+        <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Ημερομηνία Έναρξης
         </label>
         <GreekDatePicker value={startDate} onChange={setStartDate} />
       </div>
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
+        <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
           Ημερομηνία Λήξης
         </label>
         <GreekDatePicker value={endDate} onChange={setEndDate} />
@@ -344,8 +344,8 @@ function AddDetentionForm({
 
       {startDate && endDate && startDate <= endDate && (
         <div className="p-4 rounded-xl bg-[#10b981]/10 border border-[#10b981]/20 shadow-lg shadow-black/10">
-          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Διάρκεια</p>
-          <p className="text-[20px] font-bold text-[#34d399]">{days} ημέρες</p>
+          <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Διάρκεια</p>
+          <p className="text-[18px] font-bold text-[#34d399]">{days} ημέρες</p>
         </div>
       )}
 

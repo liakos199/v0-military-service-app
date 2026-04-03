@@ -80,8 +80,8 @@ export function DutiesTab() {
       <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-foreground">Πρόγραμμα</h1>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Καταγραφή υπηρεσιών</p>
+            <h1 className="text-[18px] font-bold text-foreground">Πρόγραμμα</h1>
+            <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Καταγραφή υπηρεσιών</p>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -135,7 +135,7 @@ export function DutiesTab() {
           {sortedDates.length === 0 ? (
             <div className="glass-card rounded-xl p-6 text-center border border-white/5">
               <Clock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">Δεν υπάρχουν υπηρεσίες</p>
+              <p className="text-[13px] text-muted-foreground">Δεν υπάρχουν υπηρεσίες</p>
             </div>
           ) : (
             sortedDates.map((date) => {
@@ -146,14 +146,14 @@ export function DutiesTab() {
                   <div className="flex items-center gap-2 px-1">
                     <h3
                       className={cn(
-                        'text-[10px] font-black uppercase tracking-widest',
+                        'text-[9px] font-black uppercase tracking-widest',
                         isToday ? 'text-primary' : isPast ? 'text-muted-foreground/60' : 'text-muted-foreground'
                       )}
                     >
                       {isToday ? 'Σήμερα' : formatGreekDate(date)}
                     </h3>
                     {isToday && (
-                      <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-black uppercase tracking-tighter">
+                      <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[7.5px] font-black uppercase tracking-tighter">
                         ΕΝΕΡΓΗ
                       </span>
                     )}
@@ -173,17 +173,17 @@ export function DutiesTab() {
                           isToday ? 'bg-primary' : isPast ? 'bg-muted-foreground/20' : 'bg-primary/40'
                         )} />
                         <div className="flex-1 min-w-0">
-                          <span className="text-sm font-bold text-foreground">
+                          <span className="text-[13px] font-bold text-foreground">
                             {DUTY_TYPE_LABELS[duty.type]}
                           </span>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <p className="text-[10px] text-muted-foreground font-mono">
+                            <p className="text-[9px] text-muted-foreground font-mono">
                               {duty.startTime} - {duty.endTime}
                             </p>
                             {duty.notes && (
                               <>
                                 <span className="w-0.5 h-0.5 rounded-full bg-muted-foreground/30" />
-                                <p className="text-[10px] text-muted-foreground truncate">{duty.notes}</p>
+                                <p className="text-[9px] text-muted-foreground truncate">{duty.notes}</p>
                               </>
                             )}
                           </div>
@@ -263,21 +263,21 @@ function AddDutyForm({ onAdd, onCancel }: {
     <div className="flex flex-col gap-4 px-6 py-5">
       <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-900 border border-zinc-800">
         <div className="flex flex-col">
-          <span className="text-[11px] font-bold text-white tracking-wider">Προσθήκη στο Ημερολόγιο</span>
-          <span className="text-[9px] text-zinc-500">Λήψη αρχείου .ics για ειδοποιήσεις</span>
+          <span className="text-[10px] font-bold text-white tracking-wider">Προσθήκη στο Ημερολόγιο</span>
+          <span className="text-[8px] text-zinc-500">Λήψη αρχείου .ics για ειδοποιήσεις</span>
         </div>
         <Switch checked={addToCalendar} onCheckedChange={setAddToCalendar} />
       </div>
       <div className="flex gap-3">
       <button
         onClick={onCancel}
-        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
       >
         Ακύρωση
       </button>
       <button
         onClick={handleSubmit}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
       >
         Προσθήκη
       </button>
@@ -289,7 +289,7 @@ function AddDutyForm({ onAdd, onCancel }: {
     <div className="flex flex-col gap-2.5 h-full">
       <ModalFooter>{footer}</ModalFooter>
       <div>
-        <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Τύπος</label>
+        <label className="block text-[8px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Τύπος</label>
         <div className="flex overflow-x-auto gap-1 no-scrollbar pb-0.5 -mx-1 px-1">
           <div className="flex gap-1 flex-nowrap">
             {(Object.keys(DUTY_TYPE_LABELS) as DutyType[]).map((t) => (
@@ -301,7 +301,7 @@ function AddDutyForm({ onAdd, onCancel }: {
                   setType(t)
                 }}
                 className={cn(
-                  'px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-tight transition-all whitespace-nowrap border',
+                  'px-2.5 py-1 rounded-lg text-[8px] font-bold uppercase tracking-tight transition-all whitespace-nowrap border',
                   type === t
                     ? 'bg-primary text-primary-foreground border-primary'
                     : 'bg-secondary text-secondary-foreground border-border hover:bg-secondary/80'
@@ -318,27 +318,27 @@ function AddDutyForm({ onAdd, onCancel }: {
 
       <div className="flex gap-1.5">
         <div className="flex-1 min-w-0">
-            <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Αρχή</label>
+            <label className="block text-[8px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Αρχή</label>
             <input
               type="time"
               value={startTime || ''}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[9px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
         <div className="flex-1 min-w-0">
-          <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Τέλος</label>
+          <label className="block text-[8px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Τέλος</label>
           <input
             type="time"
             value={endTime || ''}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[10px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[9px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Σημειώσεις</label>
+        <label className="block text-[8px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Σημειώσεις</label>
         <input
           type="text"
           value={notes}

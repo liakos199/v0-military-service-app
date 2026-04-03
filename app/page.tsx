@@ -39,16 +39,16 @@ export default function Home() {
             priority
           />
           <div className="text-center space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-white font-sans">
+            <h1 className="text-xl font-bold tracking-tight text-white font-sans">
               ΑΠΟΛΕΛΕ PRO
             </h1>
-            <p className="text-[10px] text-zinc-500 tracking-[0.3em] uppercase font-bold">
+            <p className="text-[9px] text-zinc-500 tracking-[0.3em] uppercase font-bold">
               ΣΤΡΑΤΙΩΤΙΚΗ ΕΦΑΡΜΟΓΗ
             </p>
           </div>
         </div>
         <div className="absolute bottom-12 left-0 right-0 text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-emerald-500/80 uppercase">
+          <p className="text-[10px] font-bold tracking-[0.2em] text-emerald-500/80 uppercase">
             Made by Η.Π.
           </p>
         </div>

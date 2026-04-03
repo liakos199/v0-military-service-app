@@ -235,8 +235,8 @@ export function CalendarTab() {
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 relative flex justify-between items-start shrink-0 z-10">
         <div>
-          <h1 className="text-[32px] font-bold tracking-tight text-white leading-none mb-1">Ημερολόγιο</h1>
-          <p className="text-[13px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Βάρδιες & άδειες</p>
+          <h1 className="text-[30px] font-bold tracking-tight text-white leading-none mb-1">Ημερολόγιο</h1>
+          <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Βάρδιες & άδειες</p>
         </div>
         <button
           onClick={() => {
@@ -263,7 +263,7 @@ export function CalendarTab() {
               >
                 <ChevronLeft size={18} className="text-zinc-400" />
               </button>
-              <span className="text-[13px] font-bold tracking-[0.2em] text-white uppercase">
+              <span className="text-[12px] font-bold tracking-[0.2em] text-white uppercase">
                 {GREEK_MONTHS[viewMonth]} {viewYear}
               </span>
               <button
@@ -279,7 +279,7 @@ export function CalendarTab() {
               {greekDaysStartMonday.map((d) => (
                 <div
                   key={d}
-                  className="text-center text-[10px] font-bold text-zinc-500 uppercase tracking-wider py-2"
+                  className="text-center text-[9px] font-bold text-zinc-500 uppercase tracking-wider py-2"
                 >
                   {d}
                 </div>
@@ -350,11 +350,11 @@ export function CalendarTab() {
             <div className="flex items-center justify-center gap-8 pt-5 mt-5 border-t border-zinc-700/30">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Υπηρεσία</span>
+                <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Υπηρεσία</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-amber-400" />
-                <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Άδεια</span>
+                <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Άδεια</span>
               </div>
             </div>
           </div>
@@ -389,7 +389,7 @@ export function CalendarTab() {
               hapticFeedback('medium')
               setShowFullHistory(true)
             }}
-            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-br from-zinc-700 to-gray-900/90 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all active:scale-95 flex items-center justify-between font-bold text-[11px] uppercase tracking-wider"
+            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-br from-zinc-700 to-gray-900/90 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all active:scale-95 flex items-center justify-between font-bold text-[10px] uppercase tracking-wider"
           >
             <span className="flex items-center gap-2">
               <History size={16} />
@@ -596,7 +596,7 @@ function MonthlySummary({
 
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">
+      <h3 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">
         {GREEK_MONTHS[viewMonth]} - Σύνοψη
       </h3>
 
@@ -609,12 +609,12 @@ function MonthlySummary({
           <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
             <ArrowRight size={16} className="text-emerald-400" />
           </div>
-          <span className="text-[10px] font-bold text-emerald-400/80 uppercase tracking-widest block mb-1">
+          <span className="text-[9px] font-bold text-emerald-400/80 uppercase tracking-widest block mb-1">
             ΥΠΗΡΕΣΙΕΣ
           </span>
           <div className="flex items-baseline gap-1">
             <span className="text-2xl font-bold text-white">{stats.totalDuties}</span>
-            <span className="text-[10px] text-zinc-400 font-medium uppercase">ΣΥΝΟΛΟ</span>
+            <span className="text-[9px] text-zinc-400 font-medium uppercase">ΣΥΝΟΛΟ</span>
           </div>
         </button>
 
@@ -626,12 +626,12 @@ function MonthlySummary({
           <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
             <ArrowRight size={16} className="text-amber-400" />
           </div>
-          <span className="text-[10px] font-bold text-amber-400/80 uppercase tracking-widest block mb-1">
+          <span className="text-[9px] font-bold text-amber-400/80 uppercase tracking-widest block mb-1">
             ΑΔΕΙΕΣ
           </span>
           <div className="flex items-baseline gap-1">
             <span className="text-2xl font-bold text-white">{stats.leaveDays}</span>
-            <span className="text-[10px] text-zinc-400 font-medium uppercase">Ημέρες</span>
+            <span className="text-[9px] text-zinc-400 font-medium uppercase">Ημέρες</span>
           </div>
         </button>
       </div>
@@ -677,8 +677,8 @@ function SummaryList({
           >
             <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
-              <p className="text-[10px] text-zinc-400 mt-0.5">
+              <p className="text-[12px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
+              <p className="text-[9px] text-zinc-400 mt-0.5">
                 {formatGreekDate(duty.date)} • {duty.startTime} - {duty.endTime}
               </p>
             </div>
@@ -714,8 +714,8 @@ function SummaryList({
         >
           <div className="w-1.5 h-10 rounded-full bg-amber-500 flex-shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
-            <p className="text-[10px] text-zinc-400 mt-0.5">
+            <p className="text-[12px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
+            <p className="text-[9px] text-zinc-400 mt-0.5">
               {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} • {leave.days} ημ.
             </p>
           </div>
@@ -760,7 +760,7 @@ function FullHistoryView({
         <button
           onClick={() => { hapticFeedback('light'); setActiveTab('duty'); }}
           className={cn(
-            'flex-1 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all',
+            'flex-1 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all',
             activeTab === 'duty' ? 'bg-zinc-800 text-emerald-400 shadow-lg' : 'text-zinc-500'
           )}
         >
@@ -769,7 +769,7 @@ function FullHistoryView({
         <button
           onClick={() => { hapticFeedback('light'); setActiveTab('leave'); }}
           className={cn(
-            'flex-1 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all',
+            'flex-1 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all',
             activeTab === 'leave' ? 'bg-zinc-800 text-amber-400 shadow-lg' : 'text-zinc-500'
           )}
         >
@@ -790,8 +790,8 @@ function FullHistoryView({
                 <div key={duty.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4 flex items-center gap-4">
                   <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
-                    <p className="text-[10px] text-zinc-500">{formatGreekDate(duty.date)}</p>
+                    <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
+                    <p className="text-[9px] text-zinc-500">{formatGreekDate(duty.date)}</p>
                   </div>
                   <div className="flex gap-1">
                     <button onClick={() => onEditDuty(duty.id)} className="p-2 text-emerald-400/70"><Edit2 size={16} /></button>
@@ -813,8 +813,8 @@ function FullHistoryView({
                 <div key={leave.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4 flex items-center gap-4">
                   <div className="w-1 h-8 rounded-full bg-amber-500/50" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
-                    <p className="text-[10px] text-zinc-500">{formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}</p>
+                    <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
+                    <p className="text-[9px] text-zinc-500">{formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}</p>
                   </div>
                   <div className="flex gap-1">
                     <button onClick={() => onEditLeave(leave.id)} className="p-2 text-amber-400/70"><Edit2 size={16} /></button>
@@ -865,10 +865,10 @@ function DateDetailsModal({
   const header = (
     <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
       <div className="flex-1">
-        <h2 className="text-[20px] font-bold text-white">
+        <h2 className="text-[18px] font-bold text-white">
           {formatGreekDateFull(selectedDate)}
         </h2>
-        <p className="text-[13px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
+        <p className="text-[12px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
           {duties.length + leaves.length} γεγονότ{duties.length + leaves.length === 1 ? 'α' : 'α'}
         </p>
       </div>
@@ -886,13 +886,13 @@ function DateDetailsModal({
     <div className="flex gap-2 px-6 py-5 border-t border-zinc-700/30">
       <button
         onClick={onAddDuty}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
       >
         + Υπηρεσία
       </button>
       <button
         onClick={onAddLeave}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
       >
         + Άδεια
       </button>
@@ -917,7 +917,7 @@ function DateDetailsModal({
             {/* Duties */}
             {duties.length > 0 && (
               <div className="flex flex-col gap-2">
-                <h3 className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Υπηρεσίες ({duties.length})</h3>
+                <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Υπηρεσίες ({duties.length})</h3>
                 <div className="flex flex-col gap-2">
                   {duties.map((duty) => (
                     <div
@@ -926,12 +926,12 @@ function DateDetailsModal({
                     >
                       <div className="w-1 h-10 rounded-full bg-emerald-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[12px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
-                        <p className="text-[10px] text-zinc-400 mt-0.5">
+                        <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
+                        <p className="text-[9px] text-zinc-400 mt-0.5">
                           {duty.startTime && duty.endTime ? `${duty.startTime} - ${duty.endTime}` : 'Χωρίς ώρα'}
                         </p>
                         {duty.notes && (
-                          <p className="text-[9px] text-zinc-500 mt-1 line-clamp-2">{duty.notes}</p>
+                          <p className="text-[8px] text-zinc-500 mt-1 line-clamp-2">{duty.notes}</p>
                         )}
                       </div>
                       <div className="flex gap-1 flex-shrink-0">
@@ -957,7 +957,7 @@ function DateDetailsModal({
             {/* Leaves */}
             {leaves.length > 0 && (
               <div className="flex flex-col gap-2">
-                <h3 className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Άδειες ({leaves.length})</h3>
+                <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Άδειες ({leaves.length})</h3>
                 <div className="flex flex-col gap-2">
                   {leaves.map((leave) => (
                     <div
@@ -966,12 +966,12 @@ function DateDetailsModal({
                     >
                       <div className="w-1 h-10 rounded-full bg-amber-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[12px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
-                        <p className="text-[10px] text-zinc-400 mt-0.5">
+                        <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
+                        <p className="text-[9px] text-zinc-400 mt-0.5">
                           {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} • {leave.days} ημ.
                         </p>
                         {leave.notes && (
-                          <p className="text-[9px] text-zinc-500 mt-1 line-clamp-2">{leave.notes}</p>
+                          <p className="text-[8px] text-zinc-500 mt-1 line-clamp-2">{leave.notes}</p>
                         )}
                       </div>
                       <div className="flex gap-1 flex-shrink-0">
@@ -998,7 +998,7 @@ function DateDetailsModal({
             {duties.length === 0 && leaves.length === 0 && (
               <div className="text-center py-8">
                 <CalendarIcon className="h-10 w-10 text-zinc-600 mx-auto mb-3 opacity-50" />
-                <p className="text-[12px] text-zinc-400 font-semibold">Δεν υπάρχουν γεγονότα</p>
+                <p className="text-[11px] text-zinc-400 font-semibold">Δεν υπάρχουν γεγονότα</p>
               </div>
             )}
           </div>
@@ -1042,15 +1042,15 @@ function UpcomingEvents({
     return (
       <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-8 text-center shadow-xl shadow-black/20">
         <CalendarIcon className="h-12 w-12 text-zinc-600 mx-auto mb-3 opacity-50" />
-        <p className="text-[12px] text-zinc-400 font-semibold">Δεν υπάρχουν προσεχή γεγονότα</p>
-        <p className="text-[10px] text-zinc-500 mt-1">Πάτησε μια ημερομηνία για να προσθέσεις</p>
+        <p className="text-[11px] text-zinc-400 font-semibold">Δεν υπάρχουν προσεχή γεγονότα</p>
+        <p className="text-[9px] text-zinc-500 mt-1">Πάτησε μια ημερομηνία για να προσθέσεις</p>
       </div>
     )
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">Προσεχώς</h2>
+      <h2 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1">Προσεχώς</h2>
       {upcoming.map((item) => {
         const isToday = item.date === today
         if (item.type === 'duty') {
@@ -1066,14 +1066,14 @@ function UpcomingEvents({
               <div className={cn('w-1.5 h-12 rounded-full flex-shrink-0', isToday ? 'bg-emerald-500' : 'bg-emerald-400')} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[12px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</span>
+                  <span className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</span>
                   {isToday && (
-                    <span className="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-[9px] font-bold uppercase tracking-wider">
+                    <span className="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-[8px] font-bold uppercase tracking-wider">
                       ΣΗΜΕΡΑ
                     </span>
                   )}
                 </div>
-                <p className="text-[10px] text-zinc-400 mt-1">
+                <p className="text-[9px] text-zinc-400 mt-1">
                   {formatGreekDate(duty.date)} • {duty.startTime} - {duty.endTime}
                 </p>
               </div>
@@ -1102,8 +1102,8 @@ function UpcomingEvents({
             >
               <div className="w-1.5 h-12 rounded-full flex-shrink-0 bg-amber-400" />
               <div className="flex-1 min-w-0">
-                <span className="text-[12px] font-bold text-white break-words">{LEAVE_TYPE_LABELS[leave.type]}</span>
-                <p className="text-[10px] text-zinc-400 mt-1">
+                <span className="text-[11px] font-bold text-white break-words">{LEAVE_TYPE_LABELS[leave.type]}</span>
+                <p className="text-[9px] text-zinc-400 mt-1">
                   {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} • {leave.days} ημ.
                 </p>
               </div>
@@ -1193,13 +1193,13 @@ function AddDutyForm({
       <div className="flex gap-3">
       <button
         onClick={onCancel}
-        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
       >
         Ακύρωση
       </button>
       <button
         onClick={handleSubmit}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
       >
         {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
       </button>
@@ -1212,7 +1212,7 @@ function AddDutyForm({
       <ModalFooter>{footer}</ModalFooter>
       <div>
         <div className="flex items-center justify-between mb-3 px-1">
-          <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">
             Τύπος υπηρεσίας
           </label>
           <button
@@ -1228,7 +1228,7 @@ function AddDutyForm({
                 key={t}
                 onClick={() => setType(t as DutyType)}
                 className={cn(
-                  'py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-wider transition-all border shrink-0 min-h-[44px] flex items-center justify-center text-center px-1 leading-tight',
+                  'py-2.5 rounded-xl text-[8px] font-bold uppercase tracking-wider transition-all border shrink-0 min-h-[44px] flex items-center justify-center text-center px-1 leading-tight',
                   type === t
                     ? 'bg-emerald-500 text-white border-emerald-500 shadow-lg shadow-emerald-500/20'
                     : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
@@ -1245,7 +1245,7 @@ function AddDutyForm({
         {type === 'guard' && (
           <div className="grid grid-cols-2 gap-2 bg-indigo-500/5 border border-indigo-500/10 p-3 rounded-2xl">
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Σύνθημα</label>
+              <label className="block text-[9px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Σύνθημα</label>
               <input
                 type="text"
                 value={password}
@@ -1255,7 +1255,7 @@ function AddDutyForm({
               />
             </div>
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Παρασύνθημα</label>
+              <label className="block text-[9px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Παρασύνθημα</label>
               <input
                 type="text"
                 value={countersign}
@@ -1269,7 +1269,7 @@ function AddDutyForm({
 
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα έναρξης</label>
+            <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα έναρξης</label>
             <input
               type="time"
               value={startTime}
@@ -1278,7 +1278,7 @@ function AddDutyForm({
             />
           </div>
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα λήξης</label>
+            <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα λήξης</label>
             <input
               type="time"
               value={endTime}
@@ -1289,7 +1289,7 @@ function AddDutyForm({
         </div>
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Σημειώσεις</label>
+        <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Σημειώσεις</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
@@ -1300,8 +1300,8 @@ function AddDutyForm({
 
       <div className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900 border border-zinc-800">
         <div className="flex flex-col">
-          <span className="text-[11px] font-bold text-white tracking-wider">Προσθήκη στο Ημερολόγιο</span>
-          <span className="text-[9px] text-zinc-500">Θα προστεθεί στο ημερολόγιο ως ειδοποίηση</span>
+          <span className="text-[10px] font-bold text-white tracking-wider">Προσθήκη στο Ημερολόγιο</span>
+          <span className="text-[8px] text-zinc-500">Θα προστεθεί στο ημερολόγιο ως ειδοποίηση</span>
         </div>
         <Switch checked={addToCalendar} onCheckedChange={setAddToCalendar} />
       </div>
@@ -1347,13 +1347,13 @@ function AddLeaveForm({
     <div className="flex gap-3 px-6 py-5">
       <button
         onClick={onCancel}
-        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[11px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
       >
         Ακύρωση
       </button>
       <button
         onClick={handleSubmit}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
       >
         {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
       </button>
@@ -1364,7 +1364,7 @@ function AddLeaveForm({
     <div className="flex flex-col gap-6 p-2">
       <ModalFooter>{footer}</ModalFooter>
       <div>
-        <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-3 px-1">
+        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-3 px-1">
           Τύπος άδειας
         </label>
         <div className="grid grid-cols-2 gap-2">
@@ -1373,7 +1373,7 @@ function AddLeaveForm({
               key={t}
               onClick={() => setType(t)}
               className={cn(
-                'py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border',
+                'py-3 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all border',
                 type === t
                   ? 'bg-amber-500 text-white border-amber-500'
                   : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
@@ -1389,7 +1389,7 @@ function AddLeaveForm({
       <InlineDatePicker value={endDate} onChange={setEndDate} label="Έως" />
 
       <div>
-        <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Σημειώσεις</label>
+        <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Σημειώσεις</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
@@ -1460,8 +1460,8 @@ function ManageDutyTypesModal({
           header={
             <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
               <div>
-                <h2 className="text-[20px] font-bold text-white">Τύποι Υπηρεσιών</h2>
-                <p className="text-[11px] text-zinc-500 font-bold tracking-wider uppercase mt-1">Διαχείριση ονομάτων</p>
+                <h2 className="text-[18px] font-bold text-white">Τύποι Υπηρεσιών</h2>
+                <p className="text-[10px] text-zinc-500 font-bold tracking-wider uppercase mt-1">Διαχείριση ονομάτων</p>
               </div>
               <button onClick={onClose} className="p-2 rounded-full bg-zinc-800/80 text-zinc-400 transition-colors hover:text-white" aria-label="Κλείσιμο">
                 <Plus size={20} className="rotate-45" />
@@ -1472,7 +1472,7 @@ function ManageDutyTypesModal({
             <div className="px-6 py-5 border-t border-zinc-800/50">
                <button
                 onClick={handleSave}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
               >
                 Αποθήκευση Αλλαγών
               </button>
@@ -1482,7 +1482,7 @@ function ManageDutyTypesModal({
         >
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
-              <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">Υπάρχοντες Τύποι</label>
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-1">Υπάρχοντες Τύποι</label>
               <div className="flex flex-col gap-2">
                 {Object.entries(localLabels).map(([key, label]) => (
                   <div key={key} className="flex gap-2 items-center">
@@ -1508,7 +1508,7 @@ function ManageDutyTypesModal({
             <div className="h-px bg-zinc-800/50 my-2" />
 
             <div className="flex flex-col gap-3">
-              <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">Προσθήκη Νέου</label>
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-1">Προσθήκη Νέου</label>
               <div className="flex gap-2">
                 <input
                   type="text"
