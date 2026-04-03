@@ -39,8 +39,8 @@ export function ExpensesTab() {
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 z-10 relative flex justify-between items-start shrink-0">
         <div>
-          <h1 className="text-[30px] font-bold tracking-tight text-white leading-none mb-1">Έξοδα</h1>
-          <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Δαπανες & Καταλογος</p>
+          <h1 className="text-[26px] font-bold tracking-tight text-white leading-none mb-1">Έξοδα</h1>
+          <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Δαπάνες & Κατάλογος</p>
         </div>
         <div className="flex items-center gap-2 mt-1">
           <button 

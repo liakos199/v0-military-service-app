@@ -41,8 +41,8 @@ export function ProfileTab() {
     <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in overflow-hidden bg-black">
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 relative shrink-0">
-        <h1 className="text-[30px] font-bold tracking-tight text-white leading-none mb-1">Άτομα</h1>
-        <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Στοιχεια & Επαφες</p>
+        <h1 className="text-[26px] font-bold tracking-tight text-white mb-1 leading-none">Άτομα</h1>
+        <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Στοιχεία & Επαφές</p>
       </header>
 
       {/* SECTION TOGGLE */}

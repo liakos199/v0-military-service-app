@@ -235,8 +235,8 @@ export function CalendarTab() {
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 relative flex justify-between items-start shrink-0 z-10">
         <div>
-          <h1 className="text-[30px] font-bold tracking-tight text-white leading-none mb-1">Ημερολόγιο</h1>
-          <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Βάρδιες & άδειες</p>
+          <h1 className="text-[26px] font-bold tracking-tight text-white leading-none mb-1">Ημερολόγιο</h1>
+          <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Βάρδιες & άδειες</p>
         </div>
         <button
           onClick={() => {
@@ -677,17 +677,17 @@ function SummaryList({
           >
             <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-[12px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
-              <p className="text-[9px] text-zinc-400 mt-0.5">
+              <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
+              <p className="text-[8px] text-zinc-400 mt-0.5">
                 {formatGreekDate(duty.date)} • {duty.startTime} - {duty.endTime}
               </p>
             </div>
             <div className="flex gap-1">
               <button onClick={() => onEditDuty(duty.id)} className="p-2 text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-colors">
-                <Edit2 size={18} />
+                <Edit2 size={16} />
               </button>
               <button onClick={() => onDeleteDuty(duty.id)} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
-                <Trash2 size={18} />
+                <Trash2 size={16} />
               </button>
             </div>
           </div>
@@ -714,17 +714,17 @@ function SummaryList({
         >
           <div className="w-1.5 h-10 rounded-full bg-amber-500 flex-shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-[12px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
-            <p className="text-[9px] text-zinc-400 mt-0.5">
+            <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
+            <p className="text-[8px] text-zinc-400 mt-0.5">
               {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} • {leave.days} ημ.
             </p>
           </div>
           <div className="flex gap-1">
             <button onClick={() => onEditLeave(leave.id)} className="p-2 text-amber-400 hover:bg-amber-500/10 rounded-lg transition-colors">
-              <Edit2 size={18} />
+              <Edit2 size={16} />
             </button>
             <button onClick={() => onDeleteLeave(leave.id)} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
-              <Trash2 size={18} />
+              <Trash2 size={16} />
             </button>
           </div>
         </div>
@@ -791,7 +791,7 @@ function FullHistoryView({
                   <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
-                    <p className="text-[9px] text-zinc-500">{formatGreekDate(duty.date)}</p>
+                    <p className="text-[8px] text-zinc-500">{formatGreekDate(duty.date)}</p>
                   </div>
                   <div className="flex gap-1">
                     <button onClick={() => onEditDuty(duty.id)} className="p-2 text-emerald-400/70"><Edit2 size={16} /></button>
@@ -814,7 +814,7 @@ function FullHistoryView({
                   <div className="w-1 h-8 rounded-full bg-amber-500/50" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
-                    <p className="text-[9px] text-zinc-500">{formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}</p>
+                    <p className="text-[8px] text-zinc-500">{formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}</p>
                   </div>
                   <div className="flex gap-1">
                     <button onClick={() => onEditLeave(leave.id)} className="p-2 text-amber-400/70"><Edit2 size={16} /></button>
@@ -865,10 +865,10 @@ function DateDetailsModal({
   const header = (
     <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
       <div className="flex-1">
-        <h2 className="text-[18px] font-bold text-white">
+        <h2 className="text-[16px] font-bold text-white">
           {formatGreekDateFull(selectedDate)}
         </h2>
-        <p className="text-[12px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
+        <p className="text-[10px] text-zinc-500 font-bold tracking-[0.1em] uppercase mt-1">
           {duties.length + leaves.length} γεγονότ{duties.length + leaves.length === 1 ? 'α' : 'α'}
         </p>
       </div>
@@ -927,7 +927,7 @@ function DateDetailsModal({
                       <div className="w-1 h-10 rounded-full bg-emerald-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
-                        <p className="text-[9px] text-zinc-400 mt-0.5">
+                        <p className="text-[8px] text-zinc-400 mt-0.5">
                           {duty.startTime && duty.endTime ? `${duty.startTime} - ${duty.endTime}` : 'Χωρίς ώρα'}
                         </p>
                         {duty.notes && (
@@ -967,7 +967,7 @@ function DateDetailsModal({
                       <div className="w-1 h-10 rounded-full bg-amber-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
-                        <p className="text-[9px] text-zinc-400 mt-0.5">
+                        <p className="text-[8px] text-zinc-400 mt-0.5">
                           {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} • {leave.days} ημ.
                         </p>
                         {leave.notes && (
@@ -1073,7 +1073,7 @@ function UpcomingEvents({
                     </span>
                   )}
                 </div>
-                <p className="text-[9px] text-zinc-400 mt-1">
+                <p className="text-[8px] text-zinc-400 mt-1">
                   {formatGreekDate(duty.date)} • {duty.startTime} - {duty.endTime}
                 </p>
               </div>
@@ -1082,13 +1082,13 @@ function UpcomingEvents({
                   onClick={() => onEditDuty(duty.id)}
                   className="p-2 rounded-lg flex items-center justify-center text-emerald-400 hover:bg-emerald-500/10 transition-colors active:scale-90"
                 >
-                  <Edit2 size={18} />
+                  <Edit2 size={16} />
                 </button>
                 <button
                   onClick={() => onDeleteDuty(duty.id)}
                   className="p-2 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-500/10 transition-colors active:scale-90"
                 >
-                  <Trash2 size={18} />
+                  <Trash2 size={16} />
                 </button>
               </div>
             </div>
@@ -1103,7 +1103,7 @@ function UpcomingEvents({
               <div className="w-1.5 h-12 rounded-full flex-shrink-0 bg-amber-400" />
               <div className="flex-1 min-w-0">
                 <span className="text-[11px] font-bold text-white break-words">{LEAVE_TYPE_LABELS[leave.type]}</span>
-                <p className="text-[9px] text-zinc-400 mt-1">
+                <p className="text-[8px] text-zinc-400 mt-1">
                   {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} • {leave.days} ημ.
                 </p>
               </div>
@@ -1112,13 +1112,13 @@ function UpcomingEvents({
                   onClick={() => onEditLeave(leave.id)}
                   className="p-2 rounded-lg flex items-center justify-center text-amber-400 hover:bg-amber-500/10 transition-colors active:scale-90"
                 >
-                  <Edit2 size={18} />
+                  <Edit2 size={16} />
                 </button>
                 <button
                   onClick={() => onDeleteLeave(leave.id)}
                   className="p-2 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-500/10 transition-colors active:scale-90"
                 >
-                  <Trash2 size={18} />
+                  <Trash2 size={16} />
                 </button>
               </div>
             </div>
@@ -1460,7 +1460,7 @@ function ManageDutyTypesModal({
           header={
             <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
               <div>
-                <h2 className="text-[18px] font-bold text-white">Τύποι Υπηρεσιών</h2>
+                <h2 className="text-[16px] font-bold text-white">Τύποι Υπηρεσιών</h2>
                 <p className="text-[10px] text-zinc-500 font-bold tracking-wider uppercase mt-1">Διαχείριση ονομάτων</p>
               </div>
               <button onClick={onClose} className="p-2 rounded-full bg-zinc-800/80 text-zinc-400 transition-colors hover:text-white" aria-label="Κλείσιμο">

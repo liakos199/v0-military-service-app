@@ -80,8 +80,8 @@ export function DutiesTab() {
       <div className="sticky top-0 z-20 bg-background px-4 pt-4 pb-3 border-b border-border/50 safe-top">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-[18px] font-bold text-foreground">Πρόγραμμα</h1>
-            <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Καταγραφή υπηρεσιών</p>
+            <h1 className="text-[16px] font-bold text-foreground">Πρόγραμμα</h1>
+            <p className="text-[8px] text-muted-foreground uppercase tracking-wider">Καταγραφή υπηρεσιών</p>
           </div>
           <div className="flex items-center gap-2">
             <button

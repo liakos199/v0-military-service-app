@@ -132,8 +132,8 @@ export function ServiceTab() {
 
       <header className="px-6 pt-14 pb-2 relative flex justify-between items-start shrink-0">
         <div>
-          <h1 className="text-[30px] font-bold tracking-tight text-white leading-none mb-1">Θητεία</h1>
-          <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Αντιστροφη μετρηση</p>
+          <h1 className="text-[26px] font-bold tracking-tight text-white leading-none mb-1">Θητεία</h1>
+          <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Αντιστροφη μετρηση</p>
         </div>
         <button
           onClick={() => { hapticFeedback('light'); setShowConfig(true) }}

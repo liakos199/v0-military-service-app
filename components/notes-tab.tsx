@@ -446,8 +446,8 @@ export function NotesTab() {
       {/* HEADER */}
       <header className="px-6 pt-14 pb-4 relative flex flex-col gap-4 shrink-0 z-10">
         <div>
-          <h1 className="text-[30px] font-bold tracking-tight text-white leading-none mb-1">Σημειώσεις</h1>
-          <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Προσωπικές & εγχειρίδια</p>
+          <h1 className="text-[26px] font-bold tracking-tight text-white leading-none mb-1">Σημειώσεις</h1>
+          <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Προσωπικές & εγχειρίδια</p>
         </div>
 
         {/* Search Bar */}
