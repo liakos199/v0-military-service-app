@@ -47,12 +47,12 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 onTabChange(tab.id)
               }}
               className={cn(
-                'relative flex flex-col items-center justify-center py-2 px-1 rounded-2xl transition-all duration-300 flex-1 min-w-0 group',
+                'relative flex flex-col items-center justify-center py-2 px-1 rounded-2xl transition-all duration-200 flex-1 min-w-0 group',
                 isActive ? 'text-[#34d399]' : 'text-zinc-500'
               )}
             >
               <div className={cn(
-                "relative z-10 transition-all duration-300 transform",
+                "relative z-10 transition-all duration-200 transform",
                 isActive ? "scale-110 -translate-y-1" : "group-hover:scale-105"
               )}>
                 <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
@@ -61,7 +61,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 )}
               </div>
               <span className={cn(
-                'text-[8px] font-bold uppercase tracking-[0.03em] mt-1 transition-all duration-300 truncate w-full text-center',
+                'text-[8px] font-bold uppercase tracking-[0.03em] mt-1 transition-all duration-200 truncate w-full text-center',
                 isActive ? 'opacity-100' : 'opacity-60'
               )}>
                 {tab.label}
