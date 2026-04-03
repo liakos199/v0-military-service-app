@@ -1122,7 +1122,7 @@ function AddDutyForm({
   const [notes, setNotes] = useState(editingDuty?.notes || '')
   const [password, setPassword] = useState(editingDuty?.password || '')
   const [countersign, setCountersign] = useState(editingDuty?.countersign || '')
-  const [addToCalendar, setAddToCalendar] = useState(false)
+  const [addToCalendar, setAddToCalendar] = useState(true)
 
   const handleSubmit = () => {
     if (!date || !startTime || !endTime) return
