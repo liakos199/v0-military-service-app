@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import {
   ChevronLeft,
   ChevronRight,
@@ -10,6 +11,7 @@ import {
   Edit2,
   History,
   ArrowRight,
+  Settings,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -58,6 +60,9 @@ export function CalendarTab() {
   const [dutyModalMode, setDutyModalMode] = useState<ModalMode>('add')
   const [leaveModalMode, setLeaveModalMode] = useState<ModalMode>('add')
   const [deletePending, setDeletePending] = useState<{ id: string; type: 'duty' | 'leave' } | null>(null)
+
+  const [dutyLabels, setDutyLabels] = useLocalStorage<Record<string, string>>('fantaros-duty-labels', DUTY_TYPE_LABELS)
+  const [showManageTypes, setShowManageTypes] = useState(false)
 
   const dateEventsMap = useMemo(() => {
     const map: Record<string, { duties: DutyEntry[]; leaves: LeaveEntry[] }> = {}
@@ -353,6 +358,17 @@ export function CalendarTab() {
               </div>
             </div>
           </div>
+          {/* Upcoming Events */}
+          <UpcomingEvents
+            duties={duties}
+            leaves={leaves}
+            today={today}
+            dutyLabels={dutyLabels}
+            onDeleteDuty={handleDeleteDuty}
+            onDeleteLeave={handleDeleteLeave}
+            onEditDuty={handleEditDuty}
+            onEditLeave={handleEditLeave}
+          />
 
           {/* Monthly Summary */}
           <MonthlySummary
@@ -360,6 +376,7 @@ export function CalendarTab() {
             leaves={leaves}
             viewMonth={viewMonth}
             viewYear={viewYear}
+            dutyLabels={dutyLabels}
             onShowSummary={(type) => {
               hapticFeedback('medium')
               setShowSummaryModal({ type, isOpen: true })
@@ -372,7 +389,7 @@ export function CalendarTab() {
               hapticFeedback('medium')
               setShowFullHistory(true)
             }}
-            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all active:scale-95 flex items-center justify-between font-bold text-[11px] uppercase tracking-wider"
+            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-br from-zinc-700 to-gray-900/90 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all active:scale-95 flex items-center justify-between font-bold text-[11px] uppercase tracking-wider"
           >
             <span className="flex items-center gap-2">
               <History size={16} />
@@ -381,16 +398,7 @@ export function CalendarTab() {
             <ArrowRight size={14} />
           </button>
 
-          {/* Upcoming Events */}
-          <UpcomingEvents
-            duties={duties}
-            leaves={leaves}
-            today={today}
-            onDeleteDuty={handleDeleteDuty}
-            onDeleteLeave={handleDeleteLeave}
-            onEditDuty={handleEditDuty}
-            onEditLeave={handleEditLeave}
-          />
+          
         </div>
       </main>
 
@@ -422,7 +430,6 @@ export function CalendarTab() {
             setShowAddLeave(true)
           }}
         />
-        <ActionSheetCancel onClick={() => setShowActionSheet(false)} />
       </ActionSheet>
 
       {/* Date Details Modal */}
@@ -430,6 +437,7 @@ export function CalendarTab() {
         isOpen={showDateDetails}
         selectedDate={selectedDate}
         dateEventsMap={dateEventsMap}
+        dutyLabels={dutyLabels}
         onClose={() => setShowDateDetails(false)}
         onAddDuty={() => {
           setDutyModalMode('add')
@@ -460,6 +468,7 @@ export function CalendarTab() {
             const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
             return l.startDate.startsWith(monthPrefix) || l.endDate.startsWith(monthPrefix)
           })}
+          dutyLabels={dutyLabels}
           onEditDuty={handleEditDuty}
           onEditLeave={handleEditLeave}
           onDeleteDuty={handleDeleteDuty}
@@ -476,6 +485,7 @@ export function CalendarTab() {
         <FullHistoryView
           duties={duties}
           leaves={leaves}
+          dutyLabels={dutyLabels}
           onEditDuty={handleEditDuty}
           onEditLeave={handleEditLeave}
           onDeleteDuty={handleDeleteDuty}
@@ -493,8 +503,10 @@ export function CalendarTab() {
         <AddDutyForm
           initialDate={selectedDate || today}
           initialType={initialDutyType}
+          dutyLabels={dutyLabels}
           onAdd={handleAddDuty}
           onCancel={handleCloseModals}
+          onManageTypes={() => setShowManageTypes(true)}
           mode={dutyModalMode}
           editingDuty={
             editingDutyId
@@ -523,6 +535,14 @@ export function CalendarTab() {
         />
       </FullscreenModal>
 
+      {/* Manage Duty Types Modal */}
+      <ManageDutyTypesModal
+        isOpen={showManageTypes}
+        onClose={() => setShowManageTypes(false)}
+        dutyLabels={dutyLabels}
+        setDutyLabels={setDutyLabels}
+      />
+
       {/* Shared Delete Confirmation Dialog */}
       {deletePending && (
         <DeleteConfirmDialog
@@ -540,12 +560,14 @@ function MonthlySummary({
   leaves,
   viewMonth,
   viewYear,
+  dutyLabels,
   onShowSummary,
 }: {
   duties: DutyEntry[]
   leaves: LeaveEntry[]
   viewMonth: number
   viewYear: number
+  dutyLabels: Record<string, string>
   onShowSummary: (type: 'duty' | 'leave') => void
 }) {
   const stats = useMemo(() => {
@@ -582,7 +604,7 @@ function MonthlySummary({
         {/* Duties card */}
         <button
           onClick={() => onShowSummary('duty')}
-          className="flex-1 rounded-[1.5rem] bg-emerald-500/10 p-4 border border-emerald-500/20 text-left transition-all active:scale-95 group relative overflow-hidden"
+          className="flex-1 rounded-[1.5rem] bg-emerald-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
             <ArrowRight size={16} className="text-emerald-400" />
@@ -592,14 +614,14 @@ function MonthlySummary({
           </span>
           <div className="flex items-baseline gap-1">
             <span className="text-2xl font-bold text-white">{stats.totalDuties}</span>
-            <span className="text-[10px] text-zinc-400 font-medium uppercase">Γεγονότα</span>
+            <span className="text-[10px] text-zinc-400 font-medium uppercase">ΣΥΝΟΛΟ</span>
           </div>
         </button>
 
         {/* Leave card */}
         <button
           onClick={() => onShowSummary('leave')}
-          className="flex-1 rounded-[1.5rem] bg-amber-500/10 p-4 border border-amber-500/20 text-left transition-all active:scale-95 group relative overflow-hidden"
+          className="flex-1 rounded-[1.5rem] bg-amber-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
             <ArrowRight size={16} className="text-amber-400" />
@@ -622,6 +644,7 @@ function SummaryList({
   type,
   duties,
   leaves,
+  dutyLabels,
   onEditDuty,
   onEditLeave,
   onDeleteDuty,
@@ -630,6 +653,7 @@ function SummaryList({
   type: 'duty' | 'leave'
   duties: DutyEntry[]
   leaves: LeaveEntry[]
+  dutyLabels: Record<string, string>
   onEditDuty: (id: string) => void
   onEditLeave: (id: string) => void
   onDeleteDuty: (id: string) => void
@@ -653,7 +677,7 @@ function SummaryList({
           >
             <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-bold text-white">{DUTY_TYPE_LABELS[duty.type]}</p>
+              <p className="text-[13px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
               <p className="text-[10px] text-zinc-400 mt-0.5">
                 {formatGreekDate(duty.date)} • {duty.startTime} - {duty.endTime}
               </p>
@@ -713,6 +737,7 @@ function SummaryList({
 function FullHistoryView({
   duties,
   leaves,
+  dutyLabels,
   onEditDuty,
   onEditLeave,
   onDeleteDuty,
@@ -720,6 +745,7 @@ function FullHistoryView({
 }: {
   duties: DutyEntry[]
   leaves: LeaveEntry[]
+  dutyLabels: Record<string, string>
   onEditDuty: (id: string) => void
   onEditLeave: (id: string) => void
   onDeleteDuty: (id: string) => void
@@ -764,7 +790,7 @@ function FullHistoryView({
                 <div key={duty.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4 flex items-center gap-4">
                   <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-bold text-white">{DUTY_TYPE_LABELS[duty.type]}</p>
+                    <p className="text-[12px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
                     <p className="text-[10px] text-zinc-500">{formatGreekDate(duty.date)}</p>
                   </div>
                   <div className="flex gap-1">
@@ -809,6 +835,7 @@ function DateDetailsModal({
   isOpen,
   selectedDate,
   dateEventsMap,
+  dutyLabels,
   onClose,
   onAddDuty,
   onAddLeave,
@@ -820,6 +847,7 @@ function DateDetailsModal({
   isOpen: boolean
   selectedDate: string | null
   dateEventsMap: Record<string, { duties: DutyEntry[]; leaves: LeaveEntry[] }>
+  dutyLabels: Record<string, string>
   onClose: () => void
   onAddDuty: () => void
   onAddLeave: () => void
@@ -898,7 +926,7 @@ function DateDetailsModal({
                     >
                       <div className="w-1 h-10 rounded-full bg-emerald-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[12px] font-bold text-white">{DUTY_TYPE_LABELS[duty.type]}</p>
+                        <p className="text-[12px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
                         <p className="text-[10px] text-zinc-400 mt-0.5">
                           {duty.startTime && duty.endTime ? `${duty.startTime} - ${duty.endTime}` : 'Χωρίς ώρα'}
                         </p>
@@ -984,6 +1012,7 @@ function UpcomingEvents({
   duties,
   leaves,
   today,
+  dutyLabels,
   onDeleteDuty,
   onDeleteLeave,
   onEditDuty,
@@ -992,6 +1021,7 @@ function UpcomingEvents({
   duties: DutyEntry[]
   leaves: LeaveEntry[]
   today: string
+  dutyLabels: Record<string, string>
   onDeleteDuty: (id: string) => void
   onDeleteLeave: (id: string) => void
   onEditDuty: (id: string) => void
@@ -1036,7 +1066,7 @@ function UpcomingEvents({
               <div className={cn('w-1.5 h-12 rounded-full flex-shrink-0', isToday ? 'bg-emerald-500' : 'bg-emerald-400')} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[12px] font-bold text-white">{DUTY_TYPE_LABELS[duty.type]}</span>
+                  <span className="text-[12px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</span>
                   {isToday && (
                     <span className="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-[9px] font-bold uppercase tracking-wider">
                       ΣΗΜΕΡΑ
@@ -1103,15 +1133,19 @@ function UpcomingEvents({
 function AddDutyForm({
   initialDate,
   initialType = 'guard',
+  dutyLabels,
   onAdd,
   onCancel,
+  onManageTypes,
   mode = 'add',
   editingDuty,
 }: {
   initialDate: string
   initialType?: DutyType
+  dutyLabels: Record<string, string>
   onAdd: (duty: DutyEntry) => void
   onCancel: () => void
+  onManageTypes: () => void
   mode?: ModalMode
   editingDuty?: DutyEntry
 }) {
@@ -1131,8 +1165,8 @@ function AddDutyForm({
 
     if (addToCalendar) {
       const ics = generateIcsFile({
-        title: DUTY_TYPE_LABELS[type],
-        description: notes || `Υπηρεσία: ${DUTY_TYPE_LABELS[type]}`,
+        title: dutyLabels[type] || type,
+        description: notes || `Υπηρεσία: ${dutyLabels[type] || type}`,
         startDate: date,
         startTime: startTime,
         endDate: date,
@@ -1177,22 +1211,30 @@ function AddDutyForm({
     <div className="flex flex-col gap-6 p-2">
       <ModalFooter>{footer}</ModalFooter>
       <div>
-        <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-3 px-1">
-          Τύπος υπηρεσίας
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          {(['guard', 'barracks', 'officer', 'patrol', 'kitchen', 'other'] as DutyType[]).map((t) => (
+        <div className="flex items-center justify-between mb-3 px-1">
+          <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+            Τύπος υπηρεσίας
+          </label>
+          <button
+            onClick={onManageTypes}
+            className="p-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-500 hover:text-[#34d399] transition-colors"
+          >
+            <Settings size={14} />
+          </button>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {Object.entries(dutyLabels).map(([t, label]) => (
               <button
                 key={t}
-                onClick={() => setType(t)}
+                onClick={() => setType(t as DutyType)}
                 className={cn(
-                  'py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border',
+                  'py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-wider transition-all border shrink-0 min-h-[44px] flex items-center justify-center text-center px-1 leading-tight',
                   type === t
-                    ? 'bg-emerald-500 text-white border-emerald-500'
+                    ? 'bg-emerald-500 text-white border-emerald-500 shadow-lg shadow-emerald-500/20'
                     : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
                 )}
               >
-                {DUTY_TYPE_LABELS[t]}
+                {label}
               </button>
             ))}
           </div>
@@ -1356,6 +1398,139 @@ function AddLeaveForm({
         />
       </div>
     </div>
+  )
+}
+
+/* ---------- Manage Duty Types Modal ---------- */
+function ManageDutyTypesModal({
+  isOpen,
+  onClose,
+  dutyLabels,
+  setDutyLabels,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  dutyLabels: Record<string, string>
+  setDutyLabels: (labels: Record<string, string>) => void
+}) {
+  const [localLabels, setLocalLabels] = useState(dutyLabels)
+  const [newTypeName, setNewTypeName] = useState('')
+  const [mounted, setMounted] = useState(false)
+
+  // Handle mounting for Portal
+  useEffect(() => {
+    setMounted(true)
+    return () => setMounted(false)
+  }, [])
+
+  // Sync local state when modal opens
+  useEffect(() => {
+    if (isOpen) setLocalLabels(dutyLabels)
+  }, [isOpen, dutyLabels])
+
+  const handleSave = () => {
+    setDutyLabels(localLabels)
+    hapticFeedback('medium')
+    onClose()
+  }
+
+  const handleAddType = () => {
+    if (!newTypeName.trim()) return
+    const id = `custom_${generateId()}`
+    setLocalLabels({ ...localLabels, [id]: newTypeName.trim() })
+    setNewTypeName('')
+    hapticFeedback('light')
+  }
+
+  const handleDeleteType = (key: string) => {
+    const coreTypes = ['guard', 'barracks', 'officer', 'patrol', 'kitchen', 'other']
+    if (coreTypes.includes(key)) return
+    
+    const { [key]: _, ...rest } = localLabels
+    setLocalLabels(rest)
+    hapticFeedback('medium')
+  }
+
+  if (!isOpen || !mounted) return null
+
+  return createPortal(
+    <div className="fixed inset-0 z-[250] bg-black/80 backdrop-blur-sm animate-fade-in flex flex-col" onClick={onClose}>
+      <div className="flex-1 flex flex-col w-full h-full safe-top safe-bottom" onClick={(e) => e.stopPropagation()}>
+        <ModalLayout
+          header={
+            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
+              <div>
+                <h2 className="text-[20px] font-bold text-white">Τύποι Υπηρεσιών</h2>
+                <p className="text-[11px] text-zinc-500 font-bold tracking-wider uppercase mt-1">Διαχείριση ονομάτων</p>
+              </div>
+              <button onClick={onClose} className="p-2 rounded-full bg-zinc-800/80 text-zinc-400 transition-colors hover:text-white" aria-label="Κλείσιμο">
+                <Plus size={20} className="rotate-45" />
+              </button>
+            </div>
+          }
+          footer={
+            <div className="px-6 py-5 border-t border-zinc-800/50">
+               <button
+                onClick={handleSave}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+              >
+                Αποθήκευση Αλλαγών
+              </button>
+            </div>
+          }
+          contentClassName="px-6 py-6"
+        >
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
+              <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">Υπάρχοντες Τύποι</label>
+              <div className="flex flex-col gap-2">
+                {Object.entries(localLabels).map(([key, label]) => (
+                  <div key={key} className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={label}
+                      onChange={(e) => setLocalLabels({ ...localLabels, [key]: e.target.value })}
+                      className="flex-1 px-4 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none"
+                    />
+                    {!['guard', 'barracks', 'officer', 'patrol', 'kitchen', 'other'].includes(key) && (
+                      <button 
+                        onClick={() => handleDeleteType(key)}
+                        className="p-3 text-red-500 hover:bg-red-500/10 rounded-xl transition-colors"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-zinc-800/50 my-2" />
+
+            <div className="flex flex-col gap-3">
+              <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">Προσθήκη Νέου</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Όνομα νέου τύπου..."
+                  value={newTypeName}
+                  onChange={(e) => setNewTypeName(e.target.value)}
+                  className="flex-1 px-4 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none"
+                />
+                <button 
+                  onClick={handleAddType}
+                  className="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20 active:scale-95 transition-all disabled:opacity-30"
+                  disabled={!newTypeName.trim()}
+                >
+                  <Plus size={20} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </ModalLayout>
+      </div>
+    </div>,
+    document.body
   )
 }
 
