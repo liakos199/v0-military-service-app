@@ -114,32 +114,34 @@ function ProfileSection() {
   return (
     <div className="animate-fade-in space-y-3">
       {/* Identity Card */}
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 relative shadow-xl shadow-black/20 overflow-hidden">
+      <button 
+        onClick={startEdit}
+        className="w-full text-left bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 relative shadow-xl shadow-black/20 overflow-hidden transition-all active:scale-[0.98] group"
+      >
         <ShieldAlert size={140} className="absolute -bottom-6 -right-6 text-zinc-700/10 pointer-events-none fill-current" />
         <div className="flex items-center gap-4 relative z-10">
           <div className="w-16 h-16 rounded-[1.25rem] bg-zinc-800 border border-zinc-700/50 text-[#34d399] flex items-center justify-center shrink-0">
             <Users size={32} />
           </div>
           <div className="flex-1">
-            <div className="flex justify-between items-start mb-1.5">
+            <div className="flex justify-between items-start ">
               <h2 className="text-[20px] font-bold text-white leading-tight">
                 {profile.fullName || 'Ονοματεπώνυμο'}
               </h2>
-              <button 
-                onClick={startEdit}
-                className="w-8 h-8 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors active:scale-95 shrink-0 ml-2"
+              <div 
+                className="w-8 h-8 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 group-hover:text-[#34d399] transition-colors shrink-0 ml-2"
               >
                 <Pencil size={14} />
-              </button>
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
-              <span className="bg-gradient-to-r from-[#34d399] to-[#10b981] text-black text-[10px] font-extrabold tracking-widest px-2.5 py-1 rounded-md shadow-sm uppercase">
+              <span className="text-emerald-500 text-[10px] font-extrabold tracking-widest px-2.5 py-1 rounded-md shadow-sm uppercase">
                 {profile.rank}
               </span>
             </div>
           </div>
         </div>
-      </div>
+      </button>
 
       {/* Details Grid */}
       <div className="grid grid-cols-2 gap-3">
