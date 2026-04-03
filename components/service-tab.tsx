@@ -12,9 +12,6 @@ import {
   KeyRound,
   Eye,
   EyeOff,
-  Database,
-  UploadCloud,
-  DownloadCloud,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -27,8 +24,6 @@ import {
   daysBetween,
   toLocalDateString,
   generateId,
-  exportAppData,
-  importAppData,
   toast,
 } from '@/lib/helpers'
 import type { ServiceConfig, LeaveEntry, PrisonEntry, DetentionEntry, DutyEntry } from '@/lib/types'
@@ -387,59 +382,9 @@ export function ServiceTab() {
                 className="w-full pl-32 pr-4 py-4 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
               />
             </div>
-          </div>
-
-          <div className="pt-4 border-t border-zinc-800/80">
-            <div className="flex items-center gap-2 mb-4">
-              <Database size={16} className="text-emerald-500" />
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 px-1">
-                Διαχειριση Δεδομενων
-              </label>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => {
-                  hapticFeedback('medium')
-                  exportAppData()
-                  toast('Τα δεδομένα εξήχθησαν επιτυχώς')
-                }}
-                className="flex items-center justify-center gap-2 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 font-bold text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-colors"
-                type="button"
-              >
-                <DownloadCloud size={16} />
-                Backup / Εξαγωγη
-              </button>
-
-              <label className="flex items-center justify-center gap-2 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 font-bold text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-colors cursor-pointer">
-                <UploadCloud size={16} />
-                Επαναφορα
-                <input
-                  type="file"
-                  accept=".json"
-                  className="hidden"
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0]
-                    if (file) {
-                      hapticFeedback('heavy')
-                      const success = await importAppData(file)
-                      if (success) {
-                        toast('Επιτυχής εισαγωγή! Η εφαρμογή θα ανανεωθεί.')
-                        setTimeout(() => window.location.reload(), 1500)
-                      } else {
-                        toast('Αποτυχία εισαγωγής. Ελέγξτε το αρχείο.', 'error')
-                      }
-                    }
-                  }}
-                />
-              </label>
-            </div>
-            <p className="text-[9px] text-zinc-600 text-center mt-3">
-              Κάντε συχνά backup για να μη χάσετε τα δεδομένα σας
-            </p>
-          </div>
         </div>
-      </FullscreenModal>
+      </div>
+    </FullscreenModal>
 
       {/* Prison Modal */}
       <FullscreenModal
