@@ -79,7 +79,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-[12px] text-zinc-400 font-medium leading-relaxed">
+      <p className="text-[10px] text-zinc-400 font-medium leading-relaxed">
         Διαχειρίστε τα προϊόντα του καταλόγου που θα εμφανίζονται ως επιλογές κατά την καταχώρηση εξόδων.
       </p>
 

@@ -29,6 +29,7 @@ import {
   formatGreekDateFull,
   generateIcsFile,
   downloadIcsFile,
+  toast,
 } from '@/lib/helpers'
 import { Switch } from '@/components/ui/switch'
 import type { DutyEntry, DutyType, LeaveEntry, LeaveType } from '@/lib/types'
@@ -150,6 +151,7 @@ export function CalendarTab() {
       setShowDateDetails(false)
       setEditingDutyId(null)
       setDutyModalMode('add')
+      toast(dutyModalMode === 'edit' ? 'Η υπηρεσία ενημερώθηκε' : 'Η υπηρεσία προστέθηκε')
     },
     [duties, setDuties, dutyModalMode, editingDutyId]
   )
@@ -166,6 +168,7 @@ export function CalendarTab() {
       setShowDateDetails(false)
       setEditingLeaveId(null)
       setLeaveModalMode('add')
+      toast(leaveModalMode === 'edit' ? 'Η άδεια ενημερώθηκε' : 'Η άδεια προστέθηκε')
     },
     [leaves, setLeaves, leaveModalMode, editingLeaveId]
   )
@@ -194,6 +197,7 @@ export function CalendarTab() {
       setLeaves((prev) => prev.filter((l) => l.id !== deletePending.id))
     }
     setDeletePending(null)
+    toast('Η καταχώρηση διαγράφηκε')
   }, [deletePending, setDuties, setLeaves])
 
   const handleEditDuty = (dutyId: string) => {

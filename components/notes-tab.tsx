@@ -23,7 +23,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
-import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
+import { hapticFeedback, formatGreekDate, generateId, toLocalDateString, toast } from '@/lib/helpers'
 import type { NoteEntry } from '@/lib/types'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 
@@ -528,6 +528,7 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
       ...notes,
     ])
     setShowAdd(false)
+    toast('Η σημείωση προστέθηκε')
   }
 
   const handleUpdate = (title: string, content: string) => {
@@ -535,6 +536,7 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
     hapticFeedback('medium')
     setNotes(notes.map((n) => (n.id === editingNote.id ? { ...n, title, content } : n)))
     setEditingNote(null)
+    toast('Η σημείωση ενημερώθηκε')
   }
 
   const filteredNotes = useMemo(() => {
@@ -636,6 +638,7 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
           onConfirm={() => {
             setNotes(notes.filter((n) => n.id !== deletePendingId))
             setDeletePendingId(null)
+            toast('Η σημείωση διαγράφηκε')
           }}
           onCancel={() => setDeletePendingId(null)}
         />

@@ -97,10 +97,12 @@ export function FullscreenModal({
       <ModalLayout
         header={header}
         footer={
-          <>
-            {footer}
-            <div ref={setFooterNode} />
-          </>
+          (footer || footerNode) ? (
+            <>
+              {footer}
+              <div ref={setFooterNode} />
+            </>
+          ) : undefined
         }
         contentClassName={contentClassName}
       >

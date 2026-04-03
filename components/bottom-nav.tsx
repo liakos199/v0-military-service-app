@@ -1,11 +1,11 @@
-'use client'
-
+import { motion } from 'framer-motion'
 import { 
   ShieldCheck, 
   Calendar as CalendarIcon, 
   NotebookText, 
   Users, 
-  Wallet 
+  Wallet,
+  Home as HomeIcon,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { hapticFeedback } from '@/lib/helpers'
@@ -17,8 +17,8 @@ interface BottomNavProps {
   onTabChange: (tab: TabId) => void
 }
 
-const tabs: { id: TabId; label: string; icon: typeof ShieldCheck }[] = [
-  { id: 'service', label: 'Θητεία', icon: ShieldCheck },
+const tabs: { id: TabId; label: string; icon: any }[] = [
+  { id: 'service', label: 'Λελεμετρο', icon: ShieldCheck },
   { id: 'duties', label: 'Ημερολόγιο', icon: CalendarIcon },
   { id: 'notes', label: 'Σημειώσεις', icon: NotebookText },
   { id: 'profile', label: 'Άτομα', icon: Users },
@@ -32,7 +32,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       role="tablist"
       aria-label="Κύρια πλοήγηση"
     >
-      <div className="max-w-md mx-auto flex items-center justify-between bg-zinc-900/80 backdrop-blur-2xl border border-zinc-800/50 p-2 rounded-[2.5rem] shadow-2xl pointer-events-auto">
+      <div className="max-w-md mx-auto flex items-center justify-between bg-zinc-900/80 backdrop-blur-2xl border border-zinc-800/50 p-2 rounded-[2.5rem] shadow-2xl pointer-events-auto relative">
         {tabs.map((tab) => {
           const Icon = tab.icon
           const isActive = activeTab === tab.id
@@ -57,7 +57,11 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               )}>
                 <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                 {isActive && (
-                  <div className="absolute -inset-2 bg-[#34d399]/10 blur-md rounded-full -z-10 animate-pulse"></div>
+                  <motion.div 
+                    layoutId="tab-glow"
+                    className="absolute -inset-2 bg-[#34d399]/10 blur-md rounded-full -z-10"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
                 )}
               </div>
               <span className={cn(
@@ -67,7 +71,11 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 {tab.label}
               </span>
               {isActive && (
-                <div className="absolute -bottom-1 w-1 h-1 bg-[#34d399] rounded-full shadow-[0_0_8px_#34d399]"></div>
+                <motion.div 
+                  layoutId="active-pill"
+                  className="absolute -bottom-1 w-1 h-1 bg-[#34d399] rounded-full shadow-[0_0_8px_#34d399]"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
               )}
             </button>
           )

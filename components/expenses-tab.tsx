@@ -8,7 +8,7 @@ import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { CanteenCatalogManager } from '@/components/canteen-catalog-manager'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
-import { hapticFeedback, formatGreekDate, generateId, toLocalDateString } from '@/lib/helpers'
+import { hapticFeedback, formatGreekDate, generateId, toLocalDateString, toast } from '@/lib/helpers'
 import type { CanteenCatalogItem, ExpenseEntry } from '@/lib/types'
 import { CANTEEN_CATEGORY_LABELS, EXPENSE_CATEGORY_LABELS } from '@/lib/types'
 
@@ -32,7 +32,23 @@ export function ExpensesTab() {
       .sort((a, b) => b.date.localeCompare(a.date))
   }, [expenses, searchQuery, filterCategory])
 
-  const grandTotal = filteredExpenses.reduce((sum, e) => sum + e.amount, 0)
+  const grandTotal = expenses.reduce((sum, e) => sum + e.amount, 0)
+
+  const { weeklyTotal, monthlyTotal } = useMemo(() => {
+    const now = new Date()
+    const oneWeekAgo = new Date(now)
+    oneWeekAgo.setDate(now.getDate() - 7)
+    const oneMonthAgo = new Date(now)
+    oneMonthAgo.setMonth(now.getMonth() - 1)
+    
+    const weekStr = toLocalDateString(oneWeekAgo)
+    const monthStr = toLocalDateString(oneMonthAgo)
+    
+    return {
+      weeklyTotal: expenses.filter(e => e.date >= weekStr).reduce((sum, e) => sum + e.amount, 0),
+      monthlyTotal: expenses.filter(e => e.date >= monthStr).reduce((sum, e) => sum + e.amount, 0)
+    }
+  }, [expenses])
 
   return (
     <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in overflow-hidden bg-black">
@@ -114,13 +130,29 @@ export function ExpensesTab() {
           </div>
         </div>
 
-        {/* Total Expenses Card */}
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-6 flex flex-col items-center justify-center shadow-xl shadow-black/20 mb-6 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[#10b981]/5"></div>
-          <span className="text-[10px] font-extrabold tracking-[0.2em] text-[#34d399] uppercase mb-1 relative z-10">Συνολικα Εξοδα</span>
+        {/* Spending Summaries */}
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex flex-col shadow-lg shadow-black/10">
+            <span className="text-[7.5px] font-black tracking-[0.1em] text-zinc-500 uppercase mb-1">Αυτη την εβδομαδα</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-[20px] font-black text-white leading-none">{weeklyTotal.toFixed(2)}</span>
+              <span className="text-[12px] font-bold text-emerald-500">€</span>
+            </div>
+          </div>
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex flex-col shadow-lg shadow-black/10">
+            <span className="text-[7.5px] font-black tracking-[0.1em] text-zinc-500 uppercase mb-1">Αυτο το μηνα</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-[20px] font-black text-white leading-none">{monthlyTotal.toFixed(2)}</span>
+              <span className="text-[12px] font-bold text-emerald-500">€</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-[1.5rem] p-5 flex flex-col items-center justify-center shadow-xl mb-6 relative overflow-hidden border-dashed">
+          <span className="text-[10px] font-black tracking-[0.2em] text-[#34d399] uppercase mb-1 relative z-10">Συνολικα Εξοδα</span>
           <div className="flex items-baseline gap-1 relative z-10">
-            <span className="text-[36px] font-black tracking-tight text-white leading-none">{grandTotal.toFixed(2)}</span>
-            <span className="text-[22px] font-bold text-[#34d399]">€</span>
+            <span className="text-[32px] font-black tracking-tight text-white leading-none">{grandTotal.toFixed(2)}</span>
+            <span className="text-[20px] font-bold text-[#34d399]">€</span>
           </div>
         </div>
 
@@ -171,6 +203,7 @@ export function ExpensesTab() {
           items={canteenCatalog}
           onSave={(updated) => {
             setCanteenCatalog(updated)
+            toast('Ο κατάλογος ενημερώθηκε')
           }}
           onCancel={() => setShowCatalogManager(false)}
         />
@@ -190,6 +223,7 @@ export function ExpensesTab() {
           onAdd={(expense) => {
             setExpenses([expense, ...expenses])
             setShowAdd(false)
+            toast('Το έξοδο προστέθηκε')
           }}
           onCancel={() => setShowAdd(false)}
         />
@@ -200,6 +234,7 @@ export function ExpensesTab() {
           onConfirm={() => {
             setExpenses(expenses.filter((e) => e.id !== deletePendingId))
             setDeletePendingId(null)
+            toast('Το έξοδο διαγράφηκε')
           }}
           onCancel={() => setDeletePendingId(null)}
         />

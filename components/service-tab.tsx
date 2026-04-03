@@ -12,6 +12,9 @@ import {
   KeyRound,
   Eye,
   EyeOff,
+  Database,
+  UploadCloud,
+  DownloadCloud,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -24,6 +27,9 @@ import {
   daysBetween,
   toLocalDateString,
   generateId,
+  exportAppData,
+  importAppData,
+  toast,
 } from '@/lib/helpers'
 import type { ServiceConfig, LeaveEntry, PrisonEntry, DetentionEntry, DutyEntry } from '@/lib/types'
 import { SERVICE_DURATION_PRESETS, DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS } from '@/lib/types'
@@ -321,7 +327,11 @@ export function ServiceTab() {
         footer={
           <div className="px-6 py-3 pb-6">
             <button
-              onClick={() => { hapticFeedback('medium'); setShowConfig(false) }}
+              onClick={() => { 
+                hapticFeedback('medium')
+                setShowConfig(false)
+                toast('Οι ρυθμίσεις αποθηκεύτηκαν')
+              }}
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[12px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
             >
               Αποθήκευση
@@ -378,6 +388,56 @@ export function ServiceTab() {
               />
             </div>
           </div>
+
+          <div className="pt-4 border-t border-zinc-800/80">
+            <div className="flex items-center gap-2 mb-4">
+              <Database size={16} className="text-emerald-500" />
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 px-1">
+                Διαχειριση Δεδομενων
+              </label>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => {
+                  hapticFeedback('medium')
+                  exportAppData()
+                  toast('Τα δεδομένα εξήχθησαν επιτυχώς')
+                }}
+                className="flex items-center justify-center gap-2 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 font-bold text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-colors"
+                type="button"
+              >
+                <DownloadCloud size={16} />
+                Backup / Εξαγωγη
+              </button>
+
+              <label className="flex items-center justify-center gap-2 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 font-bold text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-colors cursor-pointer">
+                <UploadCloud size={16} />
+                Επαναφορα
+                <input
+                  type="file"
+                  accept=".json"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      hapticFeedback('heavy')
+                      const success = await importAppData(file)
+                      if (success) {
+                        toast('Επιτυχής εισαγωγή! Η εφαρμογή θα ανανεωθεί.')
+                        setTimeout(() => window.location.reload(), 1500)
+                      } else {
+                        toast('Αποτυχία εισαγωγής. Ελέγξτε το αρχείο.', 'error')
+                      }
+                    }
+                  }}
+                />
+              </label>
+            </div>
+            <p className="text-[9px] text-zinc-600 text-center mt-3">
+              Κάντε συχνά backup για να μη χάσετε τα δεδομένα σας
+            </p>
+          </div>
         </div>
       </FullscreenModal>
 
@@ -419,8 +479,10 @@ function PrisonManager({
     if (editingEntry) {
       setPrisons(prisons.map(p => p.id === editingEntry.id ? { ...editingEntry, days, reason } : p))
       setEditingEntry(null)
+      toast('Η φυλακή ενημερώθηκε')
     } else {
       setPrisons([...prisons, { id: generateId(), days, reason, addedDate: toLocalDateString() }])
+      toast('Η φυλακή προστέθηκε')
     }
     setShowForm(false)
   }
@@ -428,6 +490,7 @@ function PrisonManager({
   const handleDelete = (id: string) => {
     hapticFeedback('medium')
     setPrisons(prisons.filter(p => p.id !== id))
+    toast('Η φυλακή διαγράφηκε')
   }
 
   const handleEdit = (entry: PrisonEntry) => {
@@ -601,8 +664,10 @@ function DetentionManager({
     if (editingEntry) {
       setDetentions(detentions.map(d => d.id === editingEntry.id ? { ...editingEntry, startDate, endDate, reason } : d))
       setEditingEntry(null)
+      toast('Η κράτηση ενημερώθηκε')
     } else {
       setDetentions([...detentions, { id: generateId(), startDate, endDate, reason, createdAt: toLocalDateString() }])
+      toast('Η κράτηση προστέθηκε')
     }
     setShowForm(false)
   }
@@ -610,6 +675,7 @@ function DetentionManager({
   const handleDelete = (id: string) => {
     hapticFeedback('medium')
     setDetentions(detentions.filter(d => d.id !== id))
+    toast('Η κράτηση διαγράφηκε')
   }
 
   const handleEdit = (entry: DetentionEntry) => {
