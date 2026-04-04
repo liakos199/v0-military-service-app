@@ -251,7 +251,7 @@ export function CalendarTab() {
   return (
     <div className="flex-1 flex flex-col h-full bg-black relative z-10">
       {/* Ambient Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-48 bg-[#10b981]/5 blur-[70px] pointer-events-none rounded-full z-0"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-48 bg-[#10b981]/5 blur-[70px] pointer-events-none rounded-md z-0"></div>
 
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 relative flex justify-between items-start shrink-0 z-10">
@@ -265,7 +265,7 @@ export function CalendarTab() {
             setSelectedDate(today)
             setShowActionSheet(true)
           }}
-          className="w-10 h-10 mt-1 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] hover:border-[#34d399]/30 transition-all active:scale-95 shadow-md"
+          className="w-10 h-10 mt-1 rounded-md bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] hover:border-[#34d399]/30 transition-all active:scale-95 shadow-md"
         >
           <Plus size={20} />
         </button>
@@ -339,7 +339,7 @@ export function CalendarTab() {
                       <div className="absolute top-1 right-1 flex items-center justify-center">
                         {totalEvents > 2 ? (
                           <span className={cn(
-                            'w-4 h-4 rounded-full text-[8px] font-bold flex items-center justify-center',
+                            'w-4 h-4 rounded-md text-[8px] font-bold flex items-center justify-center',
                             isSelected || isToday ? 'bg-white text-emerald-600' : 'bg-emerald-500 text-white'
                           )}>
                             {totalEvents}
@@ -348,13 +348,13 @@ export function CalendarTab() {
                           <div className="flex gap-0.5">
                             {hasDuty && (
                               <span className={cn(
-                                'w-1.5 h-1.5 rounded-full',
+                                'w-1.5 h-1.5 rounded-md',
                                 isSelected || isToday ? 'bg-white' : 'bg-emerald-400'
                               )} />
                             )}
                             {hasLeave && (
                               <span className={cn(
-                                'w-1.5 h-1.5 rounded-full',
+                                'w-1.5 h-1.5 rounded-md',
                                 isSelected || isToday ? 'bg-white' : 'bg-amber-400'
                               )} />
                             )}
@@ -370,11 +370,11 @@ export function CalendarTab() {
             {/* Legend */}
             <div className="flex items-center justify-center gap-8 pt-5 mt-5 border-t border-zinc-700/30">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <span className="w-2 h-2 rounded-md bg-emerald-400" />
                 <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Υπηρεσία</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <span className="w-2 h-2 rounded-md bg-amber-400" />
                 <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Άδεια</span>
               </div>
             </div>
@@ -710,7 +710,6 @@ function SummaryList({
             key={duty.id}
             className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center gap-4"
           >
-            <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
             <div className="flex-1 min-w-0">
               <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
               <p className="text-[8px] text-zinc-400 mt-0.5">
@@ -747,7 +746,6 @@ function SummaryList({
           key={leave.id}
           className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center gap-4"
         >
-          <div className="w-1.5 h-10 rounded-full bg-amber-500 flex-shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
             <p className="text-[8px] text-zinc-400 mt-0.5">
@@ -823,7 +821,6 @@ function FullHistoryView({
             ) : (
               duties.sort((a, b) => b.date.localeCompare(a.date)).map(duty => (
                 <div key={duty.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-lg p-4 flex items-center gap-4">
-                  <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
                     <p className="text-[8px] text-zinc-500">{formatGreekDate(duty.date)}</p>
@@ -846,7 +843,6 @@ function FullHistoryView({
             ) : (
               leaves.sort((a, b) => b.startDate.localeCompare(a.startDate)).map(leave => (
                 <div key={leave.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-lg p-4 flex items-center gap-4">
-                  <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
                     <p className="text-[8px] text-zinc-500">{formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}</p>
@@ -909,7 +905,7 @@ function DateDetailsModal({
       </div>
       <button
         onClick={onClose}
-        className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-white transition-colors active:scale-95 flex-shrink-0 ml-2"
+        className="p-2 rounded-md bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-white transition-colors active:scale-95 flex-shrink-0 ml-2"
         aria-label="Κλείσιμο"
       >
         <Plus size={20} className="rotate-45" />
@@ -949,36 +945,19 @@ function DateDetailsModal({
           contentClassName="px-6 py-5"
         >
           <div className="flex flex-col gap-4">
-            {/* Add New Item */}
-            <button
-              onClick={() => {
-                hapticFeedback('light')
-                onClose()
-                setTimeout(() => {
-                  document.dispatchEvent(new CustomEvent('open-calendar-actions', { detail: selectedDate }));
-                }, 100);
-              }}
-              className="group flex items-center justify-center gap-3 p-4 rounded-lg bg-zinc-900 border-2 border-dashed border-zinc-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all active:scale-[0.98]"
-            >
-              <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 ring-4 ring-emerald-500/5 group-hover:bg-emerald-500 group-hover:text-white transition-all">
-                <Plus size={18} />
-              </div>
-              <span className="text-[14px] font-bold text-zinc-400 group-hover:text-emerald-400 transition-colors uppercase tracking-widest">
-                Προσθήκη Νέας
-              </span>
-            </button>
+          
 
             {/* Duties */}
             {duties.length > 0 && (
               <div className="flex flex-col gap-2">
                 <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Υπηρεσίες ({duties.length})</h3>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col">
                   {duties.map((duty) => (
                     <div
                       key={duty.id}
                       className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-3 flex items-start gap-3"
                     >
-                      <div className="w-1 h-10 rounded-full bg-emerald-400 flex-shrink-0 mt-0.5" />
+                     
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
                         <p className="text-[8px] text-zinc-400 mt-0.5">
@@ -1018,7 +997,7 @@ function DateDetailsModal({
                       key={leave.id}
                       className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-3 flex items-start gap-3"
                     >
-                      <div className="w-1 h-10 rounded-full bg-amber-400 flex-shrink-0 mt-0.5" />
+                      <div className="w-1 h-10 rounded-md bg-amber-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
                         <p className="text-[8px] text-zinc-400 mt-0.5">
@@ -1118,12 +1097,12 @@ function UpcomingEvents({
                 isToday && 'ring-1 ring-emerald-500'
               )}
             >
-              <div className={cn('w-1.5 h-12 rounded-full flex-shrink-0', isToday ? 'bg-emerald-500' : 'bg-emerald-400')} />
+              
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</span>
                   {isToday && (
-                    <span className="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-[8px] font-bold uppercase tracking-wider">
+                    <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[7px] font-bold uppercase tracking-wider">
                       ΣΗΜΕΡΑ
                     </span>
                   )}
@@ -1155,11 +1134,10 @@ function UpcomingEvents({
               key={leave.id}
               className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center gap-4 shadow-lg shadow-black/10"
             >
-              <div className="w-1.5 h-12 rounded-full flex-shrink-0 bg-amber-400" />
               <div className="flex-1 min-w-0">
                 <span className="text-[11px] font-bold text-white break-words">{LEAVE_TYPE_LABELS[leave.type]}</span>
                 <p className="text-[8px] text-zinc-400 mt-1">
-                  {formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)} • {leave.days} ημ.
+                  {formatGreekDate(leave.startDate)} με {formatGreekDate(leave.endDate)} - {leave.days} ημέρες
                 </p>
               </div>
               <div className="flex gap-1 flex-shrink-0">
@@ -1339,7 +1317,7 @@ function ManageDutyTypesModal({
                 <h2 className="text-[16px] font-bold text-white">Τύποι Υπηρεσιών</h2>
                 <p className="text-[10px] text-zinc-500 font-bold tracking-wider uppercase mt-1">Διαχείριση ονομάτων</p>
               </div>
-              <button onClick={onClose} className="p-2 rounded-full bg-zinc-800/80 text-zinc-400 transition-colors hover:text-white" aria-label="Κλείσιμο">
+              <button onClick={onClose} className="p-2 rounded-md bg-zinc-800/80 text-zinc-400 transition-colors hover:text-white" aria-label="Κλείσιμο">
                 <Plus size={20} className="rotate-45" />
               </button>
             </div>

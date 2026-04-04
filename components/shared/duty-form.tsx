@@ -201,9 +201,9 @@ export function DutyForm({
         <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3">
           <AlertTriangle className="text-red-500 shrink-0" size={18} />
           <div className="flex-1">
-            <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider mb-1">Προσοχή: Επικάλυψη</p>
-            <p className="text-[9px] text-zinc-400 leading-relaxed uppercase">
-              Υπάρχει επικάλυψη με {conflicts.length} {conflicts.length === 1 ? 'γειτονικό γεγονός' : 'γειτονικά γεγονότα'}.
+            <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider mb-0.5">Προσοχή</p>
+            <p className="text-[9px] text-zinc-400 leading-relaxed">
+              Έχετε ήδη προσθέσει {conflicts.length} {conflicts.length === 1 ? 'γεγονός' : 'γεγονότα'} την συγκεκριμένη ώρα & ημερομηνία.
             </p>
           </div>
         </div>
