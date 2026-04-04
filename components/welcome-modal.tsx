@@ -154,12 +154,12 @@ export function WelcomeModal() {
         header={null}
         contentClassName="px-0 py-0"
         footer={
-          <div className="flex gap-3">
+          <div className="flex gap-3 px-6 py-5">
             {step === 'features' && (
               <button 
                 type="button" 
                 onClick={handleBack}
-                className="flex-1 py-3.5 rounded-sm bg-zinc-900 border border-zinc-800 text-zinc-500 font-bold text-[9px] tracking-widest uppercase transition-all flex items-center justify-center gap-2"
+                className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95 flex items-center justify-center gap-2"
               >
                 <ArrowLeft className="w-3 h-3" strokeWidth={3} />
                 Πίσω
@@ -169,7 +169,7 @@ export function WelcomeModal() {
             <button 
               type="button" 
               onClick={step === 'install' ? handleNextStep : handleClose}
-              className="flex-[2] py-3.5 rounded-sm bg-emerald-500 text-black font-black text-[9px] tracking-widest uppercase shadow-[0_0_15px_rgba(16,185,129,0.2)] active:scale-95 transition-all flex items-center justify-center gap-2"
+              className="flex-[2] py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
             >
               {step === 'install' ? 'Κατάλαβα' : 'Είσοδος'}
               <ArrowRight className="w-3 h-3" strokeWidth={3} />

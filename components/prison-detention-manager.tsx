@@ -285,7 +285,7 @@ function AddPrisonForm({
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
@@ -372,7 +372,7 @@ function AddDetentionForm({
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all font-bold"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>

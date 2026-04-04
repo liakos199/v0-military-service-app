@@ -628,7 +628,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
@@ -679,7 +679,7 @@ function AddSuperiorForm({ onAdd, onCancel }: { onAdd: (entry: SuperiorEntry) =>
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
@@ -729,7 +729,7 @@ function EditSuperiorForm({ entry, onUpdate, onCancel }: { entry: SuperiorEntry;
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
@@ -781,7 +781,7 @@ function AddFriendForm({ onAdd, onCancel }: { onAdd: (entry: FriendEntry) => voi
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
@@ -831,7 +831,7 @@ function EditFriendForm({ entry, onUpdate, onCancel }: { entry: FriendEntry; onU
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
