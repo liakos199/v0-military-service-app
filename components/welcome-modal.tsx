@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { ModalLayout } from '@/components/modal-layout'
-import { Check, Share2, PlusSquare, ArrowRight, Zap, BookOpen, Users, Wallet, Calendar, Monitor } from 'lucide-react'
+import { Check, Share2, PlusSquare, ArrowRight, Zap, BookOpen, Users, Wallet, Calendar, Monitor, ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -121,12 +121,13 @@ export function WelcomeModal() {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 * idx + 0.2, duration: 0.5 }}
-            className="flex gap-4 group items-start"
+            className="relative flex items-center p-0.5 overflow-hidden group"
           >
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)] shrink-0 mt-1.5" />
-            <div className="flex-1 text-left space-y-0.5">
-              <h4 className="text-[13px] font-black text-white/90 uppercase tracking-tight leading-none">{feature.label}</h4>
-              <p className="text-[10px] text-zinc-500 font-medium leading-tight">{feature.sub}</p>
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/[0.04] via-transparent to-transparent" />
+            <div className="w-[2px] h-8 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.7)] shrink-0 rounded-full" />
+            <div className="flex-1 text-left pl-4 space-y-0.5">
+              <h4 className="text-[14px] font-black text-white/95 uppercase tracking-wider leading-tight">{feature.label}</h4>
+              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.05em] leading-tight">{feature.sub}</p>
             </div>
           </motion.div>
         ))}
@@ -140,13 +141,14 @@ export function WelcomeModal() {
         header={null}
         contentClassName="px-0 py-0"
         footer={
-          <div className="flex gap-3 px-6 py-6 pb-8">
+          <div className="flex gap-3">
             {step === 'features' && (
               <button 
                 type="button" 
                 onClick={handleBack}
-                className="flex-1 py-3.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-500 font-bold text-[9px] tracking-widest uppercase transition-all flex items-center justify-center gap-2"
+                className="flex-1 py-3.5 rounded-sm bg-zinc-900 border border-zinc-800 text-zinc-500 font-bold text-[9px] tracking-widest uppercase transition-all flex items-center justify-center gap-2"
               >
+                <ArrowLeft className="w-3 h-3" strokeWidth={3} />
                 Πισω
               </button>
             )}
@@ -154,7 +156,7 @@ export function WelcomeModal() {
             <button 
               type="button" 
               onClick={step === 'install' ? handleNextStep : handleClose}
-              className="flex-[2] py-3.5 rounded-lg bg-emerald-500 text-black font-black text-[9px] tracking-widest uppercase shadow-[0_0_15px_rgba(16,185,129,0.2)] active:scale-95 transition-all flex items-center justify-center gap-2"
+              className="flex-[2] py-3.5 rounded-sm bg-emerald-500 text-black font-black text-[9px] tracking-widest uppercase shadow-[0_0_15px_rgba(16,185,129,0.2)] active:scale-95 transition-all flex items-center justify-center gap-2"
             >
               {step === 'install' ? 'Κατάλαβα' : 'Είσοδος'}
               <ArrowRight className="w-3 h-3" strokeWidth={3} />
