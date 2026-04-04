@@ -98,8 +98,8 @@ export function ActionSheetItem({ icon, title, subtitle, onClick, variant = 'def
     variantClasses = 'bg-emerald-500/20 hover:bg-emerald-500/20 text-emerald-400'
     iconColorClass = 'text-emerald-400'
   } else if (variant === 'leave') {
-    variantClasses = 'bg-amber-500/20 hover:bg-amber-500/20 text-amber-400'
-    iconColorClass = 'text-amber-400'
+    variantClasses = 'bg-emerald-500/20 hover:bg-emerald-500/20 text-emerald-400'
+    iconColorClass = 'text-emerald-400'
   } else {
     variantClasses = 'bg-gradient-to-br from-zinc-800 to-zinc-900/90 border-zinc-700/40 hover:border-[#34d399]/30 text-white'
     iconColorClass = 'text-[#34d399]'

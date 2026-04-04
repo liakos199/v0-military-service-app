@@ -338,7 +338,7 @@ export function CalendarTab() {
                             {hasLeave && (
                               <span className={cn(
                                 'w-1.5 h-1.5 rounded-full',
-                                isSelected || isToday ? 'bg-white' : 'bg-amber-400'
+                                isSelected || isToday ? 'bg-white' : 'bg-emerald-400'
                               )} />
                             )}
                           </div>
@@ -357,7 +357,7 @@ export function CalendarTab() {
                 <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Υπηρεσία</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
                 <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Άδεια</span>
               </div>
             </div>
@@ -625,12 +625,12 @@ function MonthlySummary({
         {/* Leave card */}
         <button
           onClick={() => onShowSummary('leave')}
-          className="flex-1 rounded-[1.5rem] bg-amber-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
+          className="flex-1 rounded-[1.5rem] bg-emerald-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
-            <ArrowRight size={16} className="text-amber-400" />
+            <ArrowRight size={16} className="text-emerald-400" />
           </div>
-          <span className="text-[9px] font-bold text-amber-400/80 uppercase tracking-widest block mb-1">
+          <span className="text-[9px] font-bold text-emerald-400/80 uppercase tracking-widest block mb-1">
             ΑΔΕΙΕΣ
           </span>
           <div className="flex items-baseline gap-1">
@@ -716,7 +716,7 @@ function SummaryList({
           key={leave.id}
           className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4"
         >
-          <div className="w-1.5 h-10 rounded-full bg-amber-500 flex-shrink-0" />
+          <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
             <p className="text-[8px] text-zinc-400 mt-0.5">
@@ -724,7 +724,7 @@ function SummaryList({
             </p>
           </div>
           <div className="flex gap-1">
-            <button onClick={() => onEditLeave(leave.id)} className="p-2 text-amber-400 hover:bg-amber-500/10 rounded-lg transition-colors">
+            <button onClick={() => onEditLeave(leave.id)} className="p-2 text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-colors">
               <Edit2 size={16} />
             </button>
             <button onClick={() => onDeleteLeave(leave.id)} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
@@ -774,7 +774,7 @@ function FullHistoryView({
           onClick={() => { hapticFeedback('light'); setActiveTab('leave'); }}
           className={cn(
             'flex-1 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all',
-            activeTab === 'leave' ? 'bg-zinc-800 text-amber-400 shadow-lg' : 'text-zinc-500'
+            activeTab === 'leave' ? 'bg-zinc-800 text-emerald-400 shadow-lg' : 'text-zinc-500'
           )}
         >
           Άδειες ({leaves.length})
@@ -815,13 +815,13 @@ function FullHistoryView({
             ) : (
               leaves.sort((a, b) => b.startDate.localeCompare(a.startDate)).map(leave => (
                 <div key={leave.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4 flex items-center gap-4">
-                  <div className="w-1 h-8 rounded-full bg-amber-500/50" />
+                  <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
                     <p className="text-[8px] text-zinc-500">{formatGreekDate(leave.startDate)} - {formatGreekDate(leave.endDate)}</p>
                   </div>
                   <div className="flex gap-1">
-                    <button onClick={() => onEditLeave(leave.id)} className="p-2 text-amber-400/70"><Edit2 size={16} /></button>
+                    <button onClick={() => onEditLeave(leave.id)} className="p-2 text-emerald-400/70"><Edit2 size={16} /></button>
                     <button onClick={() => onDeleteLeave(leave.id)} className="p-2 text-red-400/70"><Trash2 size={16} /></button>
                   </div>
                 </div>
@@ -896,7 +896,7 @@ function DateDetailsModal({
       </button>
       <button
         onClick={onAddLeave}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
       >
         + Άδεια
       </button>
@@ -968,7 +968,7 @@ function DateDetailsModal({
                       key={leave.id}
                       className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-3 flex items-start gap-3"
                     >
-                      <div className="w-1 h-10 rounded-full bg-amber-400 flex-shrink-0 mt-0.5" />
+                      <div className="w-1 h-10 rounded-full bg-emerald-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
                         <p className="text-[8px] text-zinc-400 mt-0.5">
@@ -981,7 +981,7 @@ function DateDetailsModal({
                       <div className="flex gap-1 flex-shrink-0">
                         <button
                           onClick={() => onEditLeave(leave.id)}
-                          className="p-2 rounded-lg flex items-center justify-center text-amber-400 hover:bg-amber-500/10 transition-colors active:scale-90"
+                          className="p-2 rounded-lg flex items-center justify-center text-emerald-400 hover:bg-emerald-500/10 transition-colors active:scale-90"
                         >
                           <Edit2 size={16} />
                         </button>
@@ -1104,7 +1104,7 @@ function UpcomingEvents({
               key={leave.id}
               className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4 shadow-lg shadow-black/10"
             >
-              <div className="w-1.5 h-12 rounded-full flex-shrink-0 bg-amber-400" />
+              <div className="w-1.5 h-12 rounded-full flex-shrink-0 bg-emerald-400" />
               <div className="flex-1 min-w-0">
                 <span className="text-[11px] font-bold text-white break-words">{LEAVE_TYPE_LABELS[leave.type]}</span>
                 <p className="text-[8px] text-zinc-400 mt-1">
@@ -1114,7 +1114,7 @@ function UpcomingEvents({
               <div className="flex gap-1 flex-shrink-0">
                 <button
                   onClick={() => onEditLeave(leave.id)}
-                  className="p-2 rounded-lg flex items-center justify-center text-amber-400 hover:bg-amber-500/10 transition-colors active:scale-90"
+                  className="p-2 rounded-lg flex items-center justify-center text-emerald-400 hover:bg-emerald-500/10 transition-colors active:scale-90"
                 >
                   <Edit2 size={16} />
                 </button>
@@ -1357,7 +1357,7 @@ function AddLeaveForm({
       </button>
       <button
         onClick={handleSubmit}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
       >
         {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
       </button>
@@ -1379,7 +1379,7 @@ function AddLeaveForm({
               className={cn(
                 'py-3 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all border',
                 type === t
-                  ? 'bg-amber-500 text-white border-amber-500'
+                  ? 'bg-emerald-500 text-white border-emerald-500'
                   : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
               )}
             >
@@ -1398,7 +1398,7 @@ function AddLeaveForm({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προσθήκη σημειώσεων..."
-          className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-amber-500 outline-none resize-none h-24"
+          className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
         />
       </div>
     </div>
