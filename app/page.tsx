@@ -9,8 +9,7 @@ import { ProfileTab } from '@/components/profile-tab'
 import { ExpensesTab } from '@/components/expenses-tab'
 import { WelcomeModal } from '@/components/welcome-modal'
 import { SplashAnimation } from '@/components/splash-animation'
-import { FooterSignature } from '@/components/footer-signature'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('service')
@@ -18,18 +17,18 @@ export default function Home() {
   const [splashFading, setSplashFading] = useState(false)
 
   useEffect(() => {
-    // const fadeTimer = setTimeout(() => setSplashFading(true), 1800)
-    // const hideTimer = setTimeout(() => setShowSplash(false), 2500)
-    // return () => {
-    //   clearTimeout(fadeTimer)
-    //   clearTimeout(hideTimer)
-    // }
+    const fadeTimer = setTimeout(() => setSplashFading(true), 2000)
+    const hideTimer = setTimeout(() => setShowSplash(false), 2500)
+    return () => {
+      clearTimeout(fadeTimer)
+      clearTimeout(hideTimer)
+    }
   }, [])
 
   if (showSplash) {
     return (
       <div
-        className={`fixed inset-0 flex flex-col items-center justify-center bg-black z-50 ${splashFading ? 'opacity-0 transition-opacity duration-700' : ''}`}
+        className={`fixed inset-0 flex flex-col items-center justify-center bg-black z-50 ${splashFading ? 'opacity-0 transition-opacity duration-500' : ''}`}
       >
         <div className="flex flex-col items-center gap-8">
           <SplashAnimation />
@@ -55,11 +54,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Minimalist Footer SVG Area */}
+        {/* Minimalist Footer Area */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
           className="absolute bottom-12 w-full flex flex-col items-center gap-2"
         >
           <div className="flex items-center gap-3">
@@ -70,7 +69,7 @@ export default function Home() {
           <motion.div 
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 60, opacity: 1 }}
-            transition={{ delay: 1.4, duration: 1, ease: "easeInOut" }}
+            transition={{ delay: 0.9, duration: 0.6, ease: "easeInOut" }}
             className="h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"
           />
         </motion.div>

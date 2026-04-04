@@ -3,66 +3,40 @@
 import { useState, useEffect } from 'react'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { ModalLayout } from '@/components/modal-layout'
-import { Check } from 'lucide-react'
+import { Check, Share2, PlusSquare, ArrowRight, Zap, BookOpen, Users, Wallet, Calendar, Monitor } from 'lucide-react'
 import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 
 type DeviceType = 'ios' | 'android' | 'other'
 type BrowserType = 'safari' | 'chrome' | 'samsung' | 'firefox' | 'other'
 type ModalStep = 'install' | 'features'
 
 const FEATURES = [
-  { label: 'Λελέμετρο - Αντίστροφη μέτρηση' },
-  { label: 'Ημερολόγιο & Υπηρεσίες' },
-  { label: 'Σημειώσεις & Εγχειρίδια' },
-  { label: 'Εξέταση Εγχειριδίων' },
-  { label: 'Διαχείριση Ατόμων' },
-  { label: 'Έξοδα & Κατάλογος' },
+  { label: 'Λελέμετρο', icon: Zap, sub: 'Αντίστροφη μέτρηση' },
+  { label: 'Ημερολόγιο', icon: Calendar, sub: 'Πρόγραμμα Υπηρεσιών' },
+  { label: 'Σημειωματάριο', icon: BookOpen, sub: 'Σημειώσεις & Πληροφορίες' },
+  { label: 'Εγχειρίδια', icon: Monitor, sub: 'Στρατιωτική Μελέτη' },
+  { label: 'Στελέχη', icon: Users, sub: 'Βιβλίο Επαφών' },
+  { label: 'Έξοδα', icon: Wallet, sub: 'Έλεγχος Εξόδων' },
 ]
 
 export function WelcomeModal() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
   const [step, setStep] = useState<ModalStep>('install')
-  const [device, setDevice] = useState<DeviceType>('other')
-  const [browser, setBrowser] = useState<BrowserType>('other')
+  const [device, setDevice] = useState<DeviceType>('ios')
+  const [browser, setBrowser] = useState<BrowserType>('safari')
 
   useEffect(() => {
-    // Check if already in standalone mode
-    const isStandalone = 
-      window.matchMedia('(display-mode: standalone)').matches || 
-      (window.navigator as any).standalone || 
-      document.referrer.includes('android-app://');
-
-    // If already installed, don't show the install modal
-    const welcomeSeen = localStorage.getItem('welcome-modal-seen') === 'true'
-
-    if (isStandalone) {
-      return;
-    }
-
-    // Check if first visit
-    if (!welcomeSeen) {
-      const ua = navigator.userAgent
-      
-      // Device detection
-      if (/iPhone|iPad|iPod/.test(ua)) {
-        setDevice('ios')
-      } else if (/Android/.test(ua)) {
-        setDevice('android')
-      }
-
-      // Browser detection
-      if (/SamsungBrowser/.test(ua)) {
-        setBrowser('samsung')
-      } else if (/Chrome/.test(ua) && !/Edge/.test(ua)) {
-        setBrowser('chrome')
-      } else if (/Safari/.test(ua) && !/Chrome/.test(ua)) {
-        setBrowser('safari')
-      } else if (/Firefox/.test(ua)) {
-        setBrowser('firefox')
-      }
-
-      setIsOpen(true)
-    }
+    setIsOpen(true)
+    
+    // Auto-detect device for production logic (currently forced to iOS for design)
+    const ua = navigator.userAgent
+    if (/iPad|iPhone|iPod/.test(ua)) setDevice('ios')
+    else if (/android/i.test(ua)) setDevice('android')
+    
+    if (/SamsungBrowser/i.test(ua)) setBrowser('samsung')
+    else if (/Firefox|FxiOS/i.test(ua)) setBrowser('firefox')
+    else if (/Chrome/i.test(ua)) setBrowser('chrome')
   }, [])
 
   const handleClose = () => {
@@ -79,80 +53,85 @@ export function WelcomeModal() {
   }
 
   const renderInstructions = () => {
-    if (device === 'ios') {
-      return (
-        <div className="space-y-4">
-          {[
-            { num: 1, title: 'Πάτησε το κουμπί Κοινοποίηση', subtitle: 'Βρίσκεται στο κάτω ή πάνω μέρος του browser' },
-            { num: 2, title: 'Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»', subtitle: 'Ίσως χρειαστεί να σύρεις προς τα κάτω' },
-            { num: 3, title: 'Πάτησε «Προσθήκη»', subtitle: 'Στην πάνω δεξιά γωνία της οθόνης' },
-          ].map((step) => (
-            <div key={step.num} className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#34d399] to-[#10b981] text-black flex-shrink-0 font-bold text-[11px]">
-                {step.num}
-              </div>
-              <div className="flex-1">
-                <p className="text-[13px] font-bold text-white">{step.title}</p>
-                <p className="text-[11px] text-zinc-500 mt-1 font-medium">{step.subtitle}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )
-    }
-
-    if (device === 'android') {
-      const steps = browser === 'samsung'
+    const steps = device === 'ios' 
+      ? [
+          { icon: Share2, title: 'Κοινοποίηση', sub: 'Πάτησε το εικονίδιο κοινοποίησης στην μπάρα του Safari' },
+          { icon: PlusSquare, title: 'Προσθήκη στην αρχική οθόνη', sub: 'Βρες και επίλεξε «Προσθήκη στην οθόνη αφετηρίας»' },
+          { icon: Check, title: 'Επιβεβαίωση', sub: 'Πάτησε «Προσθήκη» στην πάνω δεξιά γωνία' },
+        ]
+      : browser === 'samsung'
         ? [
-            { num: 1, title: 'Πάτησε το μενού (3 γραμμές)', subtitle: 'Βρίσκεται κάτω δεξιά' },
-            { num: 2, title: 'Επίλεξε «Προσθήκη σελίδας σε»', subtitle: 'Θα εμφανιστεί στο μενού' },
-            { num: 3, title: 'Επίλεξε «Οθόνη αφετηρίας»', subtitle: 'Και επιβεβαίωσε την προσθήκη' },
+            { icon: Share2, title: 'Μενού Επιλογών', sub: 'Πάτησε τις 3 γραμμές κάτω δεξιά ή το βέλος στην μπάρα διευθύνσεων' },
+            { icon: PlusSquare, title: 'Προσθήκη σελίδας', sub: 'Επίλεξε «Προσθήκη σελίδας σε» και μετά «Οθόνη αφετηρίας»' },
+            { icon: Check, title: 'Εγκατάσταση', sub: 'Επιβεβαίωσε την προσθήκη πατώντας «Προσθήκη»' },
           ]
-        : [
-            { num: 1, title: 'Πάτησε το μενού (3 τελείες)', subtitle: 'Βρίσκεται πάνω δεξιά' },
-            { num: 2, title: 'Επίλεξε «Εγκατάσταση εφαρμογής»', subtitle: 'Ή «Προσθήκη στην αρχική οθόνη»' },
-            { num: 3, title: 'Ακολούθησε τις οδηγίες', subtitle: 'Και επιβεβαίωσε την εγκατάσταση' },
-          ]
-      
-      return (
-        <div className="space-y-4">
-          {steps.map((step) => (
-            <div key={step.num} className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#34d399] to-[#10b981] text-black flex-shrink-0 font-bold text-[11px]">
-                {step.num}
-              </div>
-              <div className="flex-1">
-                <p className="text-[13px] font-bold text-white">{step.title}</p>
-                <p className="text-[11px] text-zinc-500 mt-1 font-medium">{step.subtitle}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )
-    }
+        : browser === 'firefox'
+          ? [
+              { icon: Share2, title: 'Μενού Firefox', sub: 'Πάτησε τις 3 τελείες στο κάτω ή πάνω μέρος της οθόνης' },
+              { icon: PlusSquare, title: 'Εγκατάσταση', sub: 'Επίλεξε «Εγκατάσταση» από τη λίστα' },
+              { icon: Check, title: 'Προσθήκη', sub: 'Επιβεβαίωσε την προσθήκη στην αρχική οθόνη' },
+            ]
+          : [
+              { icon: Share2, title: 'Μενού Chrome', sub: 'Πάτησε τις 3 τελείες (Μενού) στην πάνω δεξιά γωνία' },
+              { icon: PlusSquare, title: 'Εγκατάσταση', sub: 'Επίλεξε «Εγκατάσταση εφαρμογής» ή «Προσθήκη στην αρχική οθόνη»' },
+              { icon: Check, title: 'Επιβεβαίωση', sub: 'Πάτησε «Εγκατάσταση» στο παράθυρο που θα εμφανιστεί' },
+            ]
 
     return (
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-5 shadow-lg shadow-black/10">
-        <p className="text-[13px] text-zinc-300 font-medium leading-relaxed">
-          Αναζήτησε την επιλογή «Προσθήκη στην αρχική οθόνη» στο μενού του browser σου για γρήγορη πρόσβαση.
-        </p>
+      <div className="relative pt-1 pl-4">
+        <div className="space-y-5 relative">
+          {steps.map((item, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * idx + 0.5, duration: 0.5 }}
+              className="flex items-start gap-4 group relative"
+            >
+              {/* Connector Line (Internal) */}
+              {idx < steps.length - 1 && (
+                <div className="absolute top-10 left-5 w-px h-5 bg-emerald-500/30 -translate-x-1/2" />
+              )}
+              
+              <div className="relative flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 shadow-xl flex items-center justify-center group-hover:border-emerald-500/50 transition-colors duration-500">
+                  <item.icon className="w-4 h-4 text-emerald-500" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-[9px] font-black text-black flex items-center justify-center border-2 border-black">
+                  {idx + 1}
+                </div>
+              </div>
+              <div className="flex-1 pt-0.5 text-left">
+                <h4 className="text-[13px] font-black text-white tracking-tight uppercase leading-none mb-1">{item.title}</h4>
+                <p className="text-[10px] text-zinc-500 font-medium leading-tight">{item.sub}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     )
   }
 
   const renderFeatures = () => {
     return (
-      <div className="grid grid-cols-1 gap-3">
-        {FEATURES.map((feature, index) => {
-          return (
-            <div key={index} className="flex items-center gap-4 p-4 rounded-lg bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 shadow-lg shadow-black/10">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#34d399]/20 flex items-center justify-center">
-                <Check className="w-4 h-4 text-[#34d399] font-bold" strokeWidth={3} />
-              </div>
-              <span className="text-[13px] font-bold text-white">{feature.label}</span>
+      <div className="flex flex-col gap-5 py-6">
+        {FEATURES.map((feature, idx) => (
+          <motion.div 
+            key={idx}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 * idx + 0.2, duration: 0.5 }}
+            className="flex gap-4 group"
+          >
+            <span className="text-[10px] font-mono font-bold text-emerald-500/40 pt-1 shrink-0">
+              {(idx + 1).toString().padStart(2, '0')}.
+            </span>
+            <div className="flex flex-col items-start text-left space-y-1">
+              <h4 className="text-[12px] font-black text-white uppercase tracking-wider leading-none">{feature.label}</h4>
+              <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-[0.10em] leading-tight">{feature.sub}</p>
             </div>
-          )
-        })}
+          </motion.div>
+        ))}
       </div>
     )
   }
@@ -160,47 +139,74 @@ export function WelcomeModal() {
   const renderContent = () => {
     return (
       <ModalLayout
-        header={
-          <div className="text-center">
-            <div className="my-4 w-fit mx-auto shadow-2xl">
-              <Image
-                src="/icon-192.png"
-                alt="ΑΠΟΛΕΛΕ PRO"
-                width={72}
-                height={72}
-              />
-            </div>
-            <p className="text-[11px] text-zinc-500 font-bold tracking-[0.1em] uppercase">
-              {step === 'install' 
-                ? 'Βήματα Εγκατάστασης - Πριν κάνεις το οτιδήποτε'
-                : 'ΥΠΑΡΧΟΝ ΛΕΙΤΟΥΡΓΙΕΣ'
-              }
-            </p>
-          </div>
-        }
-        contentClassName="px-6 py-5"
+        header={null}
+        contentClassName="px-0 py-0"
         footer={
-          <div className="flex gap-3 px-6 py-5 pt-4">
+          <div className="flex gap-3 px-6 py-6 pb-8">
             {step === 'features' && (
               <button 
                 type="button" 
                 onClick={handleBack}
-                className="flex-1 py-4 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
+                className="flex-1 py-3.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-500 font-bold text-[9px] tracking-widest uppercase transition-all flex items-center justify-center gap-2"
               >
                 Πισω
               </button>
             )}
+            
             <button 
               type="button" 
               onClick={step === 'install' ? handleNextStep : handleClose}
-              className="flex-1 py-4 rounded-lg bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[11px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
+              className="flex-[2] py-3.5 rounded-xl bg-emerald-500 text-black font-black text-[9px] tracking-widest uppercase shadow-[0_0_15px_rgba(16,185,129,0.2)] active:scale-95 transition-all flex items-center justify-center gap-2"
             >
-              {step === 'install' ? 'Κατάλαβα' : 'Ξεκιναμε'}
+              {step === 'install' ? 'Κατάλαβα' : 'Είσοδος'}
+              <ArrowRight className="w-3 h-3" strokeWidth={3} />
             </button>
           </div>
         }
       >
-        {step === 'install' ? renderInstructions() : renderFeatures()}
+        <div className="flex flex-col items-center px-4 py-6 pt-10">
+          {step === 'install' && (
+            <div className="relative mb-4">
+              {/* Outer Pulsing Ring */}
+              <motion.div 
+                animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-x-[-12px] inset-y-[-12px] rounded-full border border-emerald-500/50 blur-sm"
+              />
+              {/* Background Glow */}
+              <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full" />
+              
+              <div className="relative w-16 h-16 bg-black rounded-xl border border-zinc-800 shadow-2xl flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/icon-192.png"
+                  alt="ΑΠΟΛΕΛΕ PRO"
+                  width={64}
+                  height={64}
+                  className="object-contain scale-90"
+                />
+              </div>
+            </div>
+          )}
+          
+          <div className="text-center space-y-0.5">
+            <h2 className="text-xl font-black text-white tracking-tighter uppercase leading-none">
+              {step === 'install' ? 'ΟΔΗΓΟΣ ΕΓΚΑΤΑΣΤΑΣΗΣ' : 'Υπάρχον Λειτουργίες'}
+            </h2>
+            <p className="text-[9px] text-emerald-500/70 font-bold tracking-[0.2em] uppercase">
+              {step === 'install' ? 'Πρώτα Βήματα' : 'Τι περιλαμβάνει η εφαρμογή'}
+            </p>
+          </div>
+
+          {/* Stylized Border Bottom */}
+          <div className="w-full mt-6 relative h-px flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+            <div className="relative w-8 h-[1px] bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+          </div>
+        </div>
+
+        <div className="min-h-[260px] px-10">
+          {step === 'install' ? renderInstructions() : renderFeatures()}
+        </div>
       </ModalLayout>
     )
   }
@@ -209,11 +215,16 @@ export function WelcomeModal() {
     <FullscreenModal 
       isOpen={isOpen} 
       onClose={handleClose}
-      title={step === 'install' ? 'ΟΔΗΓΟΣ ΕΓΚΑΤΑΣΤΑΣΗΣ' : 'Λειτουργίες'}
-      showBackButton={step === 'features'}
-      onBack={handleBack}
+      title={step === 'install' ? 'ΠΡΟΣΘΗΚΗ ΣΤΗΝ ΟΘΟΝΗ' : ''}
+      showBackButton={false}
     >
-      {renderContent()}
+      <div className="h-full bg-black relative overflow-hidden">
+        {/* Abstract Background Accents */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
+        
+        {renderContent()}
+      </div>
     </FullscreenModal>
   )
 }
