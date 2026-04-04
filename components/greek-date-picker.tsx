@@ -65,7 +65,7 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
         type="button"
         onClick={() => { hapticFeedback('light'); setIsOpen(true) }}
         className={cn(
-          'w-full flex items-center justify-between rounded-xl bg-zinc-900 border border-zinc-800 text-white transition-colors hover:border-zinc-700 focus:border-emerald-500',
+          'w-full flex items-center justify-between rounded-lg bg-zinc-900 border border-zinc-800 text-white transition-colors hover:border-zinc-700 focus:border-emerald-500',
           compact ? 'px-3 py-2 text-xs min-h-[36px]' : 'px-4 py-3.5 text-sm min-h-[48px]'
         )}
       >
@@ -79,7 +79,7 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="bg-zinc-900 border border-zinc-700/50 rounded-[2rem] w-full max-w-sm shadow-2xl shadow-black/60 overflow-hidden"
+            className="bg-zinc-900 border border-zinc-700/50 rounded-lg w-full max-w-sm shadow-2xl shadow-black/60 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -133,7 +133,7 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
                       onClick={() => !isDisabled && handleSelectDay(day)}
                       disabled={isDisabled}
                       className={cn(
-                        'aspect-square w-full rounded-xl text-sm flex items-center justify-center transition-all duration-200 font-bold',
+                        'aspect-square w-full rounded-lg text-sm flex items-center justify-center transition-all duration-200 font-bold',
                         isDisabled
                           ? 'text-zinc-700 cursor-not-allowed'
                           : isSelected
@@ -160,14 +160,14 @@ export function GreekDatePicker({ value, onChange, label, minDate, compact = fal
                   setViewYear(today.getFullYear())
                   handleSelectDay(today.getDate())
                 }}
-                className="flex-1 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-zinc-300 font-bold text-[11px] uppercase tracking-wider hover:border-zinc-600 transition-colors active:scale-95"
+                className="flex-1 py-3 rounded-lg bg-zinc-800 border border-zinc-700/50 text-zinc-300 font-bold text-[11px] uppercase tracking-wider hover:border-zinc-600 transition-colors active:scale-95"
               >
                 Σήμερα
               </button>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="flex-1 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-zinc-400 font-bold text-[11px] uppercase tracking-wider hover:border-zinc-600 transition-colors active:scale-95"
+                className="flex-1 py-3 rounded-lg bg-zinc-800 border border-zinc-700/50 text-zinc-400 font-bold text-[11px] uppercase tracking-wider hover:border-zinc-600 transition-colors active:scale-95"
               >
                 Κλείσιμο
               </button>

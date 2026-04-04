@@ -132,7 +132,7 @@ export function WelcomeModal() {
     }
 
     return (
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/10">
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-5 shadow-lg shadow-black/10">
         <p className="text-[13px] text-zinc-300 font-medium leading-relaxed">
           Αναζήτησε την επιλογή «Προσθήκη στην αρχική οθόνη» στο μενού του browser σου για γρήγορη πρόσβαση.
         </p>
@@ -145,7 +145,7 @@ export function WelcomeModal() {
       <div className="grid grid-cols-1 gap-3">
         {FEATURES.map((feature, index) => {
           return (
-            <div key={index} className="flex items-center gap-4 p-4 rounded-[1.25rem] bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 shadow-lg shadow-black/10">
+            <div key={index} className="flex items-center gap-4 p-4 rounded-lg bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 shadow-lg shadow-black/10">
               <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#34d399]/20 flex items-center justify-center">
                 <Check className="w-4 h-4 text-[#34d399] font-bold" strokeWidth={3} />
               </div>
@@ -185,7 +185,7 @@ export function WelcomeModal() {
               <button 
                 type="button" 
                 onClick={handleBack}
-                className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
+                className="flex-1 py-4 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
               >
                 Πισω
               </button>
@@ -193,7 +193,7 @@ export function WelcomeModal() {
             <button 
               type="button" 
               onClick={step === 'install' ? handleNextStep : handleClose}
-              className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[11px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
+              className="flex-1 py-4 rounded-lg bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[11px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
             >
               {step === 'install' ? 'Κατάλαβα' : 'Ξεκιναμε'}
             </button>

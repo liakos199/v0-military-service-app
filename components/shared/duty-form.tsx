@@ -138,7 +138,7 @@ export function DutyForm({
               key={t}
               onClick={() => setType(t as DutyType)}
               className={cn(
-                'py-2.5 rounded-xl text-[8px] font-bold uppercase tracking-wider transition-all border shrink-0 min-h-[44px] flex items-center justify-center text-center px-1 leading-tight',
+                'py-2.5 rounded-lg text-[8px] font-bold uppercase tracking-wider transition-all border shrink-0 min-h-[44px] flex items-center justify-center text-center px-1 leading-tight',
                 type === t
                   ? 'bg-emerald-500 text-white border-emerald-500 shadow-lg shadow-emerald-500/20'
                   : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
@@ -168,7 +168,7 @@ export function DutyForm({
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 outline-none transition-all"
+              className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 outline-none transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -180,13 +180,13 @@ export function DutyForm({
               type="time"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
-              className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 outline-none transition-all"
+              className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 outline-none transition-all"
             />
           </div>
         </div>
 
         {/* Duration Info */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl">
+        <div className="flex items-center justify-between px-4 py-2.5 bg-emerald-500/5 border border-emerald-500/10 rounded-lg">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider font-mono">Διάρκεια</span>
@@ -197,7 +197,7 @@ export function DutyForm({
 
       {/* Conflicts Warning */}
       {conflicts.length > 0 && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-start gap-3">
+        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3">
           <AlertTriangle className="text-red-500 shrink-0" size={18} />
           <div className="flex-1">
             <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider mb-1">Προσοχή: Επικάλυψη</p>
@@ -210,7 +210,7 @@ export function DutyForm({
 
       {/* Guard-specific fields */}
       {type === 'guard' && (
-        <div className="space-y-3 p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/10">
+        <div className="space-y-3 p-4 rounded-lg bg-indigo-500/5 border border-indigo-500/10">
            <div className="flex items-center gap-2 mb-1">
             <Shield size={14} className="text-indigo-400" />
             <span className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Στοιχεία Σκοπιάς</span>
@@ -223,7 +223,7 @@ export function DutyForm({
                 value={password}
                 onChange={(e) => setPassword(e.target.value.toUpperCase())}
                 placeholder="π.χ. ΑΕΤΟΣ"
-                className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest placeholder:text-zinc-700"
+                className="w-full px-3 py-2.5 rounded-lg bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest placeholder:text-zinc-700"
               />
             </div>
             <div>
@@ -233,7 +233,7 @@ export function DutyForm({
                 value={countersign}
                 onChange={(e) => setCountersign(e.target.value.toUpperCase())}
                 placeholder="π.χ. ΒΟΥΝΟ"
-                className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-[#34d399] text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest placeholder:text-zinc-700"
+                className="w-full px-3 py-2.5 rounded-lg bg-zinc-900 text-[#34d399] text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest placeholder:text-zinc-700"
               />
             </div>
           </div>
@@ -247,12 +247,12 @@ export function DutyForm({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Π.χ. Τοποθεσία, Συνοδός κλπ..."
-          className="w-full px-4 py-3 rounded-2xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24 transition-all placeholder:text-zinc-600"
+          className="w-full px-4 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24 transition-all placeholder:text-zinc-600"
         />
       </div>
 
       {/* Calendar Toggle */}
-      <div className="flex items-center justify-between p-4 rounded-[1.5rem] bg-zinc-900 border border-zinc-800/50">
+      <div className="flex items-center justify-between p-4 rounded-lg bg-zinc-900 border border-zinc-800/50">
         <div className="flex flex-col">
           <span className="text-[10px] font-bold text-white tracking-widest uppercase">Προσθήκη στο Ημερολόγιο</span>
           <span className="text-[8px] text-zinc-500 mt-0.5">Λήψη αρχείου .ics για ειδοποιήσεις συσκευής</span>
@@ -264,13 +264,13 @@ export function DutyForm({
       <div className="flex gap-3 mt-2">
         <button
           onClick={onCancel}
-          className="flex-1 py-4 rounded-2xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
+          className="flex-1 py-4 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
         >
           Ακύρωση
         </button>
         <button
           onClick={handleSubmit}
-          className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+          className="flex-1 py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
         >
           {mode === 'edit' ? 'Ενημέρωση •' : 'Προσθήκη •'} {formatDuration(duration)}
         </button>

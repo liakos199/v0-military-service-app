@@ -32,7 +32,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       role="tablist"
       aria-label="Κύρια πλοήγηση"
     >
-      <div className="max-w-md mx-auto flex items-center justify-between bg-zinc-900/80 backdrop-blur-2xl border border-zinc-800/50 p-2 rounded-[2.5rem] shadow-2xl pointer-events-auto relative">
+      <div className="max-w-md mx-auto flex items-center justify-between bg-zinc-900/80 backdrop-blur-2xl border border-zinc-800/50 p-2 rounded-lg shadow-2xl pointer-events-auto relative">
         {tabs.map((tab) => {
           const Icon = tab.icon
           const isActive = activeTab === tab.id
@@ -47,7 +47,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 onTabChange(tab.id)
               }}
               className={cn(
-                'relative flex flex-col items-center justify-center py-2 px-1 rounded-2xl transition-all duration-200 flex-1 min-w-0 group',
+                'relative flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all duration-200 flex-1 min-w-0 group',
                 isActive ? 'text-[#34d399]' : 'text-zinc-500'
               )}
             >

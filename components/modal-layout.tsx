@@ -46,7 +46,7 @@ export function ModalLayout({
       </div>
 
       {/* Middle - Scrollable content */}
-      <div className={`flex-1 overflow-y-auto hide-scrollbar ${contentClassName}`}>
+      <div className={`flex-1 overflow-y-auto hide-scrollbar overscroll-contain ${contentClassName}`}>
         {children}
       </div>
 

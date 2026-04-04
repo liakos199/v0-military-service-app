@@ -35,7 +35,7 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
   if (!isOpen || !mounted) return null
 
   const header = (
-    <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
+    <div className="flex items-center justify-between px-6 pt-[calc(1.5rem+env(safe-area-inset-top,0px))] pb-4 border-b border-zinc-800/80 bg-zinc-950 shrink-0">
       <div className="flex-1">
         {title && (
           <h2 className="text-[18px] font-bold text-white">
@@ -63,19 +63,19 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[300] bg-black flex flex-col"
+      className="fixed inset-0 z-[300] bg-black flex flex-col h-screen h-[100dvh]"
       onClick={() => {
         hapticFeedback('light')
         onClose()
       }}
     >
       <div
-        className="flex-1 flex flex-col w-full h-full safe-top safe-bottom"
+        className="flex-1 flex flex-col w-full h-full"
         onClick={(e) => e.stopPropagation()}
       >
         <ModalLayout
           header={header}
-          contentClassName="px-6 py-5"
+          contentClassName="px-6 py-5 pb-12"
         >
           <div className="flex flex-col gap-3">
             {children}
@@ -119,7 +119,7 @@ export function ActionSheetItem({ icon, title, subtitle, onClick, variant = 'def
         hapticFeedback('light')
         onClick()
       }}
-      className={`flex items-center gap-4 p-4 rounded-[1.25rem] min-h-[60px] transition-all active:scale-[0.98] ${variantClasses}`}
+      className={`flex items-center gap-4 p-4 rounded-lg min-h-[60px] transition-all active:scale-[0.98] ${variantClasses}`}
     >
       {icon && (
         <div className={`flex-shrink-0 ${iconColorClass}`}>
@@ -143,7 +143,7 @@ export function ActionSheetCancel({ onClick }: { onClick: () => void }) {
         hapticFeedback('light')
         onClick()
       }}
-      className="py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] min-h-[48px] mt-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase tracking-widest"
+      className="py-4 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] min-h-[48px] mt-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase tracking-widest"
     >
       Ακύρωση
     </button>

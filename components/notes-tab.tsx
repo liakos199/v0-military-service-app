@@ -458,7 +458,7 @@ export function NotesTab() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={activeSection === 'notes' ? "Αναζήτηση σημειώσεων..." : "Αναζήτηση εγχειριδίων..."}
-            className="w-full pl-11 pr-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-sm text-white placeholder:text-zinc-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+            className="w-full pl-11 pr-4 py-3 rounded-lg bg-zinc-900 border border-zinc-800 text-sm text-white placeholder:text-zinc-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
           />
           {searchQuery && (
             <button 
@@ -471,14 +471,14 @@ export function NotesTab() {
         </div>
 
         {/* Section Toggle */}
-        <div className="flex gap-2 p-1 rounded-xl bg-zinc-900 border border-zinc-800">
+        <div className="flex gap-2 p-1 rounded-lg bg-zinc-900 border border-zinc-800">
           <button
             onClick={() => {
               hapticFeedback('light')
               setActiveSection('notes')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'notes'
                 ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-900/30'
                 : 'text-zinc-400 hover:text-zinc-300'
@@ -493,7 +493,7 @@ export function NotesTab() {
               setActiveSection('guides')
             }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
+              'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-300',
               activeSection === 'guides'
                 ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-900/30'
                 : 'text-zinc-400 hover:text-zinc-300'
@@ -589,7 +589,7 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
       </FullscreenModal>
 
       {filteredNotes.length === 0 ? (
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-8 text-center shadow-xl shadow-black/20">
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-8 text-center shadow-xl shadow-black/20">
           <NotebookText className="h-12 w-12 text-zinc-600 mx-auto mb-3 opacity-50" />
           <p className="text-[11px] text-zinc-400 font-semibold">
             {searchQuery ? 'Δεν βρέθηκαν σημειώσεις' : 'Δεν υπάρχουν σημειώσεις'}
@@ -598,7 +598,7 @@ function NotesSection({ searchQuery }: { searchQuery: string }) {
       ) : (
         <div className="flex flex-col gap-3">
           {filteredNotes.map((note) => (
-            <div key={note.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 shadow-lg shadow-black/10">
+            <div key={note.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 shadow-lg shadow-black/10">
               <div className="flex items-start justify-between mb-1">
                 <p className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">{formatGreekDate(note.date)}</p>
                 <div className="flex items-center gap-1">
@@ -672,7 +672,7 @@ function GuidesSection({ searchQuery }: { searchQuery: string }) {
 
       <div className="flex flex-col gap-3">
         {filteredGuides.length === 0 ? (
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-8 text-center shadow-xl shadow-black/20">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-8 text-center shadow-xl shadow-black/20">
             <BookOpen className="h-12 w-12 text-zinc-600 mx-auto mb-3 opacity-50" />
             <p className="text-[11px] text-zinc-400 font-semibold">Δεν βρέθηκαν εγχειρίδια</p>
           </div>
@@ -682,7 +682,7 @@ function GuidesSection({ searchQuery }: { searchQuery: string }) {
           const hasQuiz = !!GUIDE_QUIZZES[guide.id]
 
           return (
-            <div key={guide.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] overflow-hidden shadow-lg shadow-black/10">
+            <div key={guide.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg overflow-hidden shadow-lg shadow-black/10">
               <button
                 onClick={() => {
                   hapticFeedback('light')
@@ -866,7 +866,7 @@ function QuizView({ guideId, onClose }: { guideId: string; onClose: () => void }
               onClick={() => handleOptionSelect(idx)}
               disabled={isAnswered}
               className={cn(
-                "w-full text-left p-4 rounded-xl border text-[11px] font-medium transition-all flex items-center justify-between min-h-[56px]",
+                "w-full text-left p-4 rounded-lg border text-[11px] font-medium transition-all flex items-center justify-between min-h-[56px]",
                 stateClasses
               )}
             >

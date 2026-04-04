@@ -69,10 +69,10 @@ export function PrisonDetentionManager() {
       </h2>
 
       {/* Prison Card */}
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col gap-3 shadow-lg shadow-black/10">
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex flex-col gap-3 shadow-lg shadow-black/10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center shrink-0">
               <Lock size={24} />
             </div>
             <div className="flex-1 min-w-0">
@@ -90,7 +90,7 @@ export function PrisonDetentionManager() {
               hapticFeedback('light')
               setShowPrisonModal(true)
             }}
-            className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-90 shrink-0 shadow-sm"
+            className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-90 shrink-0 shadow-sm"
             aria-label="Προσθήκη φυλακής"
           >
             <Plus size={18} />
@@ -123,10 +123,10 @@ export function PrisonDetentionManager() {
       </div>
 
       {/* Detention Card */}
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex flex-col gap-3 shadow-lg shadow-black/10">
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex flex-col gap-3 shadow-lg shadow-black/10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 flex items-center justify-center shrink-0">
               <Calendar size={24} />
             </div>
             <div className="flex-1 min-w-0">
@@ -144,7 +144,7 @@ export function PrisonDetentionManager() {
               hapticFeedback('light')
               setShowDetentionModal(true)
             }}
-            className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-90 shrink-0 shadow-sm"
+            className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] hover:bg-zinc-700 transition-colors active:scale-90 shrink-0 shadow-sm"
             aria-label="Προσθήκη κράτησης"
           >
             <Plus size={18} />
@@ -250,7 +250,7 @@ function AddPrisonForm({
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="Λόγος φυλάκισης..."
-          className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-white text-sm resize-none focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600"
+          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700/50 text-white text-sm resize-none focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600"
           rows={3}
         />
       </div>
@@ -265,7 +265,7 @@ function AddPrisonForm({
           min="1"
           value={days}
           onChange={(e) => setDays(e.target.value)}
-          className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-white text-sm focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600 font-bold"
+          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700/50 text-white text-sm focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600 font-bold"
           placeholder="Αριθμός ημερών"
         />
         <p className="text-[9px] text-zinc-500 mt-2 font-medium">
@@ -277,14 +277,14 @@ function AddPrisonForm({
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
             disabled={!days || parseInt(days) <= 0}
-            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
           >
             Προσθήκη
           </button>
@@ -334,7 +334,7 @@ function AddDetentionForm({
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="Λόγος κράτησης..."
-          className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700/50 text-white text-sm resize-none focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600"
+          className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-zinc-700/50 text-white text-sm resize-none focus:outline-none focus:border-[#34d399]/50 transition-colors placeholder:text-zinc-600"
           rows={2}
         />
       </div>
@@ -354,7 +354,7 @@ function AddDetentionForm({
       </div>
 
       {startDate && endDate && startDate <= endDate && (
-        <div className="p-4 rounded-xl bg-[#10b981]/10 border border-[#10b981]/20 shadow-lg shadow-black/10">
+        <div className="p-4 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 shadow-lg shadow-black/10">
           <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Διάρκεια</p>
           <p className="text-[18px] font-bold text-[#34d399]">{days} ημέρες</p>
         </div>
@@ -364,14 +364,14 @@ function AddDetentionForm({
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all font-bold"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all font-bold"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
             disabled={!startDate || !endDate || startDate > endDate}
-            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50 font-bold"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50 font-bold"
           >
             Προσθήκη
           </button>

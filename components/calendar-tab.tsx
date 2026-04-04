@@ -275,7 +275,7 @@ export function CalendarTab() {
       <main className="flex-1 overflow-y-auto px-5 pb-32 pt-4 hide-scrollbar relative z-10">
         <div className="flex flex-col gap-6">
           {/* Calendar Card */}
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-5 relative shadow-xl shadow-black/20 overflow-hidden">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-5 relative shadow-xl shadow-black/20 overflow-hidden">
             {/* Month Navigation */}
             <div className="flex items-center justify-between mb-6">
               <button
@@ -327,7 +327,7 @@ export function CalendarTab() {
                     key={day}
                     onClick={() => handleDayPress(day)}
                     className={cn(
-                      'relative aspect-square w-full rounded-xl text-sm flex flex-col items-center justify-center transition-all duration-300 font-bold',
+                      'relative aspect-square w-full rounded-lg text-sm flex flex-col items-center justify-center transition-all duration-300 font-bold',
                       isSelected || isToday
                         ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-900/30'
                         : 'bg-zinc-900/50 text-zinc-300 hover:bg-zinc-800 border border-zinc-700/30'
@@ -410,7 +410,7 @@ export function CalendarTab() {
               hapticFeedback('medium')
               setShowFullHistory(true)
             }}
-            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-br from-zinc-700 to-gray-900/90 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all active:scale-95 flex items-center justify-between font-bold text-[10px] uppercase tracking-wider"
+            className="w-full py-3 px-4 rounded-lg bg-gradient-to-br from-zinc-700 to-gray-900/90 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all active:scale-95 flex items-center justify-between font-bold text-[10px] uppercase tracking-wider"
           >
             <span className="flex items-center gap-2">
               <History size={16} />
@@ -636,7 +636,7 @@ function MonthlySummary({
         {/* Duties card */}
         <button
           onClick={() => onShowSummary('duty')}
-          className="flex-1 rounded-[1.5rem] bg-emerald-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
+          className="flex-1 rounded-lg bg-emerald-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
             <ArrowRight size={16} className="text-emerald-400" />
@@ -656,7 +656,7 @@ function MonthlySummary({
         {/* Leave card */}
         <button
           onClick={() => onShowSummary('leave')}
-          className="flex-1 rounded-[1.5rem] bg-amber-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
+          className="flex-1 rounded-lg bg-amber-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
             <ArrowRight size={16} className="text-amber-400" />
@@ -708,7 +708,7 @@ function SummaryList({
         {duties.sort((a, b) => a.date.localeCompare(b.date)).map((duty) => (
           <div
             key={duty.id}
-            className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4"
+            className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center gap-4"
           >
             <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
             <div className="flex-1 min-w-0">
@@ -745,7 +745,7 @@ function SummaryList({
       {leaves.sort((a, b) => a.startDate.localeCompare(b.startDate)).map((leave) => (
         <div
           key={leave.id}
-          className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4"
+          className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center gap-4"
         >
           <div className="w-1.5 h-10 rounded-full bg-amber-500 flex-shrink-0" />
           <div className="flex-1 min-w-0">
@@ -791,11 +791,11 @@ function FullHistoryView({
   return (
     <div className="flex flex-col h-full gap-4">
       {/* Tab Switcher */}
-      <div className="flex p-1 bg-zinc-900/50 rounded-2xl border border-zinc-800/50 mx-2">
+      <div className="flex p-1 bg-zinc-900/50 rounded-lg border border-zinc-800/50 mx-2">
         <button
           onClick={() => { hapticFeedback('light'); setActiveTab('duty'); }}
           className={cn(
-            'flex-1 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all',
+            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
             activeTab === 'duty' ? 'bg-zinc-800 text-emerald-400 shadow-lg' : 'text-zinc-500'
           )}
         >
@@ -804,7 +804,7 @@ function FullHistoryView({
         <button
           onClick={() => { hapticFeedback('light'); setActiveTab('leave'); }}
           className={cn(
-            'flex-1 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all',
+            'flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
             activeTab === 'leave' ? 'bg-zinc-800 text-emerald-400 shadow-lg' : 'text-zinc-500'
           )}
         >
@@ -822,7 +822,7 @@ function FullHistoryView({
               </div>
             ) : (
               duties.sort((a, b) => b.date.localeCompare(a.date)).map(duty => (
-                <div key={duty.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4 flex items-center gap-4">
+                <div key={duty.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-lg p-4 flex items-center gap-4">
                   <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold text-white">{dutyLabels[duty.type] || duty.type}</p>
@@ -845,7 +845,7 @@ function FullHistoryView({
               </div>
             ) : (
               leaves.sort((a, b) => b.startDate.localeCompare(a.startDate)).map(leave => (
-                <div key={leave.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-4 flex items-center gap-4">
+                <div key={leave.id} className="bg-zinc-900/40 border border-zinc-800/50 rounded-lg p-4 flex items-center gap-4">
                   <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
@@ -921,13 +921,13 @@ function DateDetailsModal({
     <div className="flex gap-2 px-6 py-5 border-t border-zinc-700/30">
       <button
         onClick={onAddDuty}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
       >
         + Υπηρεσία
       </button>
       <button
         onClick={onAddLeave}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
       >
         + Άδεια
       </button>
@@ -958,7 +958,7 @@ function DateDetailsModal({
                   document.dispatchEvent(new CustomEvent('open-calendar-actions', { detail: selectedDate }));
                 }, 100);
               }}
-              className="group flex items-center justify-center gap-3 p-4 rounded-2xl bg-zinc-900 border-2 border-dashed border-zinc-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all active:scale-[0.98]"
+              className="group flex items-center justify-center gap-3 p-4 rounded-lg bg-zinc-900 border-2 border-dashed border-zinc-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all active:scale-[0.98]"
             >
               <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 ring-4 ring-emerald-500/5 group-hover:bg-emerald-500 group-hover:text-white transition-all">
                 <Plus size={18} />
@@ -976,7 +976,7 @@ function DateDetailsModal({
                   {duties.map((duty) => (
                     <div
                       key={duty.id}
-                      className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-3 flex items-start gap-3"
+                      className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-3 flex items-start gap-3"
                     >
                       <div className="w-1 h-10 rounded-full bg-emerald-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
@@ -1016,7 +1016,7 @@ function DateDetailsModal({
                   {leaves.map((leave) => (
                     <div
                       key={leave.id}
-                      className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-3 flex items-start gap-3"
+                      className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-3 flex items-start gap-3"
                     >
                       <div className="w-1 h-10 rounded-full bg-amber-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
@@ -1095,7 +1095,7 @@ function UpcomingEvents({
 
   if (upcoming.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-8 text-center shadow-xl shadow-black/20">
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-8 text-center shadow-xl shadow-black/20">
         <CalendarIcon className="h-12 w-12 text-zinc-600 mx-auto mb-3 opacity-50" />
         <p className="text-[11px] text-zinc-400 font-semibold">Δεν υπάρχουν προσεχή γεγονότα</p>
         <p className="text-[9px] text-zinc-500 mt-1">Πάτησε μια ημερομηνία για να προσθέσεις</p>
@@ -1114,7 +1114,7 @@ function UpcomingEvents({
             <div
               key={duty.id}
               className={cn(
-                'bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4 shadow-lg shadow-black/10',
+                'bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center gap-4 shadow-lg shadow-black/10',
                 isToday && 'ring-1 ring-emerald-500'
               )}
             >
@@ -1153,7 +1153,7 @@ function UpcomingEvents({
           return (
             <div
               key={leave.id}
-              className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4 shadow-lg shadow-black/10"
+              className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center gap-4 shadow-lg shadow-black/10"
             >
               <div className="w-1.5 h-12 rounded-full flex-shrink-0 bg-amber-400" />
               <div className="flex-1 min-w-0">
@@ -1223,13 +1223,13 @@ function AddLeaveForm({
     <div className="flex gap-3 px-6 py-5">
       <button
         onClick={onCancel}
-        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+        className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
       >
         Ακύρωση
       </button>
       <button
         onClick={handleSubmit}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
       >
         {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
       </button>
@@ -1249,7 +1249,7 @@ function AddLeaveForm({
               key={t}
               onClick={() => setType(t)}
               className={cn(
-                'py-3 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all border',
+                'py-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border',
                 type === t
                   ? 'bg-amber-500 text-white border-amber-500'
                   : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
@@ -1270,7 +1270,7 @@ function AddLeaveForm({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προσθήκη σημειώσεων..."
-          className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-amber-500 outline-none resize-none h-24"
+          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-amber-500 outline-none resize-none h-24"
         />
       </div>
     </div>
@@ -1348,7 +1348,7 @@ function ManageDutyTypesModal({
             <div className="px-6 py-5 border-t border-zinc-800/50">
                <button
                 onClick={handleSave}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+                className="w-full py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
               >
                 Αποθήκευση Αλλαγών
               </button>
@@ -1366,12 +1366,12 @@ function ManageDutyTypesModal({
                       type="text"
                       value={label}
                       onChange={(e) => setLocalLabels({ ...localLabels, [key]: e.target.value })}
-                      className="flex-1 px-4 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none"
+                      className="flex-1 px-4 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none"
                     />
                     {!['guard', 'barracks', 'officer', 'patrol', 'kitchen', 'other'].includes(key) && (
                       <button 
                         onClick={() => handleDeleteType(key)}
-                        className="p-3 text-red-500 hover:bg-red-500/10 rounded-xl transition-colors"
+                        className="p-3 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                       >
                         <Trash2 size={18} />
                       </button>
@@ -1391,11 +1391,11 @@ function ManageDutyTypesModal({
                   placeholder="Όνομα νέου τύπου..."
                   value={newTypeName}
                   onChange={(e) => setNewTypeName(e.target.value)}
-                  className="flex-1 px-4 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none"
+                  className="flex-1 px-4 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none"
                 />
                 <button 
                   onClick={handleAddType}
-                  className="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20 active:scale-95 transition-all disabled:opacity-30"
+                  className="p-3 bg-emerald-500/10 text-emerald-500 rounded-lg border border-emerald-500/20 active:scale-95 transition-all disabled:opacity-30"
                   disabled={!newTypeName.trim()}
                 >
                   <Plus size={20} />

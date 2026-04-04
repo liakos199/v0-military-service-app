@@ -64,7 +64,7 @@ export function ExpensesTab() {
               hapticFeedback('light')
               setShowCatalogManager(true)
             }}
-            className="flex items-center gap-1 px-3 py-2 rounded-xl bg-blue-700 border border-blue-700 text-[10px] font-extrabold tracking-widest text-white uppercase hover:text-white hover:bg-blue-700 transition-colors shadow-sm active:scale-95"
+            className="flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-700 border border-blue-700 text-[10px] font-extrabold tracking-widest text-white uppercase hover:text-white hover:bg-blue-700 transition-colors shadow-sm active:scale-95"
           >
             <Box size={14} className="font-bold" /> ΚΑΤΑΛΟΓΟΣ
           </button>
@@ -73,7 +73,7 @@ export function ExpensesTab() {
               hapticFeedback('light')
               setShowAdd(true)
             }}
-            className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-[10px] font-extrabold tracking-widest text-black uppercase hover:opacity-90 transition-opacity active:scale-95 flex items-center gap-1"
+            className="px-3 py-2 rounded-lg bg-gradient-to-r from-[#34d399] to-[#10b981] text-[10px] font-extrabold tracking-widest text-black uppercase hover:opacity-90 transition-opacity active:scale-95 flex items-center gap-1"
           >
             <Plus size={14} className="font-bold" /> ΝΕΟ
           </button>
@@ -92,7 +92,7 @@ export function ExpensesTab() {
                 placeholder="Αναζήτηση εξόδων..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gradient-to-b from-zinc-800 to-zinc-800/80 border border-zinc-700/50 rounded-[1.25rem] py-3.5 pl-11 pr-4 text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 focus:ring-1 focus:ring-[#34d399]/20 transition-all shadow-lg" 
+                className="w-full bg-gradient-to-b from-zinc-800 to-zinc-800/80 border border-zinc-700/50 rounded-lg py-3.5 pl-11 pr-4 text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 focus:ring-1 focus:ring-[#34d399]/20 transition-all shadow-lg" 
               />
             </div>
           </div>
@@ -104,7 +104,7 @@ export function ExpensesTab() {
               <button 
                 onClick={() => setFilterCategory('all')}
                 className={cn(
-                  "px-5 py-2 rounded-full text-[8px] font-extrabold tracking-wider shrink-0 active:scale-95",
+                  "px-5 py-2 rounded-lg text-[8px] font-extrabold tracking-wider shrink-0 active:scale-95",
                   filterCategory === 'all'
                     ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
                     : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
@@ -117,7 +117,7 @@ export function ExpensesTab() {
                   key={cat}
                   onClick={() => setFilterCategory(cat)}
                   className={cn(
-                    "px-5 py-2 rounded-full font-bold tracking-wider shrink-0 active:scale-95 text-[8px]",
+                    "px-5 py-2 rounded-lg font-bold tracking-wider shrink-0 active:scale-95 text-[8px]",
                     filterCategory === cat
                       ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
                       : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
@@ -132,14 +132,14 @@ export function ExpensesTab() {
 
         {/* Spending Summaries */}
         <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex flex-col items-center justify-center shadow-lg shadow-black/10">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex flex-col items-center justify-center shadow-lg shadow-black/10">
             <span className="text-[7.5px] font-black tracking-[0.1em] text-zinc-500 uppercase mb-1">Αυτη την εβδομαδα</span>
             <div className="flex items-baseline gap-1">
               <span className="text-[20px] font-black text-white leading-none">{weeklyTotal.toFixed(2)}</span>
               <span className="text-[12px] font-bold text-emerald-500">€</span>
             </div>
           </div>
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex flex-col items-center justify-center shadow-lg shadow-black/10">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex flex-col items-center justify-center shadow-lg shadow-black/10">
             <span className="text-[7.5px] font-black tracking-[0.1em] text-zinc-500 uppercase mb-1">Αυτο το μηνα</span>
             <div className="flex items-baseline gap-1">
               <span className="text-[20px] font-black text-white leading-none">{monthlyTotal.toFixed(2)}</span>
@@ -148,7 +148,7 @@ export function ExpensesTab() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-[1.5rem] p-5 flex flex-col items-center justify-center shadow-xl mb-6 relative overflow-hidden border-dashed">
+        <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-lg p-5 flex flex-col items-center justify-center shadow-xl mb-6 relative overflow-hidden border-dashed">
           <span className="text-[10px] font-black tracking-[0.2em] text-[#34d399] uppercase mb-1 relative z-10">Συνολικα Εξοδα</span>
           <div className="flex items-baseline gap-1 relative z-10">
             <span className="text-[32px] font-black tracking-tight text-white leading-none">{grandTotal.toFixed(2)}</span>
@@ -163,14 +163,14 @@ export function ExpensesTab() {
           </h3>
           
           {filteredExpenses.length === 0 ? (
-            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-8 flex flex-col items-center justify-center text-center shadow-lg shadow-black/10">
+            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-8 flex flex-col items-center justify-center text-center shadow-lg shadow-black/10">
               <p className="text-[13px] text-zinc-500 font-medium">
                 {searchQuery || filterCategory !== 'all' ? 'Δεν βρέθηκαν έξοδα' : 'Δεν υπάρχουν έξοδα'}
               </p>
             </div>
           ) : (
             filteredExpenses.map((item) => (
-              <div key={item.id} className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-md transition active:scale-[0.98]">
+              <div key={item.id} className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-zinc-700/40 rounded-lg p-4 flex items-center justify-between shadow-md transition active:scale-[0.98]">
                 <div className="flex flex-col">
                   <span className="text-[15px] font-bold text-white leading-tight">{item.description || 'Έξοδο'}</span>
                   <span className="text-[10px] text-zinc-500 font-medium">{formatGreekDate(item.date)}</span>
@@ -285,7 +285,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
     <div className="flex flex-col gap-3">
       {/* Canteen Catalog Selection */}
       {canteenCatalog.length > 0 && (
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/20">
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-5 shadow-lg shadow-black/20">
           <h3 className="text-[15px] font-bold text-white mb-4">Προσθήκη προϊόντος</h3>
           
           {selectedCatalogCategory === null ? (
@@ -302,7 +302,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                       hapticFeedback('light')
                       setSelectedCatalogCategory(cat)
                     }}
-                    className="bg-zinc-900/80 border border-zinc-700/80 rounded-xl p-3 flex items-center justify-between hover:border-[#34d399]/50 transition-colors text-sm"
+                    className="bg-zinc-900/80 border border-zinc-700/80 rounded-lg p-3 flex items-center justify-between hover:border-[#34d399]/50 transition-colors text-sm"
                   >
                     <span className="text-white font-bold text-xs">{CANTEEN_CATEGORY_LABELS[cat]}</span>
                     <span className="text-zinc-500 text-[10px] font-black">
@@ -332,7 +332,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
                     type="button"
                     onClick={() => handleSelectCatalogItem(item)}
                     className={cn(
-                      'bg-zinc-900/80 border rounded-xl p-3 flex items-center justify-between hover:border-[#34d399]/50 transition-all text-sm',
+                      'bg-zinc-900/80 border rounded-lg p-3 flex items-center justify-between hover:border-[#34d399]/50 transition-all text-sm',
                       description === item.name && amount === item.price.toFixed(2)
                         ? 'border-[#34d399]/50 bg-[#34d399]/10'
                         : 'border-zinc-700/80'
@@ -356,7 +356,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Π.χ. Καφές, Σνακ..."
-          className="w-full px-4 py-3 rounded-xl bg-zinc-800 text-white text-sm border border-zinc-700/50 placeholder:text-zinc-600 focus:border-[#34d399]/50 focus:outline-none focus:ring-1 focus:ring-[#34d399]/20 transition-all font-bold"
+          className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white text-sm border border-zinc-700/50 placeholder:text-zinc-600 focus:border-[#34d399]/50 focus:outline-none focus:ring-1 focus:ring-[#34d399]/20 transition-all font-bold"
         />
       </div>
 
@@ -370,7 +370,7 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder="0.00"
-          className="w-full px-4 py-3 rounded-xl bg-zinc-800 text-white text-sm font-bold border border-zinc-700/50 placeholder:text-zinc-600 focus:border-[#34d399]/50 focus:outline-none focus:ring-1 focus:ring-[#34d399]/20 transition-all"
+          className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white text-sm font-bold border border-zinc-700/50 placeholder:text-zinc-600 focus:border-[#34d399]/50 focus:outline-none focus:ring-1 focus:ring-[#34d399]/20 transition-all"
         />
       </div>
 
@@ -406,14 +406,14 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all font-bold"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all font-bold"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
             disabled={!amount || !date}
-            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50 font-bold"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50 font-bold"
           >
             Προσθήκη
           </button>

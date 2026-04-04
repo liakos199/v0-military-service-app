@@ -146,10 +146,10 @@ export function ServiceTab() {
 
       <main className="flex-1 overflow-y-auto px-5 pb-32 pt-4 hide-scrollbar">
         {/* LELEmeter Card */}
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[2rem] p-5 relative shadow-xl shadow-black/20 overflow-hidden mb-8">
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-5 relative shadow-xl shadow-black/20 overflow-hidden mb-8">
           <div className="flex justify-between items-center mb-6">
             <span className="text-[10px] font-bold tracking-[0.2em] text-zinc-400 uppercase">Λελεμετρο</span>
-            <div className="flex flex-col items-end gap-0.5 bg-zinc-950/50 border border-zinc-700/50 text-zinc-300 px-3 py-1.5 rounded-xl shadow-inner">
+            <div className="flex flex-col items-end gap-0.5 bg-zinc-950/50 border border-zinc-700/50 text-zinc-300 px-3 py-1.5 rounded-lg shadow-inner">
               <span className="text-[7.5px] font-bold tracking-[0.15em] text-[#34d389] uppercase">Απολύεσαι</span>
               <div className="flex items-center gap-1.5">
                 <CalendarIcon size={12} className="text-zinc-400" />
@@ -165,7 +165,7 @@ export function ServiceTab() {
               </div>
               <button
                 onClick={() => setShowConfig(true)}
-                className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest active:scale-95 transition-transform"
+                className="px-6 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest active:scale-95 transition-transform"
               >
                 ΟΡΙΣΜΟΣ ΗΜΕΡΟΜΗΝΙΑΣ
               </button>
@@ -201,17 +201,17 @@ export function ServiceTab() {
               </div>
 
               <div className="grid grid-cols-3 gap-2 mt-4">
-                <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
+                <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-lg py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
                   <span className="text-[8px] font-bold tracking-[0.1em] text-[#34d399] uppercase mb-1">Υπηρετησες</span>
                   <span className="text-[21px] font-extrabold text-white leading-none mb-1">{daysServed}</span>
                   <span className="text-[8px] font-semibold text-zinc-500 uppercase tracking-widest">Ημερες</span>
                 </div>
-                <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
+                <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-lg py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
                   <span className="text-[8px] font-bold tracking-[0.1em] text-[#34d399] uppercase mb-1">Απομενουν</span>
                   <span className="text-[21px] font-extrabold text-white leading-none mb-1">{effectiveDaysRemaining}</span>
                   <span className="text-[8px] font-semibold text-zinc-500 uppercase tracking-widest">Ημερες</span>
                 </div>
-                <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-[1.25rem] py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
+                <div className="bg-gradient-to-b from-zinc-700/40 to-zinc-800/40 border border-[#10b981]/20 rounded-lg py-3.5 px-2 flex flex-col items-center justify-center shadow-[inset_0_0_15px_rgba(52,211,153,0.05)]">
                   <span className="text-[8px] font-bold tracking-[0.1em] text-[#34d399] uppercase mb-1">Συνολο</span>
                   <span className="text-[21px] font-extrabold text-white leading-none mb-1">{effectiveTotalDays}</span>
                   <span className="text-[8px] font-semibold text-zinc-500 uppercase tracking-widest">Ημερες</span>
@@ -225,7 +225,7 @@ export function ServiceTab() {
         {todaysGuardDuty && (
           <div className="mb-8">
             <h2 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase px-1 mb-3">Συνθηματικά Ημέρας</h2>
-            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 shadow-lg shadow-black/10 relative overflow-hidden group">
+            <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 shadow-lg shadow-black/10 relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-3">
                 <button 
                   onClick={() => { hapticFeedback('light'); setShowPasswordRaw(!showPasswordRaw) }}
@@ -236,7 +236,7 @@ export function ServiceTab() {
               </div>
               
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-[#34d399] shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-[#34d399] shrink-0">
                   <KeyRound size={24} />
                 </div>
                 <div className="flex flex-col gap-1.5 flex-1 min-w-0 pr-8">
@@ -269,10 +269,10 @@ export function ServiceTab() {
             {/* Prison Card — entire card is pressable */}
             <button
               onClick={() => { hapticFeedback('light'); setShowPrison(true) }}
-              className="w-full bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98] text-left"
+              className="w-full bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98] text-left"
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center shrink-0">
                   <Lock size={24} />
                 </div>
                 <div className="flex flex-col">
@@ -283,7 +283,7 @@ export function ServiceTab() {
                   </div>
                 </div>
               </div>
-              <div className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] shrink-0 shadow-sm">
+              <div className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] shrink-0 shadow-sm">
                 <Plus size={18} />
               </div>
             </button>
@@ -291,10 +291,10 @@ export function ServiceTab() {
             {/* Detention Card — entire card is pressable */}
             <button
               onClick={() => { hapticFeedback('light'); setShowDetention(true) }}
-              className="w-full bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98] text-left"
+              className="w-full bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98] text-left"
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700/50 text-zinc-300 flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700/50 text-zinc-300 flex items-center justify-center shrink-0">
                   <CalendarX size={24} />
                 </div>
                 <div className="flex flex-col">
@@ -305,7 +305,7 @@ export function ServiceTab() {
                   </div>
                 </div>
               </div>
-              <div className="w-10 h-10 rounded-[12px] bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] shrink-0 shadow-sm">
+              <div className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[#34d399] shrink-0 shadow-sm">
                 <Plus size={18} />
               </div>
             </button>
@@ -341,7 +341,7 @@ export function ServiceTab() {
                     setConfig({ ...config, totalDays: preset.days, durationMonths: preset.months })
                   }}
                   className={cn(
-                    'flex-1 py-3 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all border whitespace-nowrap',
+                    'flex-1 py-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border whitespace-nowrap',
                     config.durationMonths === preset.months || (!config.durationMonths && config.totalDays === preset.days)
                       ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white border-emerald-500 shadow-lg shadow-emerald-900/30'
                       : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
@@ -364,7 +364,7 @@ export function ServiceTab() {
                   const matchedPreset = SERVICE_DURATION_PRESETS.find(p => p.days === val)
                   setConfig({ ...config, totalDays: val, durationMonths: matchedPreset ? matchedPreset.months : undefined })
                 }}
-                className="w-full pl-32 pr-4 py-4 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+                className="w-full pl-32 pr-4 py-4 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -377,7 +377,7 @@ export function ServiceTab() {
                   setShowConfig(false)
                   toast('Οι ρυθμίσεις αποθηκεύτηκαν')
                 }}
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[12px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+                className="w-full py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[12px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
               >
                 Αποθήκευση
               </button>
@@ -464,7 +464,7 @@ function PrisonManager({
   return (
     <div className="flex flex-col gap-4">
       {/* Summary */}
-      <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex items-center justify-between">
+      <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-center justify-between">
         <div>
           <p className="text-[9px] font-bold tracking-widest text-red-400 uppercase mb-1">Συνολο Ημερων</p>
           <div className="flex items-baseline gap-1.5">
@@ -483,9 +483,9 @@ function PrisonManager({
           </div>
         ) : (
           prisons.map((p) => (
-            <div key={p.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between gap-3 shadow-lg shadow-black/10">
+            <div key={p.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center justify-between gap-3 shadow-lg shadow-black/10">
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex flex-col items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 flex flex-col items-center justify-center shrink-0">
                   <span className="text-[17px] font-extrabold text-red-400 leading-none">{p.days}</span>
                   <span className="text-[7.5px] font-bold text-red-400/60 uppercase">ημ.</span>
                 </div>
@@ -517,7 +517,7 @@ function PrisonManager({
         <div className="px-6 py-3 pb-6">
           <button
             onClick={() => { hapticFeedback('light'); setShowForm(true) }}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+            className="w-full py-3.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
           >
             <Plus size={16} />
             Προσθήκη Καταχώρησης
@@ -557,7 +557,7 @@ function PrisonForm({
           min={1}
           value={days}
           onChange={(e) => setDays(Math.max(1, parseInt(e.target.value) || 1))}
-          className="w-full px-4 py-4 rounded-xl bg-zinc-900 text-white text-2xl font-extrabold text-center border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
+          className="w-full px-4 py-4 rounded-lg bg-zinc-900 text-white text-2xl font-extrabold text-center border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
         />
         <p className="text-[9px] text-zinc-500 text-center mt-1.5">Αυτές οι μέρες προστίθενται στο σύνολο της θητείας</p>
       </div>
@@ -568,7 +568,7 @@ function PrisonForm({
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="π.χ. Αδικαιολόγητη απουσία..."
-          className="w-full px-4 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
+          className="w-full px-4 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
         />
       </div>
 
@@ -576,13 +576,13 @@ function PrisonForm({
         <div className="flex gap-3 px-6 py-3 pb-6">
           <button
             onClick={onCancel}
-            className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+            className="flex-1 py-4 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
           >
             Ακύρωση
           </button>
           <button
             onClick={() => onSave(days, reason)}
-            className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform"
+            className="flex-[2] py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform"
           >
             {initial ? 'Αποθήκευση' : 'Προσθήκη'}
           </button>
@@ -649,7 +649,7 @@ function DetentionManager({
   return (
     <div className="flex flex-col gap-4">
       {/* Summary */}
-      <div className="bg-zinc-800/60 border border-zinc-700/40 rounded-2xl p-4 flex items-center justify-between">
+      <div className="bg-zinc-800/60 border border-zinc-700/40 rounded-lg p-4 flex items-center justify-between">
         <div>
           <p className="text-[9px] font-bold tracking-widest text-zinc-400 uppercase mb-1">Συνολο Ημερων</p>
           <div className="flex items-baseline gap-1.5">
@@ -670,7 +670,7 @@ function DetentionManager({
           detentions.map((d) => {
             const days = Math.max(0, daysBetween(d.startDate, d.endDate) + 1)
             return (
-              <div key={d.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
+              <div key={d.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 shadow-lg shadow-black/10">
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1 min-w-0">
                     <p className="text-[12px] font-bold text-white mb-1 break-words">{d.reason || 'Χωρίς αιτία'}</p>
@@ -706,7 +706,7 @@ function DetentionManager({
         <div className="px-6 py-3 pb-6">
           <button
             onClick={() => { hapticFeedback('light'); setShowForm(true) }}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+            className="w-full py-3.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
           >
             <Plus size={16} />
             Προσθήκη Κράτησης
@@ -754,7 +754,7 @@ function DetentionForm({
       />
 
       {days > 0 && (
-        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-3 text-center">
+        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-4 py-3 text-center">
           <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Διάρκεια: {days} ημέρ{days === 1 ? 'α' : 'ες'}</span>
         </div>
       )}
@@ -765,7 +765,7 @@ function DetentionForm({
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="π.χ. Απουσία από σκοπιά..."
-          className="w-full px-4 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
+          className="w-full px-4 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
         />
       </div>
 
@@ -773,14 +773,14 @@ function DetentionForm({
         <div className="flex gap-3 px-6 py-3 pb-6">
           <button
             onClick={onCancel}
-            className="flex-1 py-4 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+            className="flex-1 py-4 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
           >
             Ακύρωση
           </button>
           <button
             onClick={() => onSave(startDate, endDate, reason)}
             disabled={!startDate || !endDate}
-            className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform disabled:opacity-50"
+            className="flex-[2] py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform disabled:opacity-50"
           >
             {initial ? 'Αποθήκευση' : 'Προσθήκη'}
           </button>

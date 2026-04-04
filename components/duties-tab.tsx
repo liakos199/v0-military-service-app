@@ -141,7 +141,7 @@ export function DutiesTab() {
 
           {/* Duties List */}
           {sortedDates.length === 0 ? (
-            <div className="glass-card rounded-xl p-6 text-center border border-white/5">
+            <div className="glass-card rounded-lg p-6 text-center border border-white/5">
               <Clock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
               <p className="text-[13px] text-muted-foreground">Δεν υπάρχουν υπηρεσίες</p>
             </div>
@@ -172,7 +172,7 @@ export function DutiesTab() {
                       <div
                         key={duty.id}
                         className={cn(
-                          'glass-card rounded-xl p-2.5 flex items-center gap-3 border border-white/5',
+                          'glass-card rounded-lg p-2.5 flex items-center gap-3 border border-white/5',
                           isToday && 'ring-1 ring-primary/30 bg-primary/5'
                         )}
                       >

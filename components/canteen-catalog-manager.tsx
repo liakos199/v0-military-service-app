@@ -85,7 +85,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
       </p>
 
       {/* Add new item */}
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 shadow-lg shadow-black/20">
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-5 shadow-lg shadow-black/20">
         <h3 className="text-[14px] font-bold text-white mb-4">Νέο Προϊόν</h3>
         
         <div className="flex gap-3 mb-4">
@@ -94,7 +94,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
             value={newLabel}
             onChange={(e) => setNewLabel(e.target.value)}
             placeholder="Όνομα"
-            className="flex-1 bg-zinc-900/80 border border-zinc-700/80 rounded-xl px-4 py-3 text-[13px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 transition-colors"
+            className="flex-1 bg-zinc-900/80 border border-zinc-700/80 rounded-lg px-4 py-3 text-[13px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 transition-colors"
           />
           <div className="relative w-28">
             <input
@@ -104,7 +104,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
               value={newPrice}
               onChange={(e) => setNewPrice(e.target.value)}
               placeholder="0.00"
-              className="w-full bg-zinc-900/80 border border-zinc-700/80 rounded-xl px-4 py-3 text-[12px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 transition-colors text-right pr-8"
+              className="w-full bg-zinc-900/80 border border-zinc-700/80 rounded-lg px-4 py-3 text-[12px] text-white placeholder-zinc-500 focus:outline-none focus:border-[#34d399]/50 transition-colors text-right pr-8"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 font-medium">€</span>
           </div>
@@ -134,7 +134,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         <button
           onClick={handleAdd}
           disabled={!newLabel.trim() || !newPrice || isNaN(parseFloat(newPrice)) || parseFloat(newPrice) <= 0}
-          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[11px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3.5 rounded-lg bg-gradient-to-r from-[#34d399] to-[#10b981] text-black font-bold text-[11px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Προσθηκη
         </button>
@@ -149,7 +149,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
           const isExpanded = expandedCategory === category
           
           return (
-            <div key={category} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] overflow-hidden shadow-lg shadow-black/10">
+            <div key={category} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg overflow-hidden shadow-lg shadow-black/10">
               <button
                 onClick={() => {
                   hapticFeedback('light')
@@ -178,7 +178,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
                     categoryItems.map((item) => (
                       <div key={item.id}>
                         {editingId === item.id && editData ? (
-                          <div className="flex flex-col gap-3 p-4 bg-zinc-800/50 rounded-xl border border-zinc-700/40">
+                          <div className="flex flex-col gap-3 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/40">
                             <div className="flex gap-2">
                               <input
                                 type="text"
@@ -254,7 +254,7 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         <div className="flex gap-3 pt-4 px-6 pb-6 shadow-2xl">
           <button
             onClick={onCancel}
-            className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
+            className="flex-1 py-4 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
           >
             Κλεισιμο
           </button>

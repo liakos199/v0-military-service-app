@@ -46,7 +46,7 @@ export function ProfileTab() {
 
       {/* SECTION TOGGLE */}
       <div className="px-5 pt-4 pb-2">
-        <div className="flex gap-1.5 p-1.5 rounded-2xl bg-zinc-900/50 border border-zinc-800/50 backdrop-blur-sm overflow-x-auto hide-scrollbar">
+        <div className="flex gap-1.5 p-1.5 rounded-lg bg-zinc-900/50 border border-zinc-800/50 backdrop-blur-sm overflow-x-auto hide-scrollbar">
           {[
             { id: 'profile', label: 'ΣΤΟΙΧΕΙΑ' },
             { id: 'superiors', label: 'ΑΝΩΤΕΡΟΙ' },
@@ -59,7 +59,7 @@ export function ProfileTab() {
                 setActiveSection(tab.id as any)
               }}
               className={cn(
-                'flex-1 py-2.5 px-2 rounded-xl text-[8px] font-bold tracking-wider transition-all duration-300 whitespace-nowrap',
+                'flex-1 py-2.5 px-2 rounded-lg text-[8px] font-bold tracking-wider transition-all duration-300 whitespace-nowrap',
                 activeSection === tab.id
                   ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-md shadow-emerald-500/10'
                   : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
@@ -83,7 +83,7 @@ export function ProfileTab() {
 
 function InfoCard({ icon: Icon, label, value }: { icon: any, label: string, value: string | undefined }) {
   return (
-    <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1rem] p-3 flex flex-col shadow-lg shadow-black/10">
+    <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-3 flex flex-col shadow-lg shadow-black/10">
       <div className="flex items-center gap-1.5 mb-1.5">
         <Icon size={14} className="text-[#34d399]" />
         <span className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase truncate">{label}</span>
@@ -115,11 +115,11 @@ function ProfileSection() {
       {/* Identity Card */}
       <button 
         onClick={startEdit}
-        className="w-full text-left bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-5 relative shadow-xl shadow-black/20 overflow-hidden transition-all active:scale-[0.98] group"
+        className="w-full text-left bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-5 relative shadow-xl shadow-black/20 overflow-hidden transition-all active:scale-[0.98] group"
       >
         <ShieldAlert size={140} className="absolute -bottom-6 -right-6 text-zinc-700/10 pointer-events-none fill-current" />
         <div className="flex items-center gap-4 relative z-10">
-          <div className="w-16 h-16 rounded-[1.25rem] bg-zinc-800 border border-zinc-700/50 text-[#34d399] flex items-center justify-center shrink-0">
+          <div className="w-16 h-16 rounded-lg bg-zinc-800 border border-zinc-700/50 text-[#34d399] flex items-center justify-center shrink-0">
             <Users size={32} />
           </div>
           <div className="flex-1">
@@ -134,7 +134,7 @@ function ProfileSection() {
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
-              <span className="text-emerald-500 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-md shadow-sm uppercase">
+              <span className="text-emerald-500 text-[9px] font-extrabold tracking-widest px-2.5 py-1 rounded-lg shadow-sm uppercase">
                 {profile.rank}
               </span>
             </div>
@@ -187,7 +187,7 @@ function ProfileSection() {
       </div>
 
       {/* Reporting Phrase */}
-      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 shadow-lg shadow-black/10">
+      <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 shadow-lg shadow-black/10">
         <div className="flex items-center gap-2 mb-2">
           <MessageSquare size={16} className="text-[#34d399]" />
           <span className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Φραση Αναφορας</span>
@@ -258,9 +258,9 @@ function SuperiorsSection() {
         </div>
       ) : (
         superiors.map((sup) => (
-          <div key={sup.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
+          <div key={sup.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
                 <User size={24} />
               </div>
               <div className="flex flex-col">
@@ -370,9 +370,9 @@ function FriendsSection() {
         </div>
       ) : (
         friends.map((friend) => (
-          <div key={friend.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
+          <div key={friend.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-lg p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
                 <User size={24} />
               </div>
               <div className="flex flex-col">
@@ -500,13 +500,13 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
               setShowRanks(!showRanks)
               setShowBloodTypes(false)
             }}
-            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-zinc-800 text-white text-xs border border-zinc-700/50 font-bold min-h-[46px] hover:bg-zinc-700 transition-colors"
+            className="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-zinc-800 text-white text-xs border border-zinc-700/50 font-bold min-h-[46px] hover:bg-zinc-700 transition-colors"
           >
             <span className="truncate">{form.rank}</span>
             {showRanks ? <ChevronUp className="h-4 w-4 text-[#34d399]" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           {showRanks && (
-            <div className="absolute z-50 top-full mt-1 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-zinc-700/50 no-scrollbar shadow-xl shadow-black/40">
+            <div className="absolute z-50 top-full mt-1 w-full max-h-48 overflow-y-auto rounded-lg bg-zinc-900 border border-zinc-700/50 no-scrollbar shadow-xl shadow-black/40">
               {RANKS.map((r) => (
                 <button
                   key={r}
@@ -561,13 +561,13 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
               setShowBloodTypes(!showBloodTypes)
               setShowRanks(false)
             }}
-            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-zinc-800 text-white text-xs border border-zinc-700/50 font-bold min-h-[46px] hover:bg-zinc-700 transition-colors"
+            className="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-zinc-800 text-white text-xs border border-zinc-700/50 font-bold min-h-[46px] hover:bg-zinc-700 transition-colors"
           >
             <span className="truncate">{form.bloodType || 'Επιλογή'}</span>
             {showBloodTypes ? <ChevronUp className="h-4 w-4 text-[#34d399]" /> : <ChevronDown className="h-4 w-4" />}
           </button>
           {showBloodTypes && (
-            <div className="absolute z-50 top-full mt-1 w-full max-h-48 overflow-y-auto rounded-xl bg-zinc-900 border border-zinc-700/50 no-scrollbar shadow-xl shadow-black/40">
+            <div className="absolute z-50 top-full mt-1 w-full max-h-48 overflow-y-auto rounded-lg bg-zinc-900 border border-zinc-700/50 no-scrollbar shadow-xl shadow-black/40">
               {BLOOD_TYPES.map((b) => (
                 <button
                   key={b}
@@ -619,7 +619,7 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
         <textarea
           value={form.reportingPhrase}
           onChange={(e) => setForm({ ...form, reportingPhrase: e.target.value })}
-          className="w-full bg-zinc-800 text-white text-xs border border-zinc-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 focus:border-[#34d399]/50 transition-all min-h-[80px] font-medium placeholder:text-zinc-600"
+          className="w-full bg-zinc-800 text-white text-xs border border-zinc-700/50 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 focus:border-[#34d399]/50 transition-all min-h-[80px] font-medium placeholder:text-zinc-600"
           placeholder="Η φράση που λες στην αναφορά..."
         />
       </div>
@@ -628,13 +628,13 @@ function EditProfileForm({ profile, onSave, onCancel }: { profile: ProfileData; 
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
-            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
           >
             Αποθήκευση
           </button>
@@ -679,14 +679,14 @@ function AddSuperiorForm({ onAdd, onCancel }: { onAdd: (entry: SuperiorEntry) =>
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
             disabled={!form.name.trim()}
-            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
           >
             Προσθήκη
           </button>
@@ -729,14 +729,14 @@ function EditSuperiorForm({ entry, onUpdate, onCancel }: { entry: SuperiorEntry;
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
             disabled={!form.name.trim()}
-            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
           >
             Αποθήκευση
           </button>
@@ -781,14 +781,14 @@ function AddFriendForm({ onAdd, onCancel }: { onAdd: (entry: FriendEntry) => voi
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
             disabled={!form.name.trim()}
-            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
           >
             Προσθήκη
           </button>
@@ -831,14 +831,14 @@ function EditFriendForm({ entry, onUpdate, onCancel }: { entry: FriendEntry; onU
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
             disabled={!form.name.trim()}
-            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
           >
             Αποθήκευση
           </button>
@@ -857,7 +857,7 @@ function FormField({ label, value, onChange, placeholder, type = "text" }: { lab
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-zinc-800 text-white text-xs border border-zinc-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 focus:border-[#34d399]/50 transition-all font-bold placeholder:text-zinc-600 h-[46px]"
+        className="w-full bg-zinc-800 text-white text-xs border border-zinc-700/50 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 focus:border-[#34d399]/50 transition-all font-bold placeholder:text-zinc-600 h-[46px]"
       />
     </div>
   )

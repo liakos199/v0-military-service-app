@@ -68,7 +68,7 @@ export function InlineDatePicker({ value, onChange, label, minDate }: InlineDate
         type="button"
         onClick={() => { hapticFeedback('light'); setIsOpen(o => !o) }}
         className={cn(
-          'w-full flex items-center justify-between rounded-xl bg-zinc-900 border px-4 py-3.5 text-sm min-h-[48px] transition-colors',
+          'w-full flex items-center justify-between rounded-lg bg-zinc-900 border px-4 py-3.5 text-sm min-h-[48px] transition-colors',
           isOpen ? 'border-emerald-500' : 'border-zinc-800 hover:border-zinc-700'
         )}
       >
@@ -83,7 +83,7 @@ export function InlineDatePicker({ value, onChange, label, minDate }: InlineDate
 
       {/* Inline calendar — no fixed/absolute, renders in flow */}
       {isOpen && (
-        <div className="mt-2 bg-zinc-900 border border-zinc-700/60 rounded-2xl overflow-hidden">
+        <div className="mt-2 bg-zinc-900 border border-zinc-700/60 rounded-lg overflow-hidden">
           {/* Month nav */}
           <div className="flex items-center justify-between px-3 pt-3 pb-2">
             <button
@@ -157,7 +157,7 @@ export function InlineDatePicker({ value, onChange, label, minDate }: InlineDate
                 setViewYear(today.getFullYear())
                 handleSelectDay(today.getDate())
               }}
-              className="w-full py-2 rounded-xl bg-zinc-800 border border-zinc-700/50 text-[10px] font-bold uppercase tracking-widest text-zinc-300 hover:border-zinc-600 transition-colors active:scale-95"
+              className="w-full py-2 rounded-lg bg-zinc-800 border border-zinc-700/50 text-[10px] font-bold uppercase tracking-widest text-zinc-300 hover:border-zinc-600 transition-colors active:scale-95"
             >
               Σήμερα
             </button>
