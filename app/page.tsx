@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
 import { BottomNav, type TabId } from '@/components/bottom-nav'
 import { ServiceTab } from '@/components/service-tab'
 import { CalendarTab } from '@/components/calendar-tab'
@@ -30,7 +29,7 @@ export default function Home() {
       <div
         className={`fixed inset-0 flex flex-col items-center justify-center bg-black z-50 ${splashFading ? 'opacity-0 transition-opacity duration-400' : ''}`}
       >
-        <div className="flex flex-col items-center gap-5 animate-fade-in">
+        <div className="flex flex-col items-center gap-5">
           <Image
             src="/icon-512.png"
             alt="ΑΠΟΛΕΛΕ PRO"
@@ -61,25 +60,13 @@ export default function Home() {
     <main className="h-screen w-full bg-black flex flex-col overflow-hidden text-zinc-100 selection:bg-[#34d399] selection:text-black">
       {/* Content Area */}
       <div className="flex-1 w-full max-w-lg mx-auto flex flex-col overflow-hidden relative">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, scale: 0.98, y: 8 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 1.02, y: -8 }}
-            transition={{ 
-              duration: 0.25, 
-              ease: [0.32, 0.72, 0, 1] 
-            }}
-            className="flex-1 w-full overflow-hidden"
-          >
-            {activeTab === 'service' && <ServiceTab />}
-            {activeTab === 'duties' && <CalendarTab />}
-            {activeTab === 'notes' && <NotesTab />}
-            {activeTab === 'profile' && <ProfileTab />}
-            {activeTab === 'expenses' && <ExpensesTab />}
-          </motion.div>
-        </AnimatePresence>
+        <div key={activeTab} className="flex-1 w-full overflow-hidden">
+          {activeTab === 'service' && <ServiceTab />}
+          {activeTab === 'duties' && <CalendarTab />}
+          {activeTab === 'notes' && <NotesTab />}
+          {activeTab === 'profile' && <ProfileTab />}
+          {activeTab === 'expenses' && <ExpensesTab />}
+        </div>
       </div>
 
       {/* Bottom Navigation */}

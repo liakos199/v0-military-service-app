@@ -439,7 +439,7 @@ export function NotesTab() {
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
-    <div className="flex flex-col h-full bg-black relative z-10 animate-fade-in">
+    <div className="flex flex-col h-full bg-black relative z-10">
       {/* Ambient Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-48 bg-[#10b981]/5 blur-[70px] pointer-events-none rounded-full z-0"></div>
 

@@ -119,7 +119,7 @@ export function ServiceTab() {
   }, [percentage])
 
   return (
-    <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in bg-black">
+    <div className="flex-1 flex flex-col relative z-10 w-full h-full bg-black">
       <svg width="0" height="0" className="absolute">
         <defs>
           <linearGradient id="emerald-ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">

@@ -38,7 +38,7 @@ export function ProfileTab() {
   const [activeSection, setActiveSection] = useState<'profile' | 'superiors' | 'friends'>('profile')
 
   return (
-    <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in overflow-hidden bg-black">
+    <div className="flex-1 flex flex-col relative z-10 w-full h-full overflow-hidden bg-black">
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 relative shrink-0">
         <h1 className="text-[26px] font-bold tracking-tight text-white mb-1 leading-none">Άτομα</h1>
@@ -112,7 +112,7 @@ function ProfileSection() {
   }
 
   return (
-    <div className="animate-fade-in space-y-3">
+    <div className="space-y-3">
       {/* Identity Card */}
       <button 
         onClick={startEdit}
@@ -241,7 +241,7 @@ function SuperiorsSection() {
   }
 
   return (
-    <div className="animate-fade-in space-y-3">
+    <div className="space-y-3">
       <div className="flex items-center justify-between mb-1 px-1">
         <h2 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Υπαρχοντεσ</h2>
         <button 
@@ -353,7 +353,7 @@ function FriendsSection() {
   }
 
   return (
-    <div className="animate-fade-in space-y-3">
+    <div className="space-y-3">
       <div className="flex items-center justify-between mb-1 px-1">
         <h2 className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 uppercase">Υπαρχοντεσ</h2>
         <button 

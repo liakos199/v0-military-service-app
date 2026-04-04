@@ -232,7 +232,7 @@ export function CalendarTab() {
   const greekDaysStartMonday = ['Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα', 'Κυ']
 
   return (
-    <div className="flex flex-col h-full bg-black relative z-10 animate-fade-in">
+    <div className="flex-1 flex flex-col h-full bg-black relative z-10">
       {/* Ambient Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-48 bg-[#10b981]/5 blur-[70px] pointer-events-none rounded-full z-0"></div>
 
@@ -905,7 +905,7 @@ function DateDetailsModal({
 
   return (
     <div
-      className="fixed inset-0 z-[85] bg-black/80 backdrop-blur-sm animate-fade-in flex flex-col"
+      className="fixed inset-0 z-[85] bg-black/80 backdrop-blur-sm flex flex-col"
       onClick={onClose}
     >
       <div
@@ -1458,7 +1458,7 @@ function ManageDutyTypesModal({
   if (!isOpen || !mounted) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-[250] bg-black/80 backdrop-blur-sm animate-fade-in flex flex-col" onClick={onClose}>
+    <div className="fixed inset-0 z-[250] bg-black/80 backdrop-blur-sm flex flex-col" onClick={onClose}>
       <div className="flex-1 flex flex-col w-full h-full safe-top safe-bottom" onClick={(e) => e.stopPropagation()}>
         <ModalLayout
           header={

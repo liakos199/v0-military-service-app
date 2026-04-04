@@ -56,7 +56,7 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
 
   return (
     <div
-      className="fixed inset-0 z-[90] bg-black backdrop-blur-sm animate-fade-in flex flex-col"
+      className="fixed inset-0 z-[90] bg-black backdrop-blur-sm flex flex-col"
       onClick={() => {
         hapticFeedback('light')
         onClose()

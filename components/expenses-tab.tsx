@@ -51,7 +51,7 @@ export function ExpensesTab() {
   }, [expenses])
 
   return (
-    <div className="flex-1 flex flex-col relative z-10 w-full h-full animate-fade-in overflow-hidden bg-black">
+    <div className="flex-1 flex flex-col relative z-10 w-full h-full overflow-hidden bg-black">
       {/* HEADER */}
       <header className="px-6 pt-14 pb-2 z-10 relative flex justify-between items-start shrink-0">
         <div>
