@@ -7,6 +7,7 @@ import type { CanteenCatalogItem } from '@/lib/types'
 import { CANTEEN_CATEGORY_LABELS } from '@/lib/types'
 import { ChevronDown, Pencil, X } from 'lucide-react'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
+import { ModalFooter } from '@/components/fullscreen-modal'
 
 interface CanteenCatalogManagerProps {
   items: CanteenCatalogItem[]
@@ -249,14 +250,16 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         })}
       </div>
 
-      <div className="flex gap-3 pt-4">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
-        >
-          Κλεισιμο
-        </button>
-      </div>
+      <ModalFooter>
+        <div className="flex gap-3 pt-4 px-6 pb-6 shadow-2xl">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-800 hover:text-white transition-colors"
+          >
+            Κλεισιμο
+          </button>
+        </div>
+      </ModalFooter>
 
       {deletePendingId && (
         <DeleteConfirmDialog

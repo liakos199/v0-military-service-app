@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Plus, X, Lock, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
-import { FullscreenModal } from '@/components/fullscreen-modal'
+import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { Counter } from '@/components/counter'
 import {
@@ -186,7 +186,6 @@ export function PrisonDetentionManager() {
         isOpen={showPrisonModal}
         onClose={() => setShowPrisonModal(false)}
         title="Προσθήκη Φυλακής"
-        footer={<AddPrisonFormFooter />}
       >
         <AddPrisonForm
           onAdd={handleAddPrison}
@@ -199,7 +198,6 @@ export function PrisonDetentionManager() {
         isOpen={showDetentionModal}
         onClose={() => setShowDetentionModal(false)}
         title="Προσθήκη Κράτησης"
-        footer={<AddDetentionFormFooter />}
       >
         <AddDetentionForm
           onAdd={handleAddDetention}
@@ -275,12 +273,25 @@ function AddPrisonForm({
         </p>
       </div>
 
+      <ModalFooter>
+        <div className="flex gap-3 px-6 py-5">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+          >
+            Ακύρωση
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!days || parseInt(days) <= 0}
+            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
+          >
+            Προσθήκη
+          </button>
+        </div>
+      </ModalFooter>
     </div>
   )
-}
-
-function AddPrisonFormFooter() {
-  return <></>
 }
 
 /* ---------- Add Detention Form ---------- */
@@ -349,10 +360,23 @@ function AddDetentionForm({
         </div>
       )}
 
+      <ModalFooter>
+        <div className="flex gap-3 px-6 py-5">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all font-bold"
+          >
+            Ακύρωση
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!startDate || !endDate || startDate > endDate}
+            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50 font-bold"
+          >
+            Προσθήκη
+          </button>
+        </div>
+      </ModalFooter>
     </div>
   )
-}
-
-function AddDetentionFormFooter() {
-  return <></>
 }

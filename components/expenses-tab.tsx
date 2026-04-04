@@ -5,7 +5,7 @@ import { Search, X, Filter, SlidersHorizontal, Plus, Box } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
-import { FullscreenModal } from '@/components/fullscreen-modal'
+import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { CanteenCatalogManager } from '@/components/canteen-catalog-manager'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString, toast } from '@/lib/helpers'
@@ -216,7 +216,6 @@ export function ExpensesTab() {
         title="Νέο Έξοδο"
         showBackButton={true}
         onBack={() => setShowAdd(false)}
-        footer={<AddExpenseFormFooter />}
       >
         <AddExpenseForm
           canteenCatalog={canteenCatalog}
@@ -402,11 +401,26 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
 
       {/* Date Picker */}
       <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
+
+      <ModalFooter>
+        <div className="flex gap-3 px-6 py-5">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all font-bold"
+          >
+            Ακύρωση
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!amount || !date}
+            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50 font-bold"
+          >
+            Προσθήκη
+          </button>
+        </div>
+      </ModalFooter>
     </div>
   )
 }
 
-function AddExpenseFormFooter() {
-  return <></>
-}
 

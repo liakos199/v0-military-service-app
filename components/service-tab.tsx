@@ -314,25 +314,10 @@ export function ServiceTab() {
 
       </main>
 
-      {/* LELEmeter Config Modal */}
       <FullscreenModal
         isOpen={showConfig}
         onClose={() => setShowConfig(false)}
         title="Ρυθμίσεις Θητείας"
-        footer={
-          <div className="px-6 py-3 pb-6">
-            <button
-              onClick={() => { 
-                hapticFeedback('medium')
-                setShowConfig(false)
-                toast('Οι ρυθμίσεις αποθηκεύτηκαν')
-              }}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[12px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
-            >
-              Αποθήκευση
-            </button>
-          </div>
-        }
       >
         <div className="flex flex-col gap-6">
           <InlineDatePicker
@@ -382,9 +367,24 @@ export function ServiceTab() {
                 className="w-full pl-32 pr-4 py-4 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
               />
             </div>
+          </div>
+
+          <ModalFooter>
+            <div className="px-6 py-3 pb-6">
+              <button
+                onClick={() => {
+                  hapticFeedback('medium')
+                  setShowConfig(false)
+                  toast('Οι ρυθμίσεις αποθηκεύτηκαν')
+                }}
+                className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[12px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+              >
+                Αποθήκευση
+              </button>
+            </div>
+          </ModalFooter>
         </div>
-      </div>
-    </FullscreenModal>
+      </FullscreenModal>
 
       {/* Prison Modal */}
       <FullscreenModal

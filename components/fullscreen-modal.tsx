@@ -63,7 +63,7 @@ export function FullscreenModal({
   if (!isOpen || !mounted) return null
 
   const header = (
-    <div className="flex items-center justify-between px-6 pt-14 pb-4 border-b border-zinc-800/80 bg-black">
+    <div className="flex items-center justify-between px-6 py-6 border-b border-zinc-800/80 bg-zinc-950">
       <div className="flex items-center gap-3 flex-1">
         {showBackButton && onBack && (
           <button
@@ -97,16 +97,14 @@ export function FullscreenModal({
       <ModalLayout
         header={header}
         footer={
-          (footer || footerNode) ? (
-            <>
-              {footer}
-              <div ref={setFooterNode} />
-            </>
-          ) : undefined
+          <div className="w-full relative">
+            {footer}
+            <div ref={setFooterNode} />
+          </div>
         }
         contentClassName={contentClassName}
       >
-        <ModalFooterContext.Provider value={footerNode}>
+        <ModalFooterContext.Provider value={footerNode} >
           {children}
         </ModalFooterContext.Provider>
       </ModalLayout>
