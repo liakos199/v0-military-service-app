@@ -26,13 +26,17 @@ const FEATURES = [
 ]
 
 export function WelcomeModal() {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [step, setStep] = useState<ModalStep>('install')
   const [device, setDevice] = useState<DeviceType>('ios')
   const [browser, setBrowser] = useState<BrowserType>('safari')
 
   useEffect(() => {
-    setIsOpen(true)
+    // Check if the user has already seen the modal
+    const hasSeen = localStorage.getItem('welcome-modal-seen')
+    if (!hasSeen) {
+      setIsOpen(true)
+    }
     
     // Auto-detect device for production logic (currently forced to iOS for design)
     const ua = navigator.userAgent
