@@ -32,7 +32,6 @@ export function WelcomeModal() {
   const [browser, setBrowser] = useState<BrowserType>('safari')
 
   useEffect(() => {
-    // Check if the user has already seen the modal
     const hasSeen = localStorage.getItem('welcome-modal-seen')
     if (!hasSeen) {
       setIsOpen(true)
@@ -216,7 +215,7 @@ export function WelcomeModal() {
           </div>
         </div>
 
-        <div className="min-h-[260px] px-4">
+        <div className="min-h-[260px] px-2">
           {step === 'install' ? renderInstructions() : renderFeatures()}
         </div>
       </ModalLayout>
@@ -230,11 +229,7 @@ export function WelcomeModal() {
       title={step === 'install' ? 'ΟΔΗΓΙΕΣ' : ''}
       showBackButton={false}
     >
-      <div className="h-full bg-black relative overflow-hidden">
-        {/* Abstract Background Accents */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
-        
+      <div className="h-full bg-black relative">
         {renderContent()}
       </div>
     </FullscreenModal>

@@ -386,7 +386,7 @@ export function ServiceTab() {
                   setShowConfig(false)
                   toast('Οι ρυθμίσεις αποθηκεύτηκαν')
                 }}
-                className="w-full py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[12px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+                className="w-full py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-[0.2em] active:scale-95 transition-all"
               >
                 Αποθήκευση
               </button>

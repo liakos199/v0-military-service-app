@@ -39,7 +39,7 @@ export function FullscreenModal({
   footer, 
   showBackButton = false, 
   onBack,
-  contentClassName = "px-6 py-5 pb-12"
+  contentClassName = "p-6"
 }: FullscreenModalProps) {
   const [mounted, setMounted] = useState(false)
   const [footerNode, setFooterNode] = useState<HTMLDivElement | null>(null)
@@ -63,7 +63,7 @@ export function FullscreenModal({
   if (!isOpen || !mounted) return null
 
   const header = (
-    <div className="flex items-center justify-between px-6 pt-[calc(1.5rem+env(safe-area-inset-top,0px))] pb-6 border-b border-zinc-800/80 bg-zinc-950 shrink-0">
+    <div className="flex items-center justify-between px-6 pb-4 pt-[calc(1.5rem+env(safe-area-inset-top,0px))] border-b border-zinc-800/80 bg-zinc-950 shrink-0">
       <div className="flex items-center gap-3 flex-1">
         {showBackButton && onBack && (
           <button
