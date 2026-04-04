@@ -265,13 +265,13 @@ export function DutyForm({
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-4 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
-            className="flex-1 py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
           >
             {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
           </button>

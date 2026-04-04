@@ -428,16 +428,16 @@ function AddExpenseForm({ canteenCatalog, onAdd, onCancel }: AddExpenseFormProps
         <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-500 font-black text-[10px] uppercase tracking-widest hover:bg-zinc-800 hover:text-white transition-all active:scale-95"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
-            ΑΚΥΡΩΣΗ
+            Ακύρωση
           </button>
           <button
             onClick={handleSubmit}
             disabled={!amount || !date || !description.trim()}
-            className="flex-[1.5] py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-black font-black text-[10px] uppercase tracking-widest shadow-xl shadow-emerald-900/20 active:scale-98 disabled:opacity-30 disabled:grayscale transition-all"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
           >
-            KATAXΩΡΗΣΗ
+            Καταχώρηση
           </button>
         </div>
       </ModalFooter>

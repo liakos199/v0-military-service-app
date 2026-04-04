@@ -258,10 +258,10 @@ export function CanteenCatalogManager({ items, onSave, onCancel }: CanteenCatalo
         </div>
       
       <ModalFooter>
-        <div className="flex gap-3 px-6 py-5">
+        <div className="px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-4 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[10px] uppercase tracking-widest hover:bg-zinc-800 hover:text-white transition-colors"
+            className="w-full py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Κλεισιμο
           </button>

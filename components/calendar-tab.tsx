@@ -1223,13 +1223,13 @@ function AddLeaveForm({
     <div className="flex gap-3 px-6 py-5">
       <button
         onClick={onCancel}
-        className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
+        className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
       >
         Ακύρωση
       </button>
       <button
         onClick={handleSubmit}
-        className="flex-1 py-3 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
       >
         {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
       </button>
@@ -1251,7 +1251,7 @@ function AddLeaveForm({
               className={cn(
                 'py-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border',
                 type === t
-                  ? 'bg-amber-500 text-white border-amber-500'
+                  ? 'bg-emerald-500 text-white border-emerald-500'
                   : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
               )}
             >
@@ -1270,7 +1270,7 @@ function AddLeaveForm({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προσθήκη σημειώσεων..."
-          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-amber-500 outline-none resize-none h-24"
+          className="w-full px-3 py-3 rounded-lg bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
         />
       </div>
     </div>

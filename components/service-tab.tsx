@@ -379,14 +379,14 @@ export function ServiceTab() {
           </div>
 
           <ModalFooter>
-            <div className="px-6 py-3 pb-6">
+            <div className="px-6 py-5">
               <button
                 onClick={() => {
                   hapticFeedback('medium')
                   setShowConfig(false)
                   toast('Οι ρυθμίσεις αποθηκεύτηκαν')
                 }}
-                className="w-full py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[11px] uppercase tracking-[0.2em] active:scale-95 transition-all"
+                className="w-full py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
               >
                 Αποθήκευση
               </button>
@@ -539,10 +539,10 @@ function PrisonManager({
       </div>
 
       <ModalFooter>
-        <div className="px-6 py-3 pb-6">
+        <div className="px-6 py-5">
           <button
             onClick={() => { hapticFeedback('light'); setShowForm(true) }}
-            className="w-full py-3.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
           >
             <Plus size={16} />
             Προσθήκη Καταχώρησης
@@ -600,16 +600,16 @@ function PrisonForm({
       </div>
 
       <ModalFooter>
-        <div className="flex gap-3 px-6 py-3 pb-6">
+        <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-4 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
           <button
             onClick={() => onSave(days, reason)}
-            className="flex-[2] py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
           >
             {initial ? 'Αποθήκευση' : 'Προσθήκη'}
           </button>
@@ -730,10 +730,10 @@ function DetentionManager({
       </div>
 
       <ModalFooter>
-        <div className="px-6 py-3 pb-6">
+        <div className="px-6 py-5">
           <button
             onClick={() => { hapticFeedback('light'); setShowForm(true) }}
-            className="w-full py-3.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
           >
             <Plus size={16} />
             Προσθήκη Κράτησης
@@ -797,17 +797,17 @@ function DetentionForm({
       </div>
 
       <ModalFooter>
-        <div className="flex gap-3 px-6 py-3 pb-6">
+        <div className="flex gap-3 px-6 py-5">
           <button
             onClick={onCancel}
-            className="flex-1 py-4 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:bg-zinc-800 transition-colors"
+            className="flex-1 py-3 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
           >
             Ακύρωση
           </button>
           <button
             onClick={() => onSave(startDate, endDate, reason)}
             disabled={!startDate || !endDate}
-            className="flex-[2] py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-transform disabled:opacity-50"
+            className="flex-1 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all disabled:opacity-50"
           >
             {initial ? 'Αποθήκευση' : 'Προσθήκη'}
           </button>
