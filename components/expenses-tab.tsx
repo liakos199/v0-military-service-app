@@ -117,7 +117,7 @@ export function ExpensesTab() {
                   key={cat}
                   onClick={() => setFilterCategory(cat)}
                   className={cn(
-                    "px-5 py-2 rounded-lg font-bold tracking-wider shrink-0 active:scale-95 text-[8px]",
+                    "px-5 py-2 rounded-sm font-bold tracking-wider shrink-0 active:scale-95 text-[8px]",
                     filterCategory === cat
                       ? 'bg-gradient-to-r from-[#34d399] to-[#10b981] text-black shadow-[0_0_10px_rgba(52,211,153,0.2)]'
                       : 'bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-white hover:bg-zinc-700'
