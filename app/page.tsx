@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { BottomNav, type TabId } from '@/components/bottom-nav'
 import { ServiceTab } from '@/components/service-tab'
 import { CalendarTab } from '@/components/calendar-tab'
@@ -9,6 +8,9 @@ import { NotesTab } from '@/components/notes-tab'
 import { ProfileTab } from '@/components/profile-tab'
 import { ExpensesTab } from '@/components/expenses-tab'
 import { WelcomeModal } from '@/components/welcome-modal'
+import { SplashAnimation } from '@/components/splash-animation'
+import { FooterSignature } from '@/components/footer-signature'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>('service')
@@ -16,42 +18,62 @@ export default function Home() {
   const [splashFading, setSplashFading] = useState(false)
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setSplashFading(true), 1800)
-    const hideTimer = setTimeout(() => setShowSplash(false), 2200)
-    return () => {
-      clearTimeout(fadeTimer)
-      clearTimeout(hideTimer)
-    }
+    // const fadeTimer = setTimeout(() => setSplashFading(true), 1800)
+    // const hideTimer = setTimeout(() => setShowSplash(false), 2500)
+    // return () => {
+    //   clearTimeout(fadeTimer)
+    //   clearTimeout(hideTimer)
+    // }
   }, [])
 
   if (showSplash) {
     return (
       <div
-        className={`fixed inset-0 flex flex-col items-center justify-center bg-black z-50 ${splashFading ? 'opacity-0 transition-opacity duration-400' : ''}`}
+        className={`fixed inset-0 flex flex-col items-center justify-center bg-black z-50 ${splashFading ? 'opacity-0 transition-opacity duration-700' : ''}`}
       >
-        <div className="flex flex-col items-center gap-5">
-          <Image
-            src="/icon-512.png"
-            alt="ΑΠΟΛΕΛΕ PRO"
-            width={140}
-            height={140}
-            className="rounded-[2.5rem] shadow-2xl shadow-emerald-900/20"
-            priority
-          />
-          <div className="text-center space-y-1">
-            <h1 className="text-xl font-bold tracking-tight text-white font-sans">
+        <div className="flex flex-col items-center gap-8">
+          <SplashAnimation />
+          
+          <div className="flex flex-col items-center gap-1">
+            <motion.h1 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="text-4xl font-black tracking-tighter text-white"
+            >
               ΑΠΟΛΕΛΕ PRO
-            </h1>
-            <p className="text-[9px] text-zinc-500 tracking-[0.3em] uppercase font-bold">
+            </motion.h1>
+            
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="text-[10px] text-white tracking-[0.3em] uppercase font-bold"
+            >
               ΣΤΡΑΤΙΩΤΙΚΗ ΕΦΑΡΜΟΓΗ
-            </p>
+            </motion.p>
           </div>
         </div>
-        <div className="absolute bottom-12 left-0 right-0 text-center">
-          <p className="text-[10px] font-bold tracking-[0.2em] text-emerald-500/80 uppercase">
-            Made by Η.Π.
-          </p>
-        </div>
+
+        {/* Minimalist Footer SVG Area */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="absolute bottom-12 w-full flex flex-col items-center gap-2"
+        >
+          <div className="flex items-center gap-3">
+             <p className="text-[10px] font-bold tracking-[0.3em] text-zinc-500 uppercase">
+               MADE BY <span className="text-zinc-100">Η.Π.</span>
+             </p>
+          </div>
+          <motion.div 
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 60, opacity: 1 }}
+            transition={{ delay: 1.4, duration: 1, ease: "easeInOut" }}
+            className="h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"
+          />
+        </motion.div>
       </div>
     )
   }
