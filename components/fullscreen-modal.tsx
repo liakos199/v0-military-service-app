@@ -93,7 +93,7 @@ export function FullscreenModal({
   )
 
   return createPortal(
-    <div className="fixed inset-0 z-[200] bg-black flex flex-col">
+    <div className="fixed inset-0 z-[400] bg-black flex flex-col">
       <ModalLayout
         header={header}
         footer={

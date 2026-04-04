@@ -36,8 +36,10 @@ export interface DutyEntry {
   id: string
   type: DutyType
   date: string
+  endDate?: string      // Added for multi-day/overnight shifts (YYYY-MM-DD)
   startTime?: string
   endTime?: string
+  durationMinutes?: number // Pre-calculated duration in minutes
   notes: string
   password?: string      // Σύνθημα (for guard duty)
   countersign?: string   // Παρασύνθημα (for guard duty)

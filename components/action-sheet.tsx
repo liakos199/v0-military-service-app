@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { hapticFeedback } from '@/lib/helpers'
 import { ModalLayout } from '@/components/modal-layout'
@@ -14,6 +15,12 @@ interface ActionSheetProps {
 }
 
 export function ActionSheet({ isOpen, onClose, title, subtitle, children }: ActionSheetProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -25,7 +32,7 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
     }
   }, [isOpen])
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
   const header = (
     <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-800/80">
@@ -54,9 +61,9 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
     </div>
   )
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[90] bg-black backdrop-blur-sm flex flex-col"
+      className="fixed inset-0 z-[300] bg-black flex flex-col"
       onClick={() => {
         hapticFeedback('light')
         onClose()
@@ -75,7 +82,8 @@ export function ActionSheet({ isOpen, onClose, title, subtitle, children }: Acti
           </div>
         </ModalLayout>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 
@@ -95,11 +103,11 @@ export function ActionSheetItem({ icon, title, subtitle, onClick, variant = 'def
     variantClasses = 'bg-red-500/10 border-red-500/20 hover:bg-red-500/20 text-red-400'
     iconColorClass = 'text-red-400'
   } else if (variant === 'duty') {
-    variantClasses = 'bg-emerald-500/20 hover:bg-emerald-500/20 text-emerald-400'
+    variantClasses = 'bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 text-emerald-400'
     iconColorClass = 'text-emerald-400'
   } else if (variant === 'leave') {
-    variantClasses = 'bg-emerald-500/20 hover:bg-emerald-500/20 text-emerald-400'
-    iconColorClass = 'text-emerald-400'
+    variantClasses = 'bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 text-amber-400'
+    iconColorClass = 'text-amber-400'
   } else {
     variantClasses = 'bg-gradient-to-br from-zinc-800 to-zinc-900/90 border-zinc-700/40 hover:border-[#34d399]/30 text-white'
     iconColorClass = 'text-[#34d399]'

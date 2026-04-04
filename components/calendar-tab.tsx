@@ -20,18 +20,20 @@ import { InlineDatePicker } from '@/components/inline-date-picker'
 import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { ModalLayout } from '@/components/modal-layout'
 import { ActionSheet, ActionSheetItem, ActionSheetCancel } from '@/components/action-sheet'
-import {
-  hapticFeedback,
-  formatGreekDate,
-  generateId,
-  toLocalDateString,
-  daysBetween,
+import { 
+  hapticFeedback, 
+  formatGreekDate, 
+  generateId, 
+  toLocalDateString, 
+  daysBetween, 
   formatGreekDateFull,
   generateIcsFile,
   downloadIcsFile,
-  toast,
+  toast 
 } from '@/lib/helpers'
+import { getDutyCoveredDates, getDutyStats } from '@/lib/duty-utils'
 import { Switch } from '@/components/ui/switch'
+import { DutyForm } from '@/components/shared/duty-form'
 import type { DutyEntry, DutyType, LeaveEntry, LeaveType } from '@/lib/types'
 import { DUTY_TYPE_LABELS, LEAVE_TYPE_LABELS, GREEK_MONTHS } from '@/lib/types'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
@@ -65,11 +67,26 @@ export function CalendarTab() {
   const [dutyLabels, setDutyLabels] = useLocalStorage<Record<string, string>>('fantaros-duty-labels', DUTY_TYPE_LABELS)
   const [showManageTypes, setShowManageTypes] = useState(false)
 
+  // Support opening action sheet from DateDetailsModal
+  useEffect(() => {
+    const handleOpenActions = (e: any) => {
+      if (e.detail) {
+        setSelectedDate(e.detail)
+        setShowActionSheet(true)
+      }
+    }
+    document.addEventListener('open-calendar-actions', handleOpenActions)
+    return () => document.removeEventListener('open-calendar-actions', handleOpenActions)
+  }, [])
+
   const dateEventsMap = useMemo(() => {
     const map: Record<string, { duties: DutyEntry[]; leaves: LeaveEntry[] }> = {}
     duties.forEach((d) => {
-      if (!map[d.date]) map[d.date] = { duties: [], leaves: [] }
-      map[d.date].duties.push(d)
+      const coveredDates = getDutyCoveredDates(d)
+      coveredDates.forEach(date => {
+        if (!map[date]) map[date] = { duties: [], leaves: [] }
+        map[date].duties.push(d)
+      })
     })
 
     const leavesSet = new Map<string, Set<string>>()
@@ -338,7 +355,7 @@ export function CalendarTab() {
                             {hasLeave && (
                               <span className={cn(
                                 'w-1.5 h-1.5 rounded-full',
-                                isSelected || isToday ? 'bg-white' : 'bg-emerald-400'
+                                isSelected || isToday ? 'bg-white' : 'bg-amber-400'
                               )} />
                             )}
                           </div>
@@ -357,7 +374,7 @@ export function CalendarTab() {
                 <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Υπηρεσία</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <span className="w-2 h-2 rounded-full bg-amber-400" />
                 <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">Άδεια</span>
               </div>
             </div>
@@ -421,6 +438,7 @@ export function CalendarTab() {
             setInitialDutyType('guard')
             setDutyModalMode('add')
             setEditingDutyId(null)
+            setShowActionSheet(false)
             setShowAddDuty(true)
           }}
         />
@@ -431,6 +449,7 @@ export function CalendarTab() {
           onClick={() => {
             setLeaveModalMode('add')
             setEditingLeaveId(null)
+            setShowActionSheet(false)
             setShowAddLeave(true)
           }}
         />
@@ -446,11 +465,13 @@ export function CalendarTab() {
         onAddDuty={() => {
           setDutyModalMode('add')
           setEditingDutyId(null)
+          setShowDateDetails(false)
           setShowAddDuty(true)
         }}
         onAddLeave={() => {
           setLeaveModalMode('add')
           setEditingLeaveId(null)
+          setShowDateDetails(false)
           setShowAddLeave(true)
         }}
         onEditDuty={handleEditDuty}
@@ -497,14 +518,13 @@ export function CalendarTab() {
         />
       </FullscreenModal>
 
-      {/* Add Duty Modal */}
       <FullscreenModal
         isOpen={showAddDuty}
         onClose={handleCloseModals}
         title={dutyModalMode === 'edit' ? 'Επεξεργασία Υπηρεσίας' : 'Νέα Υπηρεσία'}
         contentClassName="px-6 py-5 pb-safe overflow-y-auto"
       >
-        <AddDutyForm
+        <DutyForm
           initialDate={selectedDate || today}
           initialType={initialDutyType}
           dutyLabels={dutyLabels}
@@ -517,6 +537,8 @@ export function CalendarTab() {
               ? duties.find((d) => d.id === editingDutyId)
               : undefined
           }
+          existingDuties={duties}
+          existingLeaves={leaves}
         />
       </FullscreenModal>
 
@@ -576,11 +598,16 @@ function MonthlySummary({
 }) {
   const stats = useMemo(() => {
     const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
-    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
+    const daysInMonthTotal = new Date(viewYear, viewMonth + 1, 0).getDate()
     const monthStart = `${monthPrefix}-01`
-    const monthEnd = `${monthPrefix}-${String(daysInMonth).padStart(2, '0')}`
+    const monthEnd = `${monthPrefix}-${String(daysInMonthTotal).padStart(2, '0')}`
 
-    const monthDuties = duties.filter((d) => d.date.startsWith(monthPrefix))
+    const monthDuties = duties.filter((d) => {
+      const dates = getDutyCoveredDates(d)
+      return dates.some(date => date.startsWith(monthPrefix))
+    })
+
+    const dutyStats = getDutyStats(monthDuties)
     
     let leaveDays = 0
     leaves.forEach((l) => {
@@ -594,6 +621,7 @@ function MonthlySummary({
 
     return {
       totalDuties: monthDuties.length,
+      totalHours: dutyStats.totalHours,
       leaveDays,
     }
   }, [duties, leaves, viewMonth, viewYear])
@@ -617,20 +645,23 @@ function MonthlySummary({
             ΥΠΗΡΕΣΙΕΣ
           </span>
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-white">{stats.totalDuties}</span>
-            <span className="text-[9px] text-zinc-400 font-medium uppercase">ΣΥΝΟΛΟ</span>
+            <span className="text-2xl font-bold text-white">{stats.totalHours}</span>
+            <span className="text-[9px] text-zinc-400 font-medium uppercase">Ώρες</span>
+          </div>
+          <div className="text-[8px] text-emerald-400/50 font-bold uppercase mt-1">
+            {stats.totalDuties} ΥΠΗΡΕΣΙΕΣ
           </div>
         </button>
 
         {/* Leave card */}
         <button
           onClick={() => onShowSummary('leave')}
-          className="flex-1 rounded-[1.5rem] bg-emerald-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
+          className="flex-1 rounded-[1.5rem] bg-amber-500/15 p-4 text-left transition-all active:scale-95 group relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
-            <ArrowRight size={16} className="text-emerald-400" />
+            <ArrowRight size={16} className="text-amber-400" />
           </div>
-          <span className="text-[9px] font-bold text-emerald-400/80 uppercase tracking-widest block mb-1">
+          <span className="text-[9px] font-bold text-amber-400/80 uppercase tracking-widest block mb-1">
             ΑΔΕΙΕΣ
           </span>
           <div className="flex items-baseline gap-1">
@@ -716,7 +747,7 @@ function SummaryList({
           key={leave.id}
           className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4"
         >
-          <div className="w-1.5 h-10 rounded-full bg-emerald-500 flex-shrink-0" />
+          <div className="w-1.5 h-10 rounded-full bg-amber-500 flex-shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
             <p className="text-[8px] text-zinc-400 mt-0.5">
@@ -724,7 +755,7 @@ function SummaryList({
             </p>
           </div>
           <div className="flex gap-1">
-            <button onClick={() => onEditLeave(leave.id)} className="p-2 text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-colors">
+            <button onClick={() => onEditLeave(leave.id)} className="p-2 text-amber-400 hover:bg-amber-500/10 rounded-lg transition-colors">
               <Edit2 size={16} />
             </button>
             <button onClick={() => onDeleteLeave(leave.id)} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
@@ -878,7 +909,7 @@ function DateDetailsModal({
       </div>
       <button
         onClick={onClose}
-        className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-[#34d399] transition-colors active:scale-95 flex-shrink-0 ml-2"
+        className="p-2 rounded-full bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center text-zinc-400 hover:text-white transition-colors active:scale-95 flex-shrink-0 ml-2"
         aria-label="Κλείσιμο"
       >
         <Plus size={20} className="rotate-45" />
@@ -896,16 +927,16 @@ function DateDetailsModal({
       </button>
       <button
         onClick={onAddLeave}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
       >
         + Άδεια
       </button>
     </div>
   )
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[85] bg-black/80 backdrop-blur-sm flex flex-col"
+      className="fixed inset-0 z-[300] bg-black flex flex-col"
       onClick={onClose}
     >
       <div
@@ -918,6 +949,25 @@ function DateDetailsModal({
           contentClassName="px-6 py-5"
         >
           <div className="flex flex-col gap-4">
+            {/* Add New Item */}
+            <button
+              onClick={() => {
+                hapticFeedback('light')
+                onClose()
+                setTimeout(() => {
+                  document.dispatchEvent(new CustomEvent('open-calendar-actions', { detail: selectedDate }));
+                }, 100);
+              }}
+              className="group flex items-center justify-center gap-3 p-4 rounded-2xl bg-zinc-900 border-2 border-dashed border-zinc-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all active:scale-[0.98]"
+            >
+              <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 ring-4 ring-emerald-500/5 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                <Plus size={18} />
+              </div>
+              <span className="text-[14px] font-bold text-zinc-400 group-hover:text-emerald-400 transition-colors uppercase tracking-widest">
+                Προσθήκη Νέας
+              </span>
+            </button>
+
             {/* Duties */}
             {duties.length > 0 && (
               <div className="flex flex-col gap-2">
@@ -968,7 +1018,7 @@ function DateDetailsModal({
                       key={leave.id}
                       className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-3 flex items-start gap-3"
                     >
-                      <div className="w-1 h-10 rounded-full bg-emerald-400 flex-shrink-0 mt-0.5" />
+                      <div className="w-1 h-10 rounded-full bg-amber-400 flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
                         <p className="text-[11px] font-bold text-white">{LEAVE_TYPE_LABELS[leave.type]}</p>
                         <p className="text-[8px] text-zinc-400 mt-0.5">
@@ -981,7 +1031,7 @@ function DateDetailsModal({
                       <div className="flex gap-1 flex-shrink-0">
                         <button
                           onClick={() => onEditLeave(leave.id)}
-                          className="p-2 rounded-lg flex items-center justify-center text-emerald-400 hover:bg-emerald-500/10 transition-colors active:scale-90"
+                          className="p-2 rounded-lg flex items-center justify-center text-amber-400 hover:bg-amber-500/10 transition-colors active:scale-90"
                         >
                           <Edit2 size={16} />
                         </button>
@@ -1008,7 +1058,8 @@ function DateDetailsModal({
           </div>
         </ModalLayout>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 
@@ -1104,7 +1155,7 @@ function UpcomingEvents({
               key={leave.id}
               className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex items-center gap-4 shadow-lg shadow-black/10"
             >
-              <div className="w-1.5 h-12 rounded-full flex-shrink-0 bg-emerald-400" />
+              <div className="w-1.5 h-12 rounded-full flex-shrink-0 bg-amber-400" />
               <div className="flex-1 min-w-0">
                 <span className="text-[11px] font-bold text-white break-words">{LEAVE_TYPE_LABELS[leave.type]}</span>
                 <p className="text-[8px] text-zinc-400 mt-1">
@@ -1114,7 +1165,7 @@ function UpcomingEvents({
               <div className="flex gap-1 flex-shrink-0">
                 <button
                   onClick={() => onEditLeave(leave.id)}
-                  className="p-2 rounded-lg flex items-center justify-center text-emerald-400 hover:bg-emerald-500/10 transition-colors active:scale-90"
+                  className="p-2 rounded-lg flex items-center justify-center text-amber-400 hover:bg-amber-500/10 transition-colors active:scale-90"
                 >
                   <Edit2 size={16} />
                 </button>
@@ -1133,185 +1184,6 @@ function UpcomingEvents({
   )
 }
 
-/* ---------- Add Duty Form ---------- */
-function AddDutyForm({
-  initialDate,
-  initialType = 'guard',
-  dutyLabels,
-  onAdd,
-  onCancel,
-  onManageTypes,
-  mode = 'add',
-  editingDuty,
-}: {
-  initialDate: string
-  initialType?: DutyType
-  dutyLabels: Record<string, string>
-  onAdd: (duty: DutyEntry) => void
-  onCancel: () => void
-  onManageTypes: () => void
-  mode?: ModalMode
-  editingDuty?: DutyEntry
-}) {
-  const [type, setType] = useState<DutyType>(editingDuty?.type || initialType)
-  const [date, setDate] = useState(editingDuty?.date || initialDate)
-  const [startTime, setStartTime] = useState(editingDuty?.startTime || '08:00')
-  const [endTime, setEndTime] = useState(editingDuty?.endTime || '08:00')
-  const [notes, setNotes] = useState(editingDuty?.notes || '')
-  const [password, setPassword] = useState(editingDuty?.password || '')
-  const [countersign, setCountersign] = useState(editingDuty?.countersign || '')
-  const [addToCalendar, setAddToCalendar] = useState(true)
-
-  const handleSubmit = () => {
-    if (!date || !startTime || !endTime) return
-    
-    hapticFeedback('heavy')
-
-    if (addToCalendar) {
-      const ics = generateIcsFile({
-        title: dutyLabels[type] || type,
-        description: notes || `Υπηρεσία: ${dutyLabels[type] || type}`,
-        startDate: date,
-        startTime: startTime,
-        endDate: date,
-        endTime: endTime,
-        reminderMinutes: 30,
-      })
-      downloadIcsFile(ics, `apolele-duty-${date}.ics`)
-    }
-
-    onAdd({
-      id: editingDuty?.id || generateId(),
-      type,
-      date,
-      startTime,
-      endTime,
-      notes,
-      password,
-      countersign,
-    })
-  }
-
-  const footer = (
-    <div className="flex flex-col gap-4 px-6 py-5">
-      <div className="flex gap-3">
-      <button
-        onClick={onCancel}
-        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
-      >
-        Ακύρωση
-      </button>
-      <button
-        onClick={handleSubmit}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
-      >
-        {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
-      </button>
-      </div>
-    </div>
-  )
-
-  return (
-    <div className="flex flex-col gap-6 p-2">
-      <ModalFooter>{footer}</ModalFooter>
-      <div>
-        <div className="flex items-center justify-between mb-3 px-1">
-          <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-            Τύπος υπηρεσίας
-          </label>
-          <button
-            onClick={onManageTypes}
-            className="p-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-500 hover:text-[#34d399] transition-colors"
-          >
-            <Settings size={14} />
-          </button>
-        </div>
-        <div className="grid grid-cols-3 gap-2">
-          {Object.entries(dutyLabels).map(([t, label]) => (
-              <button
-                key={t}
-                onClick={() => setType(t as DutyType)}
-                className={cn(
-                  'py-2.5 rounded-xl text-[8px] font-bold uppercase tracking-wider transition-all border shrink-0 min-h-[44px] flex items-center justify-center text-center px-1 leading-tight',
-                  type === t
-                    ? 'bg-emerald-500 text-white border-emerald-500 shadow-lg shadow-emerald-500/20'
-                    : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <InlineDatePicker value={date} onChange={setDate} label="Ημερομηνία" />
-
-        {type === 'guard' && (
-          <div className="grid grid-cols-2 gap-2 bg-indigo-500/5 border border-indigo-500/10 p-3 rounded-2xl">
-            <div>
-              <label className="block text-[9px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Σύνθημα</label>
-              <input
-                type="text"
-                value={password}
-                onChange={(e) => setPassword(e.target.value.toUpperCase())}
-                placeholder="π.χ. ΑΕΤΟΣ"
-                className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest"
-              />
-            </div>
-            <div>
-              <label className="block text-[9px] font-bold uppercase tracking-wider text-indigo-400 mb-2">Παρασύνθημα</label>
-              <input
-                type="text"
-                value={countersign}
-                onChange={(e) => setCountersign(e.target.value.toUpperCase())}
-                placeholder="π.χ. ΒΟΥΝΟ"
-                className="w-full px-3 py-2.5 rounded-xl bg-zinc-900 text-[#34d399] text-xs border border-zinc-800 focus:border-indigo-500 outline-none uppercase tracking-widest"
-              />
-            </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα έναρξης</label>
-            <input
-              type="time"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-              className="w-full px-2 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Ώρα λήξης</label>
-            <input
-              type="time"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-              className="w-full px-2 py-2.5 rounded-xl bg-zinc-900 text-white text-xs border border-zinc-800 focus:border-emerald-500 outline-none"
-            />
-          </div>
-        </div>
-
-      <div>
-        <label className="block text-[9px] font-bold uppercase tracking-wider text-zinc-400 mb-2">Σημειώσεις</label>
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Προσθήκη σημειώσεων..."
-          className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
-        />
-      </div>
-
-      <div className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900 border border-zinc-800">
-        <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-white tracking-wider">Προσθήκη στο Ημερολόγιο</span>
-          <span className="text-[8px] text-zinc-500">Θα προστεθεί στο ημερολόγιο ως ειδοποίηση</span>
-        </div>
-        <Switch checked={addToCalendar} onCheckedChange={setAddToCalendar} />
-      </div>
-    </div>
-  )
-}
 
 /* ---------- Add Leave Form ---------- */
 function AddLeaveForm({
@@ -1357,7 +1229,7 @@ function AddLeaveForm({
       </button>
       <button
         onClick={handleSubmit}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-amber-900/30 active:scale-95 transition-all"
       >
         {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
       </button>
@@ -1379,7 +1251,7 @@ function AddLeaveForm({
               className={cn(
                 'py-3 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all border',
                 type === t
-                  ? 'bg-emerald-500 text-white border-emerald-500'
+                  ? 'bg-amber-500 text-white border-amber-500'
                   : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
               )}
             >
@@ -1398,7 +1270,7 @@ function AddLeaveForm({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Προσθήκη σημειώσεων..."
-          className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-emerald-500 outline-none resize-none h-24"
+          className="w-full px-3 py-3 rounded-xl bg-zinc-900 text-white text-sm border border-zinc-800 focus:border-amber-500 outline-none resize-none h-24"
         />
       </div>
     </div>

@@ -7,13 +7,16 @@ import { useLocalStorage } from '@/hooks/use-local-storage'
 import { GreekDatePicker } from '@/components/greek-date-picker'
 import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { hapticFeedback, formatGreekDate, generateId, toLocalDateString, generateIcsFile, downloadIcsFile } from '@/lib/helpers'
+import { getDutyStats, calculateDutyDuration } from '@/lib/duty-utils'
 import { Switch } from '@/components/ui/switch'
-import type { DutyEntry, DutyType } from '@/lib/types'
+import { DutyForm } from '@/components/shared/duty-form'
+import type { DutyEntry, DutyType, LeaveEntry } from '@/lib/types'
 import { DUTY_TYPE_LABELS } from '@/lib/types'
 import { DeleteConfirmDialog } from '@/components/ui/delete-confirm-dialog'
 
 export function DutiesTab() {
   const [duties, setDuties] = useLocalStorage<DutyEntry[]>('fantaros-duties', [])
+  const [leaves] = useLocalStorage<LeaveEntry[]>('fantaros-leaves', [])
   const [showAdd, setShowAdd] = useState(false)
   const [notificationsEnabled, setNotificationsEnabled] = useState(false)
   const [deletePendingId, setDeletePendingId] = useState<string | null>(null)
@@ -122,12 +125,17 @@ export function DutiesTab() {
             title="Νέα Υπηρεσία"
             contentClassName="px-6 py-5 pb-safe overflow-y-auto"
           >
-            <AddDutyForm
+            <DutyForm
+              initialDate={toLocalDateString()}
+              dutyLabels={DUTY_TYPE_LABELS}
               onAdd={(duty) => {
                 setDuties([...duties, duty])
                 setShowAdd(false)
               }}
               onCancel={() => setShowAdd(false)}
+              existingDuties={duties}
+              existingLeaves={leaves}
+              compact
             />
           </FullscreenModal>
 
@@ -178,7 +186,12 @@ export function DutiesTab() {
                           </span>
                           <div className="flex items-center gap-2 mt-0.5">
                             <p className="text-[9px] text-muted-foreground font-mono">
-                              {duty.startTime} - {duty.endTime}
+                              {duty.startTime} - {duty.endTime} 
+                              {duty.durationMinutes && (
+                                <span className="ml-2 text-emerald-500/70">
+                                  ({Math.floor(duty.durationMinutes / 60)}ώ {duty.durationMinutes % 60}λ)
+                                </span>
+                              )}
                             </p>
                             {duty.notes && (
                               <>
@@ -221,135 +234,5 @@ export function DutiesTab() {
   )
 }
 
-function AddDutyForm({ onAdd, onCancel }: {
-  onAdd: (duty: DutyEntry) => void
-  onCancel: () => void
-}) {
-  const [type, setType] = useState<DutyType>('guard')
-  const [date, setDate] = useState(toLocalDateString())
-  const [startTime, setStartTime] = useState<string | undefined>(undefined)
-  const [endTime, setEndTime] = useState<string | undefined>(undefined)
-  const [notes, setNotes] = useState('')
-  const [addToCalendar, setAddToCalendar] = useState(false)
-
-  const handleSubmit = () => {
-    if (!date) return
-    hapticFeedback('heavy')
-
-    if (addToCalendar && startTime && endTime) {
-      const ics = generateIcsFile({
-        title: DUTY_TYPE_LABELS[type],
-        description: notes || `Υπηρεσία: ${DUTY_TYPE_LABELS[type]}`,
-        startDate: date,
-        startTime: startTime,
-        endDate: date,
-        endTime: endTime,
-        reminderMinutes: 30,
-      })
-      downloadIcsFile(ics, `apolele-duty-${date}.ics`)
-    }
-
-    onAdd({
-      id: generateId(),
-      type,
-      date,
-      ...(startTime && { startTime }),
-      ...(endTime && { endTime }),
-      notes,
-    })
-  }
-
-  const footer = (
-    <div className="flex flex-col gap-4 px-6 py-5">
-      <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-900 border border-zinc-800">
-        <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-white tracking-wider">Προσθήκη στο Ημερολόγιο</span>
-          <span className="text-[8px] text-zinc-500">Λήψη αρχείου .ics για ειδοποιήσεις</span>
-        </div>
-        <Switch checked={addToCalendar} onCheckedChange={setAddToCalendar} />
-      </div>
-      <div className="flex gap-3">
-      <button
-        onClick={onCancel}
-        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-wider border border-zinc-800 hover:border-zinc-700 transition-all"
-      >
-        Ακύρωση
-      </button>
-      <button
-        onClick={handleSubmit}
-        className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
-      >
-        Προσθήκη
-      </button>
-      </div>
-    </div>
-  )
-
-  return (
-    <div className="flex flex-col gap-2.5 h-full">
-      <ModalFooter>{footer}</ModalFooter>
-      <div>
-        <label className="block text-[8px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Τύπος</label>
-        <div className="flex overflow-x-auto gap-1 no-scrollbar pb-0.5 -mx-1 px-1">
-          <div className="flex gap-1 flex-nowrap">
-            {(Object.keys(DUTY_TYPE_LABELS) as DutyType[]).map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => {
-                  hapticFeedback('light')
-                  setType(t)
-                }}
-                className={cn(
-                  'px-2.5 py-1 rounded-lg text-[8px] font-bold uppercase tracking-tight transition-all whitespace-nowrap border',
-                  type === t
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-secondary text-secondary-foreground border-border hover:bg-secondary/80'
-                )}
-              >
-                {DUTY_TYPE_LABELS[t]}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <GreekDatePicker value={date} onChange={setDate} label="Ημερομηνία" compact />
-
-      <div className="flex gap-1.5">
-        <div className="flex-1 min-w-0">
-            <label className="block text-[8px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Αρχή</label>
-            <input
-              type="time"
-              value={startTime || ''}
-              onChange={(e) => setStartTime(e.target.value)}
-              className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[9px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
-        <div className="flex-1 min-w-0">
-          <label className="block text-[8px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Τέλος</label>
-          <input
-            type="time"
-            value={endTime || ''}
-            onChange={(e) => setEndTime(e.target.value)}
-            className="w-full px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[9px] min-h-[32px] border border-border focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-[8px] font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Σημειώσεις</label>
-        <input
-          type="text"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Προαιρετικό..."
-          className="w-full px-2.5 py-1.5 rounded-lg bg-secondary text-secondary-foreground text-xs min-h-[36px] border border-border placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary"
-        />
-      </div>
-
-    </div>
-  )
-}
 
 
