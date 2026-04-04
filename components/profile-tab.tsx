@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { 
   User, ChevronDown, ChevronUp, Edit3, Shield, MapPin, Hash, Droplet, 
-  MessageSquare, Save, X, Palette, RotateCcw, Users, Pencil, ShieldAlert, 
-  ShieldCheck, Plus, Phone, UserPlus, MoreVertical, Trash2, Crosshair, LayoutGrid, Users2, Bookmark
+  MessageSquare, Save, X, Palette, RotateCcw, Users, Pencil, ShieldAlert, Phone, UserPlus, MoreVertical, Trash2, Crosshair, LayoutGrid, Users2, Bookmark
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -262,7 +261,7 @@ function SuperiorsSection() {
           <div key={sup.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.25rem] p-4 flex items-center justify-between shadow-lg shadow-black/10 transition active:scale-[0.98]">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 text-[#34d399] flex items-center justify-center shrink-0">
-                <ShieldCheck size={24} />
+                <User size={24} />
               </div>
               <div className="flex flex-col">
                 <h3 className="text-[14px] font-bold text-white leading-tight">{sup.name}</h3>
