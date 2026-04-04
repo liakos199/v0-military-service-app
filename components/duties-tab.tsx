@@ -185,7 +185,7 @@ export function DutiesTab() {
                             {DUTY_TYPE_LABELS[duty.type]}
                           </span>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <p className="text-[9px] text-muted-foreground font-mono">
+                            <p className="text-[9px] text-muted-foreground">
                               {duty.startTime} - {duty.endTime} 
                               {duty.durationMinutes && (
                                 <span className="ml-2 text-emerald-500/70">

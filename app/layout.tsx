@@ -10,9 +10,8 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'ΑΠΟΛΕΛΕ PRO - Made by Η.Π.',
+  title: 'ΑΠΟΛΕΛΕ PRO',
   description: 'Made by Η.Π.',
-  generator: 'v0.app',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,

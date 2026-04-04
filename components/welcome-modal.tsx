@@ -223,7 +223,7 @@ export function WelcomeModal() {
     <FullscreenModal 
       isOpen={isOpen} 
       onClose={handleClose}
-      title={step === 'install' ? 'ΠΡΟΣΘΗΚΗ ΣΤΗΝ ΟΘΟΝΗ' : ''}
+      title={step === 'install' ? 'ΟΔΗΓΙΕΣ' : ''}
       showBackButton={false}
     >
       <div className="h-full bg-black relative overflow-hidden">

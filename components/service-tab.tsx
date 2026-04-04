@@ -244,7 +244,7 @@ export function ServiceTab() {
                   {todaysGuardDuty.password && (
                     <div className="flex items-baseline gap-2">
                       <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase w-10">Σ:</span>
-                      <span className={cn("text-[14px] font-bold tracking-wider", showPasswordRaw ? "text-[#34d399]" : "text-zinc-400 font-mono")}>
+                      <span className={cn("text-[14px] font-bold tracking-wider", showPasswordRaw ? "text-[#34d399]" : "text-zinc-400")}>
                         {showPasswordRaw ? todaysGuardDuty.password : '••••••••'}
                       </span>
                     </div>
@@ -252,7 +252,7 @@ export function ServiceTab() {
                   {todaysGuardDuty.countersign && (
                     <div className="flex items-baseline gap-2">
                       <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase w-10">Π:</span>
-                      <span className={cn("text-[14px] font-bold tracking-wider", showPasswordRaw ? "text-[#34d399]" : "text-zinc-400 font-mono")}>
+                      <span className={cn("text-[14px] font-bold tracking-wider", showPasswordRaw ? "text-[#34d399]" : "text-zinc-400")}>
                         {showPasswordRaw ? todaysGuardDuty.countersign : '••••••••'}
                       </span>
                     </div>

@@ -190,9 +190,9 @@ export function DutyForm({
         <div className="flex items-center justify-between px-4 py-2.5 bg-emerald-500/5 border border-emerald-500/10 rounded-lg">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider font-mono">Διάρκεια</span>
+            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Διάρκεια</span>
           </div>
-          <span className="text-sm font-bold text-white font-mono">{formatDuration(duration)}</span>
+          <span className="text-sm font-bold text-white">{formatDuration(duration)}</span>
         </div>
       </div>
 
