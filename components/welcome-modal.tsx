@@ -3,21 +3,26 @@
 import { useState, useEffect } from 'react'
 import { FullscreenModal } from '@/components/fullscreen-modal'
 import { ModalLayout } from '@/components/modal-layout'
-import { Check, Share2, PlusSquare, ArrowRight, Zap, BookOpen, Users, Wallet, Calendar, Monitor, ArrowLeft } from 'lucide-react'
+import { Check, Share2, PlusSquare, ArrowRight, Zap, BookOpen, Users, Wallet, Calendar, ArrowLeft, Plane, Key, ShieldAlert, Edit3, GraduationCap } from 'lucide-react'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 type DeviceType = 'ios' | 'android' | 'other'
 type BrowserType = 'safari' | 'chrome' | 'samsung' | 'firefox' | 'other'
 type ModalStep = 'install' | 'features'
 
 const FEATURES = [
-  { label: 'Λελέμετρο', icon: Zap, sub: 'Αντίστροφη μέτρηση' },
-  { label: 'Ημερολόγιο', icon: Calendar, sub: 'Πρόγραμμα Υπηρεσιών' },
-  { label: 'Σημειωματάριο', icon: BookOpen, sub: 'Σημειώσεις & Πληροφορίες' },
-  { label: 'Εγχειρίδια', icon: Monitor, sub: 'Στρατιωτική Μελέτη' },
-  { label: 'Στελέχη', icon: Users, sub: 'Βιβλίο Επαφών' },
-  { label: 'Έξοδα', icon: Wallet, sub: 'Έλεγχος Εξόδων' },
+  { label: 'Λελέμετρο', icon: Zap, sub: 'Αντίστροφη μέτρηση απόλυσης' },
+  { label: 'Υπηρεσίες & Βάρδιες', icon: Calendar, sub: 'Πλήρες πρόγραμμα υπηρεσιών' },
+  { label: 'Έξοδα & Καντίνα', icon: Wallet, sub: 'Διαχείριση χρημάτων & τιμοκατάλογος' },
+  { label: 'Άδειες & Έξοδοι', icon: Plane, sub: 'Καταγραφή και στατιστικά αδειών' },
+  { label: 'Συνθηματικά Ημέρας', icon: Key, sub: 'Για την σκοπιά' },
+  { label: 'Ποινές & Φυλακές', icon: ShieldAlert, sub: 'Προσθήκη & Παρακολούθηση' },
+  { label: 'Προσωπικές Σημειώσεις', icon: Edit3, sub: 'Ψηφιακό σημειωματάριο' },
+  { label: 'Στρατιωτικοί Οδηγοί', icon: BookOpen, sub: 'Εγχειρίδια & φωνητικό αλφάβητο' },
+  { label: 'Τεστ Γνώσεων', icon: GraduationCap, sub: 'Ερωτήσεις & Απαντήσεις σε Quiz' },
+  { label: 'Βιβλίο Στελεχών', icon: Users, sub: 'Τηλέφωνα ανωτέρων & φίλων' },
+  
 ]
 
 export function WelcomeModal() {
@@ -114,20 +119,25 @@ export function WelcomeModal() {
 
   const renderFeatures = () => {
     return (
-      <div className="flex flex-col gap-5 py-6">
+      <div className="flex flex-col gap-3.5 py-4">
         {FEATURES.map((feature, idx) => (
           <motion.div 
             key={idx}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 * idx + 0.2, duration: 0.5 }}
+            transition={{ delay: 0.08 * idx + 0.1, duration: 0.4 }}
             className="relative flex items-center p-0.5 overflow-hidden group"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/[0.04] via-transparent to-transparent" />
-            <div className="w-[2px] h-8 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.7)] shrink-0 rounded-full" />
-            <div className="flex-1 text-left pl-4 space-y-0.5">
-              <h4 className="text-[14px] font-black text-white/95 uppercase tracking-wider leading-tight">{feature.label}</h4>
-              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.05em] leading-tight">{feature.sub}</p>
+            <div className="w-[2px] h-6 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.7)] shrink-0 rounded-full" />
+            
+            <div className="w-8 h-8 ml-3 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0 group-hover:border-emerald-500/30 transition-colors">
+              <feature.icon className="w-3.5 h-3.5 text-emerald-500/80" />
+            </div>
+
+            <div className="flex-1 text-left pl-3 space-y-0">
+              <h4 className="text-[12px] font-black text-white/95 uppercase tracking-wider leading-tight">{feature.label}</h4>
+              <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-[0.05em] leading-tight">{feature.sub}</p>
             </div>
           </motion.div>
         ))}
@@ -149,7 +159,7 @@ export function WelcomeModal() {
                 className="flex-1 py-3.5 rounded-sm bg-zinc-900 border border-zinc-800 text-zinc-500 font-bold text-[9px] tracking-widest uppercase transition-all flex items-center justify-center gap-2"
               >
                 <ArrowLeft className="w-3 h-3" strokeWidth={3} />
-                Πισω
+                Πίσω
               </button>
             )}
             
@@ -178,7 +188,7 @@ export function WelcomeModal() {
             <div className="relative w-16 h-16 bg-black rounded-xl border border-zinc-800 shadow-2xl flex items-center justify-center overflow-hidden">
               <Image
                 src="/icon-192.png"
-                alt="ΑΠΟΛΕΛΕ PRO"
+                alt="ΑΠΟΛΕΛΕ"
                 width={64}
                 height={64}
                 className="object-contain scale-90"
@@ -188,7 +198,7 @@ export function WelcomeModal() {
           
           <div className="text-center space-y-0.5">
             <h2 className="text-xl font-black text-white tracking-tighter uppercase leading-none">
-              {step === 'install' ? 'ΟΔΗΓΟΣ ΕΓΚΑΤΑΣΤΑΣΗΣ' : 'Υπάρχον Λειτουργίες'}
+              {step === 'install' ? 'ΟΔΗΓΟΣ ΕΓΚΑΤΑΣΤΑΣΗΣ' : 'Λειτουργίες Εφαρμογής'}
             </h2>
             <p className="text-[9px] text-emerald-500/70 font-bold tracking-[0.2em] uppercase">
               {step === 'install' ? 'Πρώτα Βήματα' : 'Τι περιλαμβάνει η εφαρμογή'}
