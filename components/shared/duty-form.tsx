@@ -11,6 +11,7 @@ import {
   downloadIcsFile,
   toast
 } from '@/lib/helpers'
+import { FullscreenModal, ModalFooter } from '@/components/fullscreen-modal'
 import { calculateDutyDuration, checkDutyConflicts } from '@/lib/duty-utils'
 import { Switch } from '@/components/ui/switch'
 import { InlineDatePicker } from '@/components/inline-date-picker'
@@ -255,26 +256,27 @@ export function DutyForm({
       <div className="flex items-center justify-between p-4 rounded-lg bg-zinc-900 border border-zinc-800/50">
         <div className="flex flex-col">
           <span className="text-[10px] font-bold text-white tracking-widest uppercase">Προσθήκη στο Ημερολόγιο</span>
-          <span className="text-[8px] text-zinc-500 mt-0.5">Λήψη αρχείου .ics για ειδοποιήσεις συσκευής</span>
+          <span className="text-[8px] text-zinc-500 mt-0.5">Θα προστεθεί στο ημερολόγιο του κινητού σου για να λάβεις ειδοποίηση</span>
         </div>
         <Switch checked={addToCalendar} onCheckedChange={setAddToCalendar} />
       </div>
 
-      {/* Footer Actions */}
-      <div className="flex gap-3 mt-2">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-4 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
-        >
-          Ακύρωση
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-1 py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
-        >
-          {mode === 'edit' ? 'Ενημέρωση •' : 'Προσθήκη •'} {formatDuration(duration)}
-        </button>
-      </div>
+      <ModalFooter>
+        <div className="flex gap-3 px-6 py-5">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-4 rounded-lg bg-zinc-900 text-zinc-400 font-bold text-[10px] uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 transition-all active:scale-95"
+          >
+            Ακύρωση
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="flex-1 py-4 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-900/30 active:scale-95 transition-all"
+          >
+            {mode === 'edit' ? 'Ενημέρωση' : 'Προσθήκη'}
+          </button>
+        </div>
+      </ModalFooter>
     </div>
   )
 }
