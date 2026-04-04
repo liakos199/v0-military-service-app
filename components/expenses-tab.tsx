@@ -132,14 +132,14 @@ export function ExpensesTab() {
 
         {/* Spending Summaries */}
         <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex flex-col shadow-lg shadow-black/10">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex flex-col items-center justify-center shadow-lg shadow-black/10">
             <span className="text-[7.5px] font-black tracking-[0.1em] text-zinc-500 uppercase mb-1">Αυτη την εβδομαδα</span>
             <div className="flex items-baseline gap-1">
               <span className="text-[20px] font-black text-white leading-none">{weeklyTotal.toFixed(2)}</span>
               <span className="text-[12px] font-bold text-emerald-500">€</span>
             </div>
           </div>
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex flex-col shadow-lg shadow-black/10">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900/90 border border-zinc-700/40 rounded-[1.5rem] p-4 flex flex-col items-center justify-center shadow-lg shadow-black/10">
             <span className="text-[7.5px] font-black tracking-[0.1em] text-zinc-500 uppercase mb-1">Αυτο το μηνα</span>
             <div className="flex items-baseline gap-1">
               <span className="text-[20px] font-black text-white leading-none">{monthlyTotal.toFixed(2)}</span>

@@ -194,10 +194,10 @@ function ProfileSection() {
           <span className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">Φραση Αναφορας</span>
         </div>
         <p className={cn(
-          "text-[14px] font-medium italic leading-relaxed",
+          "text-[14px] font-medium leading-relaxed",
           profile.reportingPhrase ? "text-zinc-300" : "text-zinc-500"
         )}>
-          {profile.reportingPhrase ? `"${profile.reportingPhrase}"` : "Προσθέστε τη φράση αναφοράς σας..."}
+          {profile.reportingPhrase ? `${profile.reportingPhrase}` : "Προσθέστε τη φράση αναφοράς σας..."}
         </p>
       </div>
 
