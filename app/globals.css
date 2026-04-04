@@ -85,11 +85,15 @@
 
 .safe-bottom {
   padding-bottom: 16px;
-  padding-bottom: max(env(safe-area-inset-bottom), 16px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
 }
 .safe-top {
   padding-top: 12px;
-  padding-top: max(env(safe-area-inset-top), 12px);
+  padding-top: max(env(safe-area-inset-top, 0px), 12px);
+}
+
+.header-safe-padding {
+  padding-top: calc(1.25rem + env(safe-area-inset-top, 0px));
 }
 
 @layer base {
