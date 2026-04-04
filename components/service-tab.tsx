@@ -57,6 +57,7 @@ export function ServiceTab() {
 
   const totalLeaveDays = leaves.reduce((sum, l) => sum + l.days, 0)
   const totalPrisonDays = prisons.reduce((sum, p) => sum + p.days, 0)
+  const prisonExtensionDays = Math.max(0, totalPrisonDays - 20)
   const totalDetentionDays = detentions.reduce((sum, d) => {
     const days = daysBetween(d.startDate, d.endDate) + 1
     return sum + Math.max(0, days)
@@ -90,7 +91,7 @@ export function ServiceTab() {
     ? daysBetween(config.enlistmentDate, toLocalDateString(baseDischargeDate))
     : config.totalDays
 
-  const effectiveTotalDays = exactBaseTotalDays + totalPrisonDays
+  const effectiveTotalDays = exactBaseTotalDays + prisonExtensionDays
   
   const daysServed = config.enlistmentDate
     ? Math.min(effectiveTotalDays, Math.max(0, daysBetween(config.enlistmentDate, today)))
@@ -104,7 +105,7 @@ export function ServiceTab() {
   const dischargeDate = baseDischargeDate
     ? (() => {
         const d = new Date(baseDischargeDate)
-        d.setDate(d.getDate() + totalPrisonDays)
+        d.setDate(d.getDate() + prisonExtensionDays)
         return toLocalDateString(d)
       })()
     : ''
@@ -277,9 +278,17 @@ export function ServiceTab() {
                 </div>
                 <div className="flex flex-col">
                   <h3 className="text-[9px] font-bold tracking-[0.15em] text-zinc-400 uppercase mb-0.5">Φυλακες</h3>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-[22px] font-bold text-white leading-none">{totalPrisonDays}</span>
-                    <span className="text-[11px] font-semibold text-zinc-500">ημ.</span>
+                  <div className="flex items-baseline gap-2">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-[22px] font-bold text-white leading-none">{totalPrisonDays}</span>
+                      <span className="text-[10px] font-semibold text-zinc-500 uppercase">Ημ.</span>
+                    </div>
+                    {prisonExtensionDays > 0 && (
+                      <div className="flex items-baseline gap-1 px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20">
+                        <span className="text-[10px] font-bold text-red-400">+{prisonExtensionDays}</span>
+                        <span className="text-[8px] font-bold text-red-400/70 uppercase">Επεκτ.</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -465,14 +474,30 @@ function PrisonManager({
     <div className="flex flex-col gap-4">
       {/* Summary */}
       <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-center justify-between">
-        <div>
-          <p className="text-[9px] font-bold tracking-widest text-red-400 uppercase mb-1">Συνολο Ημερων</p>
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-[30px] font-extrabold text-white leading-none">{totalDays}</span>
-            <span className="text-[12px] font-semibold text-zinc-400">ημέρες</span>
+        <div className="flex-1">
+          <p className="text-[9px] font-bold tracking-widest text-red-400 uppercase mb-1">Ποινες & Επεκταση</p>
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col">
+              <span className="text-[8px] font-bold text-zinc-500 uppercase mb-0.5">Συνολο Ποινων</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-[24px] font-extrabold text-white leading-none">{totalDays}</span>
+                <span className="text-[10px] font-bold text-zinc-400">ΗΜ.</span>
+              </div>
+            </div>
+            <div className="w-px h-8 bg-zinc-700/50"></div>
+            <div className="flex flex-col">
+              <span className="text-[8px] font-bold text-red-400 uppercase mb-0.5">Επεκταση Θητειας</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-[24px] font-extrabold text-red-500 leading-none">{Math.max(0, totalDays - 20)}</span>
+                <span className="text-[10px] font-bold text-red-400">ΗΜ.</span>
+              </div>
+            </div>
           </div>
+          <p className="text-[8px] text-zinc-500 mt-2 font-medium italic">
+            * Οι πρώτες 20 ημέρες φυλακής δεν επεκτείνουν τη θητεία.
+          </p>
         </div>
-        <Lock size={32} className="text-red-400/40" />
+        <Lock size={32} className="text-red-400/20" />
       </div>
 
       <div className="flex flex-col gap-3">
@@ -559,7 +584,9 @@ function PrisonForm({
           onChange={(e) => setDays(Math.max(1, parseInt(e.target.value) || 1))}
           className="w-full px-4 py-4 rounded-lg bg-zinc-900 text-white text-2xl font-extrabold text-center border border-zinc-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all"
         />
-        <p className="text-[9px] text-zinc-500 text-center mt-1.5">Αυτές οι μέρες προστίθενται στο σύνολο της θητείας</p>
+        <p className="text-[9px] text-zinc-500 text-center mt-1.5">
+          Οι ποινές φυλακής επεκτείνουν τη θητεία μόνο μετά τις συνολικά 20 ημέρες.
+        </p>
       </div>
 
       <div>

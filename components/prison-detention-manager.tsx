@@ -77,11 +77,19 @@ export function PrisonDetentionManager() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[9px] font-bold tracking-[0.15em] text-zinc-400 uppercase mb-0.5">Φυλακές</p>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-[22px] font-bold text-white leading-none">
-                  <Counter value={totalPrisonDays} duration={1} />
-                </span>
-                <span className="text-[11px] font-semibold text-zinc-500">ημ.</span>
+              <div className="flex items-baseline gap-2">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-[22px] font-bold text-white leading-none">
+                    <Counter value={totalPrisonDays} duration={1} />
+                  </span>
+                  <span className="text-[11px] font-semibold text-zinc-500 uppercase">Ημ.</span>
+                </div>
+                {totalPrisonDays > 20 && (
+                  <div className="flex items-baseline gap-1 px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20 shadow-sm">
+                    <span className="text-[10px] font-bold text-red-400">+{totalPrisonDays - 20}</span>
+                    <span className="text-[8px] font-bold text-red-400/70 uppercase">Επεκτ.</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -269,7 +277,7 @@ function AddPrisonForm({
           placeholder="Αριθμός ημερών"
         />
         <p className="text-[9px] text-zinc-500 mt-2 font-medium">
-          Θα προστεθούν <span className="font-bold text-[#34d399]">{days}</span> ημέρες στη θητεία σας
+          Οι ποινές φυλακής επεκτείνουν τη θητεία μόνο μετά τις συνολικά <span className="font-bold text-white">20</span> ημέρες.
         </p>
       </div>
 
